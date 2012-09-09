@@ -1,0 +1,181 @@
+GIT
+  remote: git://github.com/jvatic/evergreen.git
+  revision: 6c0a7a06ff4830eea79fb0bdd99f01c8138295f4
+  branch: master
+  specs:
+    evergreen (1.0.0)
+      capybara (~> 1.0)
+      coffee-script
+      json_pure
+      launchy
+      sinatra (~> 1.1)
+      sprockets (~> 2.0)
+
+GIT
+  remote: git@github.com:tent/tent-client-ruby.git
+  revision: 77e17d23ae991e271f1853f3d175944a75a9b5ff
+  branch: master
+  specs:
+    tent-client (0.0.1)
+      faraday (= 0.8.4)
+      faraday_middleware (= 0.8.8)
+      json
+      nokogiri
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    addressable (2.2.8)
+    backports (2.6.4)
+    bcrypt-ruby (3.0.1)
+    capybara (1.1.2)
+      mime-types (>= 1.16)
+      nokogiri (>= 1.3.3)
+      rack (>= 1.0.0)
+      rack-test (>= 0.5.4)
+      selenium-webdriver (~> 2.0)
+      xpath (~> 0.1.4)
+    childprocess (0.3.5)
+      ffi (~> 1.0, >= 1.0.6)
+    coffee-script (2.2.0)
+      coffee-script-source
+      execjs
+    coffee-script-source (1.3.3)
+    data_mapper (1.2.0)
+      dm-aggregates (~> 1.2.0)
+      dm-constraints (~> 1.2.0)
+      dm-core (~> 1.2.0)
+      dm-migrations (~> 1.2.0)
+      dm-serializer (~> 1.2.0)
+      dm-timestamps (~> 1.2.0)
+      dm-transactions (~> 1.2.0)
+      dm-types (~> 1.2.0)
+      dm-validations (~> 1.2.0)
+    data_objects (0.10.8)
+      addressable (~> 2.1)
+    dm-aggregates (1.2.0)
+      dm-core (~> 1.2.0)
+    dm-constraints (1.2.0)
+      dm-core (~> 1.2.0)
+    dm-core (1.2.0)
+      addressable (~> 2.2.6)
+    dm-do-adapter (1.2.0)
+      data_objects (~> 0.10.6)
+      dm-core (~> 1.2.0)
+    dm-migrations (1.2.0)
+      dm-core (~> 1.2.0)
+    dm-postgres-adapter (1.2.0)
+      dm-do-adapter (~> 1.2.0)
+      do_postgres (~> 0.10.6)
+    dm-serializer (1.2.2)
+      dm-core (~> 1.2.0)
+      fastercsv (~> 1.5)
+      json (~> 1.6)
+      json_pure (~> 1.6)
+      multi_json (~> 1.0)
+    dm-timestamps (1.2.0)
+      dm-core (~> 1.2.0)
+    dm-transactions (1.2.0)
+      dm-core (~> 1.2.0)
+    dm-types (1.2.2)
+      bcrypt-ruby (~> 3.0)
+      dm-core (~> 1.2.0)
+      fastercsv (~> 1.5)
+      json (~> 1.6)
+      multi_json (~> 1.0)
+      stringex (~> 1.4)
+      uuidtools (~> 2.1)
+    dm-validations (1.2.0)
+      dm-core (~> 1.2.0)
+    do_postgres (0.10.8)
+      data_objects (= 0.10.8)
+    eventmachine (1.0.0)
+    execjs (1.4.0)
+      multi_json (~> 1.0)
+    faraday (0.8.4)
+      multipart-post (~> 1.1)
+    faraday_middleware (0.8.8)
+      faraday (>= 0.7.4, < 0.9)
+    fastercsv (1.5.5)
+    faye-websocket (0.4.6)
+      eventmachine (>= 0.12.0)
+    ffi (1.1.5)
+    hashie (1.2.0)
+    hike (1.2.1)
+    http_parser.rb (0.5.3)
+    json (1.7.5)
+    json_pure (1.7.5)
+    launchy (2.1.0)
+      addressable (~> 2.2.6)
+    libwebsocket (0.1.5)
+      addressable
+    mime-types (1.19)
+    multi_json (1.3.6)
+    multipart-post (1.1.5)
+    nokogiri (1.5.5)
+    poltergeist (0.7.0)
+      capybara (~> 1.1)
+      childprocess (~> 0.3)
+      faye-websocket (~> 0.4, >= 0.4.4)
+      http_parser.rb (~> 0.5.3)
+      multi_json (~> 1.0)
+    puma (1.6.3)
+      rack (~> 1.2)
+    rack (1.4.1)
+    rack-protection (1.2.0)
+      rack
+    rack-test (0.6.1)
+      rack (>= 1.0)
+    rack_csrf (2.4.0)
+      rack (>= 0.9)
+    rubyzip (0.9.9)
+    sass (3.2.1)
+    selenium-webdriver (2.25.0)
+      childprocess (>= 0.2.5)
+      libwebsocket (~> 0.1.3)
+      multi_json (~> 1.0)
+      rubyzip
+    sinatra (1.3.3)
+      rack (~> 1.3, >= 1.3.6)
+      rack-protection (~> 1.2)
+      tilt (~> 1.3, >= 1.3.3)
+    sinatra-contrib (1.3.1)
+      backports (>= 2.0)
+      eventmachine
+      rack-protection
+      rack-test
+      sinatra (~> 1.3.0)
+      tilt (~> 1.3)
+    slim (1.3.0)
+      temple (~> 0.4.1)
+      tilt (~> 1.3.3)
+    sprockets (2.5.0)
+      hike (~> 1.2)
+      multi_json (~> 1.0)
+      rack (~> 1.0)
+      tilt (~> 1.1, != 1.3.0)
+    stringex (1.4.0)
+    temple (0.4.1)
+    tilt (1.3.3)
+    uuidtools (2.1.3)
+    xpath (0.1.4)
+      nokogiri (~> 1.3)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  coffee-script
+  data_mapper (~> 1.2.0)
+  dm-postgres-adapter (~> 1.2.0)
+  evergreen!
+  hashie
+  poltergeist
+  puma
+  rack_csrf
+  sass
+  sinatra
+  sinatra-contrib
+  slim
+  sprockets (~> 2.0)
+  tent-client!
