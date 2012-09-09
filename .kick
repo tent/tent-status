@@ -1,0 +1,8 @@
+process do |files|
+  test_files = files.take_and_map do |file|
+    if file =~ %r{^(spec|assets)/javascripts/(\w+?)(_spec)?\.(js|coffee|js\.coffee)$}
+      "spec/javascripts/#{$2}_spec.coffee"
+    end
+  end
+  execute "bundle exec evergreen run #{test_files.join(' ')}" unless test_files.empty?
+end

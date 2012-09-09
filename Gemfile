@@ -21,3 +21,5 @@ gem 'hashie'
 
 gem 'poltergeist' # capybara phantomjs driver
 gem 'evergreen', :git => 'git://github.com/jvatic/evergreen.git', :branch => 'master'
+
+gem 'kicker', :group => :development

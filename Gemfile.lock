@@ -105,6 +105,8 @@ GEM
     http_parser.rb (0.5.3)
     json (1.7.5)
     json_pure (1.7.5)
+    kicker (2.5.0)
+      rb-fsevent
     launchy (2.1.0)
       addressable (~> 2.2.6)
     libwebsocket (0.1.5)
@@ -128,6 +130,7 @@ GEM
       rack (>= 1.0)
     rack_csrf (2.4.0)
       rack (>= 0.9)
+    rb-fsevent (0.9.1)
     rubyzip (0.9.9)
     sass (3.2.1)
     selenium-webdriver (2.25.0)
@@ -170,6 +173,7 @@ DEPENDENCIES
   dm-postgres-adapter (~> 1.2.0)
   evergreen!
   hashie
+  kicker
   poltergeist
   puma
   rack_csrf
