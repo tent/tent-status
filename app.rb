@@ -19,6 +19,24 @@ class StatusPro < Sinatra::Base
   use Rack::Session::Pool, :expire_after => 2592000, :key => 'tent-statuspro.session'
   use Rack::Csrf
 
+  helpers do
+    def path_prefix
+      env['SCRIPT_NAME']
+    end
+
+    def full_path(path)
+      "/#{path}".gsub(%r{//}, '/')
+    end
+
+    def full_url(path)
+      (self_url_root + path.gsub(%r{//}, '/'))
+    end
+
+    def self_url_root
+      env['rack.url_scheme'] + "://" + env['HTTP_HOST']
+    end
+  end
+
   assets = Sprockets::Environment.new do |env|
     env.logger = Logger.new(STDOUT)
   end
@@ -31,5 +49,9 @@ class StatusPro < Sinatra::Base
     new_env = env.clone
     new_env["PATH_INFO"].gsub!("/assets", "")
     assets.call(new_env)
+  end
+
+  get '/' do
+    slim :application
   end
 end
