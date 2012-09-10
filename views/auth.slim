@@ -1,0 +1,8 @@
+form.form-horizontal action=full_path('/oauth') method='POST'
+  == csrf_tag
+
+  .control-group
+    label.control-label Your Entity URI
+    .controls
+      input.input-xxlarge type='text' name='entity' placeholder='https://johndoe.example.com' &nbsp;
+      input.btn.btn-success type='submit' value='Authenticate'

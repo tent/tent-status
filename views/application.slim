@@ -10,4 +10,10 @@ body
     .navbar-inner
       .brand StatusPro
 
+      ul.nav.pull-right
+        - if current_user
+          li
+            a href=full_path('/signout') Signout
+
   .container#main
+    == yield if block_given?
