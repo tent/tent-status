@@ -20,6 +20,6 @@ gem 'slim'
 gem 'hashie'
 
 gem 'poltergeist' # capybara phantomjs driver
-gem 'evergreen', :git => 'git://github.com/jvatic/evergreen.git', :branch => 'master'
+gem 'evergreen', :git => 'git://github.com/jvatic/evergreen.git', :branch => 'master', :submodules => true
 
 gem 'kicker', :group => :development

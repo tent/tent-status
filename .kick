@@ -4,5 +4,5 @@ process do |files|
       "spec/javascripts/#{$2}_spec.coffee"
     end
   end
-  execute "bundle exec evergreen run #{test_files.join(' ')}" unless test_files.empty?
+  execute "bundle exec evergreen run" unless test_files.empty?
 end

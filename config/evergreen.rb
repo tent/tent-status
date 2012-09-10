@@ -13,3 +13,4 @@ Evergreen.root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
 %w{ javascripts stylesheets images }.each do |path|
   Evergreen.assets.append_path(File.join(Evergreen.root, Evergreen.public_dir, path))
 end
+Evergreen.assets.append_path(File.join(Evergreen.root, Evergreen.spec_dir, 'javascripts'))

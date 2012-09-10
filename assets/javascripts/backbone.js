@@ -109,6 +109,18 @@
       return this;
     },
 
+    // Custom function, not shipped with backbone
+    once: function(events, callback, context) {
+      var self = this;
+      var _callback = function() {
+        Backbone.Events.off.apply(self, [events, arguments.callee, context]);
+        callback.apply(this, arguments);
+      }
+      var args = [events, _callback, context]
+      Backbone.Events.on.apply(self, args);
+      return self
+    },
+
     // Remove one or many callbacks. If `context` is null, removes all callbacks
     // with that function. If `callback` is null, removes all callbacks for the
     // event. If `events` is null, removes all bound callbacks for all events.
