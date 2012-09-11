@@ -211,6 +211,11 @@ class StatusPro < Sinatra::Base
       :mac_algorithm => mac.mac_algorithm
     )
 
+    # Get latest profile information
+    client = ::TentClient.new(user.server_uri, user.auth_details)
+    profile = client.profile.get.body
+    user.update(:profile => profile) if profile.kind_of?(Hash)
+
     session[:current_user] = user.entity
 
     redirect full_path('/')
