@@ -1,3 +1,5 @@
+require 'hashie'
+
 class StatusPro
   class User
     include DataMapper::Resource
@@ -23,6 +25,10 @@ class StatusPro
         :mac_key => mac_key,
         :mac_algorithm => mac_algorithm
       }
+    end
+
+    def basic_profile
+      (profile || {})['https://tent.io/types/info/basic/v0.1.0'] || {}
     end
   end
 end
