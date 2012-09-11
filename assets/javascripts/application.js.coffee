@@ -12,7 +12,6 @@
 #= require_tree ./routers
 #= require_tree ./models
 #= require_tree ./collections
-#= require ./boot
 
 @StatusPro ?= {}
 _.extend @StatusPro, Backbone.Events, {
