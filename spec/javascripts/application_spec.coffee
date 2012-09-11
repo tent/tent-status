@@ -14,7 +14,7 @@ describe 'StatusPro', ->
 
   describe 'fetchTemplate', ->
     it 'should fetch, compile, and cache mustache template', ->
-      @server.respondWith "GET", "/assets/templates/hello.html.mustache",
+      @server.respondWith "GET", "/assets/hello.html.mustache",
         [200, { 'Content-Type': 'text/plain' }, @templates.hello]
 
       callback = sinon.spy()

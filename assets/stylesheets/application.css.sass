@@ -1,2 +1,24 @@
 //= require bootstrap
 //= require bootstrap-responsive
+//= require_self
+
+textarea::-webkit-input-placeholder
+  padding-top: 20px
+  text-align: center
+
+form input,
+form select,
+form textarea
+  &.error
+    color: #b94a48
+    border-color: #b94a48
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075)
+    -moz-box-shadow:    inset 0 1px 1px rgba(0, 0, 0, 0.075)
+    box-shadow:         inset 0 1px 1px rgba(0, 0, 0, 0.075)
+
+    &:focus
+      border-color: #953b39
+      -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392
+      -moz-box-shadow:    inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392
+      box-shadow:         inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392
+

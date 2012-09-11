@@ -46,6 +46,9 @@ class StatusPro.View extends Backbone.View
   initialize: (options) ->
     @container ||= StatusPro.Views.container
 
+    unless @container
+      StatusPro.devWarning @, "You need to define @container View"
+
     # fetch main template
     if @templateName
       StatusPro.fetchTemplate @templateName, (@template) =>
@@ -62,14 +65,13 @@ class StatusPro.View extends Backbone.View
             @trigger "partials:#{name}:load"
 
     @on 'ready', @bindViews
-    @on 'ready', @bindExternalLinks
     @on 'ready', @bindEvents
 
   loadMore: (key) =>
     @get(key)?.nextPage()
 
   bindEvents: =>
-    _.each $('.btn.load-more', @container.el), (el) =>
+    _.each $('.btn.load-more', @container?.el), (el) =>
       viewKey = $(el).attr('data-key')
 
       $(el).hide() if @get(viewKey)?.onLastPage
@@ -79,30 +81,23 @@ class StatusPro.View extends Backbone.View
       $(el).off().on 'click', (=> @loadMore viewKey)
 
   bindViews: =>
-    _.each $('[data-view]', @container.el), (navTabsEl) =>
-      view = $(navTabsEl).attr 'data-view'
-      viewClassName = view.slice(0, 1).toUpperCase() + view.slice(1, view.length)
+    _.each $('[data-view]', @container?.el), (el) =>
+      viewClassName = $(el).attr 'data-view'
       if viewClass = StatusPro.Views[viewClassName]
-        new viewClass el: navTabsEl, parentView: @
-
-  bindExternalLinks: =>
-    _.each $('[data-href]', @container.el), (el) =>
-      href = $(el).attr 'data-href'
-      $(el).attr 'href', href
-      $(el).off().on 'click', (e) =>
-        e.preventDefault()
-        return unless href
-        window.open(href)
+        view = new viewClass el: el, parentView: @
+      else
+        StatusPro.devWarning @, "StatusPro.Views.#{viewClassName} is not defined!"
+        console.log el
 
   getPartialName: (path) =>
     path.replace(/.+\/_(.+)$/, "$1")
 
   # called before fetching data in the router
   empty: =>
-    @container.render("")
+    @container?.render("")
 
   context: =>
-    console.warn "You need to override context in your view class!"
+    StatusPro.devWarning @, "You need to override context in your view class!"
     {}
 
   # wait for @template and @partials to load
@@ -131,7 +126,7 @@ class StatusPro.View extends Backbone.View
           return false
 
     html = @template.render(@context(), @partials)
-    @container.render(html)
+    @container?.render(html)
     @trigger 'ready'
     true
 

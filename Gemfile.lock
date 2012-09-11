@@ -14,7 +14,7 @@ GIT
 
 GIT
   remote: git@github.com:tent/tent-client-ruby.git
-  revision: 77e17d23ae991e271f1853f3d175944a75a9b5ff
+  revision: 781deed3465dae51d8aad19bbbc7f65df3bf773c
   branch: master
   specs:
     tent-client (0.0.1)
@@ -184,3 +184,4 @@ DEPENDENCIES
   slim
   sprockets (~> 2.0)
   tent-client!
+  tilt

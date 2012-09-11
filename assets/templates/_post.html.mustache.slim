@@ -1,0 +1,13 @@
+.row
+  h4
+    =="{{entity}}"
+    small &nbsp; via <a href='{{app.url}}'>#{"{{app.name}}"}</a>
+  h5 title='{{formatted.full_published_at}}' =="{{formatted.published_at}}"
+  =="{{content.text}}"
+  .pull-right
+    =="{{#licenses}}"
+    a href="{{.}}" <span class='label'>#{"{{.}}"}</span>
+    =="{{/licenses}}"
+    =="{{#permissions.public}}"
+    span.label.label-success Public
+    =="{{/permissions.public}}"

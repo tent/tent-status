@@ -1,7 +1,9 @@
-#= require 'underscore'
-#= require 'http'
-#= require 'backbone'
-#= require 'hogan'
+#= require underscore
+#= require http
+#= require backbone
+#= require ./backbone_sync
+#= require hogan
+#= require moment
 #= require_self
 #= require ./view
 #= require ./router
@@ -10,13 +12,18 @@
 #= require_tree ./routers
 #= require_tree ./models
 #= require_tree ./collections
+#= require ./boot
 
-@StatusPro = _.extend {}, Backbone.Events, {
+@StatusPro ?= {}
+_.extend @StatusPro, Backbone.Events, {
   Views: {}
   Models: {}
   Collections: {}
   Routers: {}
   Helpers: {}
+
+  devWarning: (fn, msg) ->
+    console.warn "<#{fn.constructor.name}> #{msg}"
 
   #############################
   #      Hogan Templates      #
@@ -26,7 +33,7 @@
     template = @_templates[templatePath]
     return callback(template) if template
 
-    HTTP.get "/assets/templates/#{ templatePath }.html.mustache", (template) =>
+    HTTP.get "/assets/#{ templatePath }.html.mustache", (template) =>
       @_templates[templatePath] = Hogan.compile template
       callback(@_templates[templatePath])
 
@@ -36,7 +43,7 @@
     root: '/'
   }
   run: ->
-    Backbone.history.start @backboneConfig
+    Backbone.history?.start @backboneConfig
 
     @ready = true
     @trigger 'ready'

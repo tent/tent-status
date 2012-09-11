@@ -25,6 +25,7 @@ class StatusPro.Router extends Backbone.Router
     actionFn()
 
   isCurrentAction: (actionName) =>
+    return true # currentRoute not currently setup, TODO set this up
     StatusPro.currentRoute?.key == @keyForAction(actionName)
 
   fetchData: (dataKey, dataFn) =>
@@ -53,13 +54,13 @@ class StatusPro.Router extends Backbone.Router
   fetchStart: (actionName) =>
     return unless @isCurrentAction(actionName)
     @_dataFetches[actionName]++
-    StatusPro.Views?.loading.show()
+    StatusPro.Views.loading?.show()
 
   fetchSuccess: (actionName) =>
     return unless @isCurrentAction(actionName)
     @_dataFetches[actionName]-- unless @_dataFetches[actionName] == 0
     if @_dataFetches[actionName] == 0
       @view?.once 'ready', =>
-        StatusPro.Views?.loading.hide()
+        StatusPro.Views.loading?.hide()
       @view?.render()
 

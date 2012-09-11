@@ -2,8 +2,8 @@ doctype html
 
 head
   meta name="viewport" content="width=device-width, initial-scale=1.0"
+  == csrf_meta_tag(:name => 'csrf-token')
   link rel="stylesheet" type="text/css" href=full_path("/assets/application.css")
-  script src=full_path("/assets/application.js")
 
 body
   .navbar.navbar-static-top
@@ -17,3 +17,10 @@ body
 
   .container#main
     == yield if block_given?
+
+  javascript:
+    var StatusPro = {
+      api_root: "#{{full_path('/api')}}"
+    }
+
+  script src=full_path("/assets/application.js")

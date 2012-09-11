@@ -6,20 +6,22 @@ require 'hashie'
 require 'uri'
 
 class StatusPro < Sinatra::Base
-  autoload :User, './models/user'
+  require './models/user'
 
   configure :development do |config|
     require 'sinatra/reloader'
     register Sinatra::Reloader
     config.also_reload "*.rb"
+  end
 
+  configure do |config|
     # Setup Database
     DataMapper.setup(:default, ENV['DATABASE_URL'])
     DataMapper.auto_upgrade!
   end
 
-  use Rack::Session::Pool, :expire_after => 2592000, :key => 'tent-statuspro.session'
-  use Rack::Csrf
+ use Rack::Session::Pool, :expire_after => 2592000, :key => 'tent-statuspro.session'
+ use Rack::Csrf
 
   # List of paths/regexes not to require auth for
   public_routes = []
@@ -46,16 +48,29 @@ class StatusPro < Sinatra::Base
       @current_user ||= User.first(:entity => session[:current_user])
     end
 
+    def client
+      ::TentClient.new(current_user.server_uri, current_user.auth_details) if current_user
+    end
+
     def csrf_tag
       Rack::Csrf.tag(env)
     end
+
+    def csrf_meta_tag(options = {})
+      Rack::Csrf.metatag(env, options)
+    end
+  end
+
+  def json(data)
+    [200, { 'Content-Type' => 'application/json' }, [data.to_json]]
   end
 
   assets = Sprockets::Environment.new do |env|
     env.logger = Logger.new(STDOUT)
   end
+  assets.register_engine('.slim', ::Slim::Template)
 
-  %w{ javascripts stylesheets images }.each do |path|
+  %w{ javascripts stylesheets images templates }.each do |path|
     assets.append_path("assets/#{path}")
   end
 
@@ -68,6 +83,43 @@ class StatusPro < Sinatra::Base
 
   get '/' do
     slim :application
+  end
+
+  get '/api/posts' do
+    res = client.post.list(
+      :types => "https://tent.io/types/post/status/v0.1.0"
+    )
+
+    if (400...500).include?(res.status)
+      session.delete(:current_user)
+      redirect full_path('/auth') and return
+    end
+
+    json res.body
+  end
+
+  get '/api/posts/:id' do
+    res = client.post.get(params[:id])
+    json res.body
+  end
+
+  post '/api/posts' do
+    data = JSON.parse(env['rack.input'].read)
+    env['rack.input'].rewind
+
+    res = client.post.create(
+      :published_at => Time.now.to_i,
+      :type => "https://tent.io/types/post/status/v0.1.0",
+      :licenses => ["http://creativecommons.org/licenses/by-nc-sa/3.0/"],
+      :permissions => {
+        :public => true
+      },
+      :content => {
+        :text => data['text'].to_s.slice(0...140)
+      }
+    )
+
+    json res.body
   end
 
   ########################
@@ -102,6 +154,7 @@ class StatusPro < Sinatra::Base
       :name => 'Status Pro',
       :description => 'Manage your status posts',
       :icon => full_url('/assets/icon.png'),
+      :url => full_url('/'),
       :redirect_uris => [full_url('/oauth/confirm')],
       :notification_url => full_url('/webhooks/notifications'),
       :scopes => {
@@ -166,5 +219,10 @@ class StatusPro < Sinatra::Base
   get '/signout' do
     session.delete(:current_user)
     redirect full_path('/')
+  end
+
+  # Catch all for pushState routes
+  get '*' do
+    slim :application
   end
 end

@@ -1,0 +1,9 @@
+.row
+  .span3 &nbsp;
+  .well.span6 style='margin-left:0px'
+    .clearfix
+      form data-view='NewPostForm' method='POST'
+        .alert.alert-error &nbsp;
+        textarea.span6 data-view='ExpandingTextArea' name='text' placeholder="What's on your mind?" rows='3'
+        span.char-limit 140
+        input.btn.btn-success.pull-right type='submit' value='Publish'
