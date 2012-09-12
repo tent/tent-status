@@ -11,3 +11,4 @@ describe 'Backbone.Events', ->
       obj.trigger 'alert'
       obj.trigger 'alert'
       expect(callback.calledOnce).toEqual(true)
+

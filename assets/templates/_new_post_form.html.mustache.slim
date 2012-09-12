@@ -3,7 +3,28 @@
   .well.span6 style='margin-left:0px'
     .clearfix
       form data-view='NewPostForm' method='POST'
-        .alert.alert-error &nbsp;
-        textarea.span6 data-view='ExpandingTextArea' name='text' placeholder="What's on your mind?" rows='3'
-        span.char-limit 140
+        div
+          .alert.alert-error &nbsp;
+          textarea.span6 data-view='ExpandingTextArea' name='text' placeholder="What's on your mind?" rows='3'
+          span.char-limit 140
+
+          label.checkbox.pull-right
+            input name='public' type='checkbox' checked=true Public
+
+        div &nbsp;
+        .span3 style='margin-left:0px'
+          select style='width:100%' multiple=true name='permissible_entities' data-placeholder='Select permissible entities'
+            =="{{#followers}}"
+            option value='{{entity}}' =="{{entity}}"
+            =="{{/followers}}"
+            =="{{#followings}}"
+            option value='{{entity}}' =="{{entity}}"
+            =="{{/followings}}"
+
+        .span3
+          select style='width:100%' multiple=true name='permissible_groups' data-placeholder='Select permissible groups'
+            =="{{#groups}}"
+            option value='{{id}}' =="{{name}}"
+            =="{{/groups}}"
+
         input.btn.btn-success.pull-right type='submit' value='Publish'

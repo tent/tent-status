@@ -122,6 +122,21 @@ class StatusPro < Sinatra::Base
     json res.body
   end
 
+  get '/api/groups' do
+    res = client.group.list
+    json res.body
+  end
+
+  get '/api/followers' do
+    res = client.follower.list
+    json res.body
+  end
+
+  get '/api/followings' do
+    res = client.following.list
+    json res.body
+  end
+
   ########################
   #      OAuth stuff     #
   ########################
@@ -164,6 +179,7 @@ class StatusPro < Sinatra::Base
         "write_followers" => "Manage your followers",
         "read_followings" => "List who you follow",
         "write_followings" => "Manage who you follow",
+        "read_groups" => "List groups",
         "read_profile" => "Display your basic info"
       }
     }

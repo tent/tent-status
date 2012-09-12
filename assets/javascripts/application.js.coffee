@@ -1,9 +1,11 @@
+#= require jquery
 #= require underscore
 #= require http
 #= require backbone
 #= require ./backbone_sync
 #= require hogan
 #= require moment
+#= require chosen.jquery
 #= require_self
 #= require ./view
 #= require ./router

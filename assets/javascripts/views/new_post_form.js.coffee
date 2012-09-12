@@ -1,6 +1,7 @@
 class StatusPro.Views.NewPostForm extends Backbone.View
-  initialize: (options) ->
+  initialize: (options = {}) ->
     @parentView = options.parentView
+    window.form = @
 
     @action = "#{StatusPro.api_root}/posts"
 
@@ -8,6 +9,7 @@ class StatusPro.Views.NewPostForm extends Backbone.View
 
     @$el.on 'submit', @submit
 
+    ## form validation and character limit counter
     @$textarea = ($ 'textarea', @$el)
     @$charLimit = ($ '.char-limit', @$el).first()
     @charLimit = parseInt(@$charLimit.text())
@@ -17,6 +19,34 @@ class StatusPro.Views.NewPostForm extends Backbone.View
       @updateCharCounter()
       null
     @updateCharCounter()
+
+    ## permissions
+    @$publicCheckbox = ($ '[name=public]', @$el)
+    @$permissible_groups = ($ 'select[name=permissible_groups]', @$el)
+    @$permissible_entities = ($ 'select[name=permissible_entities]', @$el)
+    @$permissible_groups.chosen
+      no_results_text: 'No matching groups'
+    @$permissible_entities.chosen
+      create_option: true
+      no_results_text: 'No matching entities'
+      create_option_text: 'Add permissible entity uri'
+
+    # disable public checkbox when permissions are added
+    @$permissible_groups.change @checkPublicEnabled
+    @$permissible_entities.change @checkPublicEnabled
+
+  checkPublicEnabled: =>
+    if @$permissible_groups.val() == null and @$permissible_entities.val() == null
+      @enablePublic()
+    else
+      @disablePublic()
+
+  enablePublic: =>
+    @$publicCheckbox.removeAttr('disabled')
+
+  disablePublic: =>
+    @$publicCheckbox.removeAttr('checked')
+    @$publicCheckbox.attr('disabled', 'disabled')
 
   submit: (e) =>
     e.preventDefault()
@@ -31,10 +61,46 @@ class StatusPro.Views.NewPostForm extends Backbone.View
     post.save()
     false
 
-  getData: =>
-    data = {}
-    data[i.name] = i.value for i in @$el.serializeArray()
+  buildPermissions: (data) =>
+    _public = if data['public'] == 'on' then true else false
+    _groups = _.inject _.flatten(Array data.permissible_groups), ((memo, groupId) ->
+      return memo unless groupId
+      memo.push { id: groupId }
+      memo
+    ), []
+    _entities = _.inject _.flatten(Array data.permissible_entities), ((memo, entity) ->
+      return memo unless entity
+      memo[entity] = true
+      memo
+    ), {}
+
+    delete data['public']
+    delete data.permissible_groups
+    delete data.permissible_entities
+
+    data.permissions = {
+      public: _public,
+      groups: _groups,
+      entities: _entities
+    }
+
     data
+
+  buildDataObject: (serializedArray) =>
+    data = {}
+    for i in serializedArray
+      if data[i.name]
+        if data[i.name].push
+          data[i.name].push i.value
+        else
+          data[i.name] = [data[i.name], i.value]
+      else
+        data[i.name] = i.value
+
+    @buildPermissions(data)
+
+  getData: =>
+    @buildDataObject @$el.serializeArray()
 
   validate: (data = @getData()) =>
     post = new StatusPro.Models.Post data
@@ -55,7 +121,7 @@ class StatusPro.Views.NewPostForm extends Backbone.View
     @$errors.show()
 
   updateCharCounter: =>
-    charCount = @$textarea.val().length
+    charCount = @$textarea.val()?.length
     delta = @charLimit - charCount
     if delta < 0
       @$charLimit.addClass 'alert-error'
