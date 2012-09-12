@@ -13,7 +13,6 @@ class StatusPro.Views.Posts extends StatusPro.View
   context: =>
     groups: @groups.toJSON()
     followers: @followers.toJSON()
-    followings: @followings.toJSON()
     posts: _.map(@sortedPosts(), (post) -> _.extend post.toJSON(), {
       formatted:
         published_at: StatusPro.Helpers.formatTime post.get('published_at')
