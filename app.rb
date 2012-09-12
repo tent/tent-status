@@ -85,6 +85,11 @@ class StatusPro < Sinatra::Base
     slim :application
   end
 
+  get '/api/profile' do
+    res = client.profile.get
+    json res.body
+  end
+
   get '/api/posts' do
     res = client.post.list(
       :types => "https://tent.io/types/post/status/v0.1.0"

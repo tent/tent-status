@@ -2,7 +2,7 @@ class StatusPro.Views.Posts extends StatusPro.View
   templateName: 'posts'
   partialNames: ['_post', '_new_post_form']
 
-  dependentRenderAttributes: ['posts', 'groups', 'followers']
+  dependentRenderAttributes: ['posts', 'groups', 'followers', 'profile']
 
   initialize: ->
     @container = StatusPro.Views.container
@@ -14,6 +14,8 @@ class StatusPro.Views.Posts extends StatusPro.View
     groups: @groups.toJSON()
     followers: @followers.toJSON()
     posts: _.map(@sortedPosts(), (post) -> _.extend post.toJSON(), {
+      name: post.name()
+      avatar: post.avatar()
       formatted:
         published_at: StatusPro.Helpers.formatTime post.get('published_at')
         full_published_at: StatusPro.Helpers.rawTime post.get('published_at')

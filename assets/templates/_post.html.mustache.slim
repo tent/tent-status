@@ -1,6 +1,9 @@
 .row
   h4
-    =="{{entity}}"
+    =="{{#avatar}}"
+    img.img-rounded src='{{avatar}}' style='height:50px;width:50px;margin-right:4px;'
+    =="{{/avatar}}"
+    =="{{name}}"
     small &nbsp; via <a href='{{app.url}}'>#{"{{app.name}}"}</a>
   h5 title='{{formatted.full_published_at}}' =="{{formatted.published_at}}"
   =="{{content.text}}"
