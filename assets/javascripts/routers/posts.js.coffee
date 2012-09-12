@@ -14,7 +14,5 @@ StatusPro.Routers.posts = new class PostsRouter extends StatusPro.Router
         { groups: StatusPro.Collections.groups, loaded: false }
       @fetchData 'followers', =>
         { followers: StatusPro.Collections.followers, loaded: false }
-      @fetchData 'followings', =>
-        { followings: StatusPro.Collections.followings, loaded: false }
 
   root: => @index(arguments...)

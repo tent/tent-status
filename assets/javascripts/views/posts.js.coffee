@@ -2,7 +2,7 @@ class StatusPro.Views.Posts extends StatusPro.View
   templateName: 'posts'
   partialNames: ['_post', '_new_post_form']
 
-  dependentRenderAttributes: ['posts', 'groups', 'followers', 'followings']
+  dependentRenderAttributes: ['posts', 'groups', 'followers']
 
   initialize: ->
     @container = StatusPro.Views.container
