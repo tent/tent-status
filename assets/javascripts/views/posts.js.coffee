@@ -12,7 +12,9 @@ class StatusPro.Views.Posts extends StatusPro.View
 
   context: =>
     groups: @groups.toJSON()
-    followers: @followers.toJSON()
+    followers: _.map(@followers.toArray(), (follower) -> _.extend follower.toJSON(), {
+      name: follower.name()
+    })
     posts: _.map(@sortedPosts(), (post) -> _.extend post.toJSON(), {
       name: post.name()
       avatar: post.avatar()
