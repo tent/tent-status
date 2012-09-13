@@ -2,18 +2,20 @@
   .span3 &nbsp;
   .well.span6 style='margin-left:0px'
     .clearfix
-      form data-view='NewPostForm' method='POST'
+      form.form-horizontal data-view='NewPostForm' method='POST'
         div
           .alert.alert-error &nbsp;
 
-          .span6 style='margin-left:0px'
-            select style='width:100%' multiple=true name='permissions' data-placeholder='Select permissions'
-              =="{{#follows}}"
-              option value='f:{{entity}}' =="{{name}}"
-              =="{{/follows}}"
-              =="{{#groups}}"
-              option value='g:{{id}}' =="{{name}}"
-              =="{{/groups}}"
+          .span6.permissions style='margin-left:0px'
+            label.control-label To:
+            .controls
+              select style='width:100%' multiple=true name='permissions' data-placeholder='Everyone'
+                =="{{#follows}}"
+                option value='f:{{entity}}' =="{{name}}"
+                =="{{/follows}}"
+                =="{{#groups}}"
+                option value='g:{{id}}' =="{{name}}"
+                =="{{/groups}}"
 
           textarea.span6 data-view='ExpandingTextArea' name='text' placeholder="What's on your mind?" rows='3'
           span.char-limit 140
