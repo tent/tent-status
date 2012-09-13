@@ -2,7 +2,7 @@ class StatusPro.Views.Posts extends StatusPro.View
   templateName: 'posts'
   partialNames: ['_post', '_new_post_form']
 
-  dependentRenderAttributes: ['posts', 'groups', 'followers', 'profile']
+  dependentRenderAttributes: ['posts', 'groups', 'followers', 'followings', 'profile']
 
   initialize: ->
     @container = StatusPro.Views.container
@@ -10,10 +10,15 @@ class StatusPro.Views.Posts extends StatusPro.View
 
   sortedPosts: => @posts.sortBy (post) -> -post.get('published_at')
 
+  uniqueFollowings: =>
+    @followings.filter (following) =>
+      !@followers.find (follower) =>
+        follower.get('entity') == following.get('entity')
+
   context: =>
     groups: @groups.toJSON()
-    followers: _.map(@followers.toArray(), (follower) -> _.extend follower.toJSON(), {
-      name: follower.name()
+    follows: _.map(@followers.toArray().concat(@uniqueFollowings()), (follow) -> _.extend follow.toJSON(), {
+      name: follow.name()
     })
     posts: _.map(@sortedPosts(), (post) -> _.extend post.toJSON(), {
       name: post.name()
