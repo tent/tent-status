@@ -1,0 +1,15 @@
+.row
+  .span2 &nbsp;
+  .span8
+    h1.page-header Followers
+    table.table.table-striped
+      thead
+        tr
+          th Name
+          th Entity
+          th Groups
+          th
+      tbody
+        =="{{#followers}}"
+        =="{{> _follower}}"
+        =="{{/followers}}"

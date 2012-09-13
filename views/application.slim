@@ -8,9 +8,16 @@ head
 body
   .navbar.navbar-static-top
     .navbar-inner
-      .brand StatusPro
+      .brand
+        a href=full_path('/') StatusPro
 
       - if current_user
+        ul.nav
+          li
+            a href=full_path('/followers') Followers
+          li
+            a href=full_path('/followings') Following
+
         ul.nav.pull-right
           li
             a href=full_path('/signout') Signout

@@ -130,13 +130,55 @@ class StatusPro < Sinatra::Base
     json res.body
   end
 
+  post '/api/groups' do
+    data = JSON.parse(env['rack.input'].read)
+    env['rack.input'].rewind
+
+    res = client.group.create(data)
+    json res.body
+  end
+
   get '/api/followers' do
     res = client.follower.list
     json res.body
   end
 
+  put '/api/followers/:id' do
+    data = JSON.parse(env['rack.input'].read)
+    env['rack.input'].rewind
+
+    res = client.follower.update(params[:id], data)
+    json res.body
+  end
+
+  delete '/api/followers/:id' do
+    res = client.follower.delete(params[:id])
+    json res.body
+  end
+
   get '/api/followings' do
     res = client.following.list
+    json res.body
+  end
+
+  post '/api/followings' do
+    data = JSON.parse(env['rack.input'].read)
+    env['rack.input'].rewind
+
+    res = client.following.create(data['entity'])
+    json res.body
+  end
+
+  put '/api/followings/:id' do
+    data = JSON.parse(env['rack.input'].read)
+    env['rack.input'].rewind
+
+    res = client.following.update(params[:id], data)
+    json res.body
+  end
+
+  delete '/api/followings/:id' do
+    res = client.following.delete(params[:id])
     json res.body
   end
 
@@ -182,7 +224,8 @@ class StatusPro < Sinatra::Base
         "write_followers" => "Manage your followers",
         "read_followings" => "List who you follow",
         "write_followings" => "Manage who you follow",
-        "read_groups" => "List groups",
+        "read_groups" => "Restrict posts by group",
+        "write_groups" => "Manage groups",
         "read_profile" => "Display your basic info"
       }
     }
