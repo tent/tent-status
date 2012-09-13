@@ -15,14 +15,23 @@ class StatusPro.Views.Posts extends StatusPro.View
       !@followers.find (follower) =>
         follower.get('entity') == following.get('entity')
 
+  licenseName: (url) =>
+    for l in @licenses || []
+      return l.name if l.url == url
+    url
+
   context: =>
+    @licenses = [{ url: "http://creativecommons.org/licenses/by-nc-sa/3.0/", name: "Creative Commons by-nc-sa 3.0" }]
+
     groups: @groups.toJSON()
     follows: _.map(@followers.toArray().concat(@uniqueFollowings()), (follow) -> _.extend follow.toJSON(), {
       name: follow.name()
     })
-    posts: _.map(@sortedPosts(), (post) -> _.extend post.toJSON(), {
+    licenses: @licenses
+    posts: _.map(@sortedPosts(), (post) => _.extend post.toJSON(), {
       name: post.name()
       avatar: post.avatar()
+      licenses: _.map post.get('licenses'), (url) => { name: @licenseName(url), url: url }
       formatted:
         published_at: StatusPro.Helpers.formatTime post.get('published_at')
         full_published_at: StatusPro.Helpers.rawTime post.get('published_at')
