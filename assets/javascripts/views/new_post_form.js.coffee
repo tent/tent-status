@@ -26,9 +26,7 @@ class StatusPro.Views.NewPostForm extends Backbone.View
     @$permissible_groups.chosen
       no_results_text: 'No matching groups'
     @$permissible_entities.chosen
-      create_option: true
       no_results_text: 'No matching entities'
-      create_option_text: 'Add permissible entity uri'
 
     # disable public checkbox when permissions are added
     @$permissible_groups.change @checkPublicEnabled
