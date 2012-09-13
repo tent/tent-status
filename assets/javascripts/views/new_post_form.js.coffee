@@ -37,6 +37,12 @@ class StatusPro.Views.NewPostForm extends Backbone.View
     @$mentionsSelect.chosen
       no_results_text: 'No matching entities'
 
+    ## licenses
+    @$licensesSelect = ($ 'select[name=licenses]', @$el)
+    @$licensesSelect.chosen
+      no_results_text: 'No matching licenses'
+
+
   checkPublicEnabled: =>
     if @$permissible_groups.val() == null and @$permissible_entities.val() == null
       @enablePublic()
@@ -98,6 +104,10 @@ class StatusPro.Views.NewPostForm extends Backbone.View
     data.mentions = mentions if mentions.length
     data
 
+  buildLicenses: (data) =>
+    data.licenses = _.flatten(Array data.licenses) if data.licenses
+    data
+
   buildDataObject: (serializedArray) =>
     data = {}
     for i in serializedArray
@@ -109,7 +119,7 @@ class StatusPro.Views.NewPostForm extends Backbone.View
       else
         data[i.name] = i.value
 
-    @buildMentions(@buildPermissions(data))
+    @buildLicenses(@buildMentions(@buildPermissions(data)))
 
   getData: =>
     @buildDataObject @$el.serializeArray()

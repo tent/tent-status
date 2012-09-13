@@ -30,4 +30,10 @@
             option value='{{id}}' =="{{name}}"
             =="{{/groups}}"
 
+        .span6 style='margin-left:0px'
+          select style='width:100%' multiple=true name='licenses' data-placeholder='Licenses'
+            =="{{#licenses}}"
+            option value='{{url}}' =="{{name}}"
+            =="{{/licenses}}"
+
         input.btn.btn-success.pull-right type='submit' value='Publish'

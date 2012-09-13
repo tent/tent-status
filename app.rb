@@ -115,7 +115,7 @@ class StatusPro < Sinatra::Base
     res = client.post.create(
       :published_at => Time.now.to_i,
       :type => "https://tent.io/types/post/status/v0.1.0",
-      :licenses => ["http://creativecommons.org/licenses/by-nc-sa/3.0/"],
+      :licenses => data['licenses'],
       :mentions => data['mentions'],
       :permissions => data['permissions'],
       :content => {
