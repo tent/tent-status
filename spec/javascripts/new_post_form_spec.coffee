@@ -16,17 +16,15 @@ describe 'NewPostForm', ->
         'somekey': ['val1', 'val2', 'val3'],
         permissions:
           public: false
-          groups: []
-          entities: {}
       })
 
     it 'should build permissions object', ->
       postForm = new StatusPro.Views.NewPostForm
       serializedArray = [
         { name: 'public', value: 'on' },
-        { name: 'permissible_groups', value: 'groupId1' },
-        { name: 'permissible_groups', value: 'groupId2' },
-        { name: 'permissible_entities', value: 'entity1' },
+        { name: 'permissions', value: 'g:groupId1' },
+        { name: 'permissions', value: 'g:groupId2' },
+        { name: 'permissions', value: 'f:entity1' },
       ]
 
       data = postForm.buildDataObject(serializedArray)

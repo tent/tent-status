@@ -21,16 +21,12 @@ class StatusPro.Views.NewPostForm extends Backbone.View
 
     ## permissions
     @$publicCheckbox = ($ '[name=public]', @$el)
-    @$permissible_groups = ($ 'select[name=permissible_groups]', @$el)
-    @$permissible_entities = ($ 'select[name=permissible_entities]', @$el)
-    @$permissible_groups.chosen
-      no_results_text: 'No matching groups'
-    @$permissible_entities.chosen
-      no_results_text: 'No matching entities'
+    @$permissions = ($ 'select[name=permissions]', @$el)
+    @$permissions.chosen
+      no_results_text: 'No matching entities or groups'
 
     # disable public checkbox when permissions are added
-    @$permissible_groups.change @checkPublicEnabled
-    @$permissible_entities.change @checkPublicEnabled
+    @$permissions.change @checkPublicEnabled
 
     ## mentions
     @$mentionsSelect = ($ 'select[name=mentions]', @$el)
@@ -44,7 +40,7 @@ class StatusPro.Views.NewPostForm extends Backbone.View
 
 
   checkPublicEnabled: =>
-    if @$permissible_groups.val() == null and @$permissible_entities.val() == null
+    if @$permissions.val() == null
       @enablePublic()
     else
       @disablePublic()
@@ -71,27 +67,26 @@ class StatusPro.Views.NewPostForm extends Backbone.View
 
   buildPermissions: (data) =>
     _public = if data['public'] == 'on' then true else false
-    _groups = _.inject _.flatten(Array data.permissible_groups), ((memo, groupId) ->
-      return memo unless groupId
-      memo.push { id: groupId }
-      memo
-    ), []
-    _entities = _.inject _.flatten(Array data.permissible_entities), ((memo, entity) ->
-      return memo unless entity
-      memo[entity] = true
-      memo
-    ), {}
+    permissions = {
+      public: _public
+    }
+
+    _groups = _.each _.flatten(Array data.permissions), (entityOrGroupId) ->
+      return unless entityOrGroupId
+      [type, value] = [entityOrGroupId.slice(0,2), entityOrGroupId.slice(2, entityOrGroupId.length)]
+      switch type
+        when 'g:'
+          permissions.groups ||= []
+          permissions.groups.push { id: value }
+        when 'f:'
+          permissions.entities ||= {}
+          permissions.entities[value] = true
 
     delete data['public']
     delete data.permissible_groups
     delete data.permissible_entities
 
-    data.permissions = {
-      public: _public,
-      groups: _groups,
-      entities: _entities
-    }
-
+    data.permissions = permissions
     data
 
   buildMentions: (data) =>
