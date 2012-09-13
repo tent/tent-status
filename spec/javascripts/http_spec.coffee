@@ -20,3 +20,17 @@ describe 'HTTP', ->
 
       expect(callback.calledOnce).toEqual(true)
       sinon.assert.calledWith(callback, obj)
+
+  describe 'post', ->
+    it 'should POST uri with data and csrf token, and pass response to callback', ->
+      window.StatusPro = {csrf_token: 'csrf-token'}
+      data = { foo: 'bar' }
+      @server.respondWith "POST", "/bar/baz",
+        [200, { 'Content-Type': 'application/json' }, JSON.stringify(data)]
+
+      callback = sinon.spy()
+      HTTP.post('/bar/baz', data, callback)
+      @server.respond()
+
+      expect(callback.calledOnce).toEqual(true)
+      expect(callback.args[0][0]).toEqual(data)
