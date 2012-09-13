@@ -21,7 +21,7 @@
       type:         type,
       dataType:     'json',
       beforeSend: ( xhr ) ->
-        token = $('meta[name="csrf-token"]').attr('content')
+        token = StatusPro.csrf_token
         xhr.setRequestHeader('X-CSRF-Token', token) if token
 
         model.trigger('sync:start')

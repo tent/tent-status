@@ -22,6 +22,7 @@ _.extend @StatusPro, Backbone.Events, {
   Collections: {}
   Routers: {}
   Helpers: {}
+  csrf_token: $('meta[name="csrf-token"]').attr('content')
 
   devWarning: (fn, msg) ->
     console.warn "<#{fn.constructor.name}> #{msg}"
