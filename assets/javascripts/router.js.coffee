@@ -31,13 +31,18 @@ class StatusPro.Router extends Backbone.Router
   fetchData: (dataKey, dataFn) =>
     actionName = @currentActionName
 
+    if dataFn.length == 0
+      @_fetchData(dataKey, dataFn(), actionName)
+    else
+      dataFn (res) => @_fetchData(dataKey, res, actionName)
+
+  _fetchData: (dataKey, res, actionName) =>
     loaded = =>
       @view?.set dataKey, res[dataKey]
 
       # yield for other fetchData calls to start
       setTimeout (=> @fetchSuccess actionName), 0
 
-    res = dataFn()
     if res.loaded is true
       @fetchStart actionName
       loaded()

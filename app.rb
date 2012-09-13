@@ -91,7 +91,7 @@ class StatusPro < Sinatra::Base
   end
 
   get '/api/posts' do
-    res = client.post.list(
+    res = client.post.list params.merge(
       :types => "https://tent.io/types/post/status/v0.1.0"
     )
 
