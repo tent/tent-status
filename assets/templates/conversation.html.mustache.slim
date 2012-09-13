@@ -1,0 +1,14 @@
+.row
+  .span3 &nbsp;
+  .span6
+    ul.unstyled
+      =="{{#post}}"
+      li.post
+        .well =="{{> _post}}"
+      =="{{/post}}"
+      =="{{#posts}}"
+      li.post
+        .span1 &nbsp;
+        .span5
+          =="{{> _post}}"
+      =="{{/posts}}"

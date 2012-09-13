@@ -1,4 +1,4 @@
-.row
+.clearfix
   h4
     =="{{#avatar}}"
     img.img-rounded src='{{avatar}}' style='height:50px;width:50px;margin-right:4px;'
@@ -14,3 +14,9 @@
     =="{{#permissions.public}}"
     span.label.label-success Public
     =="{{/permissions.public}}"
+  .clearfix.navigation
+    ul.nav.nav-pills
+      li.view
+        a href='/posts/{{escaped.entity}}/{{id}}' View
+      li
+        a href='' Reply

@@ -32,6 +32,8 @@ class StatusPro.Views.Posts extends StatusPro.View
       name: post.name()
       avatar: post.avatar()
       licenses: _.map post.get('licenses'), (url) => { name: @licenseName(url), url: url }
+      escaped:
+        entity: encodeURIComponent(post.get('entity'))
       formatted:
         published_at: StatusPro.Helpers.formatTime post.get('published_at')
         full_published_at: StatusPro.Helpers.rawTime post.get('published_at')
