@@ -1,0 +1,18 @@
+.row
+  .span1 &nbsp;
+  .span10
+    h1.page-header Following
+    form data-view='NewFollowingForm' method='POST'
+      input.span8 type='text' name='entity' placeholder='Entity URI'
+      input.btn.btn-success.pull-right type='submit' value='Follow'
+    table.table.table-striped
+      thead
+        tr
+          th Name
+          th Entity
+          th Groups
+          th
+      tbody
+        =="{{#followings}}"
+        =="{{> _following}}"
+        =="{{/followings}}"

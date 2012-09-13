@@ -3,6 +3,10 @@ class StatusPro.Models.Follower extends Backbone.Model
   url: => "#{StatusPro.api_root}/followers#{ if @id then "/#{@id}" else ''}"
 
   initialize: ->
+    @on 'sync', @updateProfile
+    @updateProfile()
+
+  updateProfile: =>
     profile = @get('profile')
     core_profile = {}
     basic_profile = {}
