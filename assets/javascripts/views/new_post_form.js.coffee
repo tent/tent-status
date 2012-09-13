@@ -1,7 +1,6 @@
 class StatusPro.Views.NewPostForm extends Backbone.View
   initialize: (options = {}) ->
     @parentView = options.parentView
-    window.form = @
 
     @action = "#{StatusPro.api_root}/posts"
 
