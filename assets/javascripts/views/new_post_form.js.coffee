@@ -89,12 +89,13 @@ class StatusPro.Views.NewPostForm extends Backbone.View
     data
 
   buildMentions: (data) =>
-    mentions = _.inject _.flatten(Array data.mentions), ((memo, entity) ->
+    mentions = _.compact (_.map _.flatten(Array data.mentions), (entity) ->
+      return unless entity
       { entity: entity }
-    ), {}
+    )
     delete data.mentions
 
-    data.mentions = mentions
+    data.mentions = mentions if mentions.length
     data
 
   buildDataObject: (serializedArray) =>
