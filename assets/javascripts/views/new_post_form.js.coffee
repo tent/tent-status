@@ -32,6 +32,11 @@ class StatusPro.Views.NewPostForm extends Backbone.View
     @$permissible_groups.change @checkPublicEnabled
     @$permissible_entities.change @checkPublicEnabled
 
+    ## mentions
+    @$mentionsSelect = ($ 'select[name=mentions]', @$el)
+    @$mentionsSelect.chosen
+      no_results_text: 'No matching entities'
+
   checkPublicEnabled: =>
     if @$permissible_groups.val() == null and @$permissible_entities.val() == null
       @enablePublic()
@@ -83,6 +88,15 @@ class StatusPro.Views.NewPostForm extends Backbone.View
 
     data
 
+  buildMentions: (data) =>
+    mentions = _.inject _.flatten(Array data.mentions), ((memo, entity) ->
+      { entity: entity }
+    ), {}
+    delete data.mentions
+
+    data.mentions = mentions
+    data
+
   buildDataObject: (serializedArray) =>
     data = {}
     for i in serializedArray
@@ -94,7 +108,7 @@ class StatusPro.Views.NewPostForm extends Backbone.View
       else
         data[i.name] = i.value
 
-    @buildPermissions(data)
+    @buildMentions(@buildPermissions(data))
 
   getData: =>
     @buildDataObject @$el.serializeArray()

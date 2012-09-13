@@ -116,6 +116,7 @@ class StatusPro < Sinatra::Base
       :published_at => Time.now.to_i,
       :type => "https://tent.io/types/post/status/v0.1.0",
       :licenses => ["http://creativecommons.org/licenses/by-nc-sa/3.0/"],
+      :mentions => data['mentions'],
       :permissions => data['permissions'],
       :content => {
         :text => data['text'].to_s.slice(0...140)
