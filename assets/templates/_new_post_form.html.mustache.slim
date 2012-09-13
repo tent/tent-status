@@ -12,6 +12,12 @@
             input name='public' type='checkbox' checked=true Public
 
         div &nbsp;
+        .span6 style='margin-left:0px'
+          select style='width:100%' multiple=true name='mentions' data-placeholder='Mention entities'
+            =="{{#follows}}"
+            option value='{{entity}}' =="{{name}}"
+            =="{{/follows}}"
+
         .span3 style='margin-left:0px'
           select style='width:100%' multiple=true name='permissible_entities' data-placeholder='Select permissible entities'
             =="{{#follows}}"
