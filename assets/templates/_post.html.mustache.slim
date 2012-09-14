@@ -5,7 +5,11 @@
     =="{{/avatar}}"
     =="{{name}}"
     small &nbsp; via <a href='{{app.url}}'>#{"{{app.name}}"}</a>
-  h5 title='{{formatted.full_published_at}}' =="{{formatted.published_at}}"
+  h5 title='{{formatted.full_published_at}}'
+    =="{{formatted.published_at}}"
+    | {{#inReplyTo}}
+    small.pull-right in reply to <a href='{{url}}'>{{name}}</a>
+    | {{/inReplyTo}}
   =="{{content.text}}"
   .pull-right
     =="{{#licenses}}"
@@ -17,7 +21,7 @@
   .clearfix.navigation
     ul.nav.nav-pills
       li.view
-        a href='/posts/{{escaped.entity}}/{{id}}' View
+        a href='{{url}}' View
       | {{#shouldShowReply}}
       li.reply
         a href='#' Reply

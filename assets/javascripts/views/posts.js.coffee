@@ -22,6 +22,14 @@ class StatusPro.Views.Posts extends StatusPro.View
       return l.name if l.url == url
     url
 
+  replyToPost: (post) =>
+    return unless post.get('mentions')?.length
+    for mention in post.get('mentions')
+      if mention.entity and mention.post
+        mention.url = "#{StatusPro.url_root}posts/#{encodeURIComponent(mention.entity)}/#{mention.post}"
+        return mention
+    null
+
   context: =>
     @licenses = [{ url: "http://creativecommons.org/licenses/by-nc-sa/3.0/", name: "Creative Commons by-nc-sa 3.0" }]
 
@@ -32,6 +40,8 @@ class StatusPro.Views.Posts extends StatusPro.View
     licenses: @licenses
     posts: _.map(@sortedPosts(), (post) => _.extend post.toJSON(), {
       shouldShowReply: true
+      inReplyTo: @replyToPost(post)
+      url: "#{StatusPro.url_root}/#{encodeURIComponent(post.get('entity'))}/#{post.get('id')}"
       name: post.name()
       avatar: post.avatar()
       licenses: _.map post.get('licenses'), (url) => { name: @licenseName(url), url: url }
