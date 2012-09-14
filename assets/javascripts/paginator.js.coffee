@@ -1,32 +1,16 @@
 class StatusApp.Paginator
-  page: 1
-  limit: 20
+  sinceId: null
+  limit: StatusApp.PER_PAGE || 50
   onLastPage: false
   isPaginator: true
 
-  offset: => (@page - 1) * @limit
-
-  constructor: (@collection) ->
+  constructor: (@collection, @options = {}) ->
+    @url = @options.url if @options.url
     @url ||= @collection.url?()
     @url ||= @collection.url
 
-  refresh: =>
-    cache = @toArray()
-    _page = @page
-    _limit = @limit
-    @page = 1
-    @limit = _page * _limit
-
-    @fetch
-      add: false
-      success: =>
-        @page = _page
-        @limit = _limit
-
-        @trigger 'fetch:success'
-
   fetch: (options = {}) =>
-    offset = @offset()
+    sinceId = @sinceId
     limit = @limit
 
     @trigger 'fetch:start'
@@ -35,11 +19,13 @@ class StatusApp.Paginator
     expectedCount = loadedCount + limit
 
     _options = {
-      url: @urlForOffsetAndLimit(offset, limit)
+      url: @urlForOffsetAndLimit(sinceId, limit)
       add: true
-      success: =>
+      success: (items) =>
         if (loadedCount == @collection.length) or (@collection.length < expectedCount)
           @onLastPage = true
+        @sinceId = items.last().get('id')
+        @options.success?()
         @trigger 'fetch:success'
       error: =>
         @page = @oldPage
@@ -49,9 +35,9 @@ class StatusApp.Paginator
 
     @collection.fetch(options)
 
-  urlForOffsetAndLimit: (offset, limit) =>
+  urlForOffsetAndLimit: (sinceId, limit) =>
     separator = if @url.indexOf("?") != -1 then "&" else "?"
-    @url + separator + @serializeParams(@paramsForOffsetAndLimit offset, limit)
+    @url + separator + @serializeParams(@paramsForOffsetAndLimit sinceId, limit)
 
   serializeParams: (params = {}) =>
     res = []
@@ -60,17 +46,21 @@ class StatusApp.Paginator
       res.push "#{k}=#{v}"
     res.join("&")
 
-  paramsForOffsetAndLimit: (offset, limit) =>
-    offset: offset
-    limit: limit
+  paramsForOffsetAndLimit: (sinceId, limit) =>
+    params = { limit: limit }
+    params.before_id = sinceId if sinceId
+    params
 
   nextPage: =>
-    @oldPage = @page
-    ++@page
     @fetch()
 
   toJSON: => @collection.toJSON()
   toArray: => @collection.toArray()
   find: => @collection.find(arguments...)
+  filter: => @collection.filter(arguments...)
+  sortBy: => @collection.sortBy(arguments...)
+  get: => @collection.get(arguments...)
+  unshift: => @collection.unshift(arguments...)
+  first: => @collection.first(arguments...)
 
-_
+_.extend StatusApp.Paginator::, Backbone.Events

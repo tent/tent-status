@@ -8,6 +8,6 @@ StatusApp.Routers.followers = new class Followers extends StatusApp.Router
     @view = new StatusApp.Views.Followers
     @setCurrentAction 'index', =>
       @fetchData 'followers', =>
-        { followers: StatusApp.Collections.followers, loaded: false }
+        { followers: new StatusApp.Paginator( StatusApp.Collections.followers ), loaded: false }
       @fetchData 'groups', =>
-        { groups: StatusApp.Collections.groups, loaded: false }
+        { groups: new StatusApp.Paginator( StatusApp.Collections.groups ), loaded: false }
