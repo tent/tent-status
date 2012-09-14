@@ -7,6 +7,7 @@
 #= require moment
 #= require chosen.jquery
 #= require_self
+#= require ./paginator
 #= require ./view
 #= require ./router
 #= require_tree ./helpers
@@ -15,7 +16,10 @@
 #= require_tree ./models
 #= require_tree ./collections
 
-@StatusApp ?= {}
+@StatusApp ?= {
+  api_root: '/api'
+  url_root: '/'
+}
 _.extend @StatusApp, Backbone.Events, {
   Views: {}
   Models: {}
@@ -42,7 +46,7 @@ _.extend @StatusApp, Backbone.Events, {
   ## Run Backbone
   backboneConfig: {
     pushState: true
-    root: StatusApp.url_root || '/'
+    root: StatusApp.url_root
   }
   run: ->
     Backbone.history?.start @backboneConfig
