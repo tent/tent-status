@@ -20,7 +20,7 @@ class StatusApp < Sinatra::Base
     DataMapper.auto_upgrade!
   end
 
- use Rack::Session::Pool, :expire_after => 2592000, :key => 'tent-statuspro.session'
+ use Rack::Session::Pool, :expire_after => 2592000, :key => 'tent-statusapp.session'
  use Rack::Csrf
 
   # List of paths/regexes not to require auth for
