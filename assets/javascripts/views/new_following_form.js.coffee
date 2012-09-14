@@ -1,4 +1,4 @@
-class StatusPro.Views.NewFollowingForm extends Backbone.View
+class StatusApp.Views.NewFollowingForm extends Backbone.View
   initialize: (options = {}) ->
     @parentView = options.parentView
 
@@ -7,9 +7,9 @@ class StatusPro.Views.NewFollowingForm extends Backbone.View
   submit: (e) =>
     e.preventDefault()
     entity = ($ '[name=entity]', @$el).val()
-    following = new StatusPro.Models.Following { entity: entity }
+    following = new StatusApp.Models.Following { entity: entity }
     following.once 'sync', =>
-      StatusPro.Collections.followings.unshift(following)
+      StatusApp.Collections.followings.unshift(following)
       @parentView.render()
     following.save()
     false

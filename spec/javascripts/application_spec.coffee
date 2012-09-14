@@ -1,7 +1,7 @@
 require '/spec_helper.js'
 require '/application.js'
 
-describe 'StatusPro', ->
+describe 'StatusApp', ->
   beforeEach ->
     @server = sinon.fakeServer.create()
 
@@ -18,7 +18,7 @@ describe 'StatusPro', ->
         [200, { 'Content-Type': 'text/plain' }, @templates.hello]
 
       callback = sinon.spy()
-      StatusPro.fetchTemplate 'hello', callback
+      StatusApp.fetchTemplate 'hello', callback
       @server.respond()
 
       expect(callback.calledOnce).toEqual(true)
@@ -27,7 +27,7 @@ describe 'StatusPro', ->
 
       # it should cache templates
       callback = sinon.spy()
-      StatusPro.fetchTemplate 'hello', callback
+      StatusApp.fetchTemplate 'hello', callback
       expect(callback.calledOnce).toEqual(true)
       expect(callback.getCall(0).args[0]).toEqual(Hogan.compile(@templates.hello))
       expect(callback.getCall(0).args[0].render({ world: 'World' })).toEqual('Hello World')

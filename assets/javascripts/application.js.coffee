@@ -15,8 +15,8 @@
 #= require_tree ./models
 #= require_tree ./collections
 
-@StatusPro ?= {}
-_.extend @StatusPro, Backbone.Events, {
+@StatusApp ?= {}
+_.extend @StatusApp, Backbone.Events, {
   Views: {}
   Models: {}
   Collections: {}
@@ -42,7 +42,7 @@ _.extend @StatusPro, Backbone.Events, {
   ## Run Backbone
   backboneConfig: {
     pushState: true
-    root: StatusPro.url_root || '/'
+    root: StatusApp.url_root || '/'
   }
   run: ->
     Backbone.history?.start @backboneConfig

@@ -1,4 +1,4 @@
-class StatusPro.Views.Post extends Backbone.View
+class StatusApp.Views.Post extends Backbone.View
   initialize: (options = {}) ->
     @parentView = options.parentView
 

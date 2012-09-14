@@ -1,6 +1,6 @@
 class Profile extends Backbone.Model
   model: 'profile'
-  url: => "#{StatusPro.api_root}/profile"
+  url: => "#{StatusApp.api_root}/profile"
 
   core_profile: =>
     @get('https://tent.io/types/info/core/v0.1.0')
@@ -17,4 +17,4 @@ class Profile extends Backbone.Model
   avatar: =>
     @basic_profile()?['avatar_url']
 
-StatusPro.Models.profile = new Profile
+StatusApp.Models.profile = new Profile

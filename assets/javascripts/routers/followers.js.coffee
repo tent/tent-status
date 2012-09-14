@@ -1,13 +1,13 @@
-StatusPro.Routers.followers = new class Followers extends StatusPro.Router
+StatusApp.Routers.followers = new class Followers extends StatusApp.Router
   routerKey: 'followers'
 
   routes:
     "followers" : "index"
 
   index: =>
-    @view = new StatusPro.Views.Followers
+    @view = new StatusApp.Views.Followers
     @setCurrentAction 'index', =>
       @fetchData 'followers', =>
-        { followers: StatusPro.Collections.followers, loaded: false }
+        { followers: StatusApp.Collections.followers, loaded: false }
       @fetchData 'groups', =>
-        { groups: StatusPro.Collections.groups, loaded: false }
+        { groups: StatusApp.Collections.groups, loaded: false }

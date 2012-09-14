@@ -1,4 +1,4 @@
-_.extend StatusPro.Helpers,
+_.extend StatusApp.Helpers,
   formatTime: (time_or_int) ->
     now = moment()
     time = moment.unix(time_or_int)

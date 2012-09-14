@@ -1,11 +1,11 @@
-class StatusPro.Views.Followers extends StatusPro.View
+class StatusApp.Views.Followers extends StatusApp.View
   templateName: 'followers'
   partialNames: ['_follower']
 
   dependentRenderAttributes: ['followers', 'groups']
 
   initialize: ->
-    @container = StatusPro.Views.container
+    @container = StatusApp.Views.container
     super
 
   context: =>

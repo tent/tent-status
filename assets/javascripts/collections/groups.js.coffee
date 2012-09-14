@@ -1,5 +1,5 @@
-class StatusPro.Collections.Groups extends Backbone.Collection
-  model: StatusPro.Models.Group
-  url: "#{StatusPro.api_root}/groups"
+class StatusApp.Collections.Groups extends Backbone.Collection
+  model: StatusApp.Models.Group
+  url: "#{StatusApp.api_root}/groups"
 
-StatusPro.Collections.groups = new StatusPro.Collections.Groups
+StatusApp.Collections.groups = new StatusApp.Collections.Groups

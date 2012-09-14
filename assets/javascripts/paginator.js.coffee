@@ -1,4 +1,4 @@
-class StatusPro.Paginator
+class StatusApp.Paginator
   page: 1
   limit: 20
   onLastPage: false

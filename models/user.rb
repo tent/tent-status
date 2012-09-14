@@ -1,6 +1,6 @@
 require 'hashie'
 
-class StatusPro
+class StatusApp
   class User
     include DataMapper::Resource
 

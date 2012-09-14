@@ -4,5 +4,5 @@ Bundler.require
 require './app'
 
 map '/' do
-  run StatusPro.new
+  run StatusApp.new
 end

@@ -9,7 +9,7 @@ body
   .navbar.navbar-static-top
     .navbar-inner
       .brand
-        a href=full_path('/') StatusPro
+        a href=full_path('/') StatusApp
 
       - if current_user
         ul.nav
@@ -30,7 +30,7 @@ body
     == yield if block_given?
 
   javascript:
-    var StatusPro = {
+    var StatusApp = {
       api_root: "#{{full_path('/api')}}",
       url_root: "#{{full_path('/')}}"
     }

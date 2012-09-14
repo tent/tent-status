@@ -1,8 +1,8 @@
-class StatusPro.Views.NewPostForm extends Backbone.View
+class StatusApp.Views.NewPostForm extends Backbone.View
   initialize: (options = {}) ->
     @parentView = options.parentView
 
-    @action = "#{StatusPro.api_root}/posts"
+    @action = "#{StatusApp.api_root}/posts"
 
     @$errors = ($ '.alert-error', @$el).first().hide()
 
@@ -64,10 +64,10 @@ class StatusPro.Views.NewPostForm extends Backbone.View
     data = @getData()
     return false unless @validate data
 
-    post = new StatusPro.Models.Post data
+    post = new StatusApp.Models.Post data
     post.once 'sync', =>
-      StatusPro.Collections.posts.push(post)
-      @parentView.set('posts', StatusPro.Collections.posts)
+      StatusApp.Collections.posts.push(post)
+      @parentView.set('posts', StatusApp.Collections.posts)
       @parentView.render()
     post.save()
     false
@@ -127,7 +127,7 @@ class StatusPro.Views.NewPostForm extends Backbone.View
     @buildDataObject @$el.serializeArray()
 
   validate: (data = @getData()) =>
-    post = new StatusPro.Models.Post data
+    post = new StatusApp.Models.Post data
     errors = post.validate(data)
     @$el.find(".error").removeClass('error')
     @$errors.hide()
