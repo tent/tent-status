@@ -1,4 +1,4 @@
-class StatusPro.Views.ReplyPostForm extends StatusPro.Views.NewPostForm
+class StatusApp.Views.ReplyPostForm extends StatusApp.Views.NewPostForm
   initialize: (options = {}) ->
     super
 
@@ -11,7 +11,7 @@ class StatusPro.Views.ReplyPostForm extends StatusPro.Views.NewPostForm
     data = @getData()
     return false unless @validate data
 
-    post = new StatusPro.Models.Post data
+    post = new StatusApp.Models.Post data
     post.once 'sync', =>
       @parentView.posts.push(post)
       @parentView.render()

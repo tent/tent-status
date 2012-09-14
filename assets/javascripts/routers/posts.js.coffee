@@ -1,4 +1,4 @@
-StatusPro.Routers.posts = new class PostsRouter extends StatusPro.Router
+StatusApp.Routers.posts = new class PostsRouter extends StatusApp.Router
   routerKey: 'posts'
 
   routes:
@@ -7,27 +7,27 @@ StatusPro.Routers.posts = new class PostsRouter extends StatusPro.Router
     "posts/:entity/:post_id" : "conversation"
 
   index: =>
-    @view = new StatusPro.Views.Posts
+    @view = new StatusApp.Views.Posts
     @setCurrentAction 'index', =>
       @fetchData 'posts', =>
-        { posts: StatusPro.Collections.posts, loaded: false }
+        { posts: StatusApp.Collections.posts, loaded: false }
       @fetchData 'groups', =>
-        { groups: StatusPro.Collections.groups, loaded: false }
+        { groups: StatusApp.Collections.groups, loaded: false }
       @fetchData 'followers', =>
-        { followers: StatusPro.Collections.followers, loaded: false }
+        { followers: StatusApp.Collections.followers, loaded: false }
       @fetchData 'followings', =>
-        { followings: StatusPro.Collections.followings, loaded: false }
+        { followings: StatusApp.Collections.followings, loaded: false }
       @fetchData 'profile', =>
-        { profile: StatusPro.Models.profile, loaded: false }
+        { profile: StatusApp.Models.profile, loaded: false }
 
   root: => @index(arguments...)
 
   conversation: (entity, post_id) =>
-    @view = new StatusPro.Views.Conversation
+    @view = new StatusApp.Views.Conversation
     @setCurrentAction 'conversation', =>
       @fetchData 'posts', (callback) =>
-        _posts = new StatusPro.Collections.Posts
-        _post = new StatusPro.Models.Post { id: post_id }
+        _posts = new StatusApp.Collections.Posts
+        _post = new StatusApp.Models.Post { id: post_id }
 
         _n_loaded = 0
         _loaded = =>
@@ -44,10 +44,10 @@ StatusPro.Routers.posts = new class PostsRouter extends StatusPro.Router
         _post.fetch { success: _loaded }
 
       @fetchData 'groups', =>
-        { groups: StatusPro.Collections.groups, loaded: false }
+        { groups: StatusApp.Collections.groups, loaded: false }
       @fetchData 'followers', =>
-        { followers: StatusPro.Collections.followers, loaded: false }
+        { followers: StatusApp.Collections.followers, loaded: false }
       @fetchData 'followings', =>
-        { followings: StatusPro.Collections.followings, loaded: false }
+        { followings: StatusApp.Collections.followings, loaded: false }
       @fetchData 'profile', =>
-        { profile: StatusPro.Models.profile, loaded: false }
+        { profile: StatusApp.Models.profile, loaded: false }

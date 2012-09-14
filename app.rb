@@ -5,7 +5,7 @@ require 'rack/csrf'
 require 'hashie'
 require 'uri'
 
-class StatusPro < Sinatra::Base
+class StatusApp < Sinatra::Base
   require './models/user'
 
   configure :development do |config|
@@ -212,7 +212,7 @@ class StatusPro < Sinatra::Base
     user = User.find_or_create(:entity => params[:entity], :profile => profile, :server_uri => server_url)
 
     data = {
-      :name => 'Status Pro',
+      :name => 'Status App',
       :description => 'Manage your status posts',
       :icon => full_url('/assets/icon.png'),
       :url => full_url('/'),

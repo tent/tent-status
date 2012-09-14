@@ -1,3 +1,3 @@
 #= require ./application
 
-StatusPro.run()
+StatusApp.run()

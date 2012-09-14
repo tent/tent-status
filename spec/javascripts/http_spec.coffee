@@ -23,7 +23,7 @@ describe 'HTTP', ->
 
   describe 'post', ->
     it 'should POST uri with data and csrf token, and pass response to callback', ->
-      window.StatusPro = {csrf_token: 'csrf-token'}
+      window.StatusApp = {csrf_token: 'csrf-token'}
       data = { foo: 'bar' }
       @server.respondWith "POST", "/bar/baz",
         [200, { 'Content-Type': 'application/json' }, JSON.stringify(data)]

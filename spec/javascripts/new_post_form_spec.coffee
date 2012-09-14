@@ -4,7 +4,7 @@ require '/application.js'
 describe 'NewPostForm', ->
   describe 'buildDataObject', ->
     it 'should merge multiple values for name into array', ->
-      postForm = new StatusPro.Views.NewPostForm
+      postForm = new StatusApp.Views.NewPostForm
       serializedArray = [
         { name: 'somekey', value: 'val1' },
         { name: 'somekey', value: 'val2' },
@@ -19,7 +19,7 @@ describe 'NewPostForm', ->
       })
 
     it 'should build permissions object', ->
-      postForm = new StatusPro.Views.NewPostForm
+      postForm = new StatusApp.Views.NewPostForm
       serializedArray = [
         { name: 'public', value: 'on' },
         { name: 'permissions', value: 'g:groupId1' },

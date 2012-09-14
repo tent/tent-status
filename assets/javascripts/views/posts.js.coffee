@@ -1,11 +1,11 @@
-class StatusPro.Views.Posts extends StatusPro.View
+class StatusApp.Views.Posts extends StatusApp.View
   templateName: 'posts'
   partialNames: ['_post', '_new_post_form', '_reply_form']
 
   dependentRenderAttributes: ['posts', 'groups', 'followers', 'followings', 'profile']
 
   initialize: ->
-    @container = StatusPro.Views.container
+    @container = StatusApp.Views.container
     super
 
     @on 'ready', @initPostViews
@@ -26,7 +26,7 @@ class StatusPro.Views.Posts extends StatusPro.View
     return unless post.get('mentions')?.length
     for mention in post.get('mentions')
       if mention.entity and mention.post
-        mention.url = "#{StatusPro.url_root}posts/#{encodeURIComponent(mention.entity)}/#{mention.post}"
+        mention.url = "#{StatusApp.url_root}posts/#{encodeURIComponent(mention.entity)}/#{mention.post}"
         return mention
     null
 
@@ -41,18 +41,18 @@ class StatusPro.Views.Posts extends StatusPro.View
     posts: _.map(@sortedPosts(), (post) => _.extend post.toJSON(), {
       shouldShowReply: true
       inReplyTo: @replyToPost(post)
-      url: "#{StatusPro.url_root}/#{encodeURIComponent(post.get('entity'))}/#{post.get('id')}"
+      url: "#{StatusApp.url_root}/#{encodeURIComponent(post.get('entity'))}/#{post.get('id')}"
       name: post.name()
       avatar: post.avatar()
       licenses: _.map post.get('licenses'), (url) => { name: @licenseName(url), url: url }
       escaped:
         entity: encodeURIComponent(post.get('entity'))
       formatted:
-        published_at: StatusPro.Helpers.formatTime post.get('published_at')
-        full_published_at: StatusPro.Helpers.rawTime post.get('published_at')
+        published_at: StatusApp.Helpers.formatTime post.get('published_at')
+        full_published_at: StatusApp.Helpers.rawTime post.get('published_at')
     })
 
   initPostViews: =>
     _.each ($ 'li.post'), (el) =>
-      new StatusPro.Views.Post el: el, parentView: @
+      new StatusApp.Views.Post el: el, parentView: @
 

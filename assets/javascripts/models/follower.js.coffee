@@ -1,6 +1,6 @@
-class StatusPro.Models.Follower extends Backbone.Model
+class StatusApp.Models.Follower extends Backbone.Model
   model: 'follower'
-  url: => "#{StatusPro.api_root}/followers#{ if @id then "/#{@id}" else ''}"
+  url: => "#{StatusApp.api_root}/followers#{ if @id then "/#{@id}" else ''}"
 
   initialize: ->
     @on 'sync', @updateProfile

@@ -1,9 +1,9 @@
-class StatusPro.Views.FollowingGroupsForm extends Backbone.View
+class StatusApp.Views.FollowingGroupsForm extends Backbone.View
   initialize: (options = {}) ->
     @parentView = options.parentView
 
     followingId = @$el.attr 'data-following-id'
-    @following = StatusPro.Collections.followings.get(followingId)
+    @following = StatusApp.Collections.followings.get(followingId)
 
     @$groupsSelect = ($ 'select[name=groups]', @$el)
     @$groupsSelect.chosen
@@ -11,9 +11,9 @@ class StatusPro.Views.FollowingGroupsForm extends Backbone.View
       no_results_text: 'No groups match'
       create_option_text: 'Create new group'
       create_option: (name) =>
-        group = new StatusPro.Models.Group({ name: name })
+        group = new StatusApp.Models.Group({ name: name })
         group.once 'sync', =>
-          StatusPro.Collections.groups.push(group)
+          StatusApp.Collections.groups.push(group)
           @following.set 'groups', (@following.get('groups') || []).concat([group.get('id')])
           @following.save()
           @parentView.render()

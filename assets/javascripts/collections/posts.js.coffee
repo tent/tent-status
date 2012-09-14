@@ -1,5 +1,5 @@
-class StatusPro.Collections.Posts extends Backbone.Collection
-  model: StatusPro.Models.Post
-  url: "#{StatusPro.api_root}/posts"
+class StatusApp.Collections.Posts extends Backbone.Collection
+  model: StatusApp.Models.Post
+  url: "#{StatusApp.api_root}/posts"
 
-StatusPro.Collections.posts = new StatusPro.Collections.Posts
+StatusApp.Collections.posts = new StatusApp.Collections.Posts

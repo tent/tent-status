@@ -1,4 +1,4 @@
-class StatusPro.Views.Conversation extends StatusPro.Views.Posts
+class StatusApp.Views.Conversation extends StatusApp.Views.Posts
   templateName: 'conversation'
 
   context: =>

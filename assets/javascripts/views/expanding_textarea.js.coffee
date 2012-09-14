@@ -1,4 +1,4 @@
-class StatusPro.Views.ExpandingTextArea extends Backbone.View
+class StatusApp.Views.ExpandingTextArea extends Backbone.View
   initialize: ->
     @$el.on 'keyup', @adjustSize
 

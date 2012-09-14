@@ -1,12 +1,12 @@
-# All routers should extend StatusPro.Router
+# All routers should extend StatusApp.Router
 # Any abstractions should go in here
-class StatusPro.Router extends Backbone.Router
+class StatusApp.Router extends Backbone.Router
   keyForAction: (actionName) =>
     "#{@routerKey}:#{actionName}"
 
   setCurrentAction: (actionName, actionFn) =>
-    if StatusPro.freezeRouter
-      StatusPro.on 'router:unfreeze', (shouldPlay) => @setCurrentAction(actionName, actionFn) if shouldPlay
+    if StatusApp.freezeRouter
+      StatusApp.on 'router:unfreeze', (shouldPlay) => @setCurrentAction(actionName, actionFn) if shouldPlay
 
     key = @keyForAction(actionName)
 
@@ -19,14 +19,14 @@ class StatusPro.Router extends Backbone.Router
 
     window.scrollTo window.scrollX, 0
 
-    StatusPro.setPageTitle? key
-    StatusPro.setCurrentRoute? @, actionName
+    StatusApp.setPageTitle? key
+    StatusApp.setCurrentRoute? @, actionName
 
     actionFn()
 
   isCurrentAction: (actionName) =>
     return true # currentRoute not currently setup, TODO set this up
-    StatusPro.currentRoute?.key == @keyForAction(actionName)
+    StatusApp.currentRoute?.key == @keyForAction(actionName)
 
   fetchData: (dataKey, dataFn) =>
     actionName = @currentActionName
@@ -50,7 +50,7 @@ class StatusPro.Router extends Backbone.Router
       res[dataKey].on 'fetch:start', (=> @fetchStart actionName)
       res[dataKey].on 'fetch:success', loaded
       if res[dataKey].isPaginator is true
-        # StatusPro.Paginator triggers 'fetch:start' and 'fetch:success' events
+        # StatusApp.Paginator triggers 'fetch:start' and 'fetch:success' events
         res[dataKey].fetch()
       else
         res[dataKey].trigger 'fetch:start'
@@ -59,13 +59,13 @@ class StatusPro.Router extends Backbone.Router
   fetchStart: (actionName) =>
     return unless @isCurrentAction(actionName)
     @_dataFetches[actionName]++
-    StatusPro.Views.loading?.show()
+    StatusApp.Views.loading?.show()
 
   fetchSuccess: (actionName) =>
     return unless @isCurrentAction(actionName)
     @_dataFetches[actionName]-- unless @_dataFetches[actionName] == 0
     if @_dataFetches[actionName] == 0
       @view?.once 'ready', =>
-        StatusPro.Views.loading?.hide()
+        StatusApp.Views.loading?.hide()
       @view?.render()
 

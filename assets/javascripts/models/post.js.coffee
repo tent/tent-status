@@ -1,10 +1,10 @@
-class StatusPro.Models.Post extends Backbone.Model
+class StatusApp.Models.Post extends Backbone.Model
   model: 'post'
-  url: => "#{StatusPro.api_root}/posts#{ if @id then "/#{@id}" else ''}"
+  url: => "#{StatusApp.api_root}/posts#{ if @id then "/#{@id}" else ''}"
 
   entity: =>
-    return StatusPro.Models.profile if StatusPro.Models.profile.entity() == @get('entity')
-    StatusPro.Collections.followers.find (follower) => follower.get('entity') == @get('entity')
+    return StatusApp.Models.profile if StatusApp.Models.profile.entity() == @get('entity')
+    StatusApp.Collections.followers.find (follower) => follower.get('entity') == @get('entity')
 
   name: =>
     @entity()?.name() || @get('entity')

@@ -1,5 +1,5 @@
-class StatusPro.Collections.Followings extends Backbone.Collection
-  model: StatusPro.Models.Following
-  url: "#{StatusPro.api_root}/followings"
+class StatusApp.Collections.Followings extends Backbone.Collection
+  model: StatusApp.Models.Following
+  url: "#{StatusApp.api_root}/followings"
 
-StatusPro.Collections.followings = new StatusPro.Collections.Followings
+StatusApp.Collections.followings = new StatusApp.Collections.Followings
