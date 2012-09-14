@@ -24,7 +24,7 @@ class StatusApp.Paginator
       success: (items) =>
         if (loadedCount == @collection.length) or (@collection.length < expectedCount)
           @onLastPage = true
-        @sinceId = items.last().get('id')
+        @sinceId = items.last()?.get('id')
         @options.success?()
         @trigger 'fetch:success'
       error: =>
