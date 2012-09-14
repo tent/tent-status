@@ -1,0 +1,16 @@
+.row
+  .span3 &nbsp;
+  .span6
+    | {{#profile}}
+    h1.page-header
+      img.img-rounded src='{{avatar}}' style='width:100px;height:100px' &nbsp;
+      a href='{{encoded.entity}}' {{name}}
+    | {{/profile}}
+
+.row
+  .span3 &nbsp;
+  .span6
+    ul.unstyled
+      | {{#posts}}
+      li.post data-id='{{id}}' {{> _post}}
+      | {{/posts}}
