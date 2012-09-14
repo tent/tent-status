@@ -21,5 +21,5 @@ class StatusApp.Views.Profile extends StatusApp.Views.Posts
         avatar: @currentProfile.avatar()
         entity: @currentProfile.entity()
         encoded:
-          entity: encodeURIComponent(@currentProfile.get 'entity')
+          entity: encodeURIComponent(@currentProfile.entity())
       )
