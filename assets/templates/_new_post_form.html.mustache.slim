@@ -2,23 +2,8 @@ form.form-horizontal data-view='NewPostForm' method='POST'
   div
     .alert.alert-error &nbsp;
 
-    .span6.permissions style='margin-left:0px'
-      label.control-label To:
-      .controls
-        select style='width:100%' multiple=true name='permissions' data-placeholder='Everyone'
-          =="{{#follows}}"
-          option value='f:{{entity}}' =="{{name}}"
-          =="{{/follows}}"
-          =="{{#groups}}"
-          option value='g:{{id}}' =="{{name}}"
-          =="{{/groups}}"
-
     textarea.span6 data-view='ExpandingTextArea' name='text' placeholder="What's on your mind?" rows='3'
     span.char-limit 140
-
-    label.checkbox.pull-right
-      input name='public' type='checkbox' checked=true Public
-
   
   div &nbsp;
   a.advanced-options-toggle.pull-left href='#' Advanced Options

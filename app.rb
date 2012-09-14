@@ -117,7 +117,7 @@ class StatusApp < Sinatra::Base
       :type => "https://tent.io/types/post/status/v0.1.0",
       :licenses => data['licenses'],
       :mentions => data['mentions'],
-      :permissions => data['permissions'],
+      :permissions => { public: true },
       :content => {
         :text => data['text'].to_s.slice(0...140)
       }

@@ -12,8 +12,6 @@ StatusApp.Routers.posts = new class PostsRouter extends StatusApp.Router
     @setCurrentAction 'index', =>
       @fetchData 'posts', =>
         { posts: new StatusApp.Paginator( StatusApp.Collections.posts ), loaded: false }
-      @fetchData 'groups', =>
-        { groups: new StatusApp.Paginator( StatusApp.Collections.groups ), loaded: false }
       @fetchData 'followers', =>
         { followers: new StatusApp.Paginator( StatusApp.Collections.followers ), loaded: false }
       @fetchData 'followings', =>
@@ -38,8 +36,6 @@ StatusApp.Routers.posts = new class PostsRouter extends StatusApp.Router
         _posts = new StatusApp.Paginator( new StatusApp.Collections.Posts, options )
         { posts: _posts, loaded: false }
 
-      @fetchData 'groups', =>
-        { groups: new StatusApp.Paginator( StatusApp.Collections.groups ), loaded: false }
       @fetchData 'followers', =>
         { followers: new StatusApp.Paginator( StatusApp.Collections.followers ), loaded: false }
       @fetchData 'followings', =>
