@@ -32,11 +32,11 @@ class StatusPro < Sinatra::Base
     end
 
     def full_path(path)
-      "/#{path}".gsub(%r{//}, '/')
+      "#{path_prefix}/#{path}".gsub(%r{//}, '/')
     end
 
     def full_url(path)
-      (self_url_root + path.gsub(%r{//}, '/'))
+      (self_url_root + full_path(path))
     end
 
     def self_url_root

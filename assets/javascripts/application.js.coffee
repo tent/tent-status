@@ -35,14 +35,14 @@ _.extend @StatusPro, Backbone.Events, {
     template = @_templates[templatePath]
     return callback(template) if template
 
-    HTTP.get "/assets/#{ templatePath }.html.mustache", (template) =>
+    HTTP.get "#{@url_root}assets/#{ templatePath }.html.mustache", (template) =>
       @_templates[templatePath] = Hogan.compile template
       callback(@_templates[templatePath])
 
   ## Run Backbone
   backboneConfig: {
     pushState: true
-    root: '/'
+    root: StatusPro.url_root || '/'
   }
   run: ->
     Backbone.history?.start @backboneConfig
