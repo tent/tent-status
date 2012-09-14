@@ -29,10 +29,11 @@ body
   .container#main
     == yield if block_given?
 
-  javascript:
-    var StatusApp = {
-      api_root: "#{{full_path('/api')}}",
-      url_root: "#{{full_path('/')}}"
-    }
+  - if current_user
+    javascript:
+      var StatusApp = {
+        api_root: "#{{full_path('/api')}}",
+        url_root: "#{{full_path('/')}}"
+      }
 
-  script src=full_path("/assets/boot.js")
+    script src=full_path("/assets/boot.js")
