@@ -4,8 +4,8 @@ StatusApp.Routers.posts = new class PostsRouter extends StatusApp.Router
   routes:
     ""                 : "root"
     "posts"            : "index"
-    ":entity"          : "profile"
-    ":entity/:post_id" : "conversation"
+    "entities/:entity"          : "profile"
+    "entities/:entity/:post_id" : "conversation"
 
   index: =>
     @view = new StatusApp.Views.Posts

@@ -61,6 +61,7 @@ class StatusApp.Paginator
   sortBy: => @collection.sortBy(arguments...)
   get: => @collection.get(arguments...)
   unshift: => @collection.unshift(arguments...)
+  push: => @collection.push(arguments...)
   first: => @collection.first(arguments...)
 
 _.extend StatusApp.Paginator::, Backbone.Events
