@@ -27,6 +27,7 @@ _.extend @StatusApp, Backbone.Events, {
   Routers: {}
   Helpers: {}
   csrf_token: $('meta[name="csrf-token"]').attr('content')
+  PER_PAGE: 50
 
   devWarning: (fn, msg) ->
     console.warn "<#{fn.constructor.name}> #{msg}"

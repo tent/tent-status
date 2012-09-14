@@ -127,7 +127,7 @@ class StatusApp < Sinatra::Base
   end
 
   get '/api/groups' do
-    res = client.group.list
+    res = client.group.list(params)
     json res.body
   end
 
@@ -140,7 +140,7 @@ class StatusApp < Sinatra::Base
   end
 
   get '/api/followers' do
-    res = client.follower.list
+    res = client.follower.list(params)
     json res.body
   end
 
@@ -158,7 +158,7 @@ class StatusApp < Sinatra::Base
   end
 
   get '/api/followings' do
-    res = client.following.list
+    res = client.following.list(params)
     json res.body
   end
 

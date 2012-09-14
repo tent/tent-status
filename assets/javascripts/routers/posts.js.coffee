@@ -8,15 +8,16 @@ StatusApp.Routers.posts = new class PostsRouter extends StatusApp.Router
 
   index: =>
     @view = new StatusApp.Views.Posts
+    window.view = @view
     @setCurrentAction 'index', =>
       @fetchData 'posts', =>
-        { posts: StatusApp.Collections.posts, loaded: false }
+        { posts: new StatusApp.Paginator( StatusApp.Collections.posts ), loaded: false }
       @fetchData 'groups', =>
-        { groups: StatusApp.Collections.groups, loaded: false }
+        { groups: new StatusApp.Paginator( StatusApp.Collections.groups ), loaded: false }
       @fetchData 'followers', =>
-        { followers: StatusApp.Collections.followers, loaded: false }
+        { followers: new StatusApp.Paginator( StatusApp.Collections.followers ), loaded: false }
       @fetchData 'followings', =>
-        { followings: StatusApp.Collections.followings, loaded: false }
+        { followings: new StatusApp.Paginator( StatusApp.Collections.followings ), loaded: false }
       @fetchData 'profile', =>
         { profile: StatusApp.Models.profile, loaded: false }
 
@@ -25,29 +26,23 @@ StatusApp.Routers.posts = new class PostsRouter extends StatusApp.Router
   conversation: (entity, post_id) =>
     @view = new StatusApp.Views.Conversation
     @setCurrentAction 'conversation', =>
-      @fetchData 'posts', (callback) =>
-        _posts = new StatusApp.Collections.Posts
+      @fetchData 'post', =>
         _post = new StatusApp.Models.Post { id: post_id }
+        { post: _post, loaded: false }
 
-        _n_loaded = 0
-        _loaded = =>
-          _n_loaded++
-          return unless _n_loaded == 2
-          _posts.unshift(_post)
-          callback({ posts: _posts, loaded: true })
-
+      @fetchData 'posts', =>
         query_string = "mentioned_entity=#{entity}&mentioned_post=#{post_id}"
-        _posts.fetch
-          url: _posts.url + "?#{query_string}"
-          success: _loaded
+        options =
+          url: "#{(new StatusApp.Collections.Posts).url}?#{query_string}"
 
-        _post.fetch { success: _loaded }
+        _posts = new StatusApp.Paginator( new StatusApp.Collections.Posts, options )
+        { posts: _posts, loaded: false }
 
       @fetchData 'groups', =>
-        { groups: StatusApp.Collections.groups, loaded: false }
+        { groups: new StatusApp.Paginator( StatusApp.Collections.groups ), loaded: false }
       @fetchData 'followers', =>
-        { followers: StatusApp.Collections.followers, loaded: false }
+        { followers: new StatusApp.Paginator( StatusApp.Collections.followers ), loaded: false }
       @fetchData 'followings', =>
-        { followings: StatusApp.Collections.followings, loaded: false }
+        { followings: new StatusApp.Paginator( StatusApp.Collections.followings ), loaded: false }
       @fetchData 'profile', =>
         { profile: StatusApp.Models.profile, loaded: false }
