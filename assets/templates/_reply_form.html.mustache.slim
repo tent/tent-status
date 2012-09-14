@@ -4,24 +4,9 @@ form.form-horizontal data-view='ReplyPostForm' method='POST'
   div
     .alert.alert-error &nbsp;
 
-    .span4.permissions style='margin-left:0px'
-      label.control-label To:
-      .controls
-        select style='width:100%' multiple=true name='permissions' data-placeholder='Everyone'
-          =="{{#follows}}"
-          option value='f:{{entity}}' =="{{name}}"
-          =="{{/follows}}"
-          =="{{#groups}}"
-          option value='g:{{id}}' =="{{name}}"
-          =="{{/groups}}"
-
     textarea.span4 data-view='ExpandingTextArea' name='text' placeholder="What's on your mind?" rows='3'
     .clearfix
       span.char-limit 140
-
-      label.checkbox.pull-right
-        input name='public' type='checkbox' checked=true Public
-
   
   div &nbsp;
   .clearfix

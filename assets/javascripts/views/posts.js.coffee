@@ -2,7 +2,7 @@ class StatusApp.Views.Posts extends StatusApp.View
   templateName: 'posts'
   partialNames: ['_post', '_new_post_form', '_reply_form']
 
-  dependentRenderAttributes: ['posts', 'groups', 'followers', 'followings', 'profile']
+  dependentRenderAttributes: ['posts', 'followers', 'followings', 'profile']
 
   initialize: ->
     @container = StatusApp.Views.container
@@ -33,7 +33,6 @@ class StatusApp.Views.Posts extends StatusApp.View
   context: =>
     @licenses = [{ url: "http://creativecommons.org/licenses/by-nc-sa/3.0/", name: "Creative Commons by-nc-sa 3.0" }]
 
-    groups: @groups.toJSON()
     follows: _.map(@followers.toArray().concat(@uniqueFollowings()), (follow) -> _.extend follow.toJSON(), {
       name: follow.name()
     })
