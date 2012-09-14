@@ -13,7 +13,7 @@ class StatusApp.Views.Posts extends StatusApp.View
   sortedPosts: => @posts.sortBy (post) -> -post.get('published_at')
 
   uniqueFollowings: =>
-    @followings.filter (following) =>
+    @followings?.filter (following) =>
       !@followers.find (follower) =>
         follower.get('entity') == following.get('entity')
 
@@ -33,7 +33,7 @@ class StatusApp.Views.Posts extends StatusApp.View
   context: =>
     @licenses = [{ url: "http://creativecommons.org/licenses/by-nc-sa/3.0/", name: "Creative Commons by-nc-sa 3.0" }]
 
-    follows: _.map(@followers.toArray().concat(@uniqueFollowings()), (follow) -> _.extend follow.toJSON(), {
+    follows: _.map((@followers?.toArray() || []).concat(@uniqueFollowings() || []), (follow) -> _.extend follow.toJSON(), {
       name: follow.name()
     })
     licenses: @licenses
@@ -41,6 +41,7 @@ class StatusApp.Views.Posts extends StatusApp.View
       shouldShowReply: true
       inReplyTo: @replyToPost(post)
       url: "#{StatusApp.url_root}#{encodeURIComponent(post.get('entity'))}/#{post.get('id')}"
+      profileUrl: "#{StatusApp.url_root}#{encodeURIComponent(post.get('entity'))}"
       name: post.name()
       avatar: post.avatar()
       licenses: _.map post.get('licenses'), (url) => { name: @licenseName(url), url: url }
