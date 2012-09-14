@@ -1,0 +1,42 @@
+form.form-horizontal data-view='ReplyPostForm' method='POST'
+  input type='hidden' name='mentions_post_id' value='{{id}}'
+  input type='hidden' name='mentions_post_entity' value='{{entity}}'
+  div
+    .alert.alert-error &nbsp;
+
+    .span4.permissions style='margin-left:0px'
+      label.control-label To:
+      .controls
+        select style='width:100%' multiple=true name='permissions' data-placeholder='Everyone'
+          =="{{#follows}}"
+          option value='f:{{entity}}' =="{{name}}"
+          =="{{/follows}}"
+          =="{{#groups}}"
+          option value='g:{{id}}' =="{{name}}"
+          =="{{/groups}}"
+
+    textarea.span4 data-view='ExpandingTextArea' name='text' placeholder="What's on your mind?" rows='3'
+    .clearfix
+      span.char-limit 140
+
+      label.checkbox.pull-right
+        input name='public' type='checkbox' checked=true Public
+
+  
+  div &nbsp;
+  .clearfix
+    a.advanced-options-toggle.pull-left href='#' Advanced Options
+    .advanced-options
+      .span4 style='margin-left:0px'
+        select style='width:100%' multiple=true name='mentions' data-placeholder='Mention entities'
+          =="{{#follows}}"
+          option value='{{entity}}' =="{{name}}"
+          =="{{/follows}}"
+
+      .span4 style='margin-left:0px'
+        select style='width:100%' multiple=true name='licenses' data-placeholder='Licenses'
+          =="{{#licenses}}"
+          option value='{{url}}' =="{{name}}"
+          =="{{/licenses}}"
+
+  input.btn.btn-success.pull-right type='submit' value='Publish'

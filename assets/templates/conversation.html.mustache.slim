@@ -3,11 +3,11 @@
   .span6
     ul.unstyled
       =="{{#post}}"
-      li.post
+      li.post data-id='{{id}}'
         .well =="{{> _post}}"
       =="{{/post}}"
       =="{{#posts}}"
-      li.post
+      li.post data-id='{{id}}'
         .span1 &nbsp;
         .span5
           =="{{> _post}}"

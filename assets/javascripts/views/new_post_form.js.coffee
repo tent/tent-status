@@ -39,8 +39,8 @@ class StatusPro.Views.NewPostForm extends Backbone.View
       no_results_text: 'No matching licenses'
 
     ## advanced options toggle
-    @$advancedOptions = ($ '.advanced-options').hide()
-    @$advancedOptionsToggle = ($ '.advanced-options-toggle')
+    @$advancedOptions = ($ '.advanced-options', @$el).hide()
+    @$advancedOptionsToggle = ($ '.advanced-options-toggle', @$el)
     @$advancedOptionsToggle.on 'click', (e) =>
       e.preventDefault()
       @$advancedOptions.toggle()

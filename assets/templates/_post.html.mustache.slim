@@ -18,5 +18,13 @@
     ul.nav.nav-pills
       li.view
         a href='/posts/{{escaped.entity}}/{{id}}' View
-      li
-        a href='' Reply
+      | {{#shouldShowReply}}
+      li.reply
+        a href='#' Reply
+      | {{/shouldShowReply}}
+
+  .reply-container
+    | {{#shouldShowReply}}
+    .well
+      | {{> _reply_form}}
+    | {{/shouldShowReply}}

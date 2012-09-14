@@ -2,6 +2,13 @@ class StatusPro.Views.Conversation extends StatusPro.Views.Posts
   templateName: 'conversation'
 
   context: =>
+    postId = @posts.first().get('id')
     data = super
-    data.post = data.posts.shift()
+    posts = []
+    for post in data.posts
+      if postId == post.id
+        data.post = post
+      else
+        posts.push post
+    data.posts = posts
     data
