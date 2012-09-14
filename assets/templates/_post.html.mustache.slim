@@ -3,7 +3,10 @@
     =="{{#avatar}}"
     img.img-rounded src='{{avatar}}' style='height:50px;width:50px;margin-right:4px;'
     =="{{/avatar}}"
-    a href='{{profileUrl}}' {{name}}
+    a href='{{{entity}}}' {{name}}
+    small
+      | &nbsp;
+      a href='{{profileUrl}}' view all
     small &nbsp; via <a href='{{app.url}}'>#{"{{app.name}}"}</a>
     | {{#inReplyTo}}
     small.pull-right
@@ -14,9 +17,9 @@
     =="{{#licenses}}"
     a href="{{url}}" <span class='label'>#{"{{name}}"}<span>
     =="{{/licenses}}"
-    =="{{#permissions.public}}"
-    span.label.label-success Public
-    =="{{/permissions.public}}"
+    | {{^permissions.public}}
+    span.label.label-warning Private
+    | {{/permissions.public}}
   .clearfix.navigation
     ul.nav.nav-pills
       li
