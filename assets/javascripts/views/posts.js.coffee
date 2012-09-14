@@ -26,7 +26,7 @@ class StatusApp.Views.Posts extends StatusApp.View
     return unless post.get('mentions')?.length
     for mention in post.get('mentions')
       if mention.entity and mention.post
-        mention.url = "#{StatusApp.url_root}posts/#{encodeURIComponent(mention.entity)}/#{mention.post}"
+        mention.url = "#{StatusApp.url_root}#{encodeURIComponent(mention.entity)}/#{mention.post}"
         return mention
     null
 
@@ -40,7 +40,7 @@ class StatusApp.Views.Posts extends StatusApp.View
     posts: _.map(@sortedPosts(), (post) => _.extend post.toJSON(), {
       shouldShowReply: true
       inReplyTo: @replyToPost(post)
-      url: "#{StatusApp.url_root}/#{encodeURIComponent(post.get('entity'))}/#{post.get('id')}"
+      url: "#{StatusApp.url_root}#{encodeURIComponent(post.get('entity'))}/#{post.get('id')}"
       name: post.name()
       avatar: post.avatar()
       licenses: _.map post.get('licenses'), (url) => { name: @licenseName(url), url: url }

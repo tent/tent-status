@@ -2,9 +2,10 @@ StatusApp.Routers.posts = new class PostsRouter extends StatusApp.Router
   routerKey: 'posts'
 
   routes:
-    ""      : "root"
-    "posts" : "index"
-    "posts/:entity/:post_id" : "conversation"
+    ""                 : "root"
+    "posts"            : "index"
+    ":entity"          : "profile"
+    ":entity/:post_id" : "conversation"
 
   index: =>
     @view = new StatusApp.Views.Posts
