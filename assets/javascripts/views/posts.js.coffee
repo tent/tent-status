@@ -1,12 +1,14 @@
 class StatusPro.Views.Posts extends StatusPro.View
   templateName: 'posts'
-  partialNames: ['_post', '_new_post_form']
+  partialNames: ['_post', '_new_post_form', '_reply_form']
 
   dependentRenderAttributes: ['posts', 'groups', 'followers', 'followings', 'profile']
 
   initialize: ->
     @container = StatusPro.Views.container
     super
+
+    @on 'ready', @initPostViews
 
   sortedPosts: => @posts.sortBy (post) -> -post.get('published_at')
 
@@ -29,6 +31,7 @@ class StatusPro.Views.Posts extends StatusPro.View
     })
     licenses: @licenses
     posts: _.map(@sortedPosts(), (post) => _.extend post.toJSON(), {
+      shouldShowReply: true
       name: post.name()
       avatar: post.avatar()
       licenses: _.map post.get('licenses'), (url) => { name: @licenseName(url), url: url }
@@ -38,3 +41,8 @@ class StatusPro.Views.Posts extends StatusPro.View
         published_at: StatusPro.Helpers.formatTime post.get('published_at')
         full_published_at: StatusPro.Helpers.rawTime post.get('published_at')
     })
+
+  initPostViews: =>
+    _.each ($ 'li.post'), (el) =>
+      new StatusPro.Views.Post el: el, parentView: @
+
