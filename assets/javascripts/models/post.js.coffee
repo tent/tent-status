@@ -4,7 +4,8 @@ class StatusApp.Models.Post extends Backbone.Model
 
   entity: =>
     return StatusApp.Models.profile if StatusApp.Models.profile.entity() == @get('entity')
-    StatusApp.Collections.followers.find (follower) => follower.get('entity') == @get('entity')
+    (StatusApp.Collections.followers.find (follower) => follower.get('entity') == @get('entity')) ||
+    (StatusApp.Collections.followings.find (following) => following.get('entity') == @get('entity'))
 
   name: =>
     @entity()?.name() || @get('entity')

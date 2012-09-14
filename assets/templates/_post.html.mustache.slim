@@ -3,7 +3,7 @@
     =="{{#avatar}}"
     img.img-rounded src='{{avatar}}' style='height:50px;width:50px;margin-right:4px;'
     =="{{/avatar}}"
-    =="{{name}}"
+    a href='{{profileUrl}}' {{name}}
     small &nbsp; via <a href='{{app.url}}'>#{"{{app.name}}"}</a>
     | {{#inReplyTo}}
     small.pull-right

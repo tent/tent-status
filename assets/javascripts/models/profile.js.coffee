@@ -18,3 +18,7 @@ class Profile extends Backbone.Model
     @basic_profile()?['avatar_url']
 
 StatusApp.Models.profile = new Profile
+
+class StatusApp.Models.Profile extends Profile
+  url: => "#{StatusApp.api_root}/#{@get('follow_type')}/#{@get('id')}/profile"
+
