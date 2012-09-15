@@ -20,21 +20,6 @@ class StatusApp.Views.Posts extends StatusApp.View
   follows: =>
     (@followers?.toArray() || []).concat(@uniqueFollowings() || [])
 
-  licenseName: (url) =>
-    for l in @licenses || []
-      return l.name if l.url == url
-    url
-
-  replyToPost: (post) =>
-    return unless post.get('mentions')?.length
-    for mention in post.get('mentions')
-      if mention.entity and mention.post
-        mention.url = "#{StatusApp.url_root}entities/#{encodeURIComponent(mention.entity)}/#{mention.post}"
-        mention.name = (_.find @follows(), (follow) => follow.get('entity') == mention.entity)?.name()
-        mention.name ?= (_.find [@profile], (profile) => profile.entity() == mention.entity)?.name()
-        return mention
-    null
-
   context: =>
     @licenses = [{ url: "http://creativecommons.org/licenses/by-nc-sa/3.0/", name: "Creative Commons by-nc-sa 3.0" }]
 
@@ -42,20 +27,10 @@ class StatusApp.Views.Posts extends StatusApp.View
       name: follow.name()
     })
     licenses: @licenses
-    posts: _.map(@sortedPosts(), (post) => _.extend post.toJSON(), {
-      shouldShowReply: true
-      inReplyTo: @replyToPost(post)
-      url: "#{StatusApp.url_root}entities/#{encodeURIComponent(post.get('entity'))}/#{post.get('id')}"
-      profileUrl: "#{StatusApp.url_root}entities/#{encodeURIComponent(post.get('entity'))}"
-      name: post.name()
-      avatar: post.avatar()
-      licenses: _.map post.get('licenses'), (url) => { name: @licenseName(url), url: url }
-      escaped:
-        entity: encodeURIComponent(post.get('entity'))
-      formatted:
-        published_at: StatusApp.Helpers.formatTime post.get('published_at')
-        full_published_at: StatusApp.Helpers.rawTime post.get('published_at')
-    })
+    posts: (_.map @posts.toArray(), (post) =>
+      view = new StatusApp.Views.Post parentView: @
+      view.context(post)
+    )
 
   initPostViews: =>
     _.each ($ 'li.post'), (el) =>

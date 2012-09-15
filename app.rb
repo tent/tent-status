@@ -92,7 +92,7 @@ class StatusApp < Sinatra::Base
 
   get '/api/posts' do
     res = client.post.list params.merge(
-      :types => "https://tent.io/types/post/status/v0.1.0"
+      :types => ["https://tent.io/types/post/status/v0.1.0", "https://tent.io/types/post/repost/v0.1.0"]
     )
 
     if (400...500).include?(res.status)
@@ -112,16 +112,20 @@ class StatusApp < Sinatra::Base
     data = JSON.parse(env['rack.input'].read)
     env['rack.input'].rewind
 
-    res = client.post.create(
+    data = {
       :published_at => Time.now.to_i,
-      :type => "https://tent.io/types/post/status/v0.1.0",
+      :type => data['type'] || "https://tent.io/types/post/status/v0.1.0",
       :licenses => data['licenses'],
       :mentions => data['mentions'],
       :permissions => { public: true },
-      :content => {
+      :content => data['content'] || {
         :text => data['text'].to_s.slice(0...140)
       }
-    )
+    }
+
+    puts data.inspect
+
+    res = client.post.create(data)
 
     json res.body
   end

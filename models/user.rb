@@ -13,7 +13,7 @@ class StatusApp
     property :mac_key, String
     property :mac_algorithm, String
     property :profile_info_types, Json, :default => %w{ https://tent.io/types/info/basic/v0.1.0 }
-    property :post_types, Json, :default => %w{ https://tent.io/types/post/status/v0.1.0 }
+    property :post_types, Json, :default => %w{ https://tent.io/types/post/status/v0.1.0 https://tent.io/types/post/repost/v0.1.0 }
 
     def self.find_or_create(params)
       first(:entity => params[:entity]) || create(params)

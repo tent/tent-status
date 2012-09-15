@@ -1,4 +1,5 @@
-.clearfix
+| {{^isRepost}}
+li.post.clearfix data-id='{{id}}' data-parent-id='{{parent.id}}' data-post-found='{{#parent}}yes{{/parent}}'
   h4
     =="{{#avatar}}"
     img.img-rounded src='{{avatar}}' style='height:50px;width:50px;margin-right:4px;'
@@ -12,6 +13,10 @@
     small.pull-right
       a href='{{url}}' in reply to {{name}}
     | {{/inReplyTo}}
+    | {{#parent}}
+    small.pull-right
+      a href='{{url}}' reposted by {{name}}
+    | {{/parent}}
   =="{{content.text}}"
   .pull-right
     =="{{#licenses}}"
@@ -27,6 +32,8 @@
       | {{#shouldShowReply}}
       li.reply
         a href='#' Reply
+      li.repost data-confirm='Repost?'
+        a href='#' Repost
       | {{/shouldShowReply}}
 
   .reply-container
@@ -34,3 +41,12 @@
     .well
       | {{> _reply_form}}
     | {{/shouldShowReply}}
+| {{/isRepost}}
+| {{#repost}}
+| {{> _post}}
+| {{/repost}}
+| {{^repost}}
+| {{#isRepost}}
+li.post.clearfix data-parent-id='{{id}}' data-post-found='no'
+| {{/isRepost}}
+| {{/repost}}
