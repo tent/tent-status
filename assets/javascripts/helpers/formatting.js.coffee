@@ -8,7 +8,7 @@ _.extend StatusApp.Helpers,
     else
       time.format('ddd MMM Do, YYYY') # date and time
 
-    "#{formatted_time} (#{time.fromNow()})"
+    "#{formatted_time}"
 
   rawTime: (time_or_int) ->
     moment.unix(time_or_int).format()
