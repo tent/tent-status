@@ -13,7 +13,9 @@ class StatusApp.Views.ReplyPostForm extends StatusApp.Views.NewPostForm
 
     post = new StatusApp.Models.Post data
     post.once 'sync', =>
-      @parentView.posts.push(post)
+      @parentView.emptyPool()
+      StatusApp.Collections.posts.unshift(post)
+      @parentView.posts.unshift(post)
       @parentView.render()
     post.save()
     false
