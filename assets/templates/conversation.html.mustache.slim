@@ -4,13 +4,13 @@
     ul.unstyled
       =="{{#post}}"
       li.post data-id='{{id}}'
-        .well =="{{> _post}}"
+        .well =="{{> _post_inner}}"
       =="{{/post}}"
       =="{{#posts}}"
       li.post.clearfix data-id='{{id}}'
         .span1 &nbsp;
         .span5
-          =="{{> _post}}"
+          =="{{> _post_inner}}"
       =="{{/posts}}"
 .row
   .span3 &nbsp
