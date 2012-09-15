@@ -6,6 +6,8 @@ class StatusApp.Views.NewPostForm extends Backbone.View
 
     @$errors = ($ '.alert-error', @$el).first().hide()
 
+    @$post_btn = ($ 'input[type=submit]', @$el)
+
     @$el.on 'submit', @submit
 
     ## form validation and character limit counter
@@ -148,8 +150,13 @@ class StatusApp.Views.NewPostForm extends Backbone.View
     charCount = @$textarea.val()?.length
     delta = @charLimit - charCount
     if delta < 0
+      @$post_btn.attr 'disabled', 'disabled'
       @$charLimit.addClass 'alert-error'
     else
+      if delta == @charLimit
+        @$post_btn.attr 'disabled', 'disabled'
+      else
+        @$post_btn.removeAttr 'disabled'
       @$charLimit.removeClass 'alert-error'
     @$charLimit.text delta
 
