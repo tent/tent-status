@@ -68,6 +68,7 @@ class StatusApp.Views.NewPostForm extends Backbone.View
 
     post = new StatusApp.Models.Post data
     post.once 'sync', =>
+      window.location.reload() unless @parentView.emptyPool
       @parentView.emptyPool()
       StatusApp.Collections.posts.unshift(post)
       @parentView.set('posts', StatusApp.Collections.posts)

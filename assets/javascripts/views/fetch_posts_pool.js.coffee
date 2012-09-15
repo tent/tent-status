@@ -22,8 +22,8 @@ class StatusApp.Views.FetchPostsPool extends Backbone.View
       false
     
   setFetchInterval: (interval=@fetchDelay+@fetchDelayOffset) =>
-    clearInterval @_fetchInterval
-    @_fetchInterval = setInterval @pool.fetch, interval
+    clearInterval StatusApp._fetchPostsPoolInterval
+    StatusApp._fetchPostsPoolInterval = setInterval @pool.fetch, interval
 
   update: =>
     lastSinceId = @sinceId
@@ -47,7 +47,8 @@ class StatusApp.Views.FetchPostsPool extends Backbone.View
       post = @pool.collection.shift()
       @parentView.posts.unshift(post)
       StatusApp.Collections.posts.unshift(post)
-      @createPostView(post)
+      # @createPostView(post)
+    @parentView.render()
     @pool.sinceId = @parentView.posts.first()?.get('id') || @pool.sinceId
     @numNewPosts = 0
     @$numNewPosts.text @numNewPosts
