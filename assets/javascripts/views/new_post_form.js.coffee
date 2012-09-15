@@ -8,7 +8,7 @@ class StatusApp.Views.NewPostForm extends Backbone.View
 
     @$post_btn = ($ 'input[type=submit]', @$el)
 
-    @$el.on 'submit', @submit
+    @$el.off().on 'submit', @submit
 
     ## form validation and character limit counter
     @$textarea = ($ 'textarea', @$el)
