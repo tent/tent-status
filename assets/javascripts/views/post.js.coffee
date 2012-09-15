@@ -3,8 +3,8 @@ class StatusApp.Views.Post extends StatusApp.View
     @parentView = options.parentView
     @template = @parentView?.partials['_post']
 
-    @postId = @$el.attr 'data-parent-id'
-    @postId ?= @$el.attr 'data-id'
+    @postId = @$el.attr('data-parent-id') || ""
+    @postId = @$el.attr 'data-id' if @postId == ""
     @post = @parentView.posts.get(@postId)
 
     if @post?.isRepost() && @$el.attr('data-post-found') != 'yes'
@@ -41,6 +41,7 @@ class StatusApp.Views.Post extends StatusApp.View
     @$reply.toggle()
 
   repost: =>
+    return if @buttons.repost.hasClass 'disabled'
     shouldRepost = confirm(@buttons.repost.attr 'data-confirm')
     return unless shouldRepost
     post = new StatusApp.Models.Post {
@@ -51,6 +52,10 @@ class StatusApp.Views.Post extends StatusApp.View
     }
     post.once 'sync', =>
       @buttons.repost.addClass 'disabled'
+      StatusApp.Collections.posts.unshift(post)
+      @parentView.posts.unshift(post)
+      @parentView.emptyPool()
+      @parentView.fetchPoolView.createPostView(post)
     post.save()
 
   replyToPost: (post) =>
