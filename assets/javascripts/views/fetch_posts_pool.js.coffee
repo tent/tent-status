@@ -56,5 +56,6 @@ class StatusApp.Views.FetchPostsPool extends Backbone.View
   createPostView: (post) =>
     el = ($ '<li>').prependTo(@$postsList)
     view = new StatusApp.Views.Post el: el, parentView: @parentView
+    view.post = post
     context = view.context(post)
     view.render(context)
