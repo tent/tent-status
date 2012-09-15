@@ -8,6 +8,7 @@
 #= require chosen.jquery
 #= require_self
 #= require ./paginator
+#= require ./fetch_pool
 #= require ./view
 #= require ./router
 #= require_tree ./helpers

@@ -5,9 +5,17 @@
     .clearfix
       =="{{> _new_post_form}}"
 .row
+  .span3 &nbsp
+  .span6.fetch-pool
+    a href='#'
+      .alert.alert-info style='text-align:center;'
+        span.num_new_posts 0
+        span &nbsp; New Posts
+
+.row
   .span3 &nbsp;
   .span6
-    ul.unstyled
+    ul.unstyled.posts
       =="{{#posts}}"
       =="{{> _post}}"
       =="{{/posts}}"

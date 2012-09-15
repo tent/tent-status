@@ -28,7 +28,6 @@ class StatusApp.Paginator
         @options.success?()
         @trigger 'fetch:success'
       error: =>
-        @page = @oldPage
         @trigger 'fetch:error'
     }
     options = _.extend _options, options
@@ -63,5 +62,6 @@ class StatusApp.Paginator
   unshift: => @collection.unshift(arguments...)
   push: => @collection.push(arguments...)
   first: => @collection.first(arguments...)
+  last: => @collection.last(arguments...)
 
 _.extend StatusApp.Paginator::, Backbone.Events

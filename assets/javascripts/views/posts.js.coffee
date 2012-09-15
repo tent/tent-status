@@ -9,6 +9,7 @@ class StatusApp.Views.Posts extends StatusApp.View
     super
 
     @on 'ready', @initPostViews
+    @on 'ready', @initFetchPool
 
   sortedPosts: => @posts.sortBy (post) -> -post.get('published_at')
 
@@ -35,4 +36,11 @@ class StatusApp.Views.Posts extends StatusApp.View
   initPostViews: =>
     _.each ($ 'li.post'), (el) =>
       new StatusApp.Views.Post el: el, parentView: @
+
+  initFetchPool: =>
+    el = ($ '.fetch-pool', @container.$el).hide()
+    @fetchPoolView = new StatusApp.Views.FetchPostsPool el: el, parentView: @
+
+  emptyPool: =>
+    @fetchPoolView.emptyPool()
 
