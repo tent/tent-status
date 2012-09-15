@@ -10,7 +10,7 @@
 .row
   .span3 &nbsp;
   .span6
-    ul.unstyled
+    ul.unstyled.posts
       | {{#posts}}
-      li.post data-id='{{id}}' {{> _post}}
+      | {{> _post}}
       | {{/posts}}
