@@ -1,6 +1,6 @@
 class StatusApp.Views.Profile extends StatusApp.Views.Posts
   templateName: 'profile'
-  partialNames: ['_post', '_reply_form']
+  partialNames: ['_post', '_post_inner', '_reply_form']
 
   initialize: ->
     @dependentRenderAttributes.push 'currentProfile'
