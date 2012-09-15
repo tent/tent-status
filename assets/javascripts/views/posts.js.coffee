@@ -10,6 +10,7 @@ class StatusApp.Views.Posts extends StatusApp.View
 
     @on 'ready', @initPostViews
     @on 'ready', @initFetchPool
+    @on 'ready', @initAutoPaginate
 
   sortedPosts: => @posts.sortBy (post) -> -post.get('published_at')
 
@@ -40,6 +41,14 @@ class StatusApp.Views.Posts extends StatusApp.View
   initFetchPool: =>
     el = ($ '.fetch-pool', @container.$el).hide()
     @fetchPoolView = new StatusApp.Views.FetchPostsPool el: el, parentView: @
+
+  initAutoPaginate: =>
+    ($ window).off 'scroll.posts'
+    ($ window).on 'scroll.posts', (e)=>
+      height = $(document).height() - $(window).height()
+      delta = height - window.scrollY
+      if delta < 300
+        @posts?.nextPage() unless @posts.onLastPage
 
   emptyPool: =>
     @fetchPoolView.emptyPool()
