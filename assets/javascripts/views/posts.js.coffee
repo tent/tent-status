@@ -1,6 +1,6 @@
 class StatusApp.Views.Posts extends StatusApp.View
   templateName: 'posts'
-  partialNames: ['_post', '_new_post_form', '_reply_form']
+  partialNames: ['_post', '_new_post_form', '_reply_form', '_post_inner']
 
   dependentRenderAttributes: ['posts', 'followers', 'followings', 'profile']
 
