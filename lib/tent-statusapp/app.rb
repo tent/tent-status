@@ -1,6 +1,7 @@
 require 'sinatra/base'
 require 'data_mapper'
 require 'sprockets'
+require 'tent-statusapp/config/sprockets'
 require 'uglifier'
 require 'tent-client'
 require 'rack/csrf'
@@ -78,6 +79,9 @@ module Tent
 
     assets = Sprockets::Environment.new do |env|
       env.logger = Logger.new(STDOUT)
+      env.context_class.class_eval do
+        include SprocketsHelpers
+      end
     end
     assets.register_engine('.slim', ::Slim::Template)
 
