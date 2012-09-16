@@ -32,6 +32,10 @@ class StatusApp < Sinatra::Base
       env['SCRIPT_NAME']
     end
 
+    def asset_path(path)
+      full_path("/assets/#{path}")
+    end
+
     def full_path(path)
       "#{path_prefix}/#{path}".gsub(%r{//}, '/')
     end
@@ -68,11 +72,10 @@ class StatusApp < Sinatra::Base
 
   assets = Sprockets::Environment.new do |env|
     env.logger = Logger.new(STDOUT)
-    env.js_compressor = Uglifier.new
   end
   assets.register_engine('.slim', ::Slim::Template)
 
-  %w{ javascripts stylesheets images templates }.each do |path|
+  %w{ javascripts stylesheets images }.each do |path|
     assets.append_path("assets/#{path}")
   end
 

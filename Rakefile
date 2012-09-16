@@ -1,6 +1,10 @@
 require 'bundler/setup'
 require './config/evergreen'
 require './config/asset_sync'
+require 'rake/sprocketstask'
+require 'slim'
+require 'hogan_assets'
+require 'uglifier'
 
 namespace :spec do
   desc "Run JavaScript specs via Evergreen"
@@ -10,22 +14,17 @@ namespace :spec do
   end
 end
 
-namespace :assets do
-  desc "Precompile assets"
-  task :precompile do
-    target = Pathname('./public/assets')
-    manifest = Sprockets::Manifest.new(sprockets, "./public/assets/manifest.json")
-
-    sprockets.each_logical_path do |logical_path|
-      if (!File.extname(logical_path).in?(['.js', '.css']) || logical_path =~ /application\.(css|js)$/) && asset = sprockets.find_asset(logical_path)
-        filename = target.join(logical_path)
-        FileUtils.mkpath(filename.dirname)
-        puts "Write asset: #{filename}"
-        asset.write_to(filename)
-        manifest.compile(logical_path)
-      end
-    end
-
-    AssetSync.sync
+Rake::SprocketsTask.new do |t|
+  t.environment = Sprockets::Environment.new
+  %w{ javascripts stylesheets images }.each do |path|
+    t.environment.append_path("assets/#{path}")
   end
+  t.environment.js_compressor = Uglifier.new
+  t.environment.register_engine('.slim', ::Slim::Template)
+  t.output      = "./public/assets"
+  t.assets      = %w( boot.js application.css chosen-sprite.png )
+end
+
+task :deploy_assets => :assets do
+  AssetSync.sync
 end
