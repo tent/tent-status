@@ -16,6 +16,10 @@ gem 'sprockets', '~> 2.0'
 gem 'sass'
 gem 'coffee-script'
 gem 'slim'
+gem 'uglifier'
+gem 'hogan_assets'
+
+gem 'asset_sync'
 
 gem 'hashie'
 
