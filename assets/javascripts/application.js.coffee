@@ -6,6 +6,7 @@
 #= require hogan
 #= require moment
 #= require chosen.jquery
+#= require_tree ./templates
 #= require_self
 #= require ./paginator
 #= require ./fetch_pool
@@ -38,10 +39,13 @@ _.extend @StatusApp, Backbone.Events, {
   #############################
   _templates: {}
   fetchTemplate: (templatePath, callback) ->
+    template = HoganTemplates[templatePath]
+    return callback(template) if template
+
     template = @_templates[templatePath]
     return callback(template) if template
 
-    HTTP.get "#{@url_root}assets/#{ templatePath }.html.mustache", (template) =>
+    HTTP.get "#{@url_root}assets/templates/#{ templatePath }.html.mustache", (template) =>
       @_templates[templatePath] = Hogan.compile template
       callback(@_templates[templatePath])
 

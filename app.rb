@@ -1,5 +1,6 @@
 require 'sinatra/base'
 require 'sprockets'
+require 'uglifier'
 require 'tent-client'
 require 'rack/csrf'
 require 'hashie'
@@ -67,6 +68,7 @@ class StatusApp < Sinatra::Base
 
   assets = Sprockets::Environment.new do |env|
     env.logger = Logger.new(STDOUT)
+    env.js_compressor = Uglifier.new
   end
   assets.register_engine('.slim', ::Slim::Template)
 
