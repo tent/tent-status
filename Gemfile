@@ -1,29 +1,11 @@
 source 'https://rubygems.org'
 ruby '1.9.3'
 
+# Specify your gem's dependencies in tent-statusapp.gemspec
+gemspec
+
 gem 'tent-client', :git => 'git@github.com:tent/tent-client-ruby.git', :branch => 'master'
 
-gem 'puma'
-gem 'sinatra', :require => false
-gem 'sinatra-contrib', :group => :development
-gem 'rack_csrf'
-
-gem 'data_mapper', '~> 1.2.0'
-gem 'dm-postgres-adapter', '~> 1.2.0'
-
-gem 'tilt'
-gem 'sprockets', '~> 2.0'
-gem 'sass'
-gem 'coffee-script'
-gem 'slim'
-gem 'uglifier'
-gem 'hogan_assets'
-
-gem 'asset_sync'
-
-gem 'hashie'
-
-gem 'poltergeist' # capybara phantomjs driver
-gem 'evergreen', :git => 'git://github.com/jvatic/evergreen.git', :branch => 'master', :submodules => true
-
-gem 'kicker', :group => :development
+group :development do
+  gem 'evergreen', :git => 'git://github.com/jvatic/evergreen.git', :branch => 'master', :submodules => true
+end

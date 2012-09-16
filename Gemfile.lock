@@ -23,6 +23,26 @@ GIT
       json
       nokogiri
 
+PATH
+  remote: .
+  specs:
+    tent-statusapp (0.1.0)
+      asset_sync
+      coffee-script
+      data_mapper (~> 1.2.0)
+      dm-postgres-adapter (~> 1.2.0)
+      hashie
+      hogan_assets
+      puma
+      rack_csrf
+      sass
+      sinatra
+      slim
+      sprockets (~> 2.0)
+      tent-client
+      tilt
+      uglifier
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -203,22 +223,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  asset_sync
-  coffee-script
-  data_mapper (~> 1.2.0)
-  dm-postgres-adapter (~> 1.2.0)
   evergreen!
-  hashie
-  hogan_assets
   kicker
   poltergeist
-  puma
-  rack_csrf
-  sass
-  sinatra
   sinatra-contrib
-  slim
-  sprockets (~> 2.0)
   tent-client!
-  tilt
-  uglifier
+  tent-statusapp!
