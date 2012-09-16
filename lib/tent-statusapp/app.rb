@@ -1,7 +1,6 @@
 require 'sinatra/base'
 require 'data_mapper'
 require 'sprockets'
-require 'tent-statusapp/config/sprockets'
 require 'uglifier'
 require 'tent-client'
 require 'rack/csrf'
@@ -12,6 +11,7 @@ require 'hogan_assets'
 
 module Tent
   class StatusApp < Sinatra::Base
+    require 'tent-statusapp/sprockets/environment'
     require 'tent-statusapp/models/user'
 
     configure :development do |config|
@@ -26,13 +26,12 @@ module Tent
       DataMapper.auto_upgrade!
     end
 
-    use Rack::Session::Cookie,  :key => 'tent-statusapp.session',
-                                :expire_after => 2592000, # 1 month
-                                :secret => ENV['COOKIE_SECRET'] || SecureRandom.hex
     use Rack::Csrf
 
     # List of paths/regexes not to require auth for
     public_routes = []
+
+    include SprocketsEnvironment
 
     helpers do
       def path_prefix
@@ -40,6 +39,7 @@ module Tent
       end
 
       def asset_path(path)
+        path = assets.find_asset(path).digest_path
         if ENV['CDN_URL']
           "#{ENV['CDN_URL']}/assets/#{path}"
         else
@@ -79,18 +79,6 @@ module Tent
 
     def json(data)
       [200, { 'Content-Type' => 'application/json' }, [data.to_json]]
-    end
-
-    assets = Sprockets::Environment.new do |env|
-      env.logger = Logger.new(STDOUT)
-      env.context_class.class_eval do
-        include SprocketsHelpers
-      end
-    end
-    assets.register_engine('.slim', ::Slim::Template)
-
-    %w{ javascripts stylesheets images }.each do |path|
-      assets.append_path("assets/#{path}")
     end
 
     public_routes << %r{^/assets}

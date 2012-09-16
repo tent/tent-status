@@ -1,6 +1,6 @@
 require "bundler/gem_tasks"
 require 'rake/sprocketstask'
-require 'tent-statusapp/config/sprockets'
+require 'tent-statusapp/sprockets/helpers'
 require 'slim'
 require 'hogan_assets'
 require 'uglifier'
