@@ -7,4 +7,6 @@ AssetSync.configure do |config|
   config.aws_secret_access_key = ENV['AWS_SECRET_ACCESS_KEY']
   config.prefix = "assets"
   config.public_path = Pathname("./public")
+  config.gzip_compression = true
+  config.always_upload = %w( manifest.json )
 end
