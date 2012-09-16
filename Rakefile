@@ -1,5 +1,6 @@
 require "bundler/gem_tasks"
 require 'rake/sprocketstask'
+require 'tent-statusapp/config/sprockets'
 require 'slim'
 require 'hogan_assets'
 require 'uglifier'
@@ -22,6 +23,10 @@ Rake::SprocketsTask.new do |t|
   t.environment.register_engine('.slim', ::Slim::Template)
   t.output      = "./public/assets"
   t.assets      = %w( boot.js application.css chosen-sprite.png )
+
+  t.environment.context_class.class_eval do
+    include SprocketsHelpers
+  end
 end
 
 task :deploy_assets => :assets do
