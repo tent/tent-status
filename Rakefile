@@ -1,6 +1,4 @@
-require 'bundler/setup'
-require './config/evergreen'
-require './config/asset_sync'
+require "bundler/gem_tasks"
 require 'rake/sprocketstask'
 require 'slim'
 require 'hogan_assets'
@@ -9,6 +7,7 @@ require 'uglifier'
 namespace :spec do
   desc "Run JavaScript specs via Evergreen"
   task :javascripts do
+    require './config/evergreen'
     result = Evergreen::Runner.new.run
     Kernel.exit(1) unless result
   end
@@ -26,5 +25,6 @@ Rake::SprocketsTask.new do |t|
 end
 
 task :deploy_assets => :assets do
+  require './config/asset_sync'
   AssetSync.sync
 end
