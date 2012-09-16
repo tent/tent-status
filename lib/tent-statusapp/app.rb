@@ -25,8 +25,10 @@ module Tent
       DataMapper.auto_upgrade!
     end
 
-   use Rack::Session::Pool, :expire_after => 2592000, :key => 'tent-statusapp.session'
-   use Rack::Csrf
+    use Rack::Session::Cookie,  :key => 'tent-statusapp.session',
+                                :expire_after => 2592000, # 1 month
+                                :secret => ENV['COOKIE_SECRET'] || SecureRandom.hex
+    use Rack::Csrf
 
     # List of paths/regexes not to require auth for
     public_routes = []
