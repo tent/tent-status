@@ -61,6 +61,15 @@ module Tent
       def csrf_meta_tag(options = {})
         Rack::Csrf.metatag(env, options)
       end
+
+      def basic_profile
+        @basic_profile ||= (client.profile.get.body || {})['https://tent.io/types/info/basic/v0.1.0'] || {}
+      end
+
+      def current_user
+        current = TentD::Model::User.current
+        current if session[:current_user_id] == current.id
+      end
     end
 
     def json(data)
