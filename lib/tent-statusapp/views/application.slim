@@ -22,9 +22,9 @@ body
           li
             a href=full_path('/signout') Signout
           li
-            h5 style='margin:auto;padding:10px 15px 10px;' = current_user.basic_profile['name']
+            h5 style='margin:auto;padding:10px 15px 10px;' = basic_profile['name']
           li
-            img.img-rounded src=current_user.basic_profile['avatar_url'] style='height:30px;max-width:40px;margin-top:4px'
+            img.img-rounded src=basic_user_profile['avatar_url'] style='height:30px;max-width:40px;margin-top:4px'
 
   .container#main
     == yield if block_given?
