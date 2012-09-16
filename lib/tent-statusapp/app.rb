@@ -40,7 +40,11 @@ module Tent
       end
 
       def asset_path(path)
-        full_path("/assets/#{path}")
+        if ENV['CDN_URL']
+          "#{ENV['CDN_URL']}/assets/#{path}"
+        else
+          full_path("/assets/#{path}")
+        end
       end
 
       def full_path(path)
