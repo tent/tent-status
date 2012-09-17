@@ -1,10 +1,12 @@
 | {{#authenticated}}
+| {{^guest_authenticated}}
 .row &nbsp;
 .row
   .span3 &nbsp;
   .well.span6 style='margin-left:0px'
     .clearfix
       =="{{> _new_post_form}}"
+| {{/guest_authenticated}}
 | {{/authenticated}}
 .row
   .span3 &nbsp

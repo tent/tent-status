@@ -127,6 +127,7 @@ class StatusApp.View extends Backbone.View
 
     context = _.extend {
       authenticated: StatusApp.authenticated
+      guest_authenticated: StatusApp.guest_authenticated
     }, @context()
 
     html = @template.render(context, @partials)
