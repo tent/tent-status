@@ -21,6 +21,7 @@
 @StatusApp ?= {
   api_root: '/api'
   url_root: '/'
+  authenticated: false
 }
 _.extend @StatusApp, Backbone.Events, {
   Views: {}

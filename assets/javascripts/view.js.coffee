@@ -125,7 +125,11 @@ class StatusApp.View extends Backbone.View
           @once "change:#{key}", => @render(arguments...)
           return false
 
-    html = @template.render(@context(), @partials)
+    context = _.extend {
+      authenticated: StatusApp.authenticated
+    }, @context()
+
+    html = @template.render(context, @partials)
     @container?.render(html)
     @trigger 'ready'
     true

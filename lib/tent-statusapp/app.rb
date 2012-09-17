@@ -122,6 +122,7 @@ module Tent
     end
 
     post '/api/posts' do
+      authenticate!
       data = JSON.parse(env['rack.input'].read)
       env['rack.input'].rewind
 
@@ -201,8 +202,12 @@ module Tent
     end
 
     get '/signout' do
-      session.delete(:current_user)
+      session.clear
       redirect full_path('/')
+    end
+
+    get '/login' do
+      halt 403
     end
 
     # Catch all for pushState routes
