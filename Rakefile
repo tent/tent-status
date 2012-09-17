@@ -16,6 +16,7 @@ namespace :spec do
 end
 
 Rake::SprocketsTask.new do |t|
+  %x{rm -rf ./public}
   t.environment = Sprockets::Environment.new
   %w{ javascripts stylesheets images }.each do |path|
     t.environment.append_path("assets/#{path}")
