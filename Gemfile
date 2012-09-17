@@ -8,4 +8,6 @@ gem 'tent-client', :git => 'git@github.com:tent/tent-client-ruby.git', :branch =
 
 group :development do
   gem 'evergreen', :git => 'git://github.com/jvatic/evergreen.git', :branch => 'master', :submodules => true
+  gem 'asset_sync', :git => 'git://github.com/titanous/asset_sync.git', :branch => 'fix-mime'
+  gem 'mime-types'
 end
