@@ -1,3 +1,4 @@
+| {{#authenticated}}
 form.form-horizontal data-view='NewPostForm' method='POST'
   div
     .alert.alert-error &nbsp;
@@ -8,3 +9,4 @@ form.form-horizontal data-view='NewPostForm' method='POST'
   div &nbsp;
 
   input.btn.btn-success.pull-right type='submit' value='Post'
+| {{/authenticated}}

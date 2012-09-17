@@ -25,15 +25,19 @@ body
             h5 style='margin:auto;padding:10px 15px 10px;' = basic_profile['name']
           li
             img.img-rounded src=basic_profile['avatar_url'] style='height:30px;max-width:40px;margin-top:4px'
+      - else
+        ul.nav.pull-right
+          li
+            a href=full_path('/login') Login
 
   .container#main
     == yield if block_given?
 
-  - if current_user
-    javascript:
-      var StatusApp = {
-        api_root: "#{{full_path('/api')}}",
-        url_root: "#{{full_path('/')}}"
-      }
+  javascript:
+    var StatusApp = {
+      api_root: "#{{full_path('/api')}}",
+      url_root: "#{{full_path('/')}}",
+      authenticated: "#{{!!current_user}}"
+    }
 
-    script src=asset_path("boot.js")
+  script src=asset_path("boot.js")
