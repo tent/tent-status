@@ -14,7 +14,7 @@ GIT
 
 GIT
   remote: git://github.com/titanous/asset_sync.git
-  revision: 2ea734358c856c4b11efbb13cd81142b2aa72a7a
+  revision: 64f86044921b7029cf3be673a1920aa7fdfe8604
   branch: fix-mime
   specs:
     asset_sync (0.5.0)
