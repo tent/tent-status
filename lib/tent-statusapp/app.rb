@@ -211,7 +211,7 @@ module Tent
     end
 
     get '/login' do
-      authenticate!
+      redirect "https://tent.is/login"
     end
 
     # Catch all for pushState routes
