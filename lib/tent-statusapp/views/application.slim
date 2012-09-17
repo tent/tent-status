@@ -37,7 +37,7 @@ body
     var StatusApp = {
       api_root: "#{{full_path('/api')}}",
       url_root: "#{{full_path('/')}}",
-      authenticated: "#{{!!current_user}}"
+      authenticated: #{{!!current_user}}
     }
 
   script src=asset_path("boot.js")
