@@ -23,7 +23,7 @@ h4
   | {{^permissions.public}}
   span.label.label-warning Private
   | {{/permissions.public}}
-| {{#authenticate}}
+| {{#authenticated}}
 .clearfix.navigation
   ul.nav.nav-pills
     li
@@ -40,4 +40,4 @@ h4
   .well
     | {{> _reply_form}}
   | {{/shouldShowReply}}
-| {{/authenticate}}
+| {{/authenticated}}
