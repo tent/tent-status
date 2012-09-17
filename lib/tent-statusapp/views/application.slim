@@ -24,7 +24,7 @@ body
       - else
         ul.nav.pull-right
           li
-            a href=full_path('/login') Login
+            a href='https://tent.is/login' Login
 
   .container#main
     == yield if block_given?
@@ -33,7 +33,8 @@ body
     var StatusApp = {
       api_root: "#{{full_path('/api')}}",
       url_root: "#{{full_path('/')}}",
-      authenticated: #{{!!current_user}}
+      authenticated: #{{!!(current_user || guest_user)}},
+      guest_authenticated: #{{!!guest_user}}
     }
 
   script src=asset_path("boot.js")

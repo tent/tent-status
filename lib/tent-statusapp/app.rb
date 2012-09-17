@@ -83,6 +83,12 @@ module Tent
         current if session[:current_user_id] == current.id
       end
 
+      def guest_user
+        return unless defined?(TentD)
+        current = TentD::Model::User.current
+        current unless session[:current_user_id] == current.id
+      end
+
       def authenticate!
         halt 403 unless current_user
       end
@@ -208,10 +214,6 @@ module Tent
     get '/signout' do
       session.clear
       redirect full_path('/')
-    end
-
-    get '/login' do
-      authenticate!
     end
 
     # Catch all for pushState routes
