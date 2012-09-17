@@ -44,7 +44,7 @@ module Tent
       end
 
       def asset_manifest_path(asset)
-        if settings.asset_manifest?
+        if settings.respond_to?(:asset_manifest?) && settings.asset_manifest?
           settings.asset_manifest['files'].detect { |k,v| v['logical_path'] == asset }[0]
         end
       end
@@ -78,8 +78,13 @@ module Tent
       end
 
       def current_user
+        return unless defined?(TentD)
         current = TentD::Model::User.current
         current if session[:current_user_id] == current.id
+      end
+
+      def authenticate!
+        halt 403 unless current_user
       end
     end
 
@@ -122,7 +127,6 @@ module Tent
     end
 
     post '/api/posts' do
-      authenticate!
       data = JSON.parse(env['rack.input'].read)
       env['rack.input'].rewind
 
@@ -207,7 +211,7 @@ module Tent
     end
 
     get '/login' do
-      halt 403
+      authenticate!
     end
 
     # Catch all for pushState routes
