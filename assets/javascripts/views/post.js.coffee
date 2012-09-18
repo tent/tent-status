@@ -12,6 +12,7 @@ class StatusApp.Views.Post extends StatusApp.View
       post.fetch
         success: =>
           @render @context(@post, @repostContext(@post, post))
+          @post = post
     else
       @setup()
 
@@ -23,6 +24,7 @@ class StatusApp.Views.Post extends StatusApp.View
     @buttons = {
       reply: ($ '.navigation .reply', @$el)
       repost: ($ '.navigation .repost', @$el)
+      delete: ($ '.navigation .delete', @$el)
     }
 
     @buttons.reply.on 'click', (e) =>
@@ -37,11 +39,18 @@ class StatusApp.Views.Post extends StatusApp.View
       @repost()
       false
 
+    @buttons.delete.on 'click', (e)  =>
+      e.preventDefault()
+      @delete()
+      false
+
   showReply: =>
+    return if @post.get('entity') == StatusApp.current_entity
     @$reply.toggle()
 
   repost: =>
     return if @buttons.repost.hasClass 'disabled'
+    return if @post.get('entity') == StatusApp.current_entity
     shouldRepost = confirm(@buttons.repost.attr 'data-confirm')
     return unless shouldRepost
     post = new StatusApp.Models.Post {
@@ -57,6 +66,17 @@ class StatusApp.Views.Post extends StatusApp.View
       @parentView.emptyPool()
       @parentView.fetchPoolView.createPostView(post)
     post.save()
+
+  delete: =>
+    return unless @post.get('entity') == StatusApp.current_entity
+    shouldDelete = confirm(@buttons.delete.attr 'data-confirm')
+    return unless shouldDelete
+    @$el.hide()
+    @post.destroy
+      success: =>
+        @$el.remove()
+      error: =>
+        @$el.show()
 
   replyToPost: (post) =>
     return unless post.get('mentions')?.length
@@ -99,6 +119,7 @@ class StatusApp.Views.Post extends StatusApp.View
         full_published_at: StatusApp.Helpers.rawTime post.get('published_at')
       authenticated: StatusApp.authenticated
       guest_authenticated: StatusApp.guest_authenticated
+      currentUserOwnsPost: StatusApp.current_entity == post.get('entity')
     )
 
   render: (context) =>

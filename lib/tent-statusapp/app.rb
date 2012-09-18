@@ -147,6 +147,11 @@ module Tent
       json res.body
     end
 
+    delete '/api/posts/:id' do
+      res = client.post.delete(params[:id])
+      json res.body
+    end
+
     get '/api/groups' do
       res = client.group.list(params)
       json res.body

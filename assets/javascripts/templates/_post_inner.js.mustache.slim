@@ -42,12 +42,16 @@
 | {{#authenticated}}
 .row.offset1.showOnHover.navigation
   ul.nav.nav-pills
+    | {{^currentUserOwnsPost}}
     li.reply
       a href='#' Reply
     li.repost data-confirm='Repost {{name}}?'
       a href='#' Repost
+    | {{/currentUserOwnsPost}}
+    | {{#currentUserOwnsPost}}
     li.delete data-confirm='Delete Post?'
       a href='#' Delete
+    | {{/currentUserOwnsPost}}
     | {{^parent}}
     li.pull-right
       a href='{{app.url}}'
