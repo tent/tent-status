@@ -12,11 +12,9 @@
 p.span4
   | {{content.text}}
 
-.span4
-  .span1 style='margin-left:0px;' &nbsp;
-
+.span2
   | {{#authenticated}}
-  .navigation.span3.showOnHover
+  .navigation.span2.showOnHover
     ul.nav.nav-pills
       li.reply title='reply'
         a href='#'
@@ -26,7 +24,11 @@ p.span4
           i.icon-share-alt
   | {{/authenticated}}
 
-.pull-right.showOnHover
+.pull-right.span2.showOnHover
+  | {{#inReplyTo}}
+  small <a href='{{url}}'>in reply to {{name}}</a>
+  br/
+  | {{/inReplyTo}}
   small via <a href='{{app.url}}'>{{app.name}}</a>
 
 | {{#authenticated}}
