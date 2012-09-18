@@ -3,8 +3,9 @@ require 'tent-statusapp/sprockets/helpers'
 module Tent
   class StatusApp
     module SprocketsEnvironment
-      def assets
+      def self.assets
         return @assets if defined?(@assets)
+        puts 'SprocketsEnvironment loaded'
         @assets = Sprockets::Environment.new do |env|
           env.logger = Logger.new(STDOUT)
           env.context_class.class_eval do
