@@ -17,17 +17,15 @@ module Tent
     configure :development do |config|
       require 'sinatra/reloader'
       register Sinatra::Reloader
-      config.also_reload "*.rb"
     end
 
     configure do
       set :asset_manifest, JSON.parse(File.read(ENV['STATUS_ASSET_MANIFEST'])) if ENV['STATUS_ASSET_MANIFEST']
       set :cdn_url, ENV['STATUS_CDN_URL']
+      set :assets, SprocketsEnvironment.assets
     end
 
     use Rack::Csrf
-
-    include SprocketsEnvironment
 
     helpers do
       def path_prefix
@@ -35,7 +33,7 @@ module Tent
       end
 
       def asset_path(path)
-        path = asset_manifest_path(path) || assets.find_asset(path).digest_path
+        path = asset_manifest_path(path) || settings.assets.find_asset(path).digest_path
         if settings.cdn_url?
           "#{settings.cdn_url}/assets/#{path}"
         else
@@ -102,7 +100,7 @@ module Tent
       get '/assets/*' do
         new_env = env.clone
         new_env["PATH_INFO"].gsub!("/assets", "")
-        assets.call(new_env)
+        settings.assets.call(new_env)
       end
     end
 
