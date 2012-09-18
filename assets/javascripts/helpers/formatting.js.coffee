@@ -12,3 +12,6 @@ _.extend StatusApp.Helpers,
 
   rawTime: (time_or_int) ->
     moment.unix(time_or_int).format()
+
+  formatUrl: (url) ->
+    url.replace(/^\w+:\/\/([^\/]+).*?$/, '$1')

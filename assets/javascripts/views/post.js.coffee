@@ -94,6 +94,7 @@ class StatusApp.Views.Post extends StatusApp.View
       escaped:
         entity: encodeURIComponent(post.get('entity'))
       formatted:
+        entity: StatusApp.Helpers.formatUrl post.get('entity')
         published_at: StatusApp.Helpers.formatTime post.get('published_at')
         full_published_at: StatusApp.Helpers.rawTime post.get('published_at')
     )
