@@ -35,7 +35,7 @@ body
       url_root: "#{{full_path('/')}}",
       authenticated: #{{!!(current_user || guest_user)}},
       guest_authenticated: #{{!!guest_user}},
-      current_entity: "#{{current_user.entity}}"
+      current_entity: "#{{current_user ? current_user.entity : nil}}"
     }
 
   script src=asset_path("boot.js")
