@@ -1,12 +1,10 @@
 | {{#authenticated}}
 form.form-horizontal data-view='NewPostForm' method='POST'
-  div
+  .span8
     .alert.alert-error &nbsp;
 
-    textarea.span6 data-view='ExpandingTextArea' name='text' placeholder="What's on your mind?" rows='3'
+    textarea.span8 data-view='ExpandingTextArea' name='text' placeholder="What's on your mind?" rows='3'
     span.char-limit 140
   
-  div &nbsp;
-
   input.btn.btn-success.pull-right type='submit' value='Post'
 | {{/authenticated}}

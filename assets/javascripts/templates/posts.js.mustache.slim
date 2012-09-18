@@ -3,14 +3,14 @@
 .row &nbsp;
 .row
   .span3 &nbsp;
-  .well.span6 style='margin-left:0px'
-    .clearfix
+  .well.span8 style='margin-left:0px'
+    .row.clearfix
       =="{{> _new_post_form}}"
 | {{/guest_authenticated}}
 | {{/authenticated}}
 .row
   .span3 &nbsp
-  .span6.fetch-pool
+  .span8.fetch-pool
     a href='#'
       .alert.alert-info style='text-align:center;'
         span.num_new_posts 0
@@ -18,7 +18,7 @@
 
 .row
   .span3 &nbsp;
-  .span6
+  .span8
     ul.unstyled.posts
       =="{{#posts}}"
       =="{{> _post}}"

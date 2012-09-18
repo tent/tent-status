@@ -1,11 +1,10 @@
 .row
   .span3 &nbsp;
-  .span6
+  .span8.well
     ul.unstyled.posts
       | {{#post}}
-      li.post.well data-id='{{id}}'
-        .clearfix
-          | {{> _post_inner}}
+      li.post.clearfix data-id='{{id}}'
+        | {{> _post_inner}}
       | {{/post}}
       | {{#posts}}
       | {{> _post}}
