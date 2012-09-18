@@ -31,7 +31,6 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency 'hogan_assets'
   gem.add_runtime_dependency 'asset_sync', '~> 0.5.0'
   gem.add_runtime_dependency 'hashie'
-  gem.add_runtime_dependency 'sinatra-contrib'
 
   gem.add_development_dependency 'poltergeist'
   gem.add_development_dependency 'evergreen'
