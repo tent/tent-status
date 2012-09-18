@@ -14,11 +14,6 @@ module Tent
     require 'tent-statusapp/sprockets/environment'
     require 'tent-statusapp/models/user'
 
-    configure :development do |config|
-      require 'sinatra/reloader'
-      register Sinatra::Reloader
-    end
-
     configure do
       set :asset_manifest, JSON.parse(File.read(ENV['STATUS_ASSET_MANIFEST'])) if ENV['STATUS_ASSET_MANIFEST']
       set :cdn_url, ENV['STATUS_CDN_URL']
