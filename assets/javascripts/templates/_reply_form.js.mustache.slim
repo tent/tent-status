@@ -2,12 +2,12 @@
 form.form-horizontal data-view='ReplyPostForm' method='POST'
   input type='hidden' name='mentions_post_id' value='{{id}}'
   input type='hidden' name='mentions_post_entity' value='{{entity}}'
-  div
+  .span7
     .alert.alert-error &nbsp;
 
-    textarea.span5 data-view='ExpandingTextArea' name='text' placeholder="What's on your mind?" rows='3'
+    textarea.span7 data-view='ExpandingTextArea' name='text' placeholder="What's on your mind?" rows='3'
     .clearfix
       span.char-limit 140
   
-  input.btn.btn-success.pull-right type='submit' value='Post'
+    input.btn.btn-success.pull-right type='submit' value='Post'
 | {{/authenticated}}

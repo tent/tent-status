@@ -97,6 +97,8 @@ class StatusApp.Views.Post extends StatusApp.View
         entity: StatusApp.Helpers.formatUrl post.get('entity')
         published_at: StatusApp.Helpers.formatTime post.get('published_at')
         full_published_at: StatusApp.Helpers.rawTime post.get('published_at')
+      authenticated: StatusApp.authenticated
+      guest_authenticated: StatusApp.guest_authenticated
     )
 
   render: (context) =>

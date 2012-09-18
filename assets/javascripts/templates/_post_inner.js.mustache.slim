@@ -1,37 +1,68 @@
-.span1
-  | {{#avatar}}
-  img.img-rounded src='{{avatar}}' style='height:50px;width:50px;margin-right:4px;'
-  | {{/avatar}}
+.row
+  .span1
+    | {{#avatar}}
+    img.img-rounded.avatar src='{{avatar}}'
+    | {{/avatar}}
 
-.span3
-  h5 style='margin-top: 0px;'
-    a href='{{profileUrl}}' {{name}} <small>{{formatted.entity}}</small>
-.pull-right
-  a href='{{url}}' title='{{formatted.full_published_at}}' {{formatted.published_at}}
+  .span3
+    h5 style='margin-top: 0px;'
+      a.pull-right href='{{profileUrl}}' {{name}} <small>{{formatted.entity}}</small>
 
-p.span4
-  | {{content.text}}
+  .pull-right
+    a href='{{url}}' title='{{formatted.full_published_at}}' {{formatted.published_at}}
 
-.span2
-  | {{#authenticated}}
-  .navigation.span2.showOnHover
-    ul.nav.nav-pills
-      li.reply title='reply'
-        a href='#'
-          i.icon-backward
-      li.repost title='repost' data-confirm='Repost?'
-        a href='#'
-          i.icon-share-alt
-  | {{/authenticated}}
-
-.pull-right.span2.showOnHover
   | {{#inReplyTo}}
-  small <a href='{{url}}'>in reply to {{name}}</a>
-  br/
+  .span5
+    a href='{{url}}'
+      small in reply to {{name}}
   | {{/inReplyTo}}
-  small via <a href='{{app.url}}'>{{app.name}}</a>
+
+| {{#repost}}
+.row.offset0-5
+  .span7
+    | {{> _post_inner}}
+.row.offset1
+  .span6
+    | Reposted by {{parent.name}}
+    a.pull-right href='{{app.url}}'
+      small via {{app.name}}
+| {{/repost}}
+
+| {{^repost}}
+.row
+  | {{#parent}}
+  p.span6.offset1
+    | {{content.text}}
+  | {{/parent}}
+  | {{^parent}}
+  p.span7.offset1
+    | {{content.text}}
+  | {{/parent}}
 
 | {{#authenticated}}
-.reply-container.span5
-  | {{> _reply_form}}
+.row.offset1.showOnHover.navigation
+  ul.nav.nav-pills
+    li.reply
+      a href='#' Reply
+    li.repost data-confirm='Repost {{name}}?'
+      a href='#' Repost
+    li.delete data-confirm='Delete Post?'
+      a href='#' Delete
+    | {{^parent}}
+    li.pull-right
+      a href='{{app.url}}'
+        small via {{app.name}}
+    | {{/parent}}
 | {{/authenticated}}
+
+| {{#authenticated}}
+| {{^parent}}
+.row.offset0-5.reply-container.clearfix
+  | {{> _reply_form}}
+| {{/parent}}
+| {{#parent}}
+.row.reply-container.clearfix
+  | {{> _reply_form}}
+| {{/parent}}
+| {{/authenticated}}
+| {{/repost}}
