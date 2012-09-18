@@ -1,43 +1,35 @@
-h4
-  =="{{#avatar}}"
+.span1
+  | {{#avatar}}
   img.img-rounded src='{{avatar}}' style='height:50px;width:50px;margin-right:4px;'
-  =="{{/avatar}}"
-  a href='{{{entity}}}' {{name}}
-  small
-    | &nbsp;
-    a href='{{profileUrl}}' view all
-  small &nbsp; via <a href='{{app.url}}'>#{"{{app.name}}"}</a>
-  | {{#inReplyTo}}
-  small.pull-right
-    a href='{{url}}' in reply to {{name}}
-  | {{/inReplyTo}}
-  | {{#parent}}
-  small.pull-right
-    a href='{{url}}' reposted by {{name}}
-  | {{/parent}}
-=="{{content.text}}"
-.pull-right
-  =="{{#licenses}}"
-  a href="{{url}}" <span class='label'>#{"{{name}}"}<span>
-  =="{{/licenses}}"
-  | {{^permissions.public}}
-  span.label.label-warning Private
-  | {{/permissions.public}}
-| {{#authenticated}}
-.clearfix.navigation
-  ul.nav.nav-pills
-    li
-      a href='{{url}}' title='{{formatted.full_published_at}}' {{formatted.published_at}}
-    | {{#shouldShowReply}}
-    li.reply
-      a href='#' Reply
-    li.repost data-confirm='Repost?'
-      a href='#' Repost
-    | {{/shouldShowReply}}
+  | {{/avatar}}
 
-.reply-container
-  | {{#shouldShowReply}}
-  .well
-    | {{> _reply_form}}
-  | {{/shouldShowReply}}
+.span3
+  h5 style='margin-top: 0px;'
+    a href='{{profileUrl}}' {{name}} <small>{{formatted.entity}}</small>
+.pull-right
+  a href='{{url}}' title='{{formatted.full_published_at}}' {{formatted.published_at}}
+
+p.span4
+  | {{content.text}}
+
+.span4
+  .span1 style='margin-left:0px;' &nbsp;
+
+  | {{#authenticated}}
+  .navigation.span3.showOnHover
+    ul.nav.nav-pills
+      li.reply title='reply'
+        a href='#'
+          i.icon-backward
+      li.repost title='repost' data-confirm='Repost?'
+        a href='#'
+          i.icon-share-alt
+  | {{/authenticated}}
+
+.pull-right.showOnHover
+  small via <a href='{{app.url}}'>{{app.name}}</a>
+
+| {{#authenticated}}
+.reply-container.span5
+  | {{> _reply_form}}
 | {{/authenticated}}

@@ -2,10 +2,11 @@
   .span3 &nbsp;
   .span6
     ul.unstyled.posts
-      =="{{#post}}"
-      li.post data-id='{{id}}'
-        .well =="{{> _post_inner}}"
-      =="{{/post}}"
-      =="{{#posts}}"
-      =="{{> _post}}"
-      =="{{/posts}}"
+      | {{#post}}
+      li.post.well data-id='{{id}}'
+        .clearfix
+          | {{> _post_inner}}
+      | {{/post}}
+      | {{#posts}}
+      | {{> _post}}
+      | {{/posts}}
