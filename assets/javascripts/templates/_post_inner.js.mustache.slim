@@ -6,15 +6,17 @@
 
   .span3
     h5 style='margin-top: 0px;'
-      a.pull-right href='{{profileUrl}}' {{name}} <small>{{formatted.entity}}</small>
+      a.pull-right href='{{entity}}' {{name}} <small>{{formatted.entity}}</small>
 
   .pull-right
     a href='{{url}}' title='{{formatted.full_published_at}}' {{formatted.published_at}}
 
   | {{#inReplyTo}}
+  | {{#authenticated}}
   .span5
     a href='{{url}}'
       small in reply to {{name}}
+  | {{/authenticated}}
   | {{/inReplyTo}}
 
 | {{#repost}}

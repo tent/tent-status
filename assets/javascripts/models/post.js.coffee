@@ -3,7 +3,7 @@ class StatusApp.Models.Post extends Backbone.Model
   url: => "#{StatusApp.api_root}/posts#{ if @id then "/#{@id}" else ''}"
 
   isRepost: =>
-    !!@get('type').match(/repost/)
+    !!(@get('type') || '').match(/repost/)
 
   entity: =>
     return StatusApp.Models.profile if StatusApp.Models.profile.entity() == @get('entity')
