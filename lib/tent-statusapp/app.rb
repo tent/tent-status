@@ -155,8 +155,6 @@ module Tent
         }
       }
 
-      puts data.inspect
-
       res = client.post.create(data)
 
       json res.body
