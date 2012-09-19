@@ -1,15 +1,15 @@
 .row
   .span1
     | {{#avatar}}
-    img.img-rounded.avatar src='{{avatar}}'
+    img.img-rounded.pull-left.avatar src='{{avatar}}'
     | {{/avatar}}
 
-  .span3
-    h5 style='margin-top: 0px;'
-      a.pull-right href='{{entity}}' {{name}} <small>{{formatted.entity}}</small>
+  .span3.no-offset
+    h5 style='margin: 0px;'
+      a href='{{entity}}' {{name}} <small>{{formatted.entity}}</small>
 
   .pull-right
-    a href='{{url}}' title='{{formatted.full_published_at}}' {{formatted.published_at}}
+    a href='{{url}}' class='{{#parent}}gray{{/parent}}' title='{{formatted.full_published_at}}' {{formatted.published_at}}
 
   | {{#inReplyTo}}
   | {{#authenticated}}
@@ -19,30 +19,29 @@
   | {{/authenticated}}
   | {{/inReplyTo}}
 
-| {{#repost}}
-| {{#authenticated}}
-.row.offset0-5
-  .span7
-    | {{> _post_inner}}
-.row.offset1
-  .span6
-    | Reposted by {{parent.name}}
-    a.pull-right href='{{app.url}}'
-      small via {{app.name}}
-| {{/authenticated}}
-| {{/repost}}
-
-| {{^repost}}
-.row
+  | {{^repost}}
   | {{#parent}}
-  p.span6.offset1
+  p.span5.no-offset
     | {{content.text}}
   | {{/parent}}
   | {{^parent}}
-  p.span7.offset1
+  p.span6.no-offset
     | {{content.text}}
   | {{/parent}}
+  | {{/repost}}
 
+  | {{#repost}}
+  | {{#authenticated}}
+  .span7.repost.no-offset style='width:560px;'
+    | {{> _post_inner}}
+  .span6.offset1
+    | Reposted by {{parent.name}}
+  a.pull-right
+    small via {{app.name}}
+  | {{/authenticated}}
+  | {{/repost}}
+
+| {{^repost}}
 | {{#authenticated}}
 .row.offset1.showOnHover.navigation
   ul.nav.nav-pills
@@ -58,7 +57,7 @@
     | {{/currentUserOwnsPost}}
     | {{^parent}}
     li.pull-right
-      a href='{{app.url}}'
+      a
         small via {{app.name}}
     | {{/parent}}
 | {{/authenticated}}
