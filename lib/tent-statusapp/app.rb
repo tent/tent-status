@@ -8,6 +8,7 @@ require 'hashie'
 require 'uri'
 require 'slim'
 require 'hogan_assets'
+require 'oj'
 
 module Tent
   class StatusApp < Sinatra::Base
@@ -15,7 +16,7 @@ module Tent
     require 'tent-statusapp/models/user'
 
     configure do
-      set :asset_manifest, JSON.parse(File.read(ENV['STATUS_ASSET_MANIFEST'])) if ENV['STATUS_ASSET_MANIFEST']
+      set :asset_manifest, Oj.load(File.read(ENV['STATUS_ASSET_MANIFEST'])) if ENV['STATUS_ASSET_MANIFEST']
       set :cdn_url, ENV['STATUS_CDN_URL']
       set :assets, SprocketsEnvironment.assets
     end
