@@ -8,9 +8,12 @@ class StatusApp.Views.Post extends StatusApp.View
     @post = @parentView.posts.get(@postId)
 
     if @post?.isRepost() && @$el.attr('data-post-found') != 'yes'
+      @$el.hide()
       post = new StatusApp.Models.Post { id: @post.get('content')['id'] }
       post.fetch
         success: =>
+          return unless post.entity()
+          @$el.show()
           @render @context(@post, @repostContext(@post, post))
           @post = post
     else
@@ -102,6 +105,7 @@ class StatusApp.Views.Post extends StatusApp.View
 
   context: (post, repostContext) =>
     _.extend( post.toJSON(),
+      isValid: !!post.entity()
       shouldShowReply: true
       isRepost: post.isRepost()
       repost: repostContext || @repostContext(post)

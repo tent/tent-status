@@ -1,3 +1,4 @@
+| {{#isValid}}
 | {{^isRepost}}
 li.post.clearfix data-id='{{id}}' data-parent-id='{{parent.id}}' data-post-found='{{#parent}}yes{{/parent}}'
   | {{> _post_inner}}
@@ -6,3 +7,4 @@ li.post.clearfix data-id='{{id}}' data-parent-id='{{parent.id}}' data-post-found
 li.post.clearfix data-parent-id='{{id}}' data-post-found='no'
   | {{> _post_inner}}
 | {{/isRepost}}
+| {{/isValid}}
