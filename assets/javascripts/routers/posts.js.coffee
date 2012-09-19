@@ -8,6 +8,9 @@ StatusApp.Routers.posts = new class PostsRouter extends StatusApp.Router
     "entities/:entity/:post_id" : "conversation"
 
   index: =>
+    unless StatusApp.current_entity == StatusApp.domain_entity
+      @profile(encodeURIComponent(StatusApp.domain_entity))
+      return
     @view = new StatusApp.Views.Posts
     window.view = @view
     @setCurrentAction 'index', =>
