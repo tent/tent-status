@@ -82,6 +82,10 @@ module Tent
         current unless session[:current_user_id] == current.id
       end
 
+      def domain_entity
+        env['rack.url_scheme'] + '://' + env['HTTP_HOST']
+      end
+
       def authenticate!
         halt 403 unless current_user
       end
