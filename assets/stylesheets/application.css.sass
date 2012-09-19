@@ -3,6 +3,11 @@
 //= require chosen
 //= require_self
 
+@mixin rounded($amount)
+  -webkit-border-radius: $amount
+  -moz-border-radius: $amount
+  border-radius: $amount
+
 textarea::-webkit-input-placeholder
   padding-top: 20px
   text-align: center
@@ -35,16 +40,14 @@ form textarea
 
 li.post
   border-bottom: 1px solid #eee
-  margin-bottom: 18px
+  margin-bottom: 23px
   padding-bottom: 19px
   &:hover
-    margin-bottom: 0px
+    margin-bottom: 8px
     padding-bottom: 0px
     background-color: #f5f5f5
     border: 0px
-    -webkit-border-radius: 4px
-    -moz-border-radius: 4px
-    border-radius: 4px
+    @include rounded(4px)
     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05)
     -moz-box-shadow:    inset 0 1px 1px rgba(0, 0, 0, 0.05)
     box-shadow:         inset 0 1px 1px rgba(0, 0, 0, 0.05)
@@ -61,11 +64,22 @@ li.post
     .showOnHover
       display: block
 
+  div.repost
+    margin-top: 6px
+    @include rounded(4px)
+    background-color: #eee
+  &:hover
+    div.repost
+      margin-top: 7px
+
 .avatar-large
   max-width: 100px
   max-height: 150px
   min-width: 100px
   min-height: 100px
+
+.gray
+  color: gray
 
 h2.condensed
   line-height: 24px
