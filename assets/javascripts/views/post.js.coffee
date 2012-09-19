@@ -105,25 +105,25 @@ class StatusApp.Views.Post extends StatusApp.View
 
   context: (post, repostContext) =>
     _.extend( post.toJSON(),
-      isValid: !!post.entity()
+      isValid: !!post.entity?()
       shouldShowReply: true
-      isRepost: post.isRepost()
+      isRepost: post.isRepost?()
       repost: repostContext || @repostContext(post)
       inReplyTo: @replyToPost(post)
-      url: "#{StatusApp.url_root}entities/#{encodeURIComponent(post.get('entity'))}/#{post.get('id')}"
-      profileUrl: "#{StatusApp.url_root}entities/#{encodeURIComponent(post.get('entity'))}"
-      name: post.name()
-      avatar: post.avatar()
-      licenses: _.map post.get('licenses'), (url) => { name: @licenseName(url), url: url }
+      url: "#{StatusApp.url_root}entities/#{encodeURIComponent(post.get?('entity'))}/#{post.get('id')}"
+      profileUrl: "#{StatusApp.url_root}entities/#{encodeURIComponent(post.get?('entity'))}"
+      name: post.name?()
+      avatar: post.avatar?()
+      licenses: _.map post.get?('licenses'), (url) => { name: @licenseName(url), url: url }
       escaped:
-        entity: encodeURIComponent(post.get('entity'))
+        entity: encodeURIComponent(post.get?('entity'))
       formatted:
-        entity: StatusApp.Helpers.formatUrl post.get('entity')
-        published_at: StatusApp.Helpers.formatTime post.get('published_at')
-        full_published_at: StatusApp.Helpers.rawTime post.get('published_at')
+        entity: StatusApp.Helpers.formatUrl post.get?('entity')
+        published_at: StatusApp.Helpers.formatTime post.get?('published_at')
+        full_published_at: StatusApp.Helpers.rawTime post.get?('published_at')
       authenticated: StatusApp.authenticated
       guest_authenticated: StatusApp.guest_authenticated
-      currentUserOwnsPost: StatusApp.current_entity == post.get('entity')
+      currentUserOwnsPost: StatusApp.current_entity == post.get?('entity')
     )
 
   render: (context) =>

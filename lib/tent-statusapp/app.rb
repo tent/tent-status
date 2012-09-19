@@ -83,7 +83,7 @@ module Tent
         user = TentD::Model::User.get(session[:current_user_id])
         current = TentD::Model::User.current
         return if session[:current_user_id] == current.id
-        user if session[:current_user_id] == user.id
+        user if user && (session[:current_user_id] == user.id)
       end
 
       def domain_entity
