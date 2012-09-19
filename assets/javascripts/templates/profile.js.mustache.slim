@@ -2,9 +2,26 @@
   .span3 &nbsp;
   .span8
     | {{#profile}}
-    h1.page-header
-      img.img-rounded src='{{avatar}}' style='width:100px;height:100px' &nbsp;
-      a href='{{{entity}}}' {{name}}
+    .page-header
+      .row
+        .span2
+          img.avatar-large.img-rounded src='{{avatar}}'
+        .span6.no-offset
+          h2.condensed
+            | {{#nameIsEntity}}
+            a href='{{{entity}}}' {{name}}
+            | {{/nameIsEntity}}
+            | {{^nameIsEntity}}
+            | {{name}}
+            br/
+            a href='{{{entity}}}'
+              small {{formatted.entity}}
+            | {{/nameIsEntity}}
+          | {{#bio}}
+          .span6.no-offset
+            p {{bio}}
+          | {{/bio}}
+      .row.profile-stats data-view='ProfileStats'
     | {{/profile}}
 
 .row

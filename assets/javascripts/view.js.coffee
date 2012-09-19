@@ -131,7 +131,10 @@ class StatusApp.View extends Backbone.View
     }, @context()
 
     html = @template.render(context, @partials)
-    @container?.render(html)
-    @trigger 'ready'
-    true
+    if @container
+      @container.render(html)
+      @trigger 'ready'
+      true
+    else
+      html
 

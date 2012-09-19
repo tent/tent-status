@@ -108,6 +108,13 @@ module Tent
       json res.body
     end
 
+    get '/api/posts/count' do
+      res = client.post.count params.merge(
+        :types => ["https://tent.io/types/post/status/v0.1.0", "https://tent.io/types/post/repost/v0.1.0"]
+      )
+      json res.body
+    end
+
     get '/api/posts' do
       res = client.post.list params.merge(
         :types => ["https://tent.io/types/post/status/v0.1.0", "https://tent.io/types/post/repost/v0.1.0"]
@@ -152,6 +159,11 @@ module Tent
       json res.body
     end
 
+    get '/api/groups/count' do
+      res = client.group.count(params)
+      json res.body
+    end
+
     get '/api/groups' do
       res = client.group.list(params)
       json res.body
@@ -162,6 +174,11 @@ module Tent
       env['rack.input'].rewind
 
       res = client.group.create(data)
+      json res.body
+    end
+
+    get '/api/followers/count' do
+      res = client.follower.count(params)
       json res.body
     end
 
@@ -180,6 +197,11 @@ module Tent
 
     delete '/api/followers/:id' do
       res = client.follower.delete(params[:id])
+      json res.body
+    end
+
+    get '/api/followings/count' do
+      res = client.following.count(params)
       json res.body
     end
 

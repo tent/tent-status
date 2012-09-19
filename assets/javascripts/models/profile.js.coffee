@@ -11,8 +11,11 @@ class Profile extends Backbone.Model
   entity: =>
     @core_profile()?['entity']
 
+  bio: =>
+    @basic_profile()?['bio']
+
   name: =>
-    @basic_profile()?['name'] || @core_profile()?['entity']
+    @basic_profile()?['name'] || StatusApp.Helpers.formatUrl(@core_profile()?['entity'] || '')
 
   avatar: =>
     @basic_profile()?['avatar_url']

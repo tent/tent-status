@@ -18,8 +18,12 @@ class StatusApp.Views.Profile extends StatusApp.Views.Posts
     _.extend super,
       profile: _.extend( @currentProfile.toJSON(),
         name: @currentProfile.name()
+        bio: @currentProfile.bio()
+        nameIsEntity: @currentProfile.name() == StatusApp.Helpers.formatUrl(@currentProfile.entity())
         avatar: @currentProfile.avatar()
         entity: @currentProfile.entity()
         encoded:
           entity: encodeURIComponent(@currentProfile.entity())
+        formatted:
+          entity: StatusApp.Helpers.formatUrl @currentProfile.entity()
       )
