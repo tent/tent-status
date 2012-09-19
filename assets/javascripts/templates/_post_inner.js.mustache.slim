@@ -1,12 +1,13 @@
 .row
   .span1
     | {{#avatar}}
+    a href='{{entity}}'
     img.img-rounded.pull-left.avatar src='{{avatar}}'
     | {{/avatar}}
 
   .span3.no-offset
     h5 style='margin: 0px;'
-      a href='{{entity}}' {{name}} <small>{{formatted.entity}}</small>
+      a href='{{entity}}' {{^nameIsEntity}}{{name}} <small>{{formatted.entity}}</small>{{/nameIsEntity}}
 
   .pull-right
     a href='{{url}}' class='{{#parent}}gray{{/parent}}' title='{{formatted.full_published_at}}' {{formatted.published_at}}
@@ -36,30 +37,23 @@
     | {{> _post_inner}}
   .span6.offset1
     | Reposted by {{parent.name}}
-  a.pull-right
-    small via {{app.name}}
+  small.pull-right via {{app.name}}
   | {{/authenticated}}
   | {{/repost}}
 
 | {{^repost}}
 | {{#authenticated}}
-.row.offset1.showOnHover.navigation
-  ul.nav.nav-pills
-    | {{^currentUserOwnsPost}}
-    li.reply
-      a href='#' Reply
-    li.repost data-confirm='Repost {{name}}?'
-      a href='#' Repost
-    | {{/currentUserOwnsPost}}
-    | {{#currentUserOwnsPost}}
-    li.delete data-confirm='Delete Post?'
-      a href='#' Delete
-    | {{/currentUserOwnsPost}}
-    | {{^parent}}
-    li.pull-right
-      a
-        small via {{app.name}}
-    | {{/parent}}
+.row.offset0-6.showOnHover.navigation
+  | {{^currentUserOwnsPost}}
+  a.reply href='#' Reply
+  a.repost data-confirm='Repost {{nmae}}?' href='#' Repost
+  | {{/currentUserOwnsPost}}
+  | {{#currentUserOwnsPost}}
+  a.delete data-confirm='Delete Post?' href='#' Delete
+  | {{/currentUserOwnsPost}}
+  | {{^parent}}
+  small.pull-right via {{app.name}}
+  | {{/parent}}
 | {{/authenticated}}
 
 | {{#authenticated}}
