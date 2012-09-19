@@ -107,6 +107,9 @@ class StatusApp.Views.NewPostForm extends Backbone.View
     )
     delete data.mentions
 
+    for entity in data.text.match(/\^(\S+)/g)
+      mentions.push { entity: entity.replace(/^\^/, '') }
+
     data.mentions = mentions if mentions.length
     data
 
