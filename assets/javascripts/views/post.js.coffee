@@ -114,7 +114,7 @@ class StatusApp.Views.Post extends StatusApp.View
       profileUrl: "#{StatusApp.url_root}entities/#{encodeURIComponent(post.get('entity'))}"
       name: post.name()
       avatar: post.avatar()
-      licenses: _.map (post.get('licenses') || []), (url) => { name: @licenseName(url), url: url }
+      licenses: _.map( post.get('licenses') || [], (url) => { name: @licenseName(url), url: url } )
       escaped:
         entity: encodeURIComponent(post.get('entity'))
       formatted:
