@@ -20,6 +20,7 @@
   | {{/inReplyTo}}
 
 | {{#repost}}
+| {{#authenticated}}
 .row.offset0-5
   .span7
     | {{> _post_inner}}
@@ -28,6 +29,7 @@
     | Reposted by {{parent.name}}
     a.pull-right href='{{app.url}}'
       small via {{app.name}}
+| {{/authenticated}}
 | {{/repost}}
 
 | {{^repost}}
