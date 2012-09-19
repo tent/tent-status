@@ -78,8 +78,11 @@ module Tent
 
       def guest_user
         return unless defined?(TentD)
+        return unless session[:current_user_id]
+        user = TentD::Model::User.get(session[:current_user_id])
         current = TentD::Model::User.current
-        current unless session[:current_user_id] == current.id
+        return if session[:current_user_id] == current.id
+        user if session[:current_user_id] == user.id
       end
 
       def domain_entity
