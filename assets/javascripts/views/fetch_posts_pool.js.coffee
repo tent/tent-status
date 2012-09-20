@@ -1,4 +1,4 @@
-class StatusApp.Views.FetchPostsPool extends Backbone.View
+class TentStatus.Views.FetchPostsPool extends Backbone.View
   initialize: (options = {}) ->
     @parentView = options.parentView
 
@@ -8,7 +8,7 @@ class StatusApp.Views.FetchPostsPool extends Backbone.View
     @$postsList = ($ 'ul.posts', @parentView.container.$el)
 
     @sinceId = @parentView.posts.first()?.get('id')
-    @pool = new StatusApp.FetchPool( new StatusApp.Collections.Posts, { sinceId: @sinceId })
+    @pool = new TentStatus.FetchPool( new TentStatus.Collections.Posts, { sinceId: @sinceId })
     @pool.on 'fetch:success', @update
 
     @fetchDelay = 3000
@@ -22,8 +22,8 @@ class StatusApp.Views.FetchPostsPool extends Backbone.View
       false
     
   setFetchInterval: (interval=@fetchDelay+@fetchDelayOffset) =>
-    clearInterval StatusApp._fetchPostsPoolInterval
-    StatusApp._fetchPostsPoolInterval = setInterval @pool.fetch, interval
+    clearInterval TentStatus._fetchPostsPoolInterval
+    TentStatus._fetchPostsPoolInterval = setInterval @pool.fetch, interval
 
   update: =>
     lastSinceId = @sinceId
@@ -46,7 +46,7 @@ class StatusApp.Views.FetchPostsPool extends Backbone.View
     for i in [0...@numNewPosts]
       post = @pool.collection.shift()
       @parentView.posts.unshift(post)
-      StatusApp.Collections.posts.unshift(post)
+      TentStatus.Collections.posts.unshift(post)
       # @createPostView(post)
     @parentView.render()
     @pool.sinceId = @parentView.posts.first()?.get('id') || @pool.sinceId
@@ -56,7 +56,7 @@ class StatusApp.Views.FetchPostsPool extends Backbone.View
 
   createPostView: (post) =>
     el = ($ '<li>').prependTo(@$postsList)
-    view = new StatusApp.Views.Post el: el, parentView: @parentView
+    view = new TentStatus.Views.Post el: el, parentView: @parentView
     view.post = post
     context = view.context(post)
     view.render(context)

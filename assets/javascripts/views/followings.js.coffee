@@ -1,11 +1,11 @@
-class StatusApp.Views.Followings extends StatusApp.View
+class TentStatus.Views.Followings extends TentStatus.View
   templateName: 'followings'
   partialNames: ['_following']
 
   dependentRenderAttributes: ['followings', 'groups']
 
   initialize: ->
-    @container = StatusApp.Views.container
+    @container = TentStatus.Views.container
     super
     @on 'ready', @initAutoPaginate
 

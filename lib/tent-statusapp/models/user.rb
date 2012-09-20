@@ -2,7 +2,7 @@ require 'hashie'
 require 'data_mapper'
 
 module Tent
-  class StatusApp
+  class Status
     class User
       include DataMapper::Resource
 

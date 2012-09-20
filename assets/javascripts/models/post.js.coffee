@@ -1,14 +1,14 @@
-class StatusApp.Models.Post extends Backbone.Model
+class TentStatus.Models.Post extends Backbone.Model
   model: 'post'
-  url: => "#{StatusApp.api_root}/posts#{ if @id then "/#{@id}" else ''}"
+  url: => "#{TentStatus.api_root}/posts#{ if @id then "/#{@id}" else ''}"
 
   isRepost: =>
     !!(@get('type') || '').match(/repost/)
 
   entity: =>
-    return StatusApp.Models.profile if StatusApp.Models.profile.entity() == @get('entity')
-    (StatusApp.Collections.followers.find (follower) => follower.get('entity') == @get('entity')) ||
-    (StatusApp.Collections.followings.find (following) => following.get('entity') == @get('entity'))
+    return TentStatus.Models.profile if TentStatus.Models.profile.entity() == @get('entity')
+    (TentStatus.Collections.followers.find (follower) => follower.get('entity') == @get('entity')) ||
+    (TentStatus.Collections.followings.find (following) => following.get('entity') == @get('entity'))
 
   name: =>
     @entity()?.name() || @get('entity')

@@ -1,4 +1,4 @@
-class StatusApp.Views.Conversation extends StatusApp.Views.Posts
+class TentStatus.Views.Conversation extends TentStatus.Views.Posts
   templateName: 'conversation'
 
   initialize: ->

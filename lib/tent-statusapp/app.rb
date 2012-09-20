@@ -11,9 +11,9 @@ require 'hogan_assets'
 require 'oj'
 
 module Tent
-  class StatusApp < Sinatra::Base
-    require 'tent-statusapp/sprockets/environment'
-    require 'tent-statusapp/models/user'
+  class Status < Sinatra::Base
+    require 'tent-status/sprockets/environment'
+    require 'tent-status/models/user'
 
     configure do
       set :asset_manifest, Oj.load(File.read(ENV['STATUS_ASSET_MANIFEST'])) if ENV['STATUS_ASSET_MANIFEST']

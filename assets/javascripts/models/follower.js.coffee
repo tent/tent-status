@@ -1,6 +1,6 @@
-class StatusApp.Models.Follower extends Backbone.Model
+class TentStatus.Models.Follower extends Backbone.Model
   model: 'follower'
-  url: => "#{StatusApp.api_root}/followers#{ if @id then "/#{@id}" else ''}"
+  url: => "#{TentStatus.api_root}/followers#{ if @id then "/#{@id}" else ''}"
 
   initialize: ->
     @on 'sync', @updateProfile

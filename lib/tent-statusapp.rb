@@ -1,7 +1,6 @@
-require "tent-statusapp/version"
+require "tent-status/version"
 
 module Tent
-  module Statusapp
-    # Your code goes here...
+  module Status
   end
 end

@@ -1,4 +1,4 @@
-class StatusApp.FetchPool extends StatusApp.Paginator
+class TentStatus.FetchPool extends TentStatus.Paginator
   constructor: (@collection, @options = {}) ->
     super
     @sinceId = @options.sinceId

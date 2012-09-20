@@ -18,13 +18,13 @@
 #= require_tree ./models
 #= require_tree ./collections
 
-@StatusApp ?= {
+@TentStatus ?= {
   api_root: '/api'
   url_root: '/'
   authenticated: false
   guest_authenticated: false
 }
-_.extend @StatusApp, Backbone.Events, {
+_.extend @TentStatus, Backbone.Events, {
   Views: {}
   Models: {}
   Collections: {}
@@ -54,7 +54,7 @@ _.extend @StatusApp, Backbone.Events, {
   ## Run Backbone
   backboneConfig: {
     pushState: true
-    root: StatusApp.url_root
+    root: TentStatus.url_root
   }
   run: ->
     Backbone.history?.start @backboneConfig

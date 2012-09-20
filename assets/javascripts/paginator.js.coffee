@@ -1,6 +1,6 @@
-class StatusApp.Paginator
+class TentStatus.Paginator
   sinceId: null
-  limit: StatusApp.PER_PAGE || 50
+  limit: TentStatus.PER_PAGE || 50
   onLastPage: false
   isPaginator: true
 
@@ -64,4 +64,4 @@ class StatusApp.Paginator
   first: => @collection.first(arguments...)
   last: => @collection.last(arguments...)
 
-_.extend StatusApp.Paginator::, Backbone.Events
+_.extend TentStatus.Paginator::, Backbone.Events

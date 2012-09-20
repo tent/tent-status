@@ -1,14 +1,14 @@
-class StatusApp.Views.ProfileStats extends StatusApp.View
+class TentStatus.Views.ProfileStats extends TentStatus.View
   templateName: '_profile_stats'
 
   initialize: (options) ->
     super
     @container = null
 
-    api_root = if StatusApp.guest_authenticated
-      StatusApp.tent_api_root
+    api_root = if TentStatus.guest_authenticated
+      TentStatus.tent_api_root
     else
-      StatusApp.api_root
+      TentStatus.api_root
 
     @countKeys = ['postsCount', 'followingsCount', 'followersCount']
     for key in @countKeys

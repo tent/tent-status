@@ -1,4 +1,4 @@
-class StatusApp.Views.ReplyPostForm extends StatusApp.Views.NewPostForm
+class TentStatus.Views.ReplyPostForm extends TentStatus.Views.NewPostForm
   initialize: (options = {}) ->
     super
 
@@ -11,11 +11,11 @@ class StatusApp.Views.ReplyPostForm extends StatusApp.Views.NewPostForm
     data = @getData()
     return false unless @validate data
 
-    post = new StatusApp.Models.Post data
+    post = new TentStatus.Models.Post data
     post.once 'sync', =>
       window.location.reload() unless @parentView.emptyPool
       @parentView.emptyPool()
-      StatusApp.Collections.posts.unshift(post)
+      TentStatus.Collections.posts.unshift(post)
       @parentView.posts.unshift(post)
       @parentView.render()
     post.save()

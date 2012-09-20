@@ -1,4 +1,4 @@
-class StatusApp.Views.Post extends StatusApp.View
+class TentStatus.Views.Post extends TentStatus.View
   initialize: (options = {}) ->
     @parentView = options.parentView
     @template = @parentView?.partials['_post']
@@ -9,7 +9,7 @@ class StatusApp.Views.Post extends StatusApp.View
 
     if @post?.isRepost() && @$el.attr('data-post-found') != 'yes'
       @$el.hide()
-      post = new StatusApp.Models.Post { id: @post.get('content')['id'] }
+      post = new TentStatus.Models.Post { id: @post.get('content')['id'] }
       post.fetch
         success: =>
           return unless post.entity()
@@ -48,15 +48,15 @@ class StatusApp.Views.Post extends StatusApp.View
       false
 
   showReply: =>
-    return if @post.get('entity') == StatusApp.current_entity
+    return if @post.get('entity') == TentStatus.current_entity
     @$reply.toggle()
 
   repost: =>
     return if @buttons.repost.hasClass 'disabled'
-    return if @post.get('entity') == StatusApp.current_entity
+    return if @post.get('entity') == TentStatus.current_entity
     shouldRepost = confirm(@buttons.repost.attr 'data-confirm')
     return unless shouldRepost
-    post = new StatusApp.Models.Post {
+    post = new TentStatus.Models.Post {
       type: "https://tent.io/types/post/repost/v0.1.0"
       content:
         entity: @post.get('entity')
@@ -64,14 +64,14 @@ class StatusApp.Views.Post extends StatusApp.View
     }
     post.once 'sync', =>
       @buttons.repost.addClass 'disabled'
-      StatusApp.Collections.posts.unshift(post)
+      TentStatus.Collections.posts.unshift(post)
       @parentView.posts.unshift(post)
       @parentView.emptyPool()
       @parentView.fetchPoolView.createPostView(post)
     post.save()
 
   delete: =>
-    return unless @post.get('entity') == StatusApp.current_entity
+    return unless @post.get('entity') == TentStatus.current_entity
     shouldDelete = confirm(@buttons.delete.attr 'data-confirm')
     return unless shouldDelete
     @$el.hide()
@@ -85,7 +85,7 @@ class StatusApp.Views.Post extends StatusApp.View
     return unless post.get('mentions')?.length
     for mention in post.get('mentions')
       if mention.entity and mention.post
-        mention.url = "#{StatusApp.url_root}entities/#{encodeURIComponent(mention.entity)}/#{mention.post}"
+        mention.url = "#{TentStatus.url_root}entities/#{encodeURIComponent(mention.entity)}/#{mention.post}"
         mention.name = (_.find @parentView.follows(), (follow) => follow.get('entity') == mention.entity)?.name()
         mention.name ?= (_.find [@parentView.profile], (profile) => profile.entity() == mention.entity)?.name()
         return mention
@@ -110,20 +110,20 @@ class StatusApp.Views.Post extends StatusApp.View
       isRepost: post.isRepost()
       repost: repostContext || @repostContext(post)
       inReplyTo: @replyToPost(post)
-      url: "#{StatusApp.url_root}entities/#{encodeURIComponent(post.get('entity'))}/#{post.get('id')}"
-      profileUrl: "#{StatusApp.url_root}entities/#{encodeURIComponent(post.get('entity'))}"
+      url: "#{TentStatus.url_root}entities/#{encodeURIComponent(post.get('entity'))}/#{post.get('id')}"
+      profileUrl: "#{TentStatus.url_root}entities/#{encodeURIComponent(post.get('entity'))}"
       name: post.name()
       avatar: post.avatar()
       licenses: _.map( post.get('licenses') || [], (url) => { name: @licenseName(url), url: url } )
       escaped:
         entity: encodeURIComponent(post.get('entity'))
       formatted:
-        entity: StatusApp.Helpers.formatUrl post.get('entity')
-        published_at: StatusApp.Helpers.formatTime post.get('published_at')
-        full_published_at: StatusApp.Helpers.rawTime post.get('published_at')
-      authenticated: StatusApp.authenticated
-      guest_authenticated: StatusApp.guest_authenticated
-      currentUserOwnsPost: StatusApp.current_entity == post.get('entity')
+        entity: TentStatus.Helpers.formatUrl post.get('entity')
+        published_at: TentStatus.Helpers.formatTime post.get('published_at')
+        full_published_at: TentStatus.Helpers.rawTime post.get('published_at')
+      authenticated: TentStatus.authenticated
+      guest_authenticated: TentStatus.guest_authenticated
+      currentUserOwnsPost: TentStatus.current_entity == post.get('entity')
     )
 
   render: (context) =>

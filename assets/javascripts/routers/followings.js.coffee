@@ -1,14 +1,14 @@
-StatusApp.Routers.followings = new class FollowingsRouter extends StatusApp.Router
+TentStatus.Routers.followings = new class FollowingsRouter extends TentStatus.Router
   routerKey: 'followings'
 
   routes:
     "followings" : "index"
 
   index: =>
-    return if StatusApp.guest_authenticated || !StatusApp.authenticated
-    @view = new StatusApp.Views.Followings
+    return if TentStatus.guest_authenticated || !TentStatus.authenticated
+    @view = new TentStatus.Views.Followings
     @setCurrentAction 'index', =>
       @fetchData 'groups', =>
-        { groups: new StatusApp.Paginator( StatusApp.Collections.groups ), loaded: false }
+        { groups: new TentStatus.Paginator( TentStatus.Collections.groups ), loaded: false }
       @fetchData 'followings', =>
-        { followings: new StatusApp.Paginator( StatusApp.Collections.followings ), loaded: false }
+        { followings: new TentStatus.Paginator( TentStatus.Collections.followings ), loaded: false }

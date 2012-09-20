@@ -1,6 +1,6 @@
 class Profile extends Backbone.Model
   model: 'profile'
-  url: => "#{StatusApp.api_root}/profile"
+  url: => "#{TentStatus.api_root}/profile"
 
   core_profile: =>
     @get('https://tent.io/types/info/core/v0.1.0')
@@ -15,13 +15,13 @@ class Profile extends Backbone.Model
     @basic_profile()?['bio']
 
   name: =>
-    @basic_profile()?['name'] || StatusApp.Helpers.formatUrl(@core_profile()?['entity'] || '')
+    @basic_profile()?['name'] || TentStatus.Helpers.formatUrl(@core_profile()?['entity'] || '')
 
   avatar: =>
     @basic_profile()?['avatar_url']
 
-StatusApp.Models.profile = new Profile
+TentStatus.Models.profile = new Profile
 
-class StatusApp.Models.Profile extends Profile
-  url: => "#{StatusApp.api_root}/#{@get('follow_type')}/#{@get('id')}/profile"
+class TentStatus.Models.Profile extends Profile
+  url: => "#{TentStatus.api_root}/#{@get('follow_type')}/#{@get('id')}/profile"
 

@@ -1,7 +1,7 @@
-require 'tent-statusapp/sprockets/helpers'
+require 'tent-status/sprockets/helpers'
 
 module Tent
-  class StatusApp
+  class Status
     module SprocketsEnvironment
       def self.assets
         return @assets if defined?(@assets)
