@@ -1,4 +1,3 @@
-require "tent-status/version"
 require "sinatra/base"
 
 module Tent
