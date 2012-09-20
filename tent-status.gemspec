@@ -1,11 +1,7 @@
 # -*- encoding: utf-8 -*-
-lib = File.expand_path('../lib', __FILE__)
-$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'tent-status/version'
-
 Gem::Specification.new do |gem|
   gem.name          = "tent-status"
-  gem.version       = Tent::Status::VERSION
+  gem.version       = '0.1.0'
   gem.authors       = ["Jesse Stuart"]
   gem.email         = ["jessestuart@gmail.com"]
   gem.description   = %q{Tent app for 140 character posts. Uses Sinatra/Sprockets + CoffeeScript}
