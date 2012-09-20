@@ -1,9 +1,11 @@
 tr
   td
     =="{{#avatar}}"
-    img.img-rounded src='{{avatar}}' style='height:50px;width:50px;margin-right:4px;'
+    a href='{{entity}}'
+      img.img-rounded src='{{avatar}}' style='height:50px;width:50px;margin-right:4px;'
     =="{{/avatar}}"
-    =="{{name}}"
+    a href='{{entity}}'
+      =="{{name}}"
   td =="{{entity}}"
   td
     form data-view='FollowingGroupsForm' data-following-id='{{id}}' method='POST'
