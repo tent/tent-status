@@ -1,4 +1,4 @@
-# Tent::Statusapp
+# Tent::Status
 
 TODO: Write a gem description
 
@@ -6,7 +6,7 @@ TODO: Write a gem description
 
 Add this line to your application's Gemfile:
 
-    gem 'tent-statusapp'
+    gem 'tent-status'
 
 And then execute:
 
@@ -14,7 +14,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install tent-statusapp
+    $ gem install tent-status
 
 ## Usage
 
