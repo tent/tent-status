@@ -3,6 +3,7 @@ StatusApp.Routers.posts = new class PostsRouter extends StatusApp.Router
 
   routes:
     ""                 : "root"
+    "profile"          : "myProfile"
     "posts"            : "index"
     "entities/:entity"          : "profile"
     "entities/:entity/:post_id" : "conversation"
@@ -46,6 +47,9 @@ StatusApp.Routers.posts = new class PostsRouter extends StatusApp.Router
         { followings: new StatusApp.Paginator( StatusApp.Collections.followings ), loaded: false }
       @fetchData 'profile', =>
         { profile: StatusApp.Models.profile, loaded: false }
+
+  myProfile: =>
+    @profile(StatusApp.current_entity)
 
   profile: (entity) =>
     @view = new StatusApp.Views.Profile

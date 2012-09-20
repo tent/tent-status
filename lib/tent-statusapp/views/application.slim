@@ -19,7 +19,7 @@ body
           li
             a href=full_url('/') Posts
           li
-            a href=full_url("/entities/#{URI.encode_www_form_component((current_user || guest_user).entity)}") View Profile
+            a href=full_url('/profile') View Profile
           li
             a href=full_url('/followers') Followers
           li
