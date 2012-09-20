@@ -6,6 +6,7 @@ class TentStatus.Views.Post extends TentStatus.View
     @postId = @$el.attr('data-parent-id') || ""
     @postId = @$el.attr 'data-id' if @postId == ""
     @post = @parentView.posts.get(@postId)
+    @parentPost = @post
 
     if @post?.isRepost() && @$el.attr('data-post-found') != 'yes'
       @$el.hide()
@@ -65,13 +66,15 @@ class TentStatus.Views.Post extends TentStatus.View
     post.once 'sync', =>
       @buttons.repost.addClass 'disabled'
       TentStatus.Collections.posts.unshift(post)
-      @parentView.posts.unshift(post)
       @parentView.emptyPool()
       @parentView.fetchPoolView.createPostView(post)
     post.save()
 
   delete: =>
-    return unless @post.get('entity') == TentStatus.current_entity
+    post = @post
+    unless post == @parentPost
+      post = @parentPost
+    return unless post.get('entity') == TentStatus.current_entity
     shouldDelete = confirm(@buttons.delete.attr 'data-confirm')
     return unless shouldDelete
     @$el.hide()
