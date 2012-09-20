@@ -17,6 +17,9 @@ class Profile extends Backbone.Model
   name: =>
     @basic_profile()?['name'] || TentStatus.Helpers.formatUrl(@core_profile()?['entity'] || '')
 
+  hasName: =>
+    !!(@basic_profile()?['name'])
+
   avatar: =>
     @basic_profile()?['avatar_url']
 

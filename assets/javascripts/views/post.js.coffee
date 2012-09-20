@@ -113,6 +113,7 @@ class TentStatus.Views.Post extends TentStatus.View
       url: "#{TentStatus.url_root}entities/#{encodeURIComponent(post.get('entity'))}/#{post.get('id')}"
       profileUrl: "#{TentStatus.url_root}entities/#{encodeURIComponent(post.get('entity'))}"
       name: post.name()
+      hasName: post.hasName()
       avatar: post.avatar()
       licenses: _.map( post.get('licenses') || [], (url) => { name: @licenseName(url), url: url } )
       escaped:
