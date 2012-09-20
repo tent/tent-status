@@ -7,8 +7,8 @@ class TentStatus.Models.Post extends Backbone.Model
 
   entity: =>
     return TentStatus.Models.profile if TentStatus.Models.profile.entity() == @get('entity')
-    (TentStatus.Collections.followers.find (follower) => follower.get('entity') == @get('entity')) ||
-    (TentStatus.Collections.followings.find (following) => following.get('entity') == @get('entity'))
+    (TentStatus.Collections.followings.find (following) => following.get('entity') == @get('entity')) ||
+    (TentStatus.Collections.followers.find (follower) => follower.get('entity') == @get('entity'))
 
   name: =>
     @entity()?.name() || @get('entity')
