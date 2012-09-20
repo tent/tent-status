@@ -1,6 +1,6 @@
 class StatusApp.Models.Following extends Backbone.Model
   model: 'following'
-  url: => "#{StatusApp.api_root}/followings#{ if @id then "/#{@id}" else ''}"
+  url: => "#{StatusApp.api_root}/followings#{ if @id then "/#{@id}" else ''}#{ if @get('guest') then '?guest=true' else '' }"
 
   initialize: ->
     @on 'sync', @updateProfile
