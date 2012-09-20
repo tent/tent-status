@@ -118,14 +118,14 @@ module Tent
 
     get '/api/posts/count' do
       res = client.post.count params.merge(
-        :types => ["https://tent.io/types/post/status/v0.1.0", "https://tent.io/types/post/repost/v0.1.0"]
+        :post_types => ["https://tent.io/types/post/status/v0.1.0", "https://tent.io/types/post/repost/v0.1.0"]
       )
       json res.body
     end
 
     get '/api/posts' do
       res = client.post.list params.merge(
-        :types => ["https://tent.io/types/post/status/v0.1.0", "https://tent.io/types/post/repost/v0.1.0"]
+        :post_types => ["https://tent.io/types/post/status/v0.1.0", "https://tent.io/types/post/repost/v0.1.0"]
       )
 
       if (400...500).include?(res.status)
