@@ -107,7 +107,7 @@ class StatusApp.Views.NewPostForm extends Backbone.View
     )
     delete data.mentions
 
-    for entity in data.text.match(/\^(\S+)/g)
+    for entity in (data.text.match(/\^(\S+)/g) || [])
       entity = entity.replace(/^\^/, '')
       entity = entity.replace(/^/, 'https://') unless entity.match(/^https?/)
       mentions.push { entity: entity }
