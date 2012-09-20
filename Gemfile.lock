@@ -13,6 +13,18 @@ GIT
       sprockets (~> 2.0)
 
 GIT
+  remote: git://github.com/tent/tent-client-ruby.git
+  revision: f4a62a14e429564301972f4a4852633f3fd81a75
+  branch: master
+  specs:
+    tent-client (0.0.1)
+      faraday (= 0.8.4)
+      faraday_middleware (= 0.8.8)
+      faraday_middleware-multi_json
+      nokogiri
+      oj
+
+GIT
   remote: git://github.com/titanous/asset_sync.git
   revision: 64f86044921b7029cf3be673a1920aa7fdfe8604
   branch: fix-mime
@@ -20,17 +32,6 @@ GIT
     asset_sync (0.5.0)
       activemodel
       fog
-
-GIT
-  remote: git@github.com:tent/tent-client-ruby.git
-  revision: d6ef5012f5e112306742b17f4e92be8655b21b8a
-  branch: master
-  specs:
-    tent-client (0.0.1)
-      faraday (= 0.8.4)
-      faraday_middleware (= 0.8.8)
-      json
-      nokogiri
 
 PATH
   remote: .
@@ -132,6 +133,9 @@ GEM
       multipart-post (~> 1.1)
     faraday_middleware (0.8.8)
       faraday (>= 0.7.4, < 0.9)
+    faraday_middleware-multi_json (0.0.3)
+      faraday_middleware
+      multi_json
     fastercsv (1.5.5)
     faye-websocket (0.4.6)
       eventmachine (>= 0.12.0)
@@ -171,6 +175,7 @@ GEM
       net-ssh (>= 1.99.1)
     net-ssh (2.5.2)
     nokogiri (1.5.5)
+    oj (1.3.4)
     poltergeist (0.7.0)
       capybara (~> 1.1)
       childprocess (~> 0.3)
