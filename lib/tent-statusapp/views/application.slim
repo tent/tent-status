@@ -10,20 +10,20 @@ body
     .navbar-inner
       .brand
         - if current_user || guest_user
-          a href==(current_user || guest_user).entity = domain_entity.sub(%r{\Ahttps?://([^/]+).*?\z}) { |m| $1 }
+          a href==domain_entity = domain_entity.sub(%r{\Ahttps?://([^/]+).*?\z}) { |m| $1 }
         - else
           a href='https://tent.is' Tent.is
 
       ul.nav
         - if current_user || guest_user
           li
-            a href=full_path('/') Posts
+            a href=full_url('/') Posts
           li
-            a href=full_path('/followers') Followers
+            a href=full_url('/followers') Followers
           li
-            a href=full_path('/followings') Following
+            a href=full_url('/followings') Following
           li
-            a href=full_path('/admin') Account
+            a href=full_url('/admin') Account
         - else
           li
             a href='https://tent.is/blog' Blog
@@ -31,7 +31,7 @@ body
       ul.nav.pull-right
         - if current_user || guest_user
           li
-            a href=full_path('/signout') Signout
+            a href=full_url('/signout') Signout
         - else
           li
             a href='https://tent.is/login' Login

@@ -48,7 +48,12 @@ module Tent
       end
 
       def full_url(path)
-        (self_url_root + full_path(path))
+        if guest_user
+          prefix = guest_user.entity
+        else
+          prefix = self_url_root
+        end
+        (prefix + full_path(path))
       end
 
       def self_url_root
