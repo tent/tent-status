@@ -1,20 +1,26 @@
 class StatusApp.Views.ProfileStats extends StatusApp.View
   templateName: '_profile_stats'
 
-  dependentRenderAttributes: ['postsCount', 'followingsCount', 'followersCount']
-
   initialize: (options) ->
-    return unless StatusApp.current_entity == options.parentView.currentProfile?.entity()
     super
     @container = null
 
-    $.getJSON "#{StatusApp.api_root}/posts/count", (count) =>
+    api_root = if StatusApp.guest_authenticated
+      StatusApp.tent_api_root
+    else
+      StatusApp.api_root
+
+    @countKeys = ['postsCount', 'followingsCount', 'followersCount']
+    for key in @countKeys
+      @once "change:#{key}", @render
+
+    $.getJSON "#{api_root}/posts/count", (count) =>
       @set 'postsCount', count
 
-    $.getJSON "#{StatusApp.api_root}/followers/count", (count) =>
+    $.getJSON "#{api_root}/followers/count", (count) =>
       @set 'followersCount', count
 
-    $.getJSON "#{StatusApp.api_root}/followings/count", (count) =>
+    $.getJSON "#{api_root}/followings/count", (count) =>
       @set 'followingsCount', count
 
     @render()
@@ -25,5 +31,8 @@ class StatusApp.Views.ProfileStats extends StatusApp.View
     followingsCount: @followingsCount
 
   render: =>
+    for key in @countKeys
+      val = @get(key)
+      return if val == null
     html = super
     @$el.html(html)

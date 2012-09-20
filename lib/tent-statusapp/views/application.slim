@@ -47,7 +47,8 @@ body
       url_root: "#{{full_path('/')}}",
       authenticated: #{{!!(current_user || guest_user)}},
       guest_authenticated: #{{!!guest_user}},
-      current_entity: "#{{current_user ? current_user.entity : nil}}",
+      tent_api_root: "#{{tent_api_root}}",
+      current_entity: "#{{(current_user || guest_user) ? (current_user || guest_user).entity : nil}}",
       domain_entity: "#{{domain_entity}}"
     }
 
