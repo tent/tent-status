@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 Gem::Specification.new do |gem|
   gem.name          = "tent-status"
-  gem.version       = '0.1.0'
+  gem.version       = '0.0.1'
   gem.authors       = ["Jesse Stuart"]
   gem.email         = ["jessestuart@gmail.com"]
   gem.description   = %q{Tent app for 140 character posts. Uses Sinatra/Sprockets + CoffeeScript}
