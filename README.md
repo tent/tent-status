@@ -1,29 +1,14 @@
-# Tent::Status
+# TentStatus
 
-TODO: Write a gem description
-
-## Installation
-
-Add this line to your application's Gemfile:
-
-    gem 'tent-status'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install tent-status
-
-## Usage
-
-TODO: Write usage instructions here
+TentStatus is a Sinatra/Backbone app that sends/receives Tent status posts.
 
 ## Contributing
 
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+The app currently isn't very useful because it needs OAuth authentication so
+that it can talk to Tent servers.
+
+Here are some tasks that need to be done:
+
+- Implement a omniauth strategy that handles Tent OAuth.
+- Write tests/refactor code.
+- Make it pretty.
