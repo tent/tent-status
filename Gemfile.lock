@@ -36,7 +36,7 @@ GIT
 PATH
   remote: .
   specs:
-    tent-status (0.1.0)
+    tent-status (0.0.1)
       asset_sync (~> 0.5.0)
       coffee-script
       data_mapper (~> 1.2.0)
