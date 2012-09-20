@@ -5,6 +5,7 @@ StatusApp.Routers.followers = new class Followers extends StatusApp.Router
     "followers" : "index"
 
   index: =>
+    return if StatusApp.guest_authenticated || !StatusApp.authenticated
     @view = new StatusApp.Views.Followers
     @setCurrentAction 'index', =>
       @fetchData 'followers', =>
