@@ -5,7 +5,7 @@ require 'tent-status/version'
 
 Gem::Specification.new do |gem|
   gem.name          = "tent-status"
-  gem.version       = Tent::Status::VERSION
+  gem.version       = TentStatus::VERSION
   gem.authors       = ["Jesse Stuart"]
   gem.email         = ["jessestuart@gmail.com"]
   gem.description   = %q{Tent app for 140 character posts. Uses Sinatra/Sprockets + CoffeeScript}
