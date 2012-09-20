@@ -11,9 +11,15 @@ class TentStatus.FetchPool extends TentStatus.Paginator
   fetch: (options = {}) =>
     _options = {
       success: (items) =>
-        @sinceId = items.last()?.get('id') || @sinceId
-        @options.success?()
-        @trigger 'fetch:success'
+        newItems = []
+        existingItems = TentStatus.Collections.posts.toArray()
+        for i in items
+          newItems.push i unless existingItems.indexOf(i)
+
+        if newItems.length
+          @sinceId = items.last()?.get('id') || @sinceId
+          @options.success?()
+          @trigger 'fetch:success'
     }
     options = _.extend _options, options
     super(options)
