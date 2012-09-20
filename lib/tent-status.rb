@@ -1,6 +1,6 @@
 require "tent-status/version"
 
 module Tent
-  module Status
+  class Status
   end
 end
