@@ -39,21 +39,25 @@
   | {{/authenticated}}
   | {{/repost}}
 
-| {{^repost}}
 | {{#authenticated}}
 .row.offset0-6.showOnHover.navigation
+  | {{^repost}}
   | {{^currentUserOwnsPost}}
   a.reply href='#' Reply
   a.repost data-confirm='Repost {{nmae}}?' href='#' Repost
   | {{/currentUserOwnsPost}}
+  | {{/repost}}
   | {{#currentUserOwnsPost}}
   a.delete data-confirm='Delete Post?' href='#' Delete
   | {{/currentUserOwnsPost}}
+  | {{^repost}}
   | {{^parent}}
   small.pull-right via {{app.name}}
   | {{/parent}}
+  | {{/repost}}
 | {{/authenticated}}
 
+| {{^repost}}
 | {{#authenticated}}
 | {{^parent}}
 .row.offset0-5.reply-container.clearfix

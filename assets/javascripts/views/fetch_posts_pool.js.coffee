@@ -45,7 +45,6 @@ class TentStatus.Views.FetchPostsPool extends Backbone.View
   emptyPool: =>
     for i in [0...@numNewPosts]
       post = @pool.collection.shift()
-      @parentView.posts.unshift(post)
       TentStatus.Collections.posts.unshift(post)
       # @createPostView(post)
     @parentView.render()
