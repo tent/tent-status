@@ -1,4 +1,4 @@
-StatusApp.Views.container = new class ContainerView extends Backbone.View
+TentStatus.Views.container = new class ContainerView extends Backbone.View
   initialize: ->
     @setElement document.getElementById('main')
 

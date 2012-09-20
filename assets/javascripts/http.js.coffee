@@ -13,6 +13,6 @@
       contentType: 'application/json'
       success: callback
       beforeSend: (xhr) ->
-        token = StatusApp.csrf_token
+        token = TentStatus.csrf_token
         xhr.setRequestHeader('X-CSRF-Token', token) if token
 }

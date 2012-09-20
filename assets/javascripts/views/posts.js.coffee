@@ -1,11 +1,11 @@
-class StatusApp.Views.Posts extends StatusApp.View
+class TentStatus.Views.Posts extends TentStatus.View
   templateName: 'posts'
   partialNames: ['_post', '_new_post_form', '_reply_form', '_post_inner']
 
   dependentRenderAttributes: ['posts', 'followers', 'followings', 'profile']
 
   initialize: ->
-    @container = StatusApp.Views.container
+    @container = TentStatus.Views.container
     super
 
     @on 'ready', @initPostViews
@@ -30,17 +30,17 @@ class StatusApp.Views.Posts extends StatusApp.View
     })
     licenses: @licenses
     posts: (_.map @posts.toArray(), (post) =>
-      view = new StatusApp.Views.Post parentView: @
+      view = new TentStatus.Views.Post parentView: @
       view.context(post)
     )
 
   initPostViews: =>
     _.each ($ 'li.post'), (el) =>
-      new StatusApp.Views.Post el: el, parentView: @
+      new TentStatus.Views.Post el: el, parentView: @
 
   initFetchPool: =>
     el = ($ '.fetch-pool', @container.$el).hide()
-    @fetchPoolView = new StatusApp.Views.FetchPostsPool el: el, parentView: @
+    @fetchPoolView = new TentStatus.Views.FetchPostsPool el: el, parentView: @
 
   initAutoPaginate: =>
     ($ window).off 'scroll.posts'

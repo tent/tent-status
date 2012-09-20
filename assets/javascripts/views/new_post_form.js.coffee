@@ -1,8 +1,8 @@
-class StatusApp.Views.NewPostForm extends Backbone.View
+class TentStatus.Views.NewPostForm extends Backbone.View
   initialize: (options = {}) ->
     @parentView = options.parentView
 
-    @action = "#{StatusApp.api_root}/posts"
+    @action = "#{TentStatus.api_root}/posts"
 
     @$errors = ($ '.alert-error', @$el).first().hide()
 
@@ -75,12 +75,12 @@ class StatusApp.Views.NewPostForm extends Backbone.View
     data = @getData()
     return false unless @validate data
 
-    post = new StatusApp.Models.Post data
+    post = new TentStatus.Models.Post data
     post.once 'sync', =>
       window.location.reload() unless @parentView.emptyPool
       @parentView.emptyPool()
-      StatusApp.Collections.posts.unshift(post)
-      @parentView.set('posts', StatusApp.Collections.posts)
+      TentStatus.Collections.posts.unshift(post)
+      @parentView.set('posts', TentStatus.Collections.posts)
       @parentView.render()
     post.save()
     false
@@ -145,7 +145,7 @@ class StatusApp.Views.NewPostForm extends Backbone.View
     @buildDataObject @$el.serializeArray()
 
   validate: (data = @getData()) =>
-    post = new StatusApp.Models.Post data
+    post = new TentStatus.Models.Post data
     errors = post.validate(data)
     @$el.find(".error").removeClass('error')
     @$errors.hide()

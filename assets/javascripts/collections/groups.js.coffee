@@ -1,5 +1,5 @@
-class StatusApp.Collections.Groups extends Backbone.Collection
-  model: StatusApp.Models.Group
-  url: "#{StatusApp.api_root}/groups"
+class TentStatus.Collections.Groups extends Backbone.Collection
+  model: TentStatus.Models.Group
+  url: "#{TentStatus.api_root}/groups"
 
-StatusApp.Collections.groups = new StatusApp.Collections.Groups
+TentStatus.Collections.groups = new TentStatus.Collections.Groups

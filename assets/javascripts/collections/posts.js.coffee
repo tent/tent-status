@@ -1,5 +1,5 @@
-class StatusApp.Collections.Posts extends Backbone.Collection
-  model: StatusApp.Models.Post
-  url: "#{StatusApp.api_root}/posts"
+class TentStatus.Collections.Posts extends Backbone.Collection
+  model: TentStatus.Models.Post
+  url: "#{TentStatus.api_root}/posts"
 
-StatusApp.Collections.posts = new StatusApp.Collections.Posts
+TentStatus.Collections.posts = new TentStatus.Collections.Posts

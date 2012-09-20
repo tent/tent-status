@@ -1,7 +1,7 @@
 # Custom View Class extending Backbone.View
 #
 # Sample View Class:
-# class StatusApp.Views.DashboardArticles extends StatusApp.View
+# class TentStatus.Views.DashboardArticles extends TentStatus.View
 #   templateName: 'foo/bar'
 #
 #   # e.g. dashboard/_header is available as @partials.header
@@ -28,7 +28,7 @@
 #
 #     super
 
-class StatusApp.View extends Backbone.View
+class TentStatus.View extends Backbone.View
   # simpler version of @set and @get than given with Backbone.Model
   # @set sets the key directly on the View instance
   # it's used to pass data from the router to the view
@@ -44,14 +44,14 @@ class StatusApp.View extends Backbone.View
   # once loaded @template will hold the compiled hogan template specified with @templateName
   # and @partials will hold all compiled templates defined in @partialNames
   initialize: (options) ->
-    @container ||= StatusApp.Views.container
+    @container ||= TentStatus.Views.container
 
     unless @container
-      StatusApp.devWarning @, "You need to define @container View"
+      TentStatus.devWarning @, "You need to define @container View"
 
     # fetch main template
     if @templateName
-      StatusApp.fetchTemplate @templateName, (@template) =>
+      TentStatus.fetchTemplate @templateName, (@template) =>
         @trigger 'template:load'
 
     # load all partials listed in partialNames
@@ -59,7 +59,7 @@ class StatusApp.View extends Backbone.View
       @partials = {}
       for p in @partialNames
         do (p) =>
-          StatusApp.fetchTemplate p, (template) =>
+          TentStatus.fetchTemplate p, (template) =>
             name = @getPartialName(p)
             @partials[name] = template
             @trigger "partials:#{name}:load"
@@ -83,10 +83,10 @@ class StatusApp.View extends Backbone.View
   bindViews: =>
     _.each $('[data-view]', @container?.el), (el) =>
       viewClassName = $(el).attr 'data-view'
-      if viewClass = StatusApp.Views[viewClassName]
+      if viewClass = TentStatus.Views[viewClassName]
         view = new viewClass el: el, parentView: @
       else
-        StatusApp.devWarning @, "StatusApp.Views.#{viewClassName} is not defined!"
+        TentStatus.devWarning @, "TentStatus.Views.#{viewClassName} is not defined!"
         console.log el
 
   getPartialName: (path) =>
@@ -97,7 +97,7 @@ class StatusApp.View extends Backbone.View
     @container?.render("")
 
   context: =>
-    StatusApp.devWarning @, "You need to override context in your view class!"
+    TentStatus.devWarning @, "You need to override context in your view class!"
     {}
 
   # wait for @template and @partials to load
@@ -126,8 +126,8 @@ class StatusApp.View extends Backbone.View
           return false
 
     context = _.extend {
-      authenticated: StatusApp.authenticated
-      guest_authenticated: StatusApp.guest_authenticated
+      authenticated: TentStatus.authenticated
+      guest_authenticated: TentStatus.guest_authenticated
     }, @context()
 
     html = @template.render(context, @partials)

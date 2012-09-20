@@ -1,12 +1,12 @@
-# All routers should extend StatusApp.Router
+# All routers should extend TentStatus.Router
 # Any abstractions should go in here
-class StatusApp.Router extends Backbone.Router
+class TentStatus.Router extends Backbone.Router
   keyForAction: (actionName) =>
     "#{@routerKey}:#{actionName}"
 
   setCurrentAction: (actionName, actionFn) =>
-    if StatusApp.freezeRouter
-      StatusApp.on 'router:unfreeze', (shouldPlay) => @setCurrentAction(actionName, actionFn) if shouldPlay
+    if TentStatus.freezeRouter
+      TentStatus.on 'router:unfreeze', (shouldPlay) => @setCurrentAction(actionName, actionFn) if shouldPlay
 
     key = @keyForAction(actionName)
 
@@ -19,14 +19,14 @@ class StatusApp.Router extends Backbone.Router
 
     window.scrollTo window.scrollX, 0
 
-    StatusApp.setPageTitle? key
-    StatusApp.setCurrentRoute? @, actionName
+    TentStatus.setPageTitle? key
+    TentStatus.setCurrentRoute? @, actionName
 
     actionFn()
 
   isCurrentAction: (actionName) =>
     return true # currentRoute not currently setup, TODO set this up
-    StatusApp.currentRoute?.key == @keyForAction(actionName)
+    TentStatus.currentRoute?.key == @keyForAction(actionName)
 
   fetchData: (dataKey, dataFn) =>
     actionName = @currentActionName
@@ -50,7 +50,7 @@ class StatusApp.Router extends Backbone.Router
       res[dataKey].on 'fetch:start', (=> @fetchStart actionName)
       res[dataKey].on 'fetch:success', loaded
       if res[dataKey].isPaginator is true
-        # StatusApp.Paginator triggers 'fetch:start' and 'fetch:success' events
+        # TentStatus.Paginator triggers 'fetch:start' and 'fetch:success' events
         res[dataKey].fetch()
       else
         res[dataKey].trigger 'fetch:start'
@@ -59,13 +59,13 @@ class StatusApp.Router extends Backbone.Router
   fetchStart: (actionName) =>
     return unless @isCurrentAction(actionName)
     @_dataFetches[actionName]++
-    StatusApp.Views.loading?.show()
+    TentStatus.Views.loading?.show()
 
   fetchSuccess: (actionName) =>
     return unless @isCurrentAction(actionName)
     @_dataFetches[actionName]-- unless @_dataFetches[actionName] == 0
     if @_dataFetches[actionName] == 0
       @view?.once 'ready', =>
-        StatusApp.Views.loading?.hide()
+        TentStatus.Views.loading?.hide()
       @view?.render()
 

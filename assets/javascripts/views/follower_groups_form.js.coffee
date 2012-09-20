@@ -1,9 +1,9 @@
-class StatusApp.Views.FollowerGroupsForm extends Backbone.View
+class TentStatus.Views.FollowerGroupsForm extends Backbone.View
   initialize: (options = {}) ->
     @parentView = options.parentView
 
     followerId = @$el.attr 'data-follower-id'
-    @follower = StatusApp.Collections.followers.find (follower) -> follower.get('id') == followerId
+    @follower = TentStatus.Collections.followers.find (follower) -> follower.get('id') == followerId
 
     @$groupsSelect = ($ 'select[name=groups]', @$el)
     @$groupsSelect.chosen
@@ -11,9 +11,9 @@ class StatusApp.Views.FollowerGroupsForm extends Backbone.View
       no_results_text: 'No groups match'
       create_option_text: 'Create new group'
       create_option: (name) =>
-        group = new StatusApp.Models.Group({ name: name })
+        group = new TentStatus.Models.Group({ name: name })
         group.once 'sync', =>
-          StatusApp.Collections.groups.push(group)
+          TentStatus.Collections.groups.push(group)
           @follower.set 'groups', (@follower.get('groups') || []).concat([group.get('id')])
           @follower.save()
           @parentView.render()

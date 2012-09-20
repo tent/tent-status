@@ -1,3 +1,3 @@
 #= require ./application
 
-StatusApp.run()
+TentStatus.run()

@@ -1,4 +1,4 @@
-class StatusApp.Views.Profile extends StatusApp.Views.Posts
+class TentStatus.Views.Profile extends TentStatus.Views.Posts
   templateName: 'profile'
   partialNames: ['_post', '_post_inner', '_reply_form']
 
@@ -10,7 +10,7 @@ class StatusApp.Views.Profile extends StatusApp.Views.Posts
     return unless post.get('mentions')?.length
     for mention in post.get('mentions')
       if mention.entity and mention.post
-        mention.url = "#{StatusApp.url_root}#{encodeURIComponent(mention.entity)}/#{mention.post}"
+        mention.url = "#{TentStatus.url_root}#{encodeURIComponent(mention.entity)}/#{mention.post}"
         return mention
     null
 
@@ -19,11 +19,11 @@ class StatusApp.Views.Profile extends StatusApp.Views.Posts
       profile: _.extend( @currentProfile.toJSON(),
         name: @currentProfile.name()
         bio: @currentProfile.bio()
-        nameIsEntity: @currentProfile.name() == StatusApp.Helpers.formatUrl(@currentProfile.entity())
+        nameIsEntity: @currentProfile.name() == TentStatus.Helpers.formatUrl(@currentProfile.entity())
         avatar: @currentProfile.avatar()
         entity: @currentProfile.entity()
         encoded:
           entity: encodeURIComponent(@currentProfile.entity())
         formatted:
-          entity: StatusApp.Helpers.formatUrl @currentProfile.entity()
+          entity: TentStatus.Helpers.formatUrl @currentProfile.entity()
       )
