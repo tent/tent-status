@@ -105,7 +105,7 @@ class StatusApp.Views.Post extends StatusApp.View
 
   context: (post, repostContext) =>
     _.extend( post.toJSON(),
-      isValid: !!post.entity()
+      isValid: true
       shouldShowReply: true
       isRepost: post.isRepost()
       repost: repostContext || @repostContext(post)
