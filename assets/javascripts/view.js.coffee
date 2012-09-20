@@ -121,7 +121,7 @@ class StatusApp.View extends Backbone.View
     # wait for data to be loaded
     if @dependentRenderAttributes
       for key in @dependentRenderAttributes
-        unless @get(key)
+        if @get(key) == null
           @once "change:#{key}", => @render(arguments...)
           return false
 

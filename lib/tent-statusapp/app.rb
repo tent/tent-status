@@ -47,6 +47,10 @@ module Tent
         "#{path_prefix}/#{path}".gsub(%r{//}, '/')
       end
 
+      def tent_api_root
+        domain_entity + '/tent'
+      end
+
       def full_url(path)
         if guest_user
           prefix = guest_user.entity
