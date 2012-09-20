@@ -21,6 +21,15 @@ class StatusApp.Views.NewPostForm extends Backbone.View
       null
     @updateCharCounter()
 
+    ## cmd/ctr enter == submit
+    @$textarea.on 'keydown.keysubmit', (e) =>
+      if (e.metaKey || e.ctrlKey) && e.keyCode == 13
+        e.preventDefault()
+        @submit()
+        false
+      else
+        true
+
     ## permissions
     @$publicCheckbox = ($ '[name=public]', @$el)
     @$permissions = ($ 'select[name=permissions]', @$el)
@@ -62,7 +71,7 @@ class StatusApp.Views.NewPostForm extends Backbone.View
     @$publicCheckbox.attr('disabled', 'disabled')
 
   submit: (e) =>
-    e.preventDefault()
+    e.preventDefault() if e
     data = @getData()
     return false unless @validate data
 
