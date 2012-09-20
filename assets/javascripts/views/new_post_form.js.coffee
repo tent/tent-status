@@ -22,7 +22,7 @@ class StatusApp.Views.NewPostForm extends Backbone.View
     @updateCharCounter()
 
     ## cmd/ctr enter == submit
-    @$textarea.on 'keydown.keysubmit', (e) =>
+    @$textarea.off('keydown.keysubmit').on 'keydown.keysubmit', (e) =>
       if (e.metaKey || e.ctrlKey) && e.keyCode == 13
         e.preventDefault()
         @submit()
