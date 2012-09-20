@@ -13,6 +13,9 @@ class TentStatus.Models.Post extends Backbone.Model
   name: =>
     @entity()?.name() || @get('entity')
 
+  hasName: =>
+    !!(@entity()?.hasName())
+
   avatar: =>
     @entity()?.avatar()
 

@@ -19,6 +19,9 @@ class TentStatus.Models.Follower extends Backbone.Model
   name: =>
     @get('basic_profile')['name'] || @get('core_profile')['entity']
 
+  hasName: =>
+    !!(@get('basic_profile')['name'])
+
   avatar: =>
     @get('basic_profile')['avatar_url']
 

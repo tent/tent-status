@@ -1,11 +1,11 @@
 .row
   .span1
-    a href='{{entity}}'
+    aFollowing href='{{entity}}'
       img.img-rounded.pull-left.avatar src='{{avatar}}'
 
   .span3.no-offset
     h5 style='margin: 0px;'
-      a href='{{entity}}' {{^nameIsEntity}}{{name}} <small>{{formatted.entity}}</small>{{/nameIsEntity}}
+      a href='{{entity}}' {{name}} {{#hasName}}<small>{{formatted.entity}}</small>{{/hasName}}
 
   .pull-right
     a href='{{url}}' class='{{#parent}}gray{{/parent}}' title='{{formatted.full_published_at}}' {{formatted.published_at}}
