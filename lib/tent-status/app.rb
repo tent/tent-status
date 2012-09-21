@@ -16,9 +16,14 @@ module Tent
     require 'tent-status/models/user'
 
     configure do
+      set :assets, SprocketsEnvironment.assets
+      set :cdn_url, false
+      set :asset_manifest, false
+    end
+
+    configure :production do
       set :asset_manifest, Oj.load(File.read(ENV['STATUS_ASSET_MANIFEST'])) if ENV['STATUS_ASSET_MANIFEST']
       set :cdn_url, ENV['STATUS_CDN_URL']
-      set :assets, SprocketsEnvironment.assets
     end
 
     use Rack::Csrf
@@ -38,7 +43,7 @@ module Tent
       end
 
       def asset_manifest_path(asset)
-        if settings.respond_to?(:asset_manifest?) && settings.asset_manifest?
+        if settings.asset_manifest?
           settings.asset_manifest['files'].detect { |k,v| v['logical_path'] == asset }[0]
         end
       end
