@@ -77,6 +77,12 @@ module Tent
         env['tent.guest_client']
       end
 
+      def auth_details
+        auth = env['tent.app_auth'] || env['tent.guest_app_auth']
+        return unless auth
+        auth.auth_details
+      end
+
       def csrf_tag
         Rack::Csrf.tag(env)
       end

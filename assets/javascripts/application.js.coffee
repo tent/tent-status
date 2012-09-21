@@ -1,3 +1,4 @@
+#= require sha256
 #= require jquery
 #= require underscore
 #= require http
@@ -8,6 +9,7 @@
 #= require chosen.jquery
 #= require_tree ./templates
 #= require_self
+#= require mac_auth
 #= require ./paginator
 #= require ./fetch_pool
 #= require ./view
