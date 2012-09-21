@@ -1,18 +1,90 @@
-#= require 'jquery'
+class @HTTP
+  constructor: (@method, @url, @data, @callback) ->
+    @request = new HTTP.Request
 
-@HTTP = {
-  get: (path, callback) ->
-    $.get path, callback
+    if @method == 'GET'
+      params = ("#{encodeURIComponent(k)}=#{encodeURIComponent(v)}" for k,v of @data)
+      @url += "?#{params.join('&')}" if params.length
 
-  post: (path, data, callback) ->
-    $.ajax
-      type: 'POST'
-      url: path
-      data: JSON.stringify(data)
-      dataType: 'json'
-      contentType: 'application/json'
-      success: callback
-      beforeSend: (xhr) ->
-        token = TentStatus.csrf_token
-        xhr.setRequestHeader('X-CSRF-Token', token) if token
-}
+    if m = @url.match(/^https?:\/\/([^\/]+)(.*?)/)
+      @host = m[1]
+      @path = m[2]
+    else
+      @host = window.location.hostname
+      @path = @url
+
+    if m = @url.match(/[^\/]+:(\d+)/)
+      @port = m[1]
+    else
+      @port = window.location.port
+
+    @sendRequest()
+
+  setHeader: => @request.setHeader(arguments...)
+  sendRequest: =>
+    return unless @request
+
+    @request.open(@method, @url)
+
+    data = if data then JSON.stringify(@data) else null
+    data = null if data == "{}" or data == "[]"
+    if TentStatus.current_auth_details.mac_key and ["POST", "PUT", "PATCH"].indexOf(@method.toUpperCase())
+      @request.setHeader('Content-type','application/vnd.tent.v0+json')
+      (new TentStatus.MacAuth
+        request: @
+        body: data
+        mac_key: TentStatus.current_auth_details.mac_key
+        mac_key_id: TentStatus.current_auth_details.mac_key_id
+      ).signRequest()
+
+    @request.on 'complete', (xhr) =>
+      data = JSON.parse(xhr.response)
+      @callback(data, xhr)
+
+    @request.send(data)
+
+  class @Request
+    constructor: ->
+      @callbacks = {}
+
+      XMLHttpFactories = [
+        -> new XMLHttpRequest()
+        -> new ActiveXObject("Msxml2.XMLHTTP")
+        -> new ActiveXObject("Msxml3.XMLHTTP")
+        -> new ActiveXObject("Microsoft.XMLHTTP")
+      ]
+
+      @xmlhttp = false
+      for fn in XMLHttpFactories
+        try
+          @xmlhttp = fn()
+        catch e
+          continue
+        break
+
+      @xmlhttp.onreadystatechange = @stateChanged
+
+    stateChanged: =>
+      return if @xmlhttp.readyState != 4
+      @trigger 'complete'
+
+    setHeader: (key, val) => @xmlhttp.setRequestHeader(key,val)
+
+    on: (eventName, fn) =>
+      @callbacks[eventName] ||= []
+      @callbacks[eventName].push fn
+
+    trigger: (eventName) =>
+      @callbacks[eventName] ||= []
+      for fn in @callbacks[eventName]
+        if typeof fn == 'function'
+          fn(@xmlhttp)
+        else
+          console.warn "#{eventName} callback is not a function"
+          console.log fn
+
+    open: (method, url) => @xmlhttp.open(method, url, true)
+
+    send: (data) =>
+      return @trigger('complete') if @xmlhttp.readyState == 4
+      @xmlhttp.send(data)
