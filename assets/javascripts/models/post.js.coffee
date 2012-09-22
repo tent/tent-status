@@ -1,9 +1,29 @@
 class TentStatus.Models.Post extends Backbone.Model
   model: 'post'
-  url: => "#{TentStatus.api_root}/posts#{ if @id then "/#{@id}" else ''}"
+  url: => "#{TentStatus.config.tent_api_root}/posts#{ if @id then "/#{@id}" else ''}"
+
+  initialize: ->
+    @getProfile()
+
+  getProfile: =>
+    if @get('following_id')
+      new HTTP 'GET', "#{TentStatus.config.tent_api_root}/followings/#{@get('following_id')}", null, (following, xhr) =>
+        return unless xhr.status == 200
+        profile = new TentStatus.Models.Profile following.profile
+        @set 'profile', profile
+
+    else if TentStatus.config.current_entity.assertEqual(new HTTP.URI @get('entity'))
+      if TentStatus.Models.profile.get('id')
+        @set 'profile', TentStatus.Models.profile
+      else
+        TentStatus.Models.profile.fetch
+          success: => @set 'profile', TentStatus.Models.profile
 
   isRepost: =>
     !!(@get('type') || '').match(/repost/)
+
+  postMentions: =>
+    _.select @get('mentions') || [], (m) => m.entity && m.post
 
   fetchRepost: =>
     new HTTP 'GET', "#{TentStatus.config.tent_api_root}/posts/#{@get 'repost_id'}", null, (repost, xhr) =>

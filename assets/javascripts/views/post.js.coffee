@@ -1,88 +1,11 @@
 class TentStatus.Views.Post extends TentStatus.View
+  template: '_post'
+
   initialize: (options = {}) ->
     @parentView = options.parentView
     @post = options.post
-    @template = @parentView?.partials['_post']
 
-    if @post?.isRepost() && @$el.attr('data-post-found') != 'yes'
-      @$el.hide()
-      @post.on 'change:repost', =>
-        @repost = @post.get('repost')
-        @render @context(@post, @repostContext(@post, @repost))
-      @post.fetchRepost()
-    else
-      @setup()
-
-    @on 'ready', @setup
-    @on 'ready', @bindViews
-    @on 'ready', @bindEvents
-
-  setup: =>
-    @buttons = {
-      reply: ($ '.navigation .reply', @$el)
-      repost: ($ '.navigation .repost', @$el)
-      delete: ($ '.navigation .delete', @$el)
-    }
-
-    @buttons.reply.on 'click', (e) =>
-      e.preventDefault()
-      @showReply()
-      false
-
-    @$reply = ($ '.reply-container', @$el).hide()
-
-    @buttons.repost.on 'click', (e) =>
-      e.preventDefault()
-      @repost()
-      false
-
-    @buttons.delete.on 'click', (e)  =>
-      e.preventDefault()
-      @delete()
-      false
-
-  showReply: =>
-    return if @post.get('entity') == TentStatus.current_entity
-    @$reply.toggle()
-
-  repost: =>
-    return if @buttons.repost.hasClass 'disabled'
-    return if @post.get('entity') == TentStatus.current_entity
-    shouldRepost = confirm(@buttons.repost.attr 'data-confirm')
-    return unless shouldRepost
-    post = new TentStatus.Models.Post {
-      type: "https://tent.io/types/post/repost/v0.1.0"
-      content:
-        entity: @post.get('entity')
-        id: @post.get('id')
-    }
-    post.once 'sync', =>
-      @buttons.repost.addClass 'disabled'
-      TentStatus.Collections.posts.unshift(post)
-      @parentView.emptyPool()
-      @parentView.fetchPoolView.createPostView(post)
-    post.save()
-
-  delete: =>
-    return unless TentStatus.config.current_entity.assertEqual(@post.get 'entity')
-    shouldDelete = confirm(@buttons.delete.attr 'data-confirm')
-    return unless shouldDelete
-    @$el.hide()
-    @post.destroy
-      success: =>
-        @$el.remove()
-      error: =>
-        @$el.show()
-
-  replyToPost: (post) =>
-    return unless post.get('mentions')?.length
-    for mention in post.get('mentions')
-      if mention.entity and mention.post
-        mention.url = "#{TentStatus.url_root}entities/#{encodeURIComponent(mention.entity)}/#{mention.post}"
-        mention.name = (_.find @parentView.follows(), (follow) => follow.get('entity') == mention.entity)?.name()
-        mention.name ?= (_.find [@parentView.profile], (profile) => profile.entity() == mention.entity)?.name()
-        return mention
-    null
+    @post?.on 'change:profile', @render
 
   repostContext: (post, repost) =>
     return false unless post.isRepost()
@@ -91,39 +14,30 @@ class TentStatus.Views.Post extends TentStatus.View
     return false unless repost
     _.extend( @context(repost), { parent: { name: post.name(), id: post.get('id') } } )
 
-  licenseName: (url) =>
-    for l in @licenses || []
-      return l.name if l.url == url
-    url
-
-  context: (post, repostContext) =>
-    _.extend( post.toJSON(),
-      isValid: true
-      shouldShowReply: true
-      isRepost: post.isRepost()
+  context: (post = @post, repostContext) =>
+    _.extend super, post.toJSON(), {
+      is_repost: post.isRepost()
       repost: repostContext || @repostContext(post)
-      inReplyTo: @replyToPost(post)
-      url: "#{TentStatus.url_root}entities/#{encodeURIComponent(post.get('entity'))}/#{post.get('id')}"
-      profileUrl: "#{TentStatus.url_root}entities/#{encodeURIComponent(post.get('entity'))}"
-      name: post.name()
-      hasName: post.hasName()
-      avatar: post.avatar()
-      licenses: _.map( post.get('licenses') || [], (url) => { name: @licenseName(url), url: url } )
+      in_reply_to: post.get('in_reply_to_post')
+      url: TentStatus.Helpers.postUrl(post)
+      profileUrl: TentStatus.Helpers.entityProfileUrl(post.get 'entity')
+      hasName: post.get('profile')?.hasName()
+      name: post.get('profile')?.name()
+      avatar: post.get('profile')?.avatar()
+      licenses: _.map post.get('licenses') || [], (url) => { name: TentStatus.Helpers.formatUrl(url), url: url }
       escaped:
-        entity: encodeURIComponent(post.get('entity'))
+        entity: encodeURIComponent( post.get 'entity' )
       formatted:
         entity: TentStatus.Helpers.formatUrl post.get('entity')
         published_at: TentStatus.Helpers.formatTime post.get('published_at')
         full_published_at: TentStatus.Helpers.rawTime post.get('published_at')
-      authenticated: TentStatus.authenticated
-      guest_authenticated: TentStatus.guest_authenticated
-      currentUserOwnsPost: TentStatus.current_entity == post.get('entity')
-    )
+      currentUserOwnsPost: TentStatus.config.current_entity.assertEqual( new HTTP.URI post.get('entity') )
+    }
 
-  render: (context) =>
+  render: (context = @context()) =>
     html = @template.render(context, @parentView.partials)
     el = ($ html)
     @$el.replaceWith(el)
-    @$el = el
+    @setElement el
     @trigger 'ready'
 

@@ -94,8 +94,8 @@ class TentStatus.View extends Backbone.View
     @container?.render("")
 
   context: =>
-    TentStatus.devWarning @, "You need to override context in your view class!"
-    {}
+    authenticated: TentStatus.authenticated
+    guest_authenticated: TentStatus.guest_authenticated
 
   # wait for @template and @partials to load
   # then render @template with @context and @partials
