@@ -104,7 +104,7 @@ module Tent
       def guest_user
         return unless defined?(TentD)
         return unless session[:current_user_id]
-        user = TentD::Model::User.get(session[:current_user_id])
+        user = @guest_user ||= TentD::Model::User.get(session[:current_user_id])
         current = TentD::Model::User.current
         return if session[:current_user_id] == current.id
         user if user && (session[:current_user_id] == user.id)
