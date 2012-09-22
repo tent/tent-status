@@ -14,18 +14,22 @@ class TentStatus.Views.Post extends TentStatus.View
 
     repost ?= _.find @parentView.posts.toArray() || [], ((p) => p.get('id') == post.get('content')['id'])
     return false unless repost
-    _.extend( @context(repost), { parent: { name: post.name(), id: post.get('id') } } )
+    _.extend( @context(repost), {
+      parent: { name: post.name(), id: post.get('id') }
+    })
+
+  postProfileJSON: (post) =>
+    hasName: post.get('profile')?.hasName() || false
+    name: post.get('profile')?.name() || ''
+    avatar: post.get('profile')?.avatar() || ''
 
   context: (post = @post, repostContext) =>
-    _.extend super, post.toJSON(), {
+    _.extend super, post.toJSON(), @postProfileJSON(post), {
       is_repost: post.isRepost()
       repost: repostContext || @repostContext(post)
       in_reply_to: post.get('in_reply_to_post')
       url: TentStatus.Helpers.postUrl(post)
       profileUrl: TentStatus.Helpers.entityProfileUrl(post.get 'entity')
-      hasName: post.get('profile')?.hasName()
-      name: post.get('profile')?.name()
-      avatar: post.get('profile')?.avatar()
       licenses: _.map post.get('licenses') || [], (url) => { name: TentStatus.Helpers.formatUrl(url), url: url }
       escaped:
         entity: encodeURIComponent( post.get 'entity' )
