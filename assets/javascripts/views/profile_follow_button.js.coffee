@@ -29,6 +29,7 @@ class TentStatus.Views.ProfileFollowButton extends Backbone.View
       unless xhr.status == 200
         @buttons.submit.removeAttr 'disabled'
         return
+      @following_id = following.id if !@is_following
       if @is_following then @unsetFollowing() else @setFollowing()
 
   setFollowing: =>
