@@ -1,5 +1,15 @@
 class @HTTP
-  constructor: (@method, @url, @data, @callback) ->
+  @active_requests: {}
+
+  constructor: (@method, @url, @data, callback) ->
+    @key = "#{@method}:#{@url}:#{JSON.stringify(@data || '{}')}"
+    if request = HTTP.active_requests[@key]
+      return request.callbacks.push(callback)
+    else
+      HTTP.active_requests[@key] = @
+
+    @callbacks = if callback then [callback] else []
+
     @request = new HTTP.Request
 
     if @method == 'GET'
@@ -43,8 +53,11 @@ class @HTTP
       ).signRequest()
 
     @request.on 'complete', (xhr) =>
+      delete HTTP.active_requests[@key]
       data = if xhr.status == 200 and xhr.response then JSON.parse(xhr.response) else null
-      @callback(data, xhr)
+      for fn in @callbacks
+        continue unless typeof fn == 'function'
+        fn(data, xhr)
 
     @request.send(data)
 
