@@ -4,8 +4,7 @@
 .row
   .span3 &nbsp;
   .well.span6 style='margin-left:0px'
-    .row.clearfix
-      =="{{> _new_post_form}}"
+    div data-view='NewPostForm'
 | {{/guest_authenticated}}
 | {{/authenticated}}
 .row

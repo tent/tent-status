@@ -1,6 +1,12 @@
 class TentStatus.Views.Post extends TentStatus.View
   templateName: '_post'
 
+  @insertNewPost: (post, container, parentView) ->
+    el = ($ '<li>')
+    container.prepend(el)
+    view = new TentStatus.Views.Post post: post, el: el, parentView: parentView
+    view.render()
+
   initialize: (options = {}) ->
     @parentView = options.parentView
     @post = options.post

@@ -6,6 +6,7 @@ class TentStatus.Models.Post extends Backbone.Model
     @getProfile()
 
   getProfile: =>
+    return if @isNew()
     if @get('following_id')
       new HTTP 'GET', "#{TentStatus.config.tent_api_root}/followings/#{@get('following_id')}", null, (following, xhr) =>
         return unless xhr.status == 200

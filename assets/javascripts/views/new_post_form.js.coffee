@@ -1,14 +1,21 @@
-class TentStatus.Views.NewPostForm extends Backbone.View
+class TentStatus.Views.NewPostForm extends TentStatus.View
+  templateName: '_new_post_form'
+
   initialize: (options = {}) ->
     @parentView = options.parentView
 
-    @action = "#{TentStatus.api_root}/posts"
+    super
 
+    @on 'render', @init
+    @render()
+
+  init: =>
     @$errors = ($ '.alert-error', @$el).first().hide()
 
     @$post_btn = ($ 'input[type=submit]', @$el)
 
-    @$el.off().on 'submit', @submit
+    @$form = ($ 'form', @$el)
+    @$form.off().on 'submit', @submit
 
     ## form validation and character limit counter
     @$textarea = ($ 'textarea', @$el)
@@ -70,19 +77,31 @@ class TentStatus.Views.NewPostForm extends Backbone.View
     @$publicCheckbox.removeAttr('checked')
     @$publicCheckbox.attr('disabled', 'disabled')
 
+  disableWith: (text) =>
+    @frozen = true
+    @post_btn_text = @$post_btn.val()
+    @$post_btn.val(text)
+    @$post_btn.attr 'disabled', 'disabled'
+
+  enable: =>
+    @frozen = false
+    @$post_btn.val(@post_btn_text)
+    @$post_btn.removeAttr('disabled')
+
   submit: (e) =>
     e.preventDefault() if e
     data = @getData()
     return false unless @validate data
 
-    post = new TentStatus.Models.Post data
-    post.once 'sync', =>
-      window.location.reload() unless @parentView.emptyPool
-      @parentView.emptyPool()
-      TentStatus.Collections.posts.unshift(post)
-      @parentView.set('posts', TentStatus.Collections.posts)
-      @parentView.render()
-    post.save()
+    @disableWith 'Posting...'
+    new HTTP 'POST', "#{TentStatus.config.current_tent_api_root}/posts", data, (post, xhr) =>
+      return @enable() unless xhr.status == 200
+      post = new TentStatus.Models.Post post
+      postsFeedView = @parentView.postsFeedView()
+      postsFeedView.posts.unshift post
+      container = postsFeedView.$el
+      TentStatus.Views.Post.insertNewPost(post, container, postsFeedView)
+      @render()
     false
 
   buildPermissions: (data) =>
@@ -139,10 +158,16 @@ class TentStatus.Views.NewPostForm extends Backbone.View
       else
         data[i.name] = i.value
 
-    @buildLicenses(@buildMentions(@buildPermissions(data)))
+    data = @buildLicenses(@buildMentions(@buildPermissions(data)))
+    text = data.text
+    delete data.text
+    _.extend data,
+      type: 'https://tent.io/types/post/status/v0.1.0'
+      content:
+        text: text
 
   getData: =>
-    @buildDataObject @$el.serializeArray()
+    @buildDataObject @$form.serializeArray()
 
   validate: (data = @getData()) =>
     post = new TentStatus.Models.Post data
@@ -163,6 +188,7 @@ class TentStatus.Views.NewPostForm extends Backbone.View
     @$errors.show()
 
   updateCharCounter: =>
+    return if @frozen
     charCount = @$textarea.val()?.length
     delta = @charLimit - charCount
     if delta < 0
@@ -175,4 +201,12 @@ class TentStatus.Views.NewPostForm extends Backbone.View
         @$post_btn.removeAttr 'disabled'
       @$charLimit.removeClass 'alert-error'
     @$charLimit.text delta
+
+  render: =>
+    return unless html = super
+    el = ($ html)
+    @$el.replaceWith(el)
+    @setElement el
+    @trigger 'render'
+    html
 
