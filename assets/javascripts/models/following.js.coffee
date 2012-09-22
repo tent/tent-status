@@ -1,6 +1,6 @@
 class TentStatus.Models.Following extends Backbone.Model
   model: 'following'
-  url: => "#{TentStatus.api_root}/followings#{ if @id then "/#{@id}" else ''}#{ if @get('guest') then '?guest=true' else '' }"
+  url: => "#{TentStatus.config.tent_api_root}/followings#{ if @id then "/#{@id}" else '' }"
 
   initialize: ->
     @on 'sync', @updateProfile
@@ -24,4 +24,3 @@ class TentStatus.Models.Following extends Backbone.Model
 
   avatar: =>
     @get('basic_profile')['avatar_url']
-

@@ -1,22 +1,15 @@
 class TentStatus.Views.Post extends TentStatus.View
   initialize: (options = {}) ->
     @parentView = options.parentView
+    @post = options.post
     @template = @parentView?.partials['_post']
-
-    @postId = @$el.attr('data-parent-id') || ""
-    @postId = @$el.attr 'data-id' if @postId == ""
-    @post = @parentView.posts.get(@postId)
-    @parentPost = @post
 
     if @post?.isRepost() && @$el.attr('data-post-found') != 'yes'
       @$el.hide()
-      post = new TentStatus.Models.Post { id: @post.get('content')['id'] }
-      post.fetch
-        success: =>
-          return unless post.entity()
-          @$el.show()
-          @render @context(@post, @repostContext(@post, post))
-          @post = post
+      @post.on 'change:repost', =>
+        @repost = @post.get('repost')
+        @render @context(@post, @repostContext(@post, @repost))
+      @post.fetchRepost()
     else
       @setup()
 
@@ -71,10 +64,7 @@ class TentStatus.Views.Post extends TentStatus.View
     post.save()
 
   delete: =>
-    post = @post
-    unless post == @parentPost
-      post = @parentPost
-    return unless post.get('entity') == TentStatus.current_entity
+    return unless TentStatus.config.current_entity.assertEqual(@post.get 'entity')
     shouldDelete = confirm(@buttons.delete.attr 'data-confirm')
     return unless shouldDelete
     @$el.hide()
@@ -97,7 +87,7 @@ class TentStatus.Views.Post extends TentStatus.View
   repostContext: (post, repost) =>
     return false unless post.isRepost()
 
-    repost ?= _.find @parentView.posts.toArray(), ((p) => p.get('id') == post.get('content')['id'])
+    repost ?= _.find @parentView.posts.toArray() || [], ((p) => p.get('id') == post.get('content')['id'])
     return false unless repost
     _.extend( @context(repost), { parent: { name: post.name(), id: post.get('id') } } )
 

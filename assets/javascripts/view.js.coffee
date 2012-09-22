@@ -44,11 +44,6 @@ class TentStatus.View extends Backbone.View
   # once loaded @template will hold the compiled hogan template specified with @templateName
   # and @partials will hold all compiled templates defined in @partialNames
   initialize: (options) ->
-    @container ||= TentStatus.Views.container
-
-    unless @container
-      TentStatus.devWarning @, "You need to define @container View"
-
     # fetch main template
     if @templateName
       TentStatus.fetchTemplate @templateName, (@template) =>
@@ -71,7 +66,8 @@ class TentStatus.View extends Backbone.View
     @get(key)?.nextPage()
 
   bindEvents: =>
-    _.each $('.btn.load-more', @container?.el), (el) =>
+    return unless @container
+    _.each $('.btn.load-more', @container.el), (el) =>
       viewKey = $(el).attr('data-key')
 
       $(el).hide() if @get(viewKey)?.onLastPage
@@ -81,7 +77,8 @@ class TentStatus.View extends Backbone.View
       $(el).off().on 'click', (=> @loadMore viewKey)
 
   bindViews: =>
-    _.each $('[data-view]', @container?.el), (el) =>
+    return unless @container
+    _.each $('[data-view]', @container.el), (el) =>
       viewClassName = $(el).attr 'data-view'
       if viewClass = TentStatus.Views[viewClassName]
         view = new viewClass el: el, parentView: @

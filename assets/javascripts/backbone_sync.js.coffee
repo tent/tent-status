@@ -30,7 +30,12 @@
     if !params.url
       params.url = getUrl(model) || urlError()
 
+    usejQuery = true
+    if params.url.match(/^http/)
+      usejQuery = false
+
     # Ensure that we have the appropriate request data.
+    data = null
     if !params.data && model && (method == 'create' || method == 'update')
       params.contentType = 'application/json'
 
@@ -55,6 +60,16 @@
       complete(jqXHR, textStatus) if complete
     
     # Make the request.
-    $.ajax(params)
+    if usejQuery
+      $.ajax(params)
+    else
+      model.trigger('sync:start')
+      new HTTP params.type, params.url, data, (data, xhr) =>
+        model.trigger('sync:end')
+        options.complete?(data, xhr.status, xhr)
+        if xhr.status == 200
+          options.success?(data, xhr.status, xhr)
+        else
+          options.error?(data, xhr.status, xhr)
   
 )(window.jQuery || window.Zepto || window.ender)

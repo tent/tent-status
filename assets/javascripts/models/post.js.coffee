@@ -5,6 +5,11 @@ class TentStatus.Models.Post extends Backbone.Model
   isRepost: =>
     !!(@get('type') || '').match(/repost/)
 
+  fetchRepost: =>
+    new HTTP 'GET', "#{TentStatus.config.tent_api_root}/posts/#{@get 'repost_id'}", null, (repost, xhr) =>
+      return unless xhr.status == 200
+      @set 'repost', new TentStatus.Models.Post repost
+
   entity: =>
     return TentStatus.Models.profile if TentStatus.Models.profile.entity() == @get('entity')
     (TentStatus.Collections.followings.find (following) => following.get('entity') == @get('entity')) ||
