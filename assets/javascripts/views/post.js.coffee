@@ -1,11 +1,13 @@
 class TentStatus.Views.Post extends TentStatus.View
-  template: '_post'
+  templateName: '_post'
 
   initialize: (options = {}) ->
     @parentView = options.parentView
     @post = options.post
 
-    @post?.on 'change:profile', @render
+    @post?.on 'change:profile', => @render()
+
+    super
 
   repostContext: (post, repost) =>
     return false unless post.isRepost()
