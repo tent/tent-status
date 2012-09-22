@@ -58,7 +58,6 @@ body
 
   javascript:
     window.TentStatus = {
-      api_root: "#{{full_path('/api')}}",
       url_root: "#{{full_path('/')}}",
       authenticated: #{{!!(current_user || guest_user)}},
       guest_authenticated: #{{!!guest_user}},

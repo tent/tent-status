@@ -12,12 +12,16 @@ class TentStatus.Models.Post extends Backbone.Model
         profile = new TentStatus.Models.Profile following.profile
         @set 'profile', profile
 
-    else if TentStatus.config.current_entity.assertEqual(new HTTP.URI @get('entity'))
+    else if TentStatus.config.current_entity.hostname == (new HTTP.URI @get('entity')).hostname
       if TentStatus.Models.profile.get('id')
         @set 'profile', TentStatus.Models.profile
       else
         TentStatus.Models.profile.fetch
           success: => @set 'profile', TentStatus.Models.profile
+    else if TentStatus.config.domain_entity.hostname == (new HTTP.URI @get('entity')).hostname
+      profile = new TentStatus.Models.Profile
+      profile.fetch
+        success: => @set 'profile', profile
 
   isRepost: =>
     !!(@get('type') || '').match(/repost/)

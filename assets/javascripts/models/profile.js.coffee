@@ -26,5 +26,5 @@ class Profile extends Backbone.Model
 TentStatus.Models.profile = new Profile
 
 class TentStatus.Models.Profile extends Profile
-  url: => "#{TentStatus.api_root}/#{@get('follow_type')}/#{@get('id')}/profile"
+  url: => "#{TentStatus.config.current_tent_api_root}/profile"
 
