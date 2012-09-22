@@ -1,17 +1,12 @@
-tr
+tr.follower data-id='{{id}}'
   td
-    =="{{#avatar}}"
+    | {{#avatar}}
     a href='{{entity}}'
-      img.img-rounded src='{{avatar}}' style='height:50px;width:50px;margin-right:4px;'
-    =="{{/avatar}}"
+      img.avatar.img-rounded src='{{avatar}}'
+    | {{/avatar}}
     a href='{{entity}}'
-      =="{{name}}"
-  td =="{{entity}}"
+      | {{name}}
   td
-    form data-view='FollowerGroupsForm' data-follower-id='{{id}}' method='POST'
-      select multiple=true name='groups' data-placeholder='Select some groups'
-        =="{{#groups}}"
-        |<option value='{{id}}' {{#selected}}selected='selected'{{/selected}}>{{name}}</option>
-        =="{{/groups}}"
+    | {{entity}}
   td
-    .btn.btn-danger data-view='RemoveFollowerBtn' data-id='{{id}}' data-confirm='Remove {{name}}?' Remove
+    .btn.btn-danger.remove-follower data-confirm='Remove {{name}}?' Remove
