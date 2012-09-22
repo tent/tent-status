@@ -5,17 +5,24 @@ class TentStatus.Views.ProfileFollowButton extends Backbone.View
     @buttons = {}
     @buttons.submit = ($ '[type=submit]', @$el)
 
+    new HTTP 'GET', "#{TentStatus.config.tent_api_root}/followings", {
+      entity: TentStatus.config.domain_entity
+    }, (followings, xhr) =>
+      return unless xhr.status == 200
+      if followings.length
+        @setFollowing()
+
     @$el.on 'submit', @submit
 
   submit: (e) =>
     e.preventDefault()
-    entity = TentStatus.domain_entity
+    entity = TentStatus.config.domain_entity.toString()
     @buttons.submit.attr 'disabled', 'disabled'
-    following = new TentStatus.Models.Following { entity: entity }
-    following.once 'sync', =>
+    new HTTP 'POST', "#{TentStatus.config.tent_api_root}/followings", { entity: entity }, (following, xhr) =>
+      unless xhr.status == 200
+        @buttons.submit.removeAttr 'disabled'
+        return
       @setFollowing()
-    following.save()
-    false
 
   setFollowing: =>
     @buttons.submit.val 'Following'

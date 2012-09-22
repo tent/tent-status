@@ -72,7 +72,7 @@ class @HTTP
       @isURI = true
 
     toString: =>
-      @url
+      @url.replace(/\/$/, '')
 
     assertEqual: (uri_or_string) =>
       unless uri_or_string.isURI
