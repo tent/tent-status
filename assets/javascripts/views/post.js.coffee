@@ -38,13 +38,14 @@ class TentStatus.Views.Post extends TentStatus.View
       error: => @$el.show()
 
   repost: =>
+    return if @post.isRepost()
     data = {
       permissions:
         public: true
       type: 'https://tent.io/types/post/repost/v0.1.0'
       content:
-        entity: @post.get('entity')
-        id: @post.get('id')
+        entity: post.get('entity')
+        id: post.get('id')
     }
 
     new HTTP 'POST', "#{TentStatus.config.current_tent_api_root}/posts", data, (post, xhr) =>
