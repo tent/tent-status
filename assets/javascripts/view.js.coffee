@@ -78,10 +78,13 @@ class TentStatus.View extends Backbone.View
 
   bindViews: =>
     return unless @container
+    @child_views = {}
     _.each $('[data-view]', @container.el), (el) =>
       viewClassName = $(el).attr 'data-view'
       if viewClass = TentStatus.Views[viewClassName]
         view = new viewClass el: el, parentView: @
+        @child_views[viewClassName] ?= []
+        @child_views[viewClassName].push view
       else
         TentStatus.devWarning @, "TentStatus.Views.#{viewClassName} is not defined!"
         console.log el
