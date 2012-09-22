@@ -12,8 +12,34 @@ class TentStatus.Views.Post extends TentStatus.View
     @post = options.post
 
     @post?.on 'change:profile', => @render()
+    @on 'ready', @bindEvents
 
     super
+
+  bindEvents: =>
+    @$buttons = {
+      delete: ($ '.actions .delete', @$el)
+      repost: ($ '.actions .repost', @$el)
+      reply:  ($ '.actions .reply', @$el)
+    }
+
+    for k, el of @$buttons
+      do (k, el) =>
+        el.off("click.#{k}").on "click.#{k}", (e) =>
+          e.preventDefault()
+          if msg = el.attr 'data-confirm'
+            return false unless confirm(msg)
+          @[k]?()
+          false
+
+  delete: =>
+    @$el.hide()
+    @post.destroy
+      error: => @$el.show()
+
+  repost: =>
+
+  reply: =>
 
   repostContext: (post, repost) =>
     return false unless post.isRepost()
