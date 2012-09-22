@@ -105,27 +105,9 @@ class TentStatus.Views.NewPostForm extends TentStatus.View
     false
 
   buildPermissions: (data) =>
-    _public = if data['public'] == 'on' then true else false
-    permissions = {
-      public: _public
+    data.permissions = {
+      public: true
     }
-
-    _groups = _.each _.flatten(Array data.permissions), (entityOrGroupId) ->
-      return unless entityOrGroupId
-      [type, value] = [entityOrGroupId.slice(0,2), entityOrGroupId.slice(2, entityOrGroupId.length)]
-      switch type
-        when 'g:'
-          permissions.groups ||= []
-          permissions.groups.push { id: value }
-        when 'f:'
-          permissions.entities ||= {}
-          permissions.entities[value] = true
-
-    delete data['public']
-    delete data.permissible_groups
-    delete data.permissible_entities
-
-    data.permissions = permissions
     data
 
   buildMentions: (data) =>
