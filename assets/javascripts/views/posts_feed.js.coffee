@@ -33,6 +33,7 @@ class TentStatus.Views.PostsFeed extends TentStatus.View
     _.each ($ 'li.post', @$el), (el) =>
       post_id = ($ el).attr('data-id')
       post = _.find @posts?.toArray() || [], (p) => p.get('id') == post_id
+      console.log 'initPostView', post, post_id
       view = new TentStatus.Views.Post el: el, post: post, parentView: @
       view.trigger 'ready'
 

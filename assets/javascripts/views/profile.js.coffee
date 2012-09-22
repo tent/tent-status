@@ -1,10 +1,14 @@
-class TentStatus.Views.Profile extends TentStatus.Views.Posts
+class TentStatus.Views.Profile extends TentStatus.View
   templateName: 'profile'
   partialNames: ['_post', '_post_inner', '_reply_form']
 
-  dependentRenderAttributes: ['currentProfile']
+  dependentRenderAttributes: ['profile']
 
-  initialize: ->
+  initialize: (options = {}) ->
+    @container = TentStatus.Views.container
+
+    # TODO: handle any entity uri via options.entity
+
     super
 
     @on 'change:profile', @render
@@ -13,25 +17,17 @@ class TentStatus.Views.Profile extends TentStatus.Views.Posts
       return unless xhr.status == 200
       @set 'profile', new TentStatus.Models.Profile profile
 
-  replyToPost: (post) =>
-    return unless post.get('mentions')?.length
-    for mention in post.get('mentions')
-      if mention.entity and mention.post
-        mention.url = "#{TentStatus.url_root}#{encodeURIComponent(mention.entity)}/#{mention.post}"
-        return mention
-    null
-
   context: =>
     return {} unless @profile
-    window.profile = @profile
-    profile:
-      name: @profile.name()
-      bio: @profile.bio()
-      avatar: @profile.avatar()
-      hasName: @profile.hasName()
-      entity: @profile.entity()
-      encoded:
-        entity: encodeURIComponent(@profile.entity())
-      formatted:
-        entity: TentStatus.Helpers.formatUrl @profile.entity()
+    _.extend super,
+      profile:
+        name: @profile.name()
+        bio: @profile.bio()
+        avatar: @profile.avatar()
+        hasName: @profile.hasName()
+        entity: @profile.entity()
+        encoded:
+          entity: encodeURIComponent(@profile.entity())
+        formatted:
+          entity: TentStatus.Helpers.formatUrl @profile.entity()
 

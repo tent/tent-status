@@ -5,13 +5,6 @@ class TentStatus.Views.ProfileFollowButton extends Backbone.View
     @buttons = {}
     @buttons.submit = ($ '[type=submit]', @$el)
 
-    following = new TentStatus.Models.Following
-    following.fetch
-      url: "#{TentStatus.api_root}/followings?entity=#{encodeURIComponent(TentStatus.domain_entity)}&guest=true"
-      success: (f, res) =>
-        if res.length
-          @setFollowing()
-
     @$el.on 'submit', @submit
 
   submit: (e) =>
