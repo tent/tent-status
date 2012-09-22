@@ -38,6 +38,20 @@ class TentStatus.Views.Post extends TentStatus.View
       error: => @$el.show()
 
   repost: =>
+    data = {
+      permissions:
+        public: true
+      type: 'https://tent.io/types/post/repost/v0.1.0'
+      content:
+        entity: @post.get('entity')
+        id: @post.get('id')
+    }
+
+    console.log data
+    new HTTP 'POST', "#{TentStatus.config.current_tent_api_root}/posts", data, (post, xhr) =>
+      return unless xhr.status == 200
+      post = new TentStatus.Models.Post post
+      TentStatus.Views.Post.insertNewPost(post, @parentView.$el, @parentView)
 
   reply: =>
 
@@ -45,6 +59,7 @@ class TentStatus.Views.Post extends TentStatus.View
     return false unless post.isRepost()
 
     repost ?= _.find @parentView.posts.toArray() || [], ((p) => p.get('id') == post.get('content')['id'])
+    return false if post.get('id') == repost.get('id')
     return false unless repost
     _.extend( @context(repost), {
       parent: { name: post.name(), id: post.get('id') }
