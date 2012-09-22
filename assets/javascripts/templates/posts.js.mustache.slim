@@ -10,16 +10,13 @@
 | {{/authenticated}}
 .row
   .span2 &nbsp
-  .span8.fetch-pool
+  .span8.fetch-pool data-view='FetchPostsPool'
     a href='#'
-      .alert.alert-info style='text-align:center;'
+      .alert.alert-info style='text-align:center;display:none;'
         span.num_new_posts 0
         span &nbsp; New Posts
 
 .row
   .span2 &nbsp;
   .span8
-    ul.unstyled.posts
-      =="{{#posts}}"
-      =="{{> _post}}"
-      =="{{/posts}}"
+    ul.unstyled.posts data-view='PostsFeed'

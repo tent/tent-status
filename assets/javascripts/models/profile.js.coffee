@@ -1,6 +1,6 @@
 class Profile extends Backbone.Model
   model: 'profile'
-  url: => "#{TentStatus.api_root}/profile"
+  url: "#{TentStatus.config.tent_api_root}/profile"
 
   core_profile: =>
     @get('https://tent.io/types/info/core/v0.1.0')

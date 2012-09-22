@@ -1,4 +1,4 @@
-tr
+tr.following data-id='{{id}}'
   td
     =="{{#avatar}}"
     a href='{{entity}}'
@@ -8,10 +8,4 @@ tr
       =="{{name}}"
   td =="{{entity}}"
   td
-    form data-view='FollowingGroupsForm' data-following-id='{{id}}' method='POST'
-      select multiple=true name='groups' data-placeholder='Select some groups'
-        =="{{#groups}}"
-        |<option value='{{id}}' {{#selected}}selected='selected'{{/selected}}>{{name}}</option>
-        =="{{/groups}}"
-  td
-    .btn.btn-danger data-view='UnfollowBtn' data-id='{{id}}' data-confirm='Unfollow {{name}}?' Unfollow
+    .btn.btn-danger.unfollow-btn data-id='{{id}}' data-confirm='Unfollow {{name}}?' Unfollow

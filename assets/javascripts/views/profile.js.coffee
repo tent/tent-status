@@ -2,9 +2,16 @@ class TentStatus.Views.Profile extends TentStatus.Views.Posts
   templateName: 'profile'
   partialNames: ['_post', '_post_inner', '_reply_form']
 
+  dependentRenderAttributes: ['currentProfile']
+
   initialize: ->
-    @dependentRenderAttributes.push 'currentProfile'
     super
+
+    @on 'change:profile', @render
+
+    new HTTP 'GET', "#{TentStatus.config.current_tent_api_root}/profile", null, (profile, xhr) =>
+      return unless xhr.status == 200
+      @set 'profile', new TentStatus.Models.Profile profile
 
   replyToPost: (post) =>
     return unless post.get('mentions')?.length
@@ -15,15 +22,16 @@ class TentStatus.Views.Profile extends TentStatus.Views.Posts
     null
 
   context: =>
-    _.extend super,
-      profile: _.extend( @currentProfile.toJSON(),
-        name: @currentProfile.name()
-        bio: @currentProfile.bio()
-        nameIsEntity: @currentProfile.name() == TentStatus.Helpers.formatUrl(@currentProfile.entity())
-        avatar: @currentProfile.avatar()
-        entity: @currentProfile.entity()
-        encoded:
-          entity: encodeURIComponent(@currentProfile.entity())
-        formatted:
-          entity: TentStatus.Helpers.formatUrl @currentProfile.entity()
-      )
+    return {} unless @profile
+    window.profile = @profile
+    profile:
+      name: @profile.name()
+      bio: @profile.bio()
+      avatar: @profile.avatar()
+      hasName: @profile.hasName()
+      entity: @profile.entity()
+      encoded:
+        entity: encodeURIComponent(@profile.entity())
+      formatted:
+        entity: TentStatus.Helpers.formatUrl @profile.entity()
+

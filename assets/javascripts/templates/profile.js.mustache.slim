@@ -8,21 +8,23 @@
           img.avatar-large.img-rounded src='{{avatar}}'
         .span6.no-offset
           h2.condensed
-            | {{#nameIsEntity}}
+            | {{^hasName}}
             a href='{{{entity}}}' {{name}}
-            | {{/nameIsEntity}}
-            | {{^nameIsEntity}}
+            | {{/hasName}}
+            | {{#hasName}}
             | {{name}}
             br/
             a href='{{{entity}}}'
               small {{formatted.entity}}
-            | {{/nameIsEntity}}
+            | {{/hasName}}
           | {{#bio}}
           .span6.no-offset
             p {{bio}}
           | {{/bio}}
       .row
-        .profile-stats data-view='ProfileStats'
+        .profile-stats
+          .span2 &nbsp;
+          .span4.no-offset data-view='ProfileStats'
         | {{#guest_authenticated}}
         form.span2.pull-rght data-view='ProfileFollowButton' method='POST'
           input type='hidden' name='entity' value='{{entity}}'
@@ -33,7 +35,7 @@
 .row
   .span2 &nbsp;
   .span8
-    ul.unstyled.posts
+    ul.unstyled.posts data-view='DomainPostsFeed'
       | {{#posts}}
       | {{> _post}}
       | {{/posts}}

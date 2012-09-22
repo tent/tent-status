@@ -33,7 +33,16 @@ _.extend @TentStatus, Backbone.Events, {
   Routers: {}
   Helpers: {}
   csrf_token: $('meta[name="csrf-token"]').attr('content')
-  PER_PAGE: 50
+  PER_PAGE: 10
+
+  config: {
+    tent_api_root: new HTTP.URI(TentStatus.current_entity + '/tent')
+    current_tent_api_root: new HTTP.URI(window.location.protocol + '//' + window.location.hostname + ':' + window.location.port + '/tent')
+    domain_entity: new HTTP.URI(window.location.href)
+    current_entity: new HTTP.URI(TentStatus.current_entity)
+    post_types: ["https://tent.io/types/post/status/v0.1.0", "https://tent.io/types/post/repost/v0.1.0"]
+    PER_PAGE: 10
+  }
 
   devWarning: (fn, msg) ->
     console.warn "<#{fn.constructor.name}> #{msg}"
@@ -41,17 +50,9 @@ _.extend @TentStatus, Backbone.Events, {
   #############################
   #      Hogan Templates      #
   #############################
-  _templates: {}
   fetchTemplate: (templatePath, callback) ->
     template = HoganTemplates[templatePath]
     return callback(template) if template
-
-    template = @_templates[templatePath]
-    return callback(template) if template
-
-    HTTP.get "#{@url_root}assets/templates/#{ templatePath }.html.mustache", (template) =>
-      @_templates[templatePath] = Hogan.compile template
-      callback(@_templates[templatePath])
 
   ## Run Backbone
   backboneConfig: {

@@ -1,5 +1,7 @@
 class TentStatus.Views.FetchPostsPool extends Backbone.View
   initialize: (options = {}) ->
+    return
+    # TODO: Update to work
     @parentView = options.parentView
 
     @$numNewPosts = ($ '.num_new_posts', @$el)

@@ -5,18 +5,5 @@
     form data-view='NewFollowingForm' method='POST'
       input.span8 type='text' name='entity' placeholder='Entity URI'
       input.btn.btn-success.pull-right type='submit' value='Follow'
-    table.table.table-striped
-      thead
-        tr
-          th Name
-          th Entity
-          th Groups
-          th
-      tbody
-        =="{{#followings}}"
-        =="{{> _following}}"
-        =="{{/followings}}"
-.row
-  .span2 &nbsp
-  .span6
-    .btn.load-more data-key='followings' Load More
+      .error.alert.alert-error.hide
+    .followings data-view='FollowingsList'

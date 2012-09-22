@@ -1,5 +1,6 @@
 class TentStatus.Paginator
   sinceId: null
+  prevSinceId: null
   limit: TentStatus.PER_PAGE || 50
   onLastPage: false
   isPaginator: true
@@ -8,31 +9,43 @@ class TentStatus.Paginator
     @url = @options.url if @options.url
     @url ||= @collection.url?()
     @url ||= @collection.url
+    @sinceId = @options.sinceId if @options.sinceId
+
+  freeze: => @frozen = true
+  unfreeze: => @frozen = false
 
   fetch: (options = {}) =>
     sinceId = @sinceId
     limit = @limit
 
+    return if @frozen
+    return if @prevSinceId and sinceId == @prevSinceId
+
+    @freeze()
     @trigger 'fetch:start'
 
     loadedCount = @collection.length
     expectedCount = loadedCount + limit
 
-    _options = {
-      url: @urlForOffsetAndLimit(sinceId, limit)
-      add: true
-      success: (items) =>
-        if (loadedCount == @collection.length) or (@collection.length < expectedCount)
-          @onLastPage = true
-        @sinceId = items.last()?.get('id')
-        @options.success?()
-        @trigger 'fetch:success'
-      error: =>
+    new HTTP 'GET', @url, @paramsForOffsetAndLimit(sinceId, limit), (items, xhr) =>
+      @unfreeze()
+      unless xhr.status == 200
         @trigger 'fetch:error'
-    }
-    options = _.extend _options, options
+        @onLastPage = true
+        return
 
-    @collection.fetch(options)
+      collection_ids = @collection.map (i) => i.get('id')
+      for i in items
+        i = new @collection.model i
+        continue unless collection_ids.indexOf(i.get('id')) == -1
+        @sinceId = i.get('id')
+        @collection.push(i)
+
+      if loadedCount == @collection.length or (@collection.length < expectedCount)
+        @onLastPage = true
+
+      @prevSinceId = sinceId
+      @trigger 'fetch:success'
 
   urlForOffsetAndLimit: (sinceId, limit) =>
     separator = if @url.indexOf("?") != -1 then "&" else "?"

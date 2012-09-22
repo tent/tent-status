@@ -9,20 +9,12 @@ TentStatus.Routers.posts = new class PostsRouter extends TentStatus.Router
     "entities/:entity/:post_id" : "conversation"
 
   index: =>
-    unless TentStatus.current_entity == TentStatus.domain_entity
+    unless TentStatus.config.current_entity.hostname == TentStatus.config.domain_entity.hostname
       @profile(encodeURIComponent(TentStatus.domain_entity))
       return
     @view = new TentStatus.Views.Posts
-    window.view = @view
     @setCurrentAction 'index', =>
-      @fetchData 'posts', =>
-        { posts: new TentStatus.Paginator( TentStatus.Collections.posts ), loaded: false }
-      @fetchData 'followers', =>
-        { followers: new TentStatus.Paginator( TentStatus.Collections.followers ), loaded: false }
-      @fetchData 'followings', =>
-        { followings: new TentStatus.Paginator( TentStatus.Collections.followings ), loaded: false }
-      @fetchData 'profile', =>
-        { profile: TentStatus.Models.profile, loaded: false }
+      @view.render()
 
   root: => @index(arguments...)
 
@@ -53,46 +45,3 @@ TentStatus.Routers.posts = new class PostsRouter extends TentStatus.Router
 
   profile: (entity) =>
     @view = new TentStatus.Views.Profile
-    @setCurrentAction 'profile', =>
-      @fetchData 'currentProfile', (callback) =>
-        _loadedCalled = 0
-        _loaded = (data) =>
-          return unless data
-          return if _loadedCalled
-          _loadedCalled = true
-
-          _profile = new TentStatus.Models.Profile data
-          callback({ currentProfile: _profile, loaded: true })
-
-        _following = new TentStatus.Models.Following entity: decodeURIComponent(entity)
-        _following.fetch
-          url: "#{TentStatus.api_root}/followings?entity=#{entity}"
-          success: =>
-            return _loaded(false) unless _profile = _following.toJSON()[0]?.profile
-            _loaded _.extend({follow_type: 'followings'}, _profile)
-
-        _follower = new TentStatus.Models.Follower entity: decodeURIComponent(entity)
-        _follower.fetch
-          url: "#{TentStatus.api_root}/followers?entity=#{entity}"
-          success: =>
-            return _loaded(false) unless _profile = _follower.toJSON()[0]?.profile
-            _loaded _.extend({follow_type: 'followers'}, _profile)
-
-        @fetchData 'profile', (profileCallback) =>
-          TentStatus.Models.profile.fetch
-            success: (profile) =>
-              if profile.entity() == decodeURIComponent(entity)
-                _loadedCalled = true
-                callback({ currentProfile: profile, loaded: true })
-              profileCallback({ profile: TentStatus.Models.profile, loaded: true })
-
-      @fetchData 'posts', (callback) =>
-        options = { url: "#{TentStatus.api_root}/posts?entity=#{entity}" }
-        _posts = new TentStatus.Paginator( new TentStatus.Collections.Posts, options )
-        callback({ posts: _posts, loaded: false })
-
-      @fetchData 'followers', =>
-        { followers: new TentStatus.Paginator( TentStatus.Collections.followers ), loaded: false }
-      @fetchData 'followings', =>
-        { followings: new TentStatus.Paginator( TentStatus.Collections.followings ), loaded: false }
-
