@@ -21,7 +21,6 @@ class TentStatus.Views.Following extends TentStatus.View
     }
 
     @$fields.unfollow.off('click.unfollow').on 'click.unfollow', (e) =>
-      return unless @following
       return unless @confirmUnfollow()
       @$el.hide()
       @following.destroy
@@ -29,6 +28,7 @@ class TentStatus.Views.Following extends TentStatus.View
           @$el.show()
 
   confirmUnfollow: =>
+    return false unless @following
     confirm @$fields.unfollow.attr('data-confirm')
 
   context: (following=@following) =>
