@@ -60,21 +60,6 @@ class TentStatus.View extends Backbone.View
             @trigger "partials:#{name}:load"
 
     @on 'ready', @bindViews
-    @on 'ready', @bindEvents
-
-  loadMore: (key) =>
-    @get(key)?.nextPage()
-
-  bindEvents: =>
-    return unless @container
-    _.each $('.btn.load-more', @container.el), (el) =>
-      viewKey = $(el).attr('data-key')
-
-      $(el).hide() if @get(viewKey)?.onLastPage
-      @get(viewKey)?.on 'fetch:start',   => $(el).hide()
-      @get(viewKey)?.on 'fetch:success', => $(el).show() unless @get(viewKey)?.onLastPage
-
-      $(el).off().on 'click', (=> @loadMore viewKey)
 
   bindViews: =>
     return unless @container
