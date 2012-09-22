@@ -1,6 +1,6 @@
 .row
   .span1
-    aFollowing href='{{entity}}'
+    a href='{{entity}}'
       img.img-rounded.pull-left.avatar src='{{avatar}}'
 
   .span3.no-offset
@@ -10,21 +10,22 @@
   .pull-right
     a href='{{url}}' class='{{#parent}}gray{{/parent}}' title='{{formatted.full_published_at}}' {{formatted.published_at}}
 
-  | {{#inReplyTo}}
+  | {{#in_reply_to}}
   | {{#authenticated}}
   .span5
     a href='{{url}}'
       small in reply to {{name}}
   | {{/authenticated}}
-  | {{/inReplyTo}}
+  | {{/in_reply_to}}
 
   | {{^repost}}
   | {{#parent}}
-  p.span5.no-offset
+  p.span440.no-offset
     | {{content.text}}
   | {{/parent}}
+
   | {{^parent}}
-  p.span6.no-offset
+  p.span490.no-offset
     | {{content.text}}
   | {{/parent}}
   | {{/repost}}
@@ -40,16 +41,18 @@
   | {{/repost}}
 
 | {{#authenticated}}
-.row.offset0-6.showOnHover.navigation
+.row.offset62.showOnHover.navigation
   | {{^repost}}
   | {{^currentUserOwnsPost}}
   a.reply href='#' Reply
   a.repost data-confirm='Repost {{nmae}}?' href='#' Repost
   | {{/currentUserOwnsPost}}
   | {{/repost}}
+
   | {{#currentUserOwnsPost}}
   a.delete data-confirm='Delete Post?' href='#' Delete
   | {{/currentUserOwnsPost}}
+
   | {{^repost}}
   | {{^parent}}
   small.pull-right via {{app.name}}
@@ -60,9 +63,10 @@
 | {{^repost}}
 | {{#authenticated}}
 | {{^parent}}
-.row.offset0-5.reply-container.clearfix
+.row.offset42.reply-container.clearfix
   | {{> _reply_form}}
 | {{/parent}}
+
 | {{#parent}}
 .row.reply-container.clearfix
   | {{> _reply_form}}

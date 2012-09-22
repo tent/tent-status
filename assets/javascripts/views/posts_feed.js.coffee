@@ -4,7 +4,6 @@ class TentStatus.Views.PostsFeed extends TentStatus.View
 
   initialize: (options) ->
     super
-    @licenses = [{ url: "http://creativecommons.org/licenses/by-nc-sa/3.0/", name: "Creative Commons by-nc-sa 3.0" }]
 
     @on 'change:posts', @render
     @on 'render', @initPostViews
@@ -20,7 +19,6 @@ class TentStatus.Views.PostsFeed extends TentStatus.View
       @set 'posts', new TentStatus.Collections.Posts posts # TODO wrap in paginator
 
   context: =>
-    licenses: @licenses
     posts: (_.map @posts?.toArray() || [], (post) =>
       view = new TentStatus.Views.Post parentView: @
       view.context(post)
@@ -29,10 +27,12 @@ class TentStatus.Views.PostsFeed extends TentStatus.View
   render: =>
     html = super
     @$el.html(html)
+    @trigger 'render'
 
   initPostViews: =>
     _.each ($ 'li.post', @$el), (el) =>
-      post_id = el.attr('data-id')
+      post_id = ($ el).attr('data-id')
       post = _.find @posts?.toArray() || [], (p) => p.get('id') == post_id
-      new TentStatus.Views.Post el: el, post: post, parentView: @
+      view = new TentStatus.Views.Post el: el, post: post, parentView: @
+      view.trigger 'ready'
 
