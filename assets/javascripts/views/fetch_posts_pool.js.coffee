@@ -22,7 +22,7 @@ class TentStatus.Views.FetchPostsPool extends Backbone.View
     @pool = new TentStatus.FetchPool( new TentStatus.Collections.Posts, { since_id_entity: @since_id_entity, sinceId: @since_id, master_collection: @posts })
     @pool.on 'fetch:success', @update
 
-    @fetch_delay = 3000
+    @fetch_delay = TentStatus.config.FETCH_INTERVAL
     @fetch_delay_offset = 0
 
     @setFetchInterval()
@@ -41,7 +41,7 @@ class TentStatus.Views.FetchPostsPool extends Backbone.View
     @since_id = @pool.since_id
 
     if last_since_id == @since_id
-      @fetch_delay_offset = Math.min(@fetch_delay_offset + @fetch_delay, 60000 - @fetch_delay) # max delay: 1 min
+      @fetch_delay_offset = Math.min(@fetch_delay_offset + @fetch_delay, TentStatus.config.MAX_FETCH_LATENCY - @fetch_delay)
       @setFetchInterval()
     else
       @fetch_delay_offset = 0
