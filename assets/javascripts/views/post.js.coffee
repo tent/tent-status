@@ -50,7 +50,7 @@ class TentStatus.Views.Post extends TentStatus.View
         id: @post.get('id')
     }
 
-    new HTTP 'POST', "#{TentStatus.config.current_tent_api_root}/posts", data, (post, xhr) =>
+    new HTTP 'POST', "#{TentStatus.config.tent_api_root}/posts", data, (post, xhr) =>
       return unless xhr.status == 200
       post = new TentStatus.Models.Post post
       @parentView.posts.unshift(post)
