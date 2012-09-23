@@ -14,7 +14,8 @@ class @HTTP
 
     if @method == 'GET'
       params = ("#{encodeURIComponent(k)}=#{encodeURIComponent(v)}" for k,v of @data)
-      @url += "?#{params.join('&')}" if params.length
+      separator = if @url.match(/\?/) then "&" else "?"
+      @url += "#{separator}#{params.join('&')}" if params.length
       @data = null
 
     uri = new HTTP.URI @url

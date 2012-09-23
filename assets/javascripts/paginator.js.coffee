@@ -65,7 +65,7 @@ class TentStatus.Paginator
     new_items
 
   urlForOffsetAndLimit: (since_id_entity, sinceId, limit) =>
-    separator = if @url.indexOf("?") != -1 then "&" else "?"
+    separator = if @url.match(/\?/) then "&" else "?"
     @url + separator + @serializeParams(@paramsForOffsetAndLimit since_id_entity, sinceId, limit)
 
   serializeParams: (params = {}) =>
