@@ -13,14 +13,14 @@ class TentStatus.Views.Conversation extends TentStatus.View
     @on 'ready', @initPostViews
 
     @on 'change:post', @render
-    new HTTP 'GET', "#{TentStatus.config.tent_api_root}/posts/#{@post_id}", null, (post, xhr) =>
+    new HTTP 'GET', "#{TentStatus.config.current_tent_api_root}/posts/#{@post_id}", null, (post, xhr) =>
       return unless xhr.status == 200
       post = new TentStatus.Models.Post post
       post.on 'change:profile', => @render()
       @set 'post', post
 
       @on 'change:child_posts', @render
-      new HTTP 'GET', "#{TentStatus.config.tent_api_root}/posts", {
+      new HTTP 'GET', "#{TentStatus.config.current_tent_api_root}/posts", {
         limit: TentStatus.config.PER_PAGE
         mentioned_post: @post_id
       }, (posts, xhr) =>
@@ -35,7 +35,7 @@ class TentStatus.Views.Conversation extends TentStatus.View
       post_id = @post.postMentions()[0].post
 
       @on 'change:parent_post', @render
-      new HTTP 'GET', "#{TentStatus.config.tent_api_root}/posts/#{encodeURIComponent entity}/#{post_id}", null, (post, xhr) =>
+      new HTTP 'GET', "#{TentStatus.config.current_tent_api_root}/posts/#{encodeURIComponent entity}/#{post_id}", null, (post, xhr) =>
         return unless xhr.status == 200
         post = new TentStatus.Models.Post post
         @set 'parent_post', post
