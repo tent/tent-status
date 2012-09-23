@@ -3,11 +3,6 @@
   .span8.well
     ul.unstyled.posts
       | {{#post}}
-      | {{#isValid}}
       li.post.clearfix data-id='{{id}}'
         | {{> _post_inner}}
-      | {{/isValid}}
       | {{/post}}
-      | {{#posts}}
-      | {{> _post}}
-      | {{/posts}}

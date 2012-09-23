@@ -1,18 +1,24 @@
-class TentStatus.Views.Conversation extends TentStatus.Views.Posts
+class TentStatus.Views.Conversation extends TentStatus.View
   templateName: 'conversation'
 
-  initialize: ->
-    @dependentRenderAttributes.push 'post'
+  dependentRenderAttributes: ['post']
+
+  initialize: (options = {}) ->
+    @post_id = options.post_id
+    @entity = options.entity
+    @container = TentStatus.Views.container
     super
 
+    @on 'change:post', @render
+    new HTTP 'GET', "#{TentStatus.config.tent_api_root}/posts/#{@post_id}", null, (post, xhr) =>
+      return unless xhr.status == 200
+      post = new TentStatus.Models.Post post
+      @set 'post', post
+
   context: =>
-    @posts.unshift(@post)
-    data = super
-    posts = []
-    for post in data.posts
-      if post.id == @post.get('id')
-        data.post = post
-      else
-        posts.push post
-    data.posts = posts
-    data
+    post: TentStatus.Views.Post::context(@post)
+
+  render: =>
+    html = super
+    console.log html, @context()
+
