@@ -1,5 +1,6 @@
 class TentStatus.Paginator
   sinceId: null
+  since_id_entity: null
   prevSinceId: null
   limit: TentStatus.PER_PAGE || 50
   onLastPage: false
@@ -10,19 +11,22 @@ class TentStatus.Paginator
     @url ||= @collection.url?()
     @url ||= @collection.url
     @sinceId = @options.sinceId if @options.sinceId
+    @since_id_entity = @options.since_id_entity if @options.since_id_entity
 
   freeze: => @frozen = true
   unfreeze: => @frozen = false
 
   fetch: (options = {}) =>
     sinceId = @sinceId
+    since_id_entity = @since_id_entity
     limit = @limit
 
     options.push_method ?= 'push'
 
     return if @frozen
     unless options.n_pages == 'infinite'
-      return if @prevSinceId and sinceId == @prevSinceId
+      entity_match = if @prev_since_id_entity then @prev_since_id_entity == since_id_entity else true
+      return if entity_match && @prevSinceId and sinceId == @prevSinceId
 
     @freeze()
     @trigger 'fetch:start'
@@ -30,7 +34,7 @@ class TentStatus.Paginator
     loadedCount = @collection.length
     expectedCount = loadedCount + limit
 
-    new HTTP 'GET', @url, @paramsForOffsetAndLimit(sinceId, limit), (items, xhr) =>
+    new HTTP 'GET', @url, @paramsForOffsetAndLimit(since_id_entity, sinceId, limit), (items, xhr) =>
       @unfreeze()
       unless xhr.status == 200
         @trigger 'fetch:error'
@@ -41,6 +45,7 @@ class TentStatus.Paginator
       for i in items
         i = new @collection.model i
         @sinceId = i.get('id')
+        @since_id_entity = i.get('entity') if since_id_entity
         @collection[options.push_method](i)
 
       unless options.n_pages == 'infinite'
@@ -48,6 +53,7 @@ class TentStatus.Paginator
           @onLastPage = true
 
       @prevSinceId = sinceId
+      @prev_since_id_entity = since_id_entity
       @trigger 'fetch:success'
 
   filterNewItems: (items, collection=@collection) =>
@@ -58,9 +64,9 @@ class TentStatus.Paginator
       new_items.push i
     new_items
 
-  urlForOffsetAndLimit: (sinceId, limit) =>
+  urlForOffsetAndLimit: (since_id_entity, sinceId, limit) =>
     separator = if @url.indexOf("?") != -1 then "&" else "?"
-    @url + separator + @serializeParams(@paramsForOffsetAndLimit sinceId, limit)
+    @url + separator + @serializeParams(@paramsForOffsetAndLimit since_id_entity, sinceId, limit)
 
   serializeParams: (params = {}) =>
     res = []
@@ -69,9 +75,10 @@ class TentStatus.Paginator
       res.push "#{k}=#{v}"
     res.join("&")
 
-  paramsForOffsetAndLimit: (sinceId, limit) =>
+  paramsForOffsetAndLimit: (since_id_entity, sinceId, limit) =>
     params = { limit: limit }
     params.before_id = sinceId if sinceId
+    params.before_id_entity = since_id_entity
     params
 
   nextPage: =>
