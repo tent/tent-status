@@ -61,9 +61,9 @@ class TentStatus.Views.Post extends TentStatus.View
   repostContext: (post, repost) =>
     return false unless post.isRepost()
 
-    repost ?= _.find @parentView.posts.toArray() || [], ((p) => p.get('id') == post.get('content')['id'])
-    return false if post.get('id') == repost.get('id')
+    repost ?= _.find @parentView?.posts.toArray() || [], ((p) => p.get('id') == post.get('content')['id'])
     return false unless repost
+    return false if post.get('id') == repost.get('id')
     _.extend( @context(repost), {
       parent: { name: post.name(), id: post.get('id') }
     })

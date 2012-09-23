@@ -7,6 +7,7 @@ class TentStatus.Views.PostsFeed extends TentStatus.View
 
     @on 'change:posts', @render
     @on 'render', @initPostViews
+    @on 'render', @initAutoPaginate
 
     params = {
       post_types: TentStatus.config.post_types
@@ -16,7 +17,10 @@ class TentStatus.Views.PostsFeed extends TentStatus.View
     options.api_root ?= TentStatus.config.tent_api_root
     new HTTP 'GET', "#{options.api_root}/posts", params, (posts, xhr) =>
       return unless xhr.status == 200
-      @set 'posts', new TentStatus.Collections.Posts posts # TODO wrap in paginator
+      since_id = posts[posts.length-1]?.id
+      paginator = new TentStatus.Paginator(new TentStatus.Collections.Posts(posts), { sinceId: since_id })
+      paginator.on 'fetch:success', @render
+      @set 'posts', paginator
 
   context: =>
     posts: (_.map @posts?.toArray() || [], (post) =>
@@ -36,3 +40,10 @@ class TentStatus.Views.PostsFeed extends TentStatus.View
       view = new TentStatus.Views.Post el: el, post: post, parentView: @
       view.trigger 'ready'
 
+  initAutoPaginate: =>
+    ($ window).off('scroll.posts').on 'scroll.posts', (e)=>
+      height = $(document).height() - $(window).height()
+      delta = height - window.scrollY
+      if delta < 200
+        clearTimeout @_auto_paginate_timeout
+        @_auto_paginate_timeout = setTimeout @posts?.nextPage, 0 unless @posts.onLastPage

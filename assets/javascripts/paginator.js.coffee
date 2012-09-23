@@ -27,6 +27,7 @@ class TentStatus.Paginator
     loadedCount = @collection.length
     expectedCount = loadedCount + limit
 
+    console.log 'paginate', @collection, @paramsForOffsetAndLimit(sinceId, limit)
     new HTTP 'GET', @url, @paramsForOffsetAndLimit(sinceId, limit), (items, xhr) =>
       @unfreeze()
       unless xhr.status == 200

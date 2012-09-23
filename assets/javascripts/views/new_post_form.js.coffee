@@ -4,8 +4,6 @@ class TentStatus.Views.NewPostForm extends TentStatus.View
   initialize: (options = {}) ->
     @parentView = options.parentView
 
-    @postsFeedView ?= @parentView.postsFeedView?()
-
     super
 
     @on 'ready', @init
@@ -99,7 +97,8 @@ class TentStatus.Views.NewPostForm extends TentStatus.View
     new HTTP 'POST', "#{TentStatus.config.current_tent_api_root}/posts", data, (post, xhr) =>
       return @enable() unless xhr.status == 200
       post = new TentStatus.Models.Post post
-      @postsFeedView.posts.unshift post
+      @postsFeedView ?= @parentView.postsFeedView?()
+      @postsFeedView?.posts.unshift post
       container = @postsFeedView.$el
       TentStatus.Views.Post.insertNewPost(post, container, @postsFeedView)
       @render()
