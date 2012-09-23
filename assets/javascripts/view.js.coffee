@@ -69,6 +69,7 @@ class TentStatus.View extends Backbone.View
         view = new viewClass el: el, parentView: @
         @child_views[viewClassName] ?= []
         @child_views[viewClassName].push view
+        @trigger "init:#{viewClassName}"
       else
         TentStatus.devWarning @, "TentStatus.Views.#{viewClassName} is not defined!"
         console.log el

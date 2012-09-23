@@ -18,8 +18,11 @@ class TentStatus.Paginator
     sinceId = @sinceId
     limit = @limit
 
+    options.push_method ?= 'push'
+
     return if @frozen
-    return if @prevSinceId and sinceId == @prevSinceId
+    unless options.n_pages == 'infinite'
+      return if @prevSinceId and sinceId == @prevSinceId
 
     @freeze()
     @trigger 'fetch:start'
@@ -27,12 +30,11 @@ class TentStatus.Paginator
     loadedCount = @collection.length
     expectedCount = loadedCount + limit
 
-    console.log 'paginate', @collection, @paramsForOffsetAndLimit(sinceId, limit)
     new HTTP 'GET', @url, @paramsForOffsetAndLimit(sinceId, limit), (items, xhr) =>
       @unfreeze()
       unless xhr.status == 200
         @trigger 'fetch:error'
-        @onLastPage = true
+        @onLastPage = true unless options.n_pages == 'infinite'
         return
 
       collection_ids = @collection.map (i) => i.get('id')
@@ -40,10 +42,11 @@ class TentStatus.Paginator
         i = new @collection.model i
         continue unless collection_ids.indexOf(i.get('id')) == -1
         @sinceId = i.get('id')
-        @collection.push(i)
+        @collection[options.push_method](i)
 
-      if loadedCount == @collection.length or (@collection.length < expectedCount)
-        @onLastPage = true
+      unless options.n_pages == 'infinite'
+        if loadedCount == @collection.length or (@collection.length < expectedCount)
+          @onLastPage = true
 
       @prevSinceId = sinceId
       @trigger 'fetch:success'
