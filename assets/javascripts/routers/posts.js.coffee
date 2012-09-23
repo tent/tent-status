@@ -9,7 +9,7 @@ TentStatus.Routers.posts = new class PostsRouter extends TentStatus.Router
     "posts/:post_id" : "conversation"
 
   index: =>
-    unless TentStatus.config.current_entity.hostname == TentStatus.config.domain_entity.hostname
+    if !TentStatus.authenticated or (TentStatus.config.current_entity.hostname != TentStatus.config.domain_entity.hostname)
       @profile(encodeURIComponent(TentStatus.domain_entity))
       return
     @view = new TentStatus.Views.Posts
