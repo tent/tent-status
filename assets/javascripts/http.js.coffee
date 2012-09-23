@@ -17,17 +17,10 @@ class @HTTP
       @url += "?#{params.join('&')}" if params.length
       @data = null
 
-    if m = @url.match(/^https?:\/\/([^\/]+)(.*)/)
-      @host = m[1].replace(/:\d+/, '')
-      @path = m[2]
-    else
-      @host = window.location.hostname
-      @path = @url
-
-    if m = @url.match(/[^\/]+:(\d+)/)
-      @port = m[1]
-    else
-      @port = window.location.port
+    uri = new HTTP.URI @url
+    @host = uri.hostname
+    @path = uri.path
+    @port = uri.port
 
     @sendRequest()
 
@@ -68,13 +61,15 @@ class @HTTP
       @scheme = m[1] or (window.location.protocol + '//')
       @hostname = if h then h[0] else window.location.hostname
       @port = parseInt(h[1]) if h and h[1]
+      if @hostname == window.location.hostname and window.location.port
+        @port = parseInt(window.location.port)
       if !@port
         @port ?= if @scheme.match(/^https/) then 443 else 80
       @path = m[3]
       @isURI = true
 
     toString: =>
-      @url.replace(/\/$/, '')
+      (@scheme + @hostname + ':' + @port + @path).replace(/\/$/, '')
 
     assertEqual: (uri_or_string) =>
       unless uri_or_string.isURI
