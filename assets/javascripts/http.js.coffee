@@ -56,6 +56,8 @@ class @HTTP
 
   class @URI
     constructor: (@url) ->
+      return @url if @url.isURI
+
       m = @url.match(/^(https?:\/\/)?([^\/]+)?(.*)$/)
       h = m[2]?.split(':')
       @scheme = m[1] or (window.location.protocol + '//')
@@ -66,6 +68,8 @@ class @HTTP
       if !@port
         @port ?= if @scheme.match(/^https/) then 443 else 80
       @path = m[3]
+      @base_host = _.last(@hostname.split('.'))
+
       @isURI = true
 
     toString: =>

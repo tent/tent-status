@@ -78,7 +78,7 @@ class TentStatus.Views.Post extends TentStatus.View
     return unless mention
     {
       name: mention.entity,
-      url: TentStatus.Helpers.entityPostUrl(mention.entity, mention.id)
+      url: TentStatus.Helpers.entityPostUrl(mention.entity, mention.post)
     }
 
   context: (post = @post, repostContext) =>
