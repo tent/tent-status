@@ -74,11 +74,18 @@ class TentStatus.Views.Post extends TentStatus.View
     name: post.get('profile')?.name() || ''
     avatar: post.get('profile')?.avatar() || ''
 
+  inReplyToJSON: (mention) =>
+    return unless mention
+    {
+      name: mention.entity,
+      url: TentStatus.Helpers.entityPostUrl(mention.entity, mention.id)
+    }
+
   context: (post = @post, repostContext) =>
     _.extend super, post.toJSON(), @postProfileJSON(post), {
       is_repost: post.isRepost()
       repost: repostContext || @repostContext(post)
-      in_reply_to: post.get('in_reply_to_post')
+      in_reply_to: @inReplyToJSON(post.postMentions()[0])
       url: TentStatus.Helpers.postUrl(post)
       profileUrl: TentStatus.Helpers.entityProfileUrl(post.get 'entity')
       licenses: _.map post.get('licenses') || [], (url) => { name: TentStatus.Helpers.formatUrl(url), url: url }

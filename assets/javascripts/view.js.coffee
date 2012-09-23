@@ -117,6 +117,7 @@ class TentStatus.View extends Backbone.View
 
     html = @template.render(context, @partials)
     if @container
+      console.log html
       @container.render(html)
       @trigger 'ready'
       true
