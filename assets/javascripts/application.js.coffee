@@ -42,6 +42,8 @@ _.extend @TentStatus, Backbone.Events, {
     current_entity: new HTTP.URI(TentStatus.current_entity)
     post_types: ["https://tent.io/types/post/status/v0.1.0", "https://tent.io/types/post/repost/v0.1.0"]
     PER_PAGE: 10
+    FETCH_INTERVAL: 3000
+    MAX_FETCH_LATENCY: 30000
   }
 
   devWarning: (fn, msg) ->
