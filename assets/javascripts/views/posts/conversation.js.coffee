@@ -13,7 +13,11 @@ class TentStatus.Views.Conversation extends TentStatus.View
     @on 'ready', @initPostViews
 
     @on 'change:post', @render
-    new HTTP 'GET', "#{TentStatus.config.current_tent_api_root}/posts/#{encodeURIComponent @entity}/#{@post_id}", null, (post, xhr) =>
+    url = if TentStatus.config.domain_entity.assertEqual(@entity)
+      "#{TentStatus.config.current_tent_api_root}/posts/#{@post_id}"
+    else
+      "#{TentStatus.config.current_tent_api_root}/posts/#{encodeURIComponent @entity}/#{@post_id}"
+    new HTTP 'GET', url, null, (post, xhr) =>
       return unless xhr.status == 200
       post = new TentStatus.Models.Post post
       post.on 'change:profile', => @render()
