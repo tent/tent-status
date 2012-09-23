@@ -1,63 +1,67 @@
 class TentStatus.Views.FetchPostsPool extends Backbone.View
   initialize: (options = {}) ->
-    return
-    # TODO: Update to work
     @parentView = options.parentView
+    unless @postsFeedView = @parentView.child_views.PostsFeed?[0]
+      return @parentView.once 'init:PostsFeed', => @initialize(options)
 
-    @$numNewPosts = ($ '.num_new_posts', @$el)
-    @numNewPosts = 0
+    @$elements = {
+      num_new_posts: ($ '.num_new_posts', @$el)
+      posts_list: @postsFeedView.$el
+    }
 
-    @$postsList = ($ 'ul.posts', @parentView.container.$el)
+    @num_new_posts = 0
 
-    @sinceId = @parentView.posts.first()?.get('id')
-    @pool = new TentStatus.FetchPool( new TentStatus.Collections.Posts, { sinceId: @sinceId })
+    @postsFeedView.on 'change:posts', @initFetchPool
+    @initFetchPool() if @postsFeedView.posts?.length
+
+  initFetchPool: =>
+    @posts = @postsFeedView.posts
+
+    @since_id = @posts.first()?.get('id')
+    @pool = new TentStatus.FetchPool( new TentStatus.Collections.Posts, { sinceId: @since_id })
     @pool.on 'fetch:success', @update
 
-    @fetchDelay = 3000
-    @fetchDelayOffset = 0
+    @fetch_delay = 3000
+    @fetch_delay_offset = 0
 
     @setFetchInterval()
 
-    @$el.on 'click', (e)=>
+    @$el.off('click.empty-pool').on 'click.empty-pool', (e)=>
       e.preventDefault()
       @emptyPool()
       false
     
-  setFetchInterval: (interval=@fetchDelay+@fetchDelayOffset) =>
+  setFetchInterval: (interval=@fetch_delay+@fetch_delay_offset) =>
     clearInterval TentStatus._fetchPostsPoolInterval
     TentStatus._fetchPostsPoolInterval = setInterval @pool.fetch, interval
 
   update: =>
-    lastSinceId = @sinceId
-    @sinceId = @pool.sinceId
-    if lastSinceId == @sinceId
-      @fetchDelayOffset = Math.min(@fetchDelayOffset + @fetchDelay, 57000) # max delay: 1 min
+    last_since_id = @since_id
+    @since_id = @pool.since_id
+
+    if last_since_id == @since_id
+      @fetch_delay_offset = Math.min(@fetch_delay_offset + @fetch_delay, 60000 - @fetch_delay) # max delay: 1 min
       @setFetchInterval()
     else
-      @fetchDelayOffset = 0
+      @fetch_delay_offset = 0
       @setFetchInterval()
 
-    @numNewPosts = @pool.collection.length
-    @$numNewPosts.text @numNewPosts
-    @show() if @numNewPosts > 0
+    @num_new_posts = @pool.collection.length
+    @$elements.num_new_posts.text @num_new_posts
+
+    @show() if @num_new_posts > 0
 
   show: => @$el.show()
   hide: => @$el.hide()
 
   emptyPool: =>
-    for i in [0...@numNewPosts]
+    for i in [0...@num_new_posts]
       post = @pool.collection.shift()
-      TentStatus.Collections.posts.unshift(post)
-      # @createPostView(post)
-    @parentView.render()
-    @pool.sinceId = @parentView.posts.first()?.get('id') || @pool.sinceId
-    @numNewPosts = 0
-    @$numNewPosts.text @numNewPosts
+      @posts.unshift(post)
+      TentStatus.Views.Post.insertNewPost(post, @$elements.posts_list, @postsFeedView)
+
+    @pool.since_id = @postsFeedView.posts.first()?.get('id')
+    @num_new_posts = 0
+    @$elements.num_new_posts.text @num_new_posts
     @hide()
 
-  createPostView: (post) =>
-    el = ($ '<li>').prependTo(@$postsList)
-    view = new TentStatus.Views.Post el: el, parentView: @parentView
-    view.post = post
-    context = view.context(post)
-    view.render(context)
