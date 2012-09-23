@@ -94,7 +94,7 @@ class TentStatus.Views.NewPostForm extends TentStatus.View
     return false unless @validate data
 
     @disableWith 'Posting...'
-    new HTTP 'POST', "#{TentStatus.config.current_tent_api_root}/posts", data, (post, xhr) =>
+    new HTTP 'POST', "#{TentStatus.config.tent_api_root}/posts", data, (post, xhr) =>
       return @enable() unless xhr.status == 200
       post = new TentStatus.Models.Post post
       @postsFeedView ?= @parentView.postsFeedView?()
