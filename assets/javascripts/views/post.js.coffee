@@ -23,6 +23,8 @@ class TentStatus.Views.Post extends TentStatus.View
       reply:  ($ '.actions .reply', @$el)
     }
 
+    @$reply_container = ($ '.reply-container', @$el)
+
     for k, el of @$buttons
       do (k, el) =>
         el.off("click.#{k}").on "click.#{k}", (e) =>
@@ -54,6 +56,7 @@ class TentStatus.Views.Post extends TentStatus.View
       TentStatus.Views.Post.insertNewPost(post, @parentView.$el, @parentView)
 
   reply: =>
+    @$reply_container.toggle()
 
   repostContext: (post, repost) =>
     return false unless post.isRepost()

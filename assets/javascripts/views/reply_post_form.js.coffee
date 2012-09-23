@@ -1,25 +1,18 @@
 class TentStatus.Views.ReplyPostForm extends TentStatus.Views.NewPostForm
+  templateName: '_reply_form'
+
   initialize: (options = {}) ->
+    @postsFeedView = options.parentView.parentView
+
     super
 
     ## reply fields
     @replyToPostId = ($ '[name=mentions_post_id]', @$el).val()
     @replyToEntity = ($ '[name=mentions_post_entity]', @$el).val()
 
-  submit: (e) =>
-    e.preventDefault()
-    data = @getData()
-    return false unless @validate data
+    @$form = @$el
 
-    post = new TentStatus.Models.Post data
-    post.once 'sync', =>
-      window.location.reload() unless @parentView.emptyPool
-      @parentView.emptyPool()
-      TentStatus.Collections.posts.unshift(post)
-      @parentView.posts.unshift(post)
-      @parentView.render()
-    post.save()
-    false
+    @on 'ready', => @parentView.$reply_container.hide()
 
   buildMentions: (data) =>
     data = super
@@ -28,3 +21,4 @@ class TentStatus.Views.ReplyPostForm extends TentStatus.Views.NewPostForm
       data.mentions.push { entity: @replyToEntity, post: @replyToPostId }
     data
 
+  context: => @parentView.context()
