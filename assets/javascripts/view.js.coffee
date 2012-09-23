@@ -62,9 +62,8 @@ class TentStatus.View extends Backbone.View
     @on 'ready', @bindViews
 
   bindViews: =>
-    return unless @container
     @child_views = {}
-    _.each $('[data-view]', @container.el), (el) =>
+    _.each $('[data-view]', (@container?.el || @$el)), (el) =>
       viewClassName = $(el).attr 'data-view'
       if viewClass = TentStatus.Views[viewClassName]
         view = new viewClass el: el, parentView: @

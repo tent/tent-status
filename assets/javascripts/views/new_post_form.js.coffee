@@ -4,9 +4,11 @@ class TentStatus.Views.NewPostForm extends TentStatus.View
   initialize: (options = {}) ->
     @parentView = options.parentView
 
+    @postsFeedView ?= @parentView.postsFeedView?()
+
     super
 
-    @on 'render', @init
+    @on 'ready', @init
     @render()
 
   init: =>
@@ -97,10 +99,9 @@ class TentStatus.Views.NewPostForm extends TentStatus.View
     new HTTP 'POST', "#{TentStatus.config.current_tent_api_root}/posts", data, (post, xhr) =>
       return @enable() unless xhr.status == 200
       post = new TentStatus.Models.Post post
-      postsFeedView = @parentView.postsFeedView()
-      postsFeedView.posts.unshift post
-      container = postsFeedView.$el
-      TentStatus.Views.Post.insertNewPost(post, container, postsFeedView)
+      @postsFeedView.posts.unshift post
+      container = @postsFeedView.$el
+      TentStatus.Views.Post.insertNewPost(post, container, @postsFeedView)
       @render()
     false
 
@@ -117,7 +118,7 @@ class TentStatus.Views.NewPostForm extends TentStatus.View
     )
     delete data.mentions
 
-    for entity in (data.text.match(/\^(\S+)/g) || [])
+    for entity in (data.text?.match(/\^(\S+)/g) || [])
       entity = entity.replace(/^\^/, '')
       entity = entity.replace(/^/, 'https://') unless entity.match(/^https?/)
       mentions.push { entity: entity }
@@ -189,6 +190,6 @@ class TentStatus.Views.NewPostForm extends TentStatus.View
     el = ($ html)
     @$el.replaceWith(el)
     @setElement el
-    @trigger 'render'
+    @trigger 'ready'
     html
 

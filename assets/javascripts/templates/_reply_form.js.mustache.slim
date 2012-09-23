@@ -1,11 +1,11 @@
 | {{#authenticated}}
-form.form-horizontal.hide data-view='ReplyPostForm' method='POST'
+form.form-horizontal data-view='ReplyPostForm' method='POST'
   input type='hidden' name='mentions_post_id' value='{{id}}'
   input type='hidden' name='mentions_post_entity' value='{{entity}}'
   .span7
     .alert.alert-error.hide &nbsp;
 
-    textarea.span7 name='text' placeholder="What's on your mind?" rows='3' ^{{entity}}
+    textarea.span7 name='text' placeholder="What's on your mind?" rows='3' == "^{{entity}} "
     .clearfix
       span.char-limit 140
   

@@ -63,12 +63,12 @@
 | {{^repost}}
 | {{#authenticated}}
 | {{^parent}}
-.row.offset42.reply-container.clearfix
+.row.offset42.reply-container.clearfix.hide
   | {{> _reply_form}}
 | {{/parent}}
 
 | {{#parent}}
-.row.reply-container.clearfix
+.row.reply-container.clearfix.hide
   | {{> _reply_form}}
 | {{/parent}}
 | {{/authenticated}}
