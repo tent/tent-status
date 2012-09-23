@@ -13,3 +13,6 @@ class TentStatus.FetchPool extends TentStatus.Paginator
       n_pages: 'infinite'
     }, options)
 
+  filterNewItems: (items, collection=@collection) =>
+    super(super(items, collection), @options.master_collection)
+
