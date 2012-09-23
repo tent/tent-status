@@ -37,10 +37,9 @@ class TentStatus.Paginator
         @onLastPage = true unless options.n_pages == 'infinite'
         return
 
-      collection_ids = @collection.map (i) => i.get('id')
+      items = @filterNewItems(items)
       for i in items
         i = new @collection.model i
-        continue unless collection_ids.indexOf(i.get('id')) == -1
         @sinceId = i.get('id')
         @collection[options.push_method](i)
 
@@ -50,6 +49,14 @@ class TentStatus.Paginator
 
       @prevSinceId = sinceId
       @trigger 'fetch:success'
+
+  filterNewItems: (items, collection=@collection) =>
+    collection_ids = collection.map (i) => i.get('id')
+    new_items = []
+    for i in items
+      continue unless collection_ids.indexOf(i.id) == -1
+      new_items.push i
+    new_items
 
   urlForOffsetAndLimit: (sinceId, limit) =>
     separator = if @url.indexOf("?") != -1 then "&" else "?"
@@ -80,5 +87,6 @@ class TentStatus.Paginator
   push: => @collection.push(arguments...)
   first: => @collection.first(arguments...)
   last: => @collection.last(arguments...)
+  map: => @collection.map(arguments...)
 
 _.extend TentStatus.Paginator::, Backbone.Events

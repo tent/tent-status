@@ -18,7 +18,7 @@ class TentStatus.Views.FetchPostsPool extends Backbone.View
     @posts = @postsFeedView.posts
 
     @since_id = @posts.first()?.get('id')
-    @pool = new TentStatus.FetchPool( new TentStatus.Collections.Posts, { sinceId: @since_id })
+    @pool = new TentStatus.FetchPool( new TentStatus.Collections.Posts, { sinceId: @since_id, master_collection: @posts })
     @pool.on 'fetch:success', @update
 
     @fetch_delay = 3000
