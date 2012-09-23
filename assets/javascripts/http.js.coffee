@@ -67,7 +67,8 @@ class @HTTP
       h = m[2]?.split(':')
       @scheme = m[1] or (window.location.protocol + '//')
       @hostname = if h then h[0] else window.location.hostname
-      @port = if h then parseInt(h[1] || '80') else parseInt(window.location.port)
+      @port = parseInt(h[1]) if h
+      @port ?= if @scheme.match(/^https/) then 443 else 80
       @path = m[3]
       @isURI = true
 
