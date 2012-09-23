@@ -1,3 +1,11 @@
+.row &nbsp;
+.row
+  .span2 &nbsp;
+  .span8
+    ul.unstyled.posts
+      | {{#parent_post}}
+      | {{> _post}}
+      | {{/parent_post}}
 .row
   .span2 &nbsp;
   .span8.well
@@ -6,3 +14,11 @@
       li.post.clearfix data-id='{{id}}'
         | {{> _post_inner}}
       | {{/post}}
+
+.row
+  .span2 &nbsp;
+  .span8
+    ul.unstyled.posts
+      | {{#child_posts}}
+      | {{> _post}}
+      | {{/child_posts}}

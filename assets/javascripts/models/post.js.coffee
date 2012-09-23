@@ -28,7 +28,7 @@ class TentStatus.Models.Post extends Backbone.Model
     !!(@get('type') || '').match(/repost/)
 
   postMentions: =>
-    _.select @get('mentions') || [], (m) => m.entity && m.post
+    @post_mentions ?= _.select @get('mentions') || [], (m) => m.entity && m.post
 
   fetchRepost: =>
     new HTTP 'GET', "#{TentStatus.config.tent_api_root}/posts/#{@get 'repost_id'}", null, (repost, xhr) =>

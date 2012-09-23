@@ -24,8 +24,7 @@ class TentStatus.Views.PostsFeed extends TentStatus.View
 
   context: =>
     posts: (_.map @posts?.toArray() || [], (post) =>
-      view = new TentStatus.Views.Post parentView: @
-      view.context(post)
+      TentStatus.Views.Post::context(post)
     )
 
   render: =>
