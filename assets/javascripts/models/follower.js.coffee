@@ -4,6 +4,7 @@ class TentStatus.Models.Follower extends Backbone.Model
 
   initialize: ->
     @on 'sync', @updateProfile
+    @set('profile', profile) if profile = TentStatus.Cache.get("profile:#{@get 'entity'}")
     @updateProfile()
 
   updateProfile: =>

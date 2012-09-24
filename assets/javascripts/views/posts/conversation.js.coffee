@@ -43,12 +43,15 @@ class TentStatus.Views.Conversation extends TentStatus.View
       entity = @post.postMentions()[0].entity
       post_id = @post.postMentions()[0].post
 
-      @on 'change:parent_post', @render
-      new HTTP 'GET', "#{TentStatus.config.tent_api_root}/posts/#{encodeURIComponent entity}/#{post_id}", null, (post, xhr) =>
-        return @render404() if xhr.status == 404
-        return unless xhr.status == 200
-        post = new TentStatus.Models.Post post
+      if post = TentStatus.Cache.get("post:#{post_id}")
         @set 'parent_post', post
+      else
+        @on 'change:parent_post', @render
+        new HTTP 'GET', "#{TentStatus.config.tent_api_root}/posts/#{encodeURIComponent entity}/#{post_id}", null, (post, xhr) =>
+          return @render404() if xhr.status == 404
+          return unless xhr.status == 200
+          post = new TentStatus.Models.Post post
+          @set 'parent_post', post
 
   context: =>
     post: TentStatus.Views.Post::context(@post)

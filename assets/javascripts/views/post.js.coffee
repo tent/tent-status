@@ -11,23 +11,25 @@ class TentStatus.Views.Post extends TentStatus.View
     @parentView = options.parentView
     @post = options.post
 
-    @post?.on 'change:profile', => @render()
-    @post?.on 'change:repost:profile', => @render()
+    if @post
+      @initPostEvents()
+    else
+      @once 'change:post', @initPostEvents
+
+    @on 'ready', @fetchRepost
     @on 'ready', @bindEvents
 
     super
 
-    @on 'ready', @fetchRepost
-    @fetchRepost()
+  initPostEvents: =>
+    @post.on 'change:profile', => @render()
+    @post.on 'change:repost:profile', => @render()
 
   fetchRepost: =>
     if @post?.isRepost() && !@post.get('repost')
-      if repost = _.find @parentView?.posts?.toArray() || [], ((p) => p.get('id') == @post.get('content')['id'])
-        @post.set('repost', repost)
-      else
-        @$el.hide()
-        @post.on 'change:repost', => @render(); @$el.show()
-        @post.fetchRepost()
+      @$el.hide()
+      @post.on 'change:repost', => @render(); @$el.show()
+      @post.fetchRepost()
 
   bindEvents: =>
     @$buttons = {
