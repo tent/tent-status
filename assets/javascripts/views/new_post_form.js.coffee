@@ -15,7 +15,8 @@ class TentStatus.Views.NewPostForm extends TentStatus.View
     @$post_btn = ($ 'input[type=submit]', @$el)
 
     @$form = ($ 'form', @$el)
-    @$form.off().on 'submit', @submit
+    @$form.off('submit.post').on 'submit.post', @submit
+    @$post_btn.off('click.post').on 'click.post', @submit
 
     ## form validation and character limit counter
     @$textarea = ($ 'textarea', @$el)
