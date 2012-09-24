@@ -25,7 +25,14 @@ class TentStatus.Views.ReplyPostForm extends TentStatus.Views.NewPostForm
     data = super
     if @replyToPostId and @replyToEntity
       data.mentions ||= []
-      data.mentions.push { entity: @replyToEntity, post: @replyToPostId }
+      existing = false
+      for m in data.mentions
+        if m.entity == @replyToEntity && !m.post
+          m.post = @replyToPostId
+          existing = true
+          break
+      unless existing
+        data.mentions.push { entity: @replyToEntity, post: @replyToPostId }
     data
 
   context: =>
