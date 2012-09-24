@@ -22,7 +22,7 @@ class TentStatus.Views.ProfileFollowButton extends Backbone.View
       path = "/#{@following_id}"
     else
       path = ''
-    entity = TentStatus.config.domain_entity.toString()
+    entity = TentStatus.config.domain_entity.toStringWithoutSchemePort()
     @buttons.submit.attr 'disabled', 'disabled'
     method = if @is_following then 'DELETE' else 'POST'
     new HTTP method, "#{TentStatus.config.tent_api_root}/followings#{path}", { entity: entity }, (following, xhr) =>
