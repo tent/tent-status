@@ -13,6 +13,9 @@ TentStatus.Routers.posts = new class PostsRouter extends TentStatus.Router
       @profile(encodeURIComponent(TentStatus.domain_entity))
       return
     @view = new TentStatus.Views.Posts
+
+    TentStatus.setPageTitle 'Your feed'
+
     @setCurrentAction 'index', =>
       @view.render()
 
@@ -26,7 +29,9 @@ TentStatus.Routers.posts = new class PostsRouter extends TentStatus.Router
     @view = new TentStatus.Views.Conversation entity: entity, post_id: post_id
 
   myProfile: =>
+    TentStatus.setPageTitle 'Your profile'
     @profile(TentStatus.current_entity)
 
   profile: (entity) =>
+    TentStatus.setPageTitle "#{TentStatus.Helpers.formatUrl entity} - Profile"
     @view = new TentStatus.Views.Profile entity: entity
