@@ -54,7 +54,7 @@ _.extend @TentStatus, Backbone.Events, {
     document.title = title
 
   devWarning: (fn, msg) ->
-    console.warn "<#{fn.constructor.name}> #{msg}"
+    console?.warn "<#{fn.constructor.name}> #{msg}"
 
   #############################
   #      Hogan Templates      #

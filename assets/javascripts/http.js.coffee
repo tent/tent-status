@@ -120,8 +120,8 @@ class @HTTP
         if typeof fn == 'function'
           fn(@xmlhttp)
         else
-          console.warn "#{eventName} callback is not a function"
-          console.log fn
+          console?.warn "#{eventName} callback is not a function"
+          console?.log fn
 
     open: (method, url) => @xmlhttp.open(method, url, true)
 

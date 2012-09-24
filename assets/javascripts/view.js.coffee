@@ -72,7 +72,7 @@ class TentStatus.View extends Backbone.View
         @trigger "init:#{viewClassName}"
       else
         TentStatus.devWarning @, "TentStatus.Views.#{viewClassName} is not defined!"
-        console.log el
+        console?.log el
 
   getPartialName: (path) =>
     path.replace(/.+\/_(.+)$/, "$1")
