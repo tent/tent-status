@@ -26,3 +26,8 @@ _.extend TentStatus.Helpers,
 
   isEntityOnTentHostDomain: (entity) =>
     TentStatus.config.tent_host_domain && entity.match(new RegExp(TentStatus.config.tent_host_domain))
+
+  ensureUrlHasScheme: (url) =>
+    return unless url
+    return url if url.match /^[a-z]+:\/\//i
+    'http://' + url
