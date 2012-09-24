@@ -48,6 +48,7 @@ _.extend @TentStatus, Backbone.Events, {
   }
 
   setPageTitle: (title) =>
+    return
     title = @base_title + ' - ' + title if title
     title ?= @base_title
     document.title = title
