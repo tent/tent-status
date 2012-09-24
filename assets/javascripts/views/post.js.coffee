@@ -12,6 +12,7 @@ class TentStatus.Views.Post extends TentStatus.View
     @post = options.post
 
     @post?.on 'change:profile', => @render()
+    @post?.on 'change:repost:profile', => @render()
     @on 'ready', @bindEvents
 
     super
