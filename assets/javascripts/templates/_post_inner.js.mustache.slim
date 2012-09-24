@@ -27,12 +27,12 @@
   | {{^repost}}
   | {{#has_parent}}
   p.span440.no-offset
-    | {{content.text}}
+    | {{{formatted.content.text}}}
   | {{/has_parent}}
 
   | {{^has_parent}}
   p.span490.no-offset
-    | {{content.text}}
+    | {{{formatted.content.text}}}
   | {{/has_parent}}
   | {{/repost}}
 
