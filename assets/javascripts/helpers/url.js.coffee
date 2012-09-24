@@ -5,21 +5,24 @@ _.extend TentStatus.Helpers,
 
     if (new HTTP.URI entity).hostname == TentStatus.config.domain_entity.hostname
       "/posts/#{post.get('id')}"
-    else if entity.match /\.tent\.is/
+    else if TentStatus.Helpers.isEntityOnTentHostDomain(entity)
       "#{entity}/posts/#{post.get 'id'}"
     else
       "/posts/#{encodeURIComponent entity}/#{post.get('id')}"
 
   entityPostUrl: (entity, post_id) ->
     return unless entity and post_id
-    if entity.match /\.tent\.is/
+    if TentStatus.Helpers.isEntityOnTentHostDomain(entity)
       "#{entity}/posts/#{post_id}"
     else
       "/posts/#{encodeURIComponent entity}/#{post_id}"
 
   entityProfileUrl: (entity) ->
     return unless entity
-    if entity.match /\.tent\.is/
+    if TentStatus.Helpers.isEntityOnTentHostDomain(entity)
       "#{entity}"
     else
       "/posts/#{encodeURIComponent entity}"
+
+  isEntityOnTentHostDomain: (entity) =>
+    TentStatus.config.tent_host_domain && entity.match(new RegExp(TentStatus.config.tent_host_domain))

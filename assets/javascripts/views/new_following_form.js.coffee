@@ -30,8 +30,8 @@ class TentStatus.Views.NewFollowingForm extends Backbone.View
 
   buildEntity: =>
     entity = @$fields.entity.val()
-    entity = if entity.match /^[^.]+$/
-      'https://' + entity + '.tent.is'
+    entity = if entity.match /^[^.]+$/ && TentStatus.config.tent_host_domain
+      'https://' + entity + TentStatus.config.tent_host_domain
     else if entity.length && entity.match /^(?!http?s?)/
       'https://' + entity
     else
