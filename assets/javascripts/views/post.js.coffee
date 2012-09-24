@@ -123,6 +123,8 @@ class TentStatus.Views.Post extends TentStatus.View
       escaped:
         entity: encodeURIComponent( post.get 'entity' )
       formatted:
+        content:
+          text: TentStatus.Helpers.autoLinkText(post.get('content')?.text)
         entity: TentStatus.Helpers.formatUrl post.get('entity')
         published_at: TentStatus.Helpers.formatTime post.get('published_at')
         full_published_at: TentStatus.Helpers.rawTime post.get('published_at')
