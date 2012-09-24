@@ -11,8 +11,15 @@ class TentStatus.Views.ReplyPostForm extends TentStatus.Views.NewPostForm
     @replyToEntity = ($ '[name=mentions_post_entity]', @$el).val()
 
     @$form = @$el
+    @html = @$form.html()
 
-    @on 'ready', => @parentView.$reply_container.hide()
+    @is_repost = @$form.parent().hasClass('repost-reply-container')
+
+    ## this references the wrong instance in render, TODO: debug and fix this issue
+    $form = @$form
+    html = @html
+    @on 'ready', => $form.html(html)
+    @on 'ready', => $form.parent().hide()
 
   buildMentions: (data) =>
     data = super
@@ -21,4 +28,18 @@ class TentStatus.Views.ReplyPostForm extends TentStatus.Views.NewPostForm
       data.mentions.push { entity: @replyToEntity, post: @replyToPostId }
     data
 
-  context: => @parentView.context()
+  context: =>
+    post = @parentView.post
+    return {} unless post
+
+    console.log @, @is_repost, post.get('entity'), post
+
+    if @is_repost
+      repost = @parentView.post.get('repost')
+      @parentView.repostContext(post, repost)
+    else
+      @parentView.context(post)
+
+  render: =>
+    @trigger 'ready'
+

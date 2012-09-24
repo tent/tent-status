@@ -14,7 +14,7 @@
       | {{/hasName}}
 
   .pull-right
-    a href='{{url}}' class='{{#parent}}gray{{/parent}}' title='{{formatted.full_published_at}}' {{formatted.published_at}}
+    a href='{{url}}' class='{{#has_parent}}gray{{/has_parent}}' title='{{formatted.full_published_at}}' {{formatted.published_at}}
 
   | {{#in_reply_to}}
   | {{#authenticated}}
@@ -25,15 +25,15 @@
   | {{/in_reply_to}}
 
   | {{^repost}}
-  | {{#parent}}
+  | {{#has_parent}}
   p.span440.no-offset
     | {{content.text}}
-  | {{/parent}}
+  | {{/has_parent}}
 
-  | {{^parent}}
+  | {{^has_parent}}
   p.span490.no-offset
     | {{content.text}}
-  | {{/parent}}
+  | {{/has_parent}}
   | {{/repost}}
 
   | {{#repost}}
@@ -48,34 +48,38 @@
 
 | {{#authenticated}}
 .row.offset62.showOnHover.actions
-  | {{^repost}}
+  | {{^is_repost}}
   | {{^currentUserOwnsPost}}
-  a.reply href='#' Reply
-  a.repost data-confirm='Repost {{nmae}}?' href='#' Repost
+  a.reply class='{{#has_parent}}reply-repost{{/has_parent}}' href='#' Reply
+  a.repost class='{{#has_parent}}repost-repost{{/has_parent}}' data-confirm='Repost {{name}}?' href='#' Repost
   | {{/currentUserOwnsPost}}
-  | {{/repost}}
+  | {{/is_repost}}
+
+  | {{#is_repost}}
+  | {{^currentUserOwnsPost}}
+  a.reply data-id='{{id}}' href='#' Reply
+  | {{/currentUserOwnsPost}}
+  | {{/is_repost}}
 
   | {{#currentUserOwnsPost}}
-  a.delete data-confirm='Delete Post?' href='#' Delete
+  a.delete class='{{#has_parent}}delete-repost{{/has_parent}}' data-id='{{id}}' data-confirm='Delete Post?' href='#' Delete
   | {{/currentUserOwnsPost}}
 
   | {{^repost}}
-  | {{^parent}}
+  | {{^has_parent}}
   small.pull-right via {{app.name}}
-  | {{/parent}}
+  | {{/has_parent}}
   | {{/repost}}
 | {{/authenticated}}
 
-| {{^repost}}
 | {{#authenticated}}
-| {{^parent}}
+| {{^has_parent}}
 .row.offset42.reply-container.clearfix.hide
   | {{> _reply_form}}
-| {{/parent}}
+| {{/has_parent}}
 
-| {{#parent}}
-.row.reply-container.clearfix.hide
+| {{#has_parent}}
+.row.reply-container.repost-reply-container.clearfix.hide
   | {{> _reply_form}}
-| {{/parent}}
+| {{/has_parent}}
 | {{/authenticated}}
-| {{/repost}}
