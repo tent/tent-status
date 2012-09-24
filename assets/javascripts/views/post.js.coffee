@@ -134,6 +134,7 @@ class TentStatus.Views.Post extends TentStatus.View
   render: (context = @context()) =>
     html = @template.render(context, @parentView.partials)
     el = ($ html)
-    @$el.html(el.html())
+    @$el.replaceWith(el)
+    @setElement el
     @trigger 'ready'
 
