@@ -16,6 +16,14 @@ class TentStatus.Views.Post extends TentStatus.View
 
     super
 
+    if @post?.isRepost() && !@post.get('repost')
+      if repost = _.find @parentView?.posts?.toArray() || [], ((p) => p.get('id') == @post.get('content')['id'])
+        @post.set('repost', repost)
+      else
+        @$el.hide()
+        @post.on 'change:repost', => @render(); @$el.show()
+        @post.fetchRepost()
+
   bindEvents: =>
     @$buttons = {
       delete: ($ '.actions .delete', @$el)
@@ -62,7 +70,7 @@ class TentStatus.Views.Post extends TentStatus.View
   repostContext: (post, repost) =>
     return false unless post.isRepost()
 
-    repost ?= _.find @parentView?.posts.toArray() || [], ((p) => p.get('id') == post.get('content')['id'])
+    repost ?= post.get('repost')
     return false unless repost
     return false if post.get('id') == repost.get('id')
     _.extend( @context(repost), {
