@@ -29,8 +29,15 @@ class TentStatus.Models.Post extends Backbone.Model
     repost_entity = @get('content')?.entity
     repost_id = @get('content')?.id
     return unless repost_entity and repost_id
+
     new HTTP 'GET', "#{TentStatus.config.tent_api_root}/posts/#{encodeURIComponent repost_entity}/#{repost_id}", null, (repost, xhr) =>
       return unless xhr.status == 200
+      repost = new TentStatus.Models.Post repost
+      @set 'repost', repost
+
+    new HTTP 'GET', "#{repost_entity + TentStatus.config.tent_host_domain_tent_api_path}/posts/#{repost_id}", null, (repost, xhr) =>
+      return unless xhr.status == 200
+      return if @get('repost')
       repost = new TentStatus.Models.Post repost
       @set 'repost', repost
 

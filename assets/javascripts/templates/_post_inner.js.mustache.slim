@@ -37,13 +37,11 @@
   | {{/repost}}
 
   | {{#repost}}
-  | {{#authenticated}}
   .span7.repost.no-offset style='width:560px;'
     | {{> _post_inner}}
   .span6.offset1
     | Reposted by {{parent.name}}
   small.pull-right via {{app.name}}
-  | {{/authenticated}}
   | {{/repost}}
 
 | {{#authenticated}}
