@@ -93,6 +93,10 @@ module Tent
       def domain_entity
         env['rack.url_scheme'] + '://' + env['HTTP_HOST']
       end
+
+      def tent_host_domain
+        ENV['TENT_HOST_DOMAIN']
+      end
     end
 
     def json(data)

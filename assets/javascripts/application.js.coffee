@@ -39,6 +39,7 @@ _.extend @TentStatus, Backbone.Events, {
   config: {
     tent_api_root: new HTTP.URI(TentStatus.current_entity + '/tent')
     current_tent_api_root: new HTTP.URI(window.location.protocol + '//' + window.location.hostname + '/tent')
+    tent_host_domain: TentStatus.tent_host_domain
     domain_entity: new HTTP.URI(window.location.href.replace(new RegExp("#{window.location.pathname}$"), ''))
     current_entity: new HTTP.URI(TentStatus.current_entity)
     post_types: ["https://tent.io/types/post/status/v0.1.0", "https://tent.io/types/post/repost/v0.1.0"]

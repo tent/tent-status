@@ -62,6 +62,7 @@ body
       authenticated: #{{!!(current_user || guest_user)}},
       guest_authenticated: #{{!!guest_user}},
       tent_api_root: "#{{tent_api_root}}",
+      tent_host_domain: "#{{tent_host_domain}}",
       domain_entity: "#{{domain_entity}}",
       current_entity: "#{{(current_user || guest_user) ? (current_user || guest_user).entity : nil}}",
       current_auth_details: JSON.parse('#{{auth_details ? auth_details.to_json : '{}'}}')
