@@ -12,7 +12,7 @@ _.extend TentStatus.Helpers,
 
   entityPostUrl: (entity, post_id) ->
     return unless entity and post_id
-    if entity.match /\/.tent\.is/
+    if entity.match /\.tent\.is/
       "#{entity}/posts/#{post_id}"
     else
       "/posts/#{encodeURIComponent entity}/#{post_id}"
