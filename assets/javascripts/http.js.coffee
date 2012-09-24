@@ -13,7 +13,12 @@ class @HTTP
     @request = new HTTP.Request
 
     if @method == 'GET'
-      params = ("#{encodeURIComponent(k)}=#{encodeURIComponent(v)}" for k,v of @data)
+      params = for k,v of @data
+        v = if v and typeof v == 'object' and v.length
+          _.map(v, (_i) -> encodeURIComponent(_i)).join(',')
+        else
+          encodeURIComponent(v)
+        "#{encodeURIComponent(k)}=#{v}"
       separator = if @url.match(/\?/) then "&" else "?"
       @url += "#{separator}#{params.join('&')}" if params.length
       @data = null
@@ -136,3 +141,4 @@ class @HTTP
     send: (data) =>
       return @trigger('complete') if @xmlhttp.readyState == 4
       @xmlhttp.send(data)
+

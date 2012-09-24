@@ -51,6 +51,8 @@ class TentStatus.View extends Backbone.View
 
     # load all partials listed in partialNames
     if @partialNames
+      @partialNames.push '_404'
+
       @partials = {}
       for p in @partialNames
         do (p) =>
@@ -119,6 +121,16 @@ class TentStatus.View extends Backbone.View
     if @container
       @container.render(html)
       @trigger 'ready'
+      true
+    else
+      html
+
+  render404: =>
+    return false unless template = @partials['_404']
+    html = template.render(@notFoundContext?() || {})
+    if @container
+      @container.render(html)
+      @trigger '404:ready'
       true
     else
       html
