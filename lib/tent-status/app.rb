@@ -69,30 +69,10 @@ module Tent
         env['rack.url_scheme'] + "://" + env['HTTP_HOST']
       end
 
-      def client
-        env['tent.client']
-      end
-
-      def guest_client
-        env['tent.guest_client']
-      end
-
       def auth_details
         auth = env['tent.app_auth'] || env['tent.guest_app_auth']
         return unless auth
         auth.auth_details
-      end
-
-      def csrf_tag
-        Rack::Csrf.tag(env)
-      end
-
-      def csrf_meta_tag(options = {})
-        Rack::Csrf.metatag(env, options)
-      end
-
-      def basic_profile
-        @basic_profile ||= (client.profile.get.body || {})['https://tent.io/types/info/basic/v0.1.0'] || {}
       end
 
       def current_user
@@ -113,10 +93,6 @@ module Tent
       def domain_entity
         env['rack.url_scheme'] + '://' + env['HTTP_HOST']
       end
-
-      def authenticate!
-        halt 403 unless current_user
-      end
     end
 
     def json(data)
@@ -135,138 +111,6 @@ module Tent
       slim :application
     end
 
-    get '/api/profile' do
-      res = (params.delete('guest') ? guest_client : client).profile.get
-      json res.body
-    end
-
-    get '/api/posts/count' do
-      res = (params.delete('guest') ? guest_client : client).post.count params.merge(
-        :post_types => ["https://tent.io/types/post/status/v0.1.0", "https://tent.io/types/post/repost/v0.1.0"].join(',')
-      )
-      json res.body
-    end
-
-    get '/api/posts' do
-      res = (params.delete('guest') ? guest_client : client).post.list params.merge(
-        :post_types => ["https://tent.io/types/post/status/v0.1.0", "https://tent.io/types/post/repost/v0.1.0"].join(',')
-      )
-
-      if (400...500).include?(res.status)
-        halt res.status
-      end
-
-      json res.body
-    end
-
-    get '/api/posts/:id' do
-      res = (params.delete('guest') ? guest_client : client).post.get(params[:id])
-      json res.body
-    end
-
-    post '/api/posts' do
-      data = JSON.parse(env['rack.input'].read)
-      env['rack.input'].rewind
-
-      data = {
-        :published_at => Time.now.to_i,
-        :type => data['type'] || "https://tent.io/types/post/status/v0.1.0",
-        :licenses => data['licenses'],
-        :mentions => data['mentions'],
-        :permissions => { public: true },
-        :content => data['content'] || {
-          :text => data['text'].to_s.slice(0...140)
-        }
-      }
-
-      res = (guest_client || client).post.create(data)
-
-      json res.body
-    end
-
-    delete '/api/posts/:id' do
-      res = (guest_client || client).post.delete(params[:id])
-      json res.body
-    end
-
-    get '/api/groups/count' do
-      res = (params.delete('guest') ? guest_client : client).group.count(params)
-      json res.body
-    end
-
-    get '/api/groups' do
-      res = (params.delete('guest') ? guest_client : client).group.list(params)
-      json res.body
-    end
-
-    post '/api/groups' do
-      data = JSON.parse(env['rack.input'].read)
-      env['rack.input'].rewind
-
-      res = (guest_client || client).group.create(data)
-      json res.body
-    end
-
-    get '/api/followers/count' do
-      res = (params.delete('guest') ? guest_client : client).follower.count(params)
-      json res.body
-    end
-
-    get '/api/followers' do
-      res = (params.delete('guest') ? guest_client : client).follower.list(params)
-      json res.body
-    end
-
-    put '/api/followers/:id' do
-      data = JSON.parse(env['rack.input'].read)
-      env['rack.input'].rewind
-
-      res = (guest_client || client).follower.update(params[:id], data)
-      json res.body
-    end
-
-    delete '/api/followers/:id' do
-      res = (guest_client || client).follower.delete(params[:id])
-      json res.body
-    end
-
-    get '/api/followings/count' do
-      res = (params.delete('guest') ? guest_client : client).following.count(params)
-      json res.body
-    end
-
-    get '/api/followings' do
-      res = (params.delete('guest') ? guest_client : client).following.list(params)
-      json res.body
-    end
-
-    post '/api/followings' do
-      data = JSON.parse(env['rack.input'].read)
-      env['rack.input'].rewind
-
-      res = (guest_client || client).following.create(data['entity'])
-      json res.body
-    end
-
-    put '/api/followings/:id' do
-      data = JSON.parse(env['rack.input'].read)
-      env['rack.input'].rewind
-
-      res = (guest_client || client).following.update(params[:id], data)
-      json res.body
-    end
-
-    delete '/api/followings/:id' do
-      res = (guest_client || client).following.delete(params[:id])
-      json res.body
-    end
-
-    get '/signout' do
-      session.clear
-      redirect full_path('/')
-    end
-
-    # Catch all for pushState routes
     get '*' do
       slim :application
     end
