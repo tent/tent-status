@@ -26,12 +26,17 @@ class TentStatus.Views.Post extends TentStatus.View
 
   bindEvents: =>
     @$buttons = {
-      delete: ($ '.actions .delete', @$el)
-      repost: ($ '.actions .repost', @$el)
-      reply:  ($ '.actions .reply', @$el)
+      delete: ($ '.actions .delete:not(.delete-repost)', @$el)
+      repost: ($ '.actions .repost:not(.repost-repost)', @$el)
+      reply:  ($ '.actions .reply:not(.reply-repost)', @$el)
+
+      delete_repost: ($ '.actions .delete.delete-repost', @$el)
+      repost_repost: ($ '.actions .repost.repost-repost', @$el)
+      reply_repost: ($ '.actions .reply.reply-repost', @$el)
     }
 
-    @$reply_container = ($ '.reply-container', @$el)
+    @$reply_container = ($ '.reply-container:not(.repost-reply-container)', @$el)
+    @$repost_reply_container = ($ '.reply-container.repost-reply-container', @$el)
 
     for k, el of @$buttons
       do (k, el) =>
@@ -47,15 +52,24 @@ class TentStatus.Views.Post extends TentStatus.View
     @post.destroy
       error: => @$el.show()
 
-  repost: =>
-    return if @post.isRepost()
+  delete_repost: =>
+    return unless repost = @post.get('repost')
+    @$el.hide()
+    repost.destroy
+      error: => @$el.show()
+
+  repost_repost: =>
+    return unless repost = @post.get('repost')
+    @repost(repost)
+
+  repost: (post=@post) =>
     data = {
       permissions:
         public: true
       type: 'https://tent.io/types/post/repost/v0.1.0'
       content:
-        entity: @post.get('entity')
-        id: @post.get('id')
+        entity: post.get('entity')
+        id: post.get('id')
     }
 
     new HTTP 'POST', "#{TentStatus.config.tent_api_root}/posts", data, (post, xhr) =>
@@ -63,6 +77,9 @@ class TentStatus.Views.Post extends TentStatus.View
       post = new TentStatus.Models.Post post
       @parentView.posts.unshift(post)
       TentStatus.Views.Post.insertNewPost(post, @parentView.$el, @parentView)
+
+  reply_repost: =>
+    @$repost_reply_container.toggle()
 
   reply: =>
     @$reply_container.toggle()
@@ -75,6 +92,7 @@ class TentStatus.Views.Post extends TentStatus.View
     return false if post.get('id') == repost.get('id')
     _.extend( @context(repost), {
       parent: { name: post.name(), id: post.get('id') }
+      has_parent: true
     })
 
   postProfileJSON: (post) =>

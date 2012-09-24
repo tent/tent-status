@@ -185,6 +185,9 @@ class TentStatus.Views.NewPostForm extends TentStatus.View
       @$charLimit.removeClass 'alert-error'
     @$charLimit.text delta
 
+  context: =>
+    {}
+
   render: =>
     return unless html = super
     el = ($ html)
