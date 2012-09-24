@@ -111,6 +111,11 @@ module Tent
       slim :application
     end
 
+    get '/signout' do
+      session.clear
+      redirect full_path('/')
+    end
+
     get '*' do
       slim :application
     end
