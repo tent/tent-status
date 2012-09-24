@@ -17,7 +17,11 @@ class TentStatus.Views.Conversation extends TentStatus.View
       "#{TentStatus.config.current_tent_api_root}/posts/#{@post_id}"
     else
       "#{TentStatus.config.tent_api_root}/posts/#{encodeURIComponent @entity}/#{@post_id}"
-    new HTTP 'GET', url, null, (post, xhr) =>
+    params = {
+      post_types: TentStatus.config.post_types
+    }
+    new HTTP 'GET', url, params, (post, xhr) =>
+      return @render404() if xhr.status == 404
       return unless xhr.status == 200
       post = new TentStatus.Models.Post post
       post.on 'change:profile', => @render()
@@ -28,6 +32,7 @@ class TentStatus.Views.Conversation extends TentStatus.View
         limit: TentStatus.config.PER_PAGE
         mentioned_post: @post_id
       }, (posts, xhr) =>
+        return @render404() if xhr.status == 404
         return unless xhr.status == 200
         since_id = posts[posts.length-1]?.id
         posts = new TentStatus.Collections.Posts posts
@@ -40,6 +45,7 @@ class TentStatus.Views.Conversation extends TentStatus.View
 
       @on 'change:parent_post', @render
       new HTTP 'GET', "#{TentStatus.config.tent_api_root}/posts/#{encodeURIComponent entity}/#{post_id}", null, (post, xhr) =>
+        return @render404() if xhr.status == 404
         return unless xhr.status == 200
         post = new TentStatus.Models.Post post
         @set 'parent_post', post
@@ -56,5 +62,4 @@ class TentStatus.Views.Conversation extends TentStatus.View
                       concat(@get('parent_posts')?.toArray() || [])
       post = _.find posts, (p) => p.get('id') == post_id
       view = new TentStatus.Views.Post el: el, post: post, parentView: @
-      console.log 'create Views.Post via Conversation', post?.get('id')
       view.trigger 'ready'

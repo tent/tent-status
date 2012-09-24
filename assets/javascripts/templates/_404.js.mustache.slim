@@ -1,0 +1,11 @@
+.row
+  .span2 &nbsp
+  .span8.well.not-found
+    | {{#text}}
+    h3
+      | {{text}} <small>404</small>
+    | {{/text}}
+
+    | {{^text}}
+    h3 The page you are looking for does not exist <small>404</small>
+    | {{/text}}
