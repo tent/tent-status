@@ -12,6 +12,7 @@ class TentStatus.Paginator
     @url ||= @collection.url
     @sinceId = @options.sinceId if @options.sinceId
     @since_id_entity = @options.since_id_entity if @options.since_id_entity
+    @default_params = @options.params if @options.params
 
   freeze: => @frozen = true
   unfreeze: => @frozen = false
@@ -76,7 +77,7 @@ class TentStatus.Paginator
     res.join("&")
 
   paramsForOffsetAndLimit: (since_id_entity, sinceId, limit) =>
-    params = { limit: limit }
+    params = _.extend { limit: limit }, @default_params
     params.before_id = sinceId if sinceId
     params.before_id_entity = since_id_entity
     params

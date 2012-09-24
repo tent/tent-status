@@ -3,23 +3,24 @@ class TentStatus.Views.PostsFeed extends TentStatus.View
   partialNames: ['_reply_form', '_post', '_post_inner']
 
   initialize: (options) ->
+    options.posts_params ?= {}
     super
 
     @on 'change:posts', @render
     @on 'render', @initPostViews
     @on 'render', @initAutoPaginate
 
-    params = {
+    params = _.extend({
       post_types: TentStatus.config.post_types
       limit: TentStatus.config.PER_PAGE
-    }
+    }, options.posts_params)
 
     options.api_root ?= TentStatus.config.tent_api_root
     new HTTP 'GET', "#{options.api_root}/posts", params, (posts, xhr) =>
       return unless xhr.status == 200
       since_id = _.last(posts)?.id
       since_id_entity = _.last(posts)?.entity
-      paginator = new TentStatus.Paginator(new TentStatus.Collections.Posts(posts), { since_id_entity: since_id_entity, sinceId: since_id })
+      paginator = new TentStatus.Paginator(new TentStatus.Collections.Posts(posts), _.extend({ since_id_entity: since_id_entity, sinceId: since_id }, { params: options.posts_params }))
       paginator.on 'fetch:success', @render
       @set 'posts', paginator
 
