@@ -32,8 +32,6 @@ class TentStatus.Views.ReplyPostForm extends TentStatus.Views.NewPostForm
     post = @parentView.post
     return {} unless post
 
-    console.log @, @is_repost, post.get('entity'), post
-
     if @is_repost
       repost = @parentView.post.get('repost')
       @parentView.repostContext(post, repost)
