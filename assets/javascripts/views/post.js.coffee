@@ -16,6 +16,10 @@ class TentStatus.Views.Post extends TentStatus.View
 
     super
 
+    @on 'ready', @fetchRepost
+    @fetchRepost()
+
+  fetchRepost: =>
     if @post?.isRepost() && !@post.get('repost')
       if repost = _.find @parentView?.posts?.toArray() || [], ((p) => p.get('id') == @post.get('content')['id'])
         @post.set('repost', repost)
@@ -127,7 +131,6 @@ class TentStatus.Views.Post extends TentStatus.View
   render: (context = @context()) =>
     html = @template.render(context, @parentView.partials)
     el = ($ html)
-    @$el.replaceWith(el)
-    @setElement el
+    @$el.html(el.html())
     @trigger 'ready'
 

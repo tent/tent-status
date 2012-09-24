@@ -56,4 +56,5 @@ class TentStatus.Views.Conversation extends TentStatus.View
                       concat(@get('parent_posts')?.toArray() || [])
       post = _.find posts, (p) => p.get('id') == post_id
       view = new TentStatus.Views.Post el: el, post: post, parentView: @
+      console.log 'create Views.Post via Conversation', post?.get('id')
       view.trigger 'ready'
