@@ -3,6 +3,11 @@ class TentStatus.Models.Following extends Backbone.Model
   url: => "#{TentStatus.config.tent_api_root}/followings#{ if @id then "/#{@id}" else '' }"
 
   initialize: ->
+    if profile = TentStatus.Cache.get("profile:#{@get 'entity'}")
+      @set 'profile', profile
+    else if profile = @get('profile') and entity = @get('entity')
+      TentStatus.Cache.set("profile:#{entity}", profile)
+
     @on 'sync', @updateProfile
     @updateProfile()
 

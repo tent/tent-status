@@ -2,6 +2,10 @@ class Profile extends Backbone.Model
   model: 'profile'
   url: "#{TentStatus.config.tent_api_root}/profile"
 
+  initialize: ->
+    if entity = @entity()
+      TentStatus.Cache.set "profile:#{entity}", @
+
   core_profile: =>
     @get('https://tent.io/types/info/core/v0.1.0')
 

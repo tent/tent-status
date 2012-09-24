@@ -10,6 +10,7 @@
 #= require_tree ./templates
 #= require_self
 #= require mac_auth
+#= require ./cache
 #= require ./paginator
 #= require ./fetch_pool
 #= require ./view
@@ -17,6 +18,7 @@
 #= require_tree ./helpers
 #= require_tree ./views
 #= require_tree ./routers
+#= require ./model
 #= require_tree ./models
 #= require_tree ./collections
 
