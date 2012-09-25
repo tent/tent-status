@@ -37,10 +37,15 @@ class TentStatus.Views.FollowingsList extends TentStatus.View
       view.trigger 'render'
 
   initAutoPaginate: =>
-    ($ window).off('scroll.followings').on 'scroll.followings', (e)=>
-      height = $(document).height() - $(window).height()
-      delta = height - window.scrollY
-      if delta < 200
-        clearTimeout @_auto_paginate_timeout
-        @_auto_paginate_timeout = setTimeout @followings?.nextPage, 0 unless @followings.onLastPage
+    ($ window).off('scroll.followings').on 'scroll.followings', @windowScrolled
+    setTimeout @windowScrolled, 100
+
+  windowScrolled: =>
+    $last_post = ($ 'tr.following:last', @$el)
+    height = $(document).height() - $(window).height() - $last_post.offset().top
+    delta = height - window.scrollY
+
+    if delta < 300
+      clearTimeout @_auto_paginate_timeout
+      @_auto_paginate_timeout = setTimeout @followings?.nextPage, 0 unless @followings?.onLastPage
 
