@@ -23,13 +23,13 @@ class TentStatus.Views.Post extends TentStatus.View
 
   initPostEvents: =>
     @post.on 'change:profile', => @render()
-    @post.on 'change:repost:profile', => @render()
     @post.on 'change:disable_repost', => @render()
 
   fetchRepost: =>
     if @post?.isRepost() && !@post.get('repost')
       @$el.hide()
-      @post.on 'change:repost', (repost) =>
+      @post.on 'change:repost', =>
+        repost = @post.get('repost')
         repost.on 'change:profile', => @render()
         repost.on 'change:disable_repost', => @render()
         @render()
