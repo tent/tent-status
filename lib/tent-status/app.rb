@@ -78,6 +78,7 @@ module Tent
       def current_user
         return unless defined?(TentD)
         current = TentD::Model::User.current
+        return unless current
         current if session[:current_user_id] == current.id
       end
 
@@ -86,6 +87,7 @@ module Tent
         return unless session[:current_user_id]
         user = @guest_user ||= TentD::Model::User.get(session[:current_user_id])
         current = TentD::Model::User.current
+        return unless current
         return if session[:current_user_id] == current.id
         user if user && (session[:current_user_id] == user.id)
       end
@@ -112,7 +114,12 @@ module Tent
     end
 
     get '/' do
-      slim :application
+      if env['tent.entity']
+        slim :application
+      else
+        status 404
+        slim :application
+      end
     end
 
     get '/signout' do

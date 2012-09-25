@@ -14,8 +14,12 @@ class TentStatus.Views.Profile extends TentStatus.View
     @on 'change:profile', @render
 
     new HTTP 'GET', "#{TentStatus.config.current_tent_api_root}/profile", null, (profile, xhr) =>
-      return unless xhr.status == 200
+      return @render404() unless xhr.status == 200
       @set 'profile', new TentStatus.Models.Profile profile
+
+  notFoundContext: =>
+    text: "There is no tent.is user registered with this name"
+    subtext: "You can register at <a href='https://tent.is'>Tent.is</a>"
 
   context: =>
     return {} unless @profile
