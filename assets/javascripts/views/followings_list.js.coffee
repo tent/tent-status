@@ -11,7 +11,7 @@ class TentStatus.Views.FollowingsList extends TentStatus.View
     @on 'ready', @initAutoPaginate
 
     @on 'change:followings', @render
-    new HTTP 'GET', "#{TentStatus.config.tent_api_root}/followings", { limit: TentStatus.config.PER_PAGE }, (followings, xhr) =>
+    new HTTP 'GET', "#{TentStatus.config.current_tent_api_root}/followings", { limit: TentStatus.config.PER_PAGE }, (followings, xhr) =>
       return unless xhr.status == 200
       followings = new TentStatus.Collections.Followings followings
       paginator = new TentStatus.Paginator followings, { sinceId: followings.last()?.get('id') }

@@ -9,4 +9,12 @@ tr.follower data-id='{{id}}'
   td
     | {{entity}}
   td
-    .btn.btn-danger.remove-follower data-confirm='Remove {{name}}?' Remove
+    | {{^guest_authenticated}}
+    .btn.btn-danger.remove-follower data-confirm='Block {{name}}?' Block
+    | {{/guest_authenticated}}
+
+    | {{#guest_authenticated}}
+    form.span2.pull-rght data-view='ProfileFollowButton' method='POST'
+      input type='hidden' name='entity' value='{{entity}}'
+      input.btn.btn-success.pull-right type='submit' value='Follow'
+    | {{/guest_authenticated}}

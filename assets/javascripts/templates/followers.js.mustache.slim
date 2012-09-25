@@ -2,7 +2,13 @@
   .span2 &nbsp;
   .span8
     | {{#followers.length}}
+    | {{#guest_authenticated}}
+    h1.page-header Followers
+    | {{/guest_authenticated}}
+
+    | {{^guest_authenticated}}
     h1.page-header Your Followers
+    | {{/guest_authenticated}}
     table.table.table-striped
       thead
         tr

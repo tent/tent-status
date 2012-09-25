@@ -5,13 +5,20 @@ class TentStatus.Views.ProfileFollowButton extends Backbone.View
     @buttons = {}
     @buttons.submit = ($ '[type=submit]', @$el)
 
+    @$entity = ($ '[name=entity]', @$el)
+    @entity = @$entity.val()
+
     new HTTP 'GET', "#{TentStatus.config.tent_api_root}/followings", {
-      entity: TentStatus.config.domain_entity.toStringWithoutSchemePort()
+      entity: @entity
     }, (followings, xhr) =>
       return unless xhr.status == 200
       if followings.length
         @following_id = followings[0].id
         @setFollowing()
+
+    if @entity == TentStatus.config.current_entity.toStringWithoutSchemePort()
+      @buttons.submit.attr 'disabled', 'disabled'
+      @buttons.submit.val 'You'
 
     @$el.on 'submit', @submit
 
@@ -22,10 +29,9 @@ class TentStatus.Views.ProfileFollowButton extends Backbone.View
       path = "/#{@following_id}"
     else
       path = ''
-    entity = TentStatus.config.domain_entity.toStringWithoutSchemePort()
     @buttons.submit.attr 'disabled', 'disabled'
     method = if @is_following then 'DELETE' else 'POST'
-    new HTTP method, "#{TentStatus.config.tent_api_root}/followings#{path}", { entity: entity }, (following, xhr) =>
+    new HTTP method, "#{TentStatus.config.tent_api_root}/followings#{path}", { entity: @entity }, (following, xhr) =>
       unless xhr.status == 200
         @buttons.submit.removeAttr 'disabled'
         return
