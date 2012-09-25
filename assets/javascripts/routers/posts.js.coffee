@@ -33,5 +33,5 @@ TentStatus.Routers.posts = new class PostsRouter extends TentStatus.Router
     @profile(TentStatus.current_entity)
 
   profile: (entity) =>
-    TentStatus.setPageTitle "#{TentStatus.Helpers.formatUrl entity} - Profile"
+    TentStatus.setPageTitle "#{TentStatus.Helpers.formatUrl TentStatus.config.domain_entity.toStringWithoutSchemePort()} - Profile"
     @view = new TentStatus.Views.Profile entity: entity
