@@ -47,9 +47,9 @@ class TentStatus.Views.PostsFeed extends TentStatus.View
 
   windowScrolled: =>
     $last_post = ($ 'li.post:last', @$el)
-    height = $(document).height() - $(window).height() - ($last_post.offset()?.top || 0)
-    delta = height - window.scrollY
+    last_post_offset_top = $last_post.offset()?.top || 0
+    bottom_position = window.scrollY + $(window).height()
 
-    if delta < 300
+    if last_post_offset_top < (bottom_position + 300)
       clearTimeout @_auto_paginate_timeout
       @_auto_paginate_timeout = setTimeout @posts?.nextPage, 0 unless @posts.onLastPage

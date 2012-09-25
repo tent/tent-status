@@ -41,11 +41,11 @@ class TentStatus.Views.FollowingsList extends TentStatus.View
     setTimeout @windowScrolled, 100
 
   windowScrolled: =>
-    $last_post = ($ 'tr.following:last', @$el)
-    height = $(document).height() - $(window).height() - $last_post.offset().top
-    delta = height - window.scrollY
+    $last = ($ 'tr.following:last', @$el)
+    last_offset_top = $last.offset()?.top || 0
+    bottom_position = window.scrollY + $(window).height()
 
-    if delta < 300
+    if last_offset_top < (bottom_position + 300)
       clearTimeout @_auto_paginate_timeout
       @_auto_paginate_timeout = setTimeout @followings?.nextPage, 0 unless @followings?.onLastPage
 
