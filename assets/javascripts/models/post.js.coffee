@@ -22,6 +22,7 @@ class TentStatus.Models.Post extends Backbone.Model
       parent.trigger 'change:repost:profile', profile
 
   getProfile: =>
+    return if @isNew()
     cache_key = "profile:#{@get 'entity'}"
 
     TentStatus.Cache.on cache_key, (profile) =>
