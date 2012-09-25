@@ -6,7 +6,7 @@ class TentStatus.Views.ProfileFollowButton extends Backbone.View
     @buttons.submit = ($ '[type=submit]', @$el)
 
     new HTTP 'GET', "#{TentStatus.config.tent_api_root}/followings", {
-      entity: TentStatus.config.domain_entity
+      entity: TentStatus.config.domain_entity.toStringWithoutSchemePort()
     }, (followings, xhr) =>
       return unless xhr.status == 200
       if followings.length
