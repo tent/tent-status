@@ -60,5 +60,7 @@ class TentStatus.Views.NewFollowingForm extends Backbone.View
       return @showError("Unable to follow #{entity}") unless xhr.status == 200
       @reset()
       following = new TentStatus.Models.Following following
-      TentStatus.Views.Following.create following, @parentView.container, @parentView
+      followingsListView = @parentView.child_views.FollowingsList?[0]
+      return window.location.reload() unless followingsListView
+      TentStatus.Views.Following.create following, followingsListView.$el, followingsListView
     false
