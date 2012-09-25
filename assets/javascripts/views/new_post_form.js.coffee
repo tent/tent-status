@@ -122,6 +122,7 @@ class TentStatus.Views.NewPostForm extends TentStatus.View
 
     for entity in (data.text?.match(/\^(\S+)/g) || [])
       entity = entity.replace(/^\^/, '')
+      continue unless entity.length
       entity = entity.replace(/^/, 'https://') unless entity.match(/^https?/)
 
       exists = false
