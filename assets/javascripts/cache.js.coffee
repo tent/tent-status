@@ -22,6 +22,16 @@ class Cache extends TentStatus.Events
     key = @_storeKey(key)
     store.get(key)
 
+  remove: (key) =>
+    delete @CACHE[key]
+    @_storeRemove(key)
+    @trigger "remove:#{key}"
+
+  _storeRemove: (key) =>
+    return unless window.store and store.enabled
+    key = @_storeKey(key)
+    store.remove(key)
+
   _storeKey: (key) -> "cache:#{key}"
 
   on: (key, callback) =>

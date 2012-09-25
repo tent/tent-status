@@ -30,6 +30,10 @@ class Reposted extends TentStatus.Events
     TentStatus.Cache.set @_cacheKey(post_id, post_entity, current_entity), true, {saveToLocalStorage:true}
     @trigger "change#{@separator}#{post_entity}#{@separator}#{post_id}", true
 
+  unsetReposted: (post_id, post_entity, current_entity = @params.entity) =>
+    TentStatus.Cache.remove @_cacheKey(post_id, post_entity, current_entity)
+    @trigger "change#{@separator}#{post_entity}#{@separator}#{post_id}", false
+
   isReposted: (post_id, post_entity, current_entity = @params.entity) =>
     !!(TentStatus.Cache.get @_cacheKey(post_id, post_entity, current_entity))
 

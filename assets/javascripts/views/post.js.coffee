@@ -62,6 +62,10 @@ class TentStatus.Views.Post extends TentStatus.View
   delete: =>
     @$el.hide()
     @post.destroy
+      success: =>
+        @$el.remove()
+        if @post.isRepost() and (repost = @post.get('repost'))
+          TentStatus.Reposted.unsetReposted(repost.get('id'), repost.get('entity'))
       error: => @$el.show()
 
   delete_repost: =>
@@ -89,7 +93,7 @@ class TentStatus.Views.Post extends TentStatus.View
       repost = new TentStatus.Models.Post repost
       TentStatus.Reposted.setReposted(post.get('id'), post.get('entity'))
 
-      if repost.get('entity') == TentStatus.domain_entity
+      if TentStatus.config.current_entity.assertEqual(TentStatus.config.domain_entity)
         @parentView.posts.unshift(repost)
         TentStatus.Views.Post.insertNewPost(repost, @parentView.$el, @parentView)
 
