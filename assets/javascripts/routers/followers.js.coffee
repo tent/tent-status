@@ -5,6 +5,8 @@ TentStatus.Routers.followers = new class Followers extends TentStatus.Router
     "followers" : "index"
 
   index: =>
-    return if TentStatus.guest_authenticated || !TentStatus.authenticated
-    TentStatus.setPageTitle 'Your followers'
+    if TentStatus.guest_authenticated || !TentStatus.authenticated
+      TentStatus.setPageTitle 'Followers'
+    else
+      TentStatus.setPageTitle 'Your followers'
     @view = new TentStatus.Views.Followers

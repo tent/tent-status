@@ -12,7 +12,7 @@ class TentStatus.Views.Followers extends TentStatus.View
     @on 'ready', @initAutoPaginate
 
     @on 'change:followers', @render
-    new HTTP 'GET', "#{TentStatus.config.tent_api_root}/followers", { limit: TentStatus.config.PER_PAGE }, (followers, xhr) =>
+    new HTTP 'GET', "#{TentStatus.config.current_tent_api_root}/followers", { limit: TentStatus.config.PER_PAGE }, (followers, xhr) =>
       return unless xhr.status == 200
       followers = new TentStatus.Collections.Followers followers
       paginator = new TentStatus.Paginator followers, { sinceId: followers.last()?.get('id') }
@@ -23,6 +23,7 @@ class TentStatus.Views.Followers extends TentStatus.View
     followers: _.map(@followers?.toArray() || [], (follower) =>
       TentStatus.Views.Follower::context(follower)
     )
+    guest_authenticated: !!TentStatus.guest_authenticated
 
   initFollowerViews: =>
     _.each ($ '.follower', @container.$el), (el) =>

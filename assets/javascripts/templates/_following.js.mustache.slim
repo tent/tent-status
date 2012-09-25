@@ -8,4 +8,12 @@ tr.following data-id='{{id}}'
       =="{{name}}"
   td =="{{entity}}"
   td
+    | {{^guest_authenticated}}
     .btn.btn-danger.unfollow-btn data-id='{{id}}' data-confirm='Unfollow {{name}}?' Unfollow
+    | {{/guest_authenticated}}
+
+    | {{#guest_authenticated}}
+    form.span2.pull-rght data-view='ProfileFollowButton' method='POST'
+      input type='hidden' name='entity' value='{{entity}}'
+      input.btn.btn-success.pull-right type='submit' value='Follow'
+    | {{/guest_authenticated}}
