@@ -9,6 +9,9 @@ class TentStatus.Models.Post extends Backbone.Model
 
     TentStatus.Cache.set "post:#{@get 'id'}", @
 
+    TentStatus.Reposted.on "change", @get('entity'), @get('id'), =>
+      @set('disable_repost', true)
+
     @getProfile()
 
   initParentBindings: (parent) =>
