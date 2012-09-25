@@ -24,6 +24,9 @@ class TentStatus.Views.Followers extends TentStatus.View
       TentStatus.Views.Follower::context(follower)
     )
     guest_authenticated: !!TentStatus.guest_authenticated
+    domain_entity: TentStatus.config.domain_entity.toStringWithoutSchemePort()
+    formatted:
+      domain_entity: TentStatus.Helpers.formatUrl TentStatus.config.domain_entity.toStringWithoutSchemePort()
 
   initFollowerViews: =>
     _.each ($ '.follower', @container.$el), (el) =>

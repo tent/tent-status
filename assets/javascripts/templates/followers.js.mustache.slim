@@ -3,7 +3,7 @@
   .span8
     | {{#followers.length}}
     | {{#guest_authenticated}}
-    h1.page-header Followers
+    h1.page-header Followers of <small><a href='{{domain_entity}}'>{{formatted.domain_entity}}</a></small>
     | {{/guest_authenticated}}
 
     | {{^guest_authenticated}}
