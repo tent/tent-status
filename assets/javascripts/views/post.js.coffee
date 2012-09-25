@@ -88,8 +88,10 @@ class TentStatus.Views.Post extends TentStatus.View
       return unless xhr.status == 200
       repost = new TentStatus.Models.Post repost
       TentStatus.Reposted.setReposted(post.get('id'), post.get('entity'))
-      @parentView.posts.unshift(repost)
-      TentStatus.Views.Post.insertNewPost(repost, @parentView.$el, @parentView)
+
+      if repost.get('entity') == TentStatus.domain_entity
+        @parentView.posts.unshift(repost)
+        TentStatus.Views.Post.insertNewPost(repost, @parentView.$el, @parentView)
 
   reply_repost: =>
     @$repost_reply_container.toggle()
