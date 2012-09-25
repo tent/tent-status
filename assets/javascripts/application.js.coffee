@@ -38,7 +38,6 @@ _.extend @TentStatus, Backbone.Events, {
   Helpers: {}
   csrf_token: $('meta[name="csrf-token"]').attr('content')
   PER_PAGE: 10
-  base_title: document.title
 
   config: {
     tent_api_root: new HTTP.URI(TentStatus.current_entity + '/tent')
@@ -54,7 +53,7 @@ _.extend @TentStatus, Backbone.Events, {
   }
 
   setPageTitle: (title) =>
-    return
+    @base_title ?= document.title
     title = @base_title + ' - ' + title if title
     title ?= @base_title
     document.title = title

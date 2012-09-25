@@ -19,7 +19,6 @@ class TentStatus.Router extends Backbone.Router
 
     window.scrollTo window.scrollX, 0
 
-    TentStatus.setPageTitle? key
     TentStatus.setCurrentRoute? @, actionName
 
     actionFn()
