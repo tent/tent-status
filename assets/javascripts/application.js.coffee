@@ -1,6 +1,7 @@
 #= require sha256
 #= require jquery
 #= require underscore
+#= require store
 #= require http
 #= require backbone
 #= require ./backbone_sync
@@ -10,6 +11,7 @@
 #= require_tree ./templates
 #= require_self
 #= require mac_auth
+#= require ./events
 #= require ./cache
 #= require ./paginator
 #= require ./fetch_pool

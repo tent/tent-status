@@ -24,11 +24,16 @@ class TentStatus.Views.Post extends TentStatus.View
   initPostEvents: =>
     @post.on 'change:profile', => @render()
     @post.on 'change:repost:profile', => @render()
+    @post.on 'change:disable_repost', => @render()
 
   fetchRepost: =>
     if @post?.isRepost() && !@post.get('repost')
       @$el.hide()
-      @post.on 'change:repost', => @render(); @$el.show()
+      @post.on 'change:repost', (repost) =>
+        repost.on 'change:profile', => @render()
+        repost.on 'change:disable_repost', => @render()
+        @render()
+        @$el.show()
       @post.fetchRepost()
 
   bindEvents: =>
@@ -79,11 +84,12 @@ class TentStatus.Views.Post extends TentStatus.View
         id: post.get('id')
     }
 
-    new HTTP 'POST', "#{TentStatus.config.tent_api_root}/posts", data, (post, xhr) =>
+    new HTTP 'POST', "#{TentStatus.config.tent_api_root}/posts", data, (repost, xhr) =>
       return unless xhr.status == 200
-      post = new TentStatus.Models.Post post
-      @parentView.posts.unshift(post)
-      TentStatus.Views.Post.insertNewPost(post, @parentView.$el, @parentView)
+      repost = new TentStatus.Models.Post repost
+      TentStatus.Reposted.setReposted(post.get('id'), post.get('entity'))
+      @parentView.posts.unshift(repost)
+      TentStatus.Views.Post.insertNewPost(repost, @parentView.$el, @parentView)
 
   reply_repost: =>
     @$repost_reply_container.toggle()
@@ -134,6 +140,12 @@ class TentStatus.Views.Post extends TentStatus.View
     }
 
   render: (context = @context()) =>
+    # wait for template to be loaded
+    if @templateName
+      unless @template
+        @once 'template:load', => @render(arguments...)
+        return false
+
     html = @template.render(context, @parentView.partials)
     el = ($ html)
     @$el.replaceWith(el)
