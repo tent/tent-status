@@ -17,11 +17,11 @@ class TentStatus.Models.Post extends Backbone.Model
   initParentBindings: (parent) =>
     if profile = @get('profile')
       parent.trigger 'change:repost:profile', profile
-    @on 'change:profile', (profile) =>
+    @on 'change:profile', =>
+      profile = @get('profile')
       parent.trigger 'change:repost:profile', profile
 
   getProfile: =>
-    return if @isNew()
     cache_key = "profile:#{@get 'entity'}"
 
     TentStatus.Cache.on cache_key, (profile) =>
@@ -68,6 +68,7 @@ class TentStatus.Models.Post extends Backbone.Model
 
     if repost = TentStatus.Cache.get "post:#{repost_id}"
       repost.set 'parent', @
+      repost.getProfile()
       @set 'repost', repost
       return
 
