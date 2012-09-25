@@ -3,7 +3,7 @@
     a href='{{entity}}'
       img.img-rounded.pull-left.avatar src='{{avatar}}'
 
-  .span5.no-offset
+  .span4.no-offset
     h5 style='margin: 0px;'
       | {{#hasName}}
       a href='{{entity}}' {{name}} <small>{{formatted.entity}}</small>
@@ -18,7 +18,7 @@
 
   | {{#in_reply_to}}
   | {{#authenticated}}
-  .span5
+  .span4
     a href='{{url}}'
       small in reply to {{name}}
   | {{/authenticated}}

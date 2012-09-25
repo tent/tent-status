@@ -24,11 +24,12 @@
       .row
         .profile-stats
           .span2 &nbsp;
-          .span4.no-offset data-view='ProfileStats'
+          .span5.no-offset data-view='ProfileStats'
         | {{#guest_authenticated}}
-        form.span2.pull-rght data-view='ProfileFollowButton' method='POST'
-          input type='hidden' name='entity' value='{{entity}}'
-          input.btn.btn-success.pull-right type='submit' value='Follow'
+        .clearfix.pull-right
+          form.span2 data-view='ProfileFollowButton' method='POST'
+            input type='hidden' name='entity' value='{{entity}}'
+            input.btn.btn-success type='submit' value='Follow'
         | {{/guest_authenticated}}
     | {{/profile}}
 
