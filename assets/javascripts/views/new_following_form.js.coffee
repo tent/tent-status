@@ -30,12 +30,24 @@ class TentStatus.Views.NewFollowingForm extends Backbone.View
 
   buildEntity: =>
     entity = @$fields.entity.val()
-    entity = if entity.match /^[^.]+$/ && TentStatus.config.tent_host_domain
-      'https://' + entity + TentStatus.config.tent_host_domain
-    else if entity.length && entity.match /^(?!http?s?)/
-      'https://' + entity
-    else
-      entity
+    m = entity.match(/^(https?:\/\/)?([^\/]+)(.*?)$/)
+    return entity unless m
+    parts = {
+      scheme: m[1]
+      domain: m[2]
+      rest: m[4] || ""
+    }
+
+    if TentStatus.config.tent_host_domain
+      if parts.domain.match /^[^.]+$/
+        parts.scheme ?= 'https://'
+        parts.domain += '.' + TentStatus.config.tent_host_domain
+      else if parts.domain.match(new RegExp(TentStatus.config.tent_host_domain)) and !parts.scheme
+        parts.scheme = 'https://'
+
+    parts.scheme ?= 'http://'
+    entity = parts.scheme + parts.domain + parts.rest
+
     entity
 
   submit: (e) =>
