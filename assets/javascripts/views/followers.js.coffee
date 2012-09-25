@@ -36,8 +36,8 @@ class TentStatus.Views.Followers extends TentStatus.View
     setTimeout @windowScrolled, 100
 
   windowScrolled: =>
-    $last_post = ($ 'tr.follower:last', @$el)
-    height = $(document).height() - $(window).height() - $last_post.offset().top
+    $last = ($ 'tr.follower:last', @container)
+    height = $(document).height() - $(window).height() - ($last.offset()?.top || 0)
     delta = height - window.scrollY
 
     if delta < 300
