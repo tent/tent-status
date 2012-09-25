@@ -97,11 +97,12 @@ class TentStatus.Views.NewPostForm extends TentStatus.View
     @disableWith 'Posting...'
     new HTTP 'POST', "#{TentStatus.config.tent_api_root}/posts", data, (post, xhr) =>
       return @enable() unless xhr.status == 200
-      post = new TentStatus.Models.Post post
-      @postsFeedView ?= @parentView.postsFeedView?()
-      @postsFeedView?.posts.unshift post
-      container = @postsFeedView.$el
-      TentStatus.Views.Post.insertNewPost(post, container, @postsFeedView)
+      if TentStatus.config.current_entity.assertEqual(TentStatus.config.domain_entity)
+        post = new TentStatus.Models.Post post
+        @postsFeedView ?= @parentView.postsFeedView?()
+        @postsFeedView?.posts.unshift post
+        container = @postsFeedView.$el
+        TentStatus.Views.Post.insertNewPost(post, container, @postsFeedView)
       @render()
     false
 
