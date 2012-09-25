@@ -28,10 +28,10 @@ class TentStatus.Views.Conversation extends TentStatus.View
       @set 'post', post
 
       @on 'change:child_posts', @render
-      new HTTP 'GET', "#{TentStatus.config.tent_api_root}/posts", {
+      new HTTP 'GET', "#{TentStatus.config.tent_api_root}/posts", _.extend({
         limit: TentStatus.config.PER_PAGE
         mentioned_post: @post_id
-      }, (posts, xhr) =>
+      }, params), (posts, xhr) =>
         return @render404() if xhr.status == 404
         return unless xhr.status == 200
         since_id = posts[posts.length-1]?.id
