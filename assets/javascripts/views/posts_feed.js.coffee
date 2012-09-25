@@ -50,6 +50,6 @@ class TentStatus.Views.PostsFeed extends TentStatus.View
     height = $(document).height() - $(window).height() - $last_post.offset().top
     delta = height - window.scrollY
 
-    if delta < 600
+    if delta < 300
       clearTimeout @_auto_paginate_timeout
       @_auto_paginate_timeout = setTimeout @posts?.nextPage, 0 unless @posts.onLastPage
