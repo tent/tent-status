@@ -47,7 +47,7 @@ class TentStatus.Views.PostsFeed extends TentStatus.View
 
   windowScrolled: =>
     $last_post = ($ 'li.post:last', @$el)
-    height = $(document).height() - $(window).height() - $last_post.offset().top
+    height = $(document).height() - $(window).height() - ($last_post.offset()?.top || 0)
     delta = height - window.scrollY
 
     if delta < 300
