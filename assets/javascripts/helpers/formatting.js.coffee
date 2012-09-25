@@ -36,7 +36,14 @@ _.extend TentStatus.Helpers,
 
     text = TentStatus.Helpers.htmlEscapeText(text)
 
+    offset = 0
     for i in TentStatus.Helpers.extractUrlsWithIndices(text)
-      text = TentStatus.Helpers.replaceIndexRange(i.indices[0], i.indices[1], text, "<a href='#{TentStatus.Helpers.ensureUrlHasScheme(i.url)}'>#{text.substring(i.indices[0], i.indices[1])}</a>")
+      start_index = i.indices[0] + offset
+      end_index = i.indices[1] + offset
+      original_text = text.substring(start_index, end_index)
+      replace_text = "<a href='#{TentStatus.Helpers.ensureUrlHasScheme(i.url)}'>#{original_text}</a>"
+      delta = replace_text.length - original_text.length
+      offset += delta
+      text = TentStatus.Helpers.replaceIndexRange(start_index, end_index, text, replace_text)
 
     text
