@@ -18,3 +18,10 @@ tr.follower data-id='{{id}}'
       input type='hidden' name='entity' value='{{entity}}'
       input.btn.btn-success.pull-right type='submit' value='Follow'
     | {{/guest_authenticated}}
+
+  td
+    | {{^guest_authenticated}}
+    form.span2 data-view='ProfileFollowButton' method='POST'
+      input type='hidden' name='entity' value='{{entity}}'
+      input.btn.btn-success type='submit' value='Follow'
+    | {{/guest_authenticated}}
