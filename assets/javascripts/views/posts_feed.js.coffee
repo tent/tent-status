@@ -2,7 +2,7 @@ class TentStatus.Views.PostsFeed extends TentStatus.View
   templateName: 'posts_feed'
   partialNames: ['_reply_form', '_post', '_post_inner']
 
-  initialize: (options) ->
+  initialize: (options = {}) ->
     options.posts_params ?= {}
     super
 
