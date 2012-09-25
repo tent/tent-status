@@ -194,7 +194,7 @@ class TentStatus.Views.NewPostForm extends TentStatus.View
     @$charLimit.text delta
 
   context: =>
-    {}
+    max_chars: TentStatus.config.max_length
 
   render: =>
     return unless html = super

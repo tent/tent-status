@@ -50,6 +50,7 @@ _.extend @TentStatus, Backbone.Events, {
     PER_PAGE: 10
     FETCH_INTERVAL: 3000
     MAX_FETCH_LATENCY: 30000
+    max_length: 256
   }
 
   setPageTitle: (title) =>
