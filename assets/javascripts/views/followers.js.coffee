@@ -41,9 +41,9 @@ class TentStatus.Views.Followers extends TentStatus.View
 
   windowScrolled: =>
     $last = ($ 'tr.follower:last', @container)
-    height = $(document).height() - $(window).height() - ($last.offset()?.top || 0)
-    delta = height - window.scrollY
+    last_offset_top = $last.offset()?.top || 0
+    bottom_position = window.scrollY + $(window).height()
 
-    if delta < 300
+    if last_offset_top < (bottom_position + 300)
       clearTimeout @_auto_paginate_timeout
       @_auto_paginate_timeout = setTimeout @followers?.nextPage, 0 unless @followers?.onLastPage
