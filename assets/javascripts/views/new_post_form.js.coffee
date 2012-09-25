@@ -120,10 +120,8 @@ class TentStatus.Views.NewPostForm extends TentStatus.View
     )
     delete data.mentions
 
-    for entity in (data.text?.match(/\^(\S+)/g) || [])
-      entity = entity.replace(/^\^/, '')
-      continue unless entity.length
-      entity = entity.replace(/^/, 'https://') unless entity.match(/^https?/)
+    for i in TentStatus.Helpers.extractUrlsWithIndices(data.text)
+      entity = i.url
 
       exists = false
       for m in mentions
