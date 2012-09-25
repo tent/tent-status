@@ -7,9 +7,10 @@ class TentStatus.Views.Following extends TentStatus.View
 
   initialize: (options) ->
     @parentView = options.parentView
-    @following = options.following
     super
 
+    @following = options.following
+    @following.on 'change:profile', => @render()
     @on 'render', @bindEvents
 
   bindEvents: =>

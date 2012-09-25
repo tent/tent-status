@@ -5,6 +5,7 @@ class TentStatus.Views.Follower extends TentStatus.View
     @parentView = options.parentView
     @follower = options.follower
 
+    @follower.on 'change:profile', => @render()
     @on 'ready', @initRemoveFollowerBtn
 
   initRemoveFollowerBtn: =>

@@ -6,10 +6,11 @@ tr.following data-id='{{id}}'
     =="{{/avatar}}"
     a href='{{entity}}'
       =="{{name}}"
-  td =="{{entity}}"
+  td
+    a href='{{entity}}' {{entity}}
   td
     | {{^guest_authenticated}}
-    .btn.btn-danger.unfollow-btn data-id='{{id}}' data-confirm='Unfollow {{name}}?' Unfollow
+    .btn.btn-danger.remove-follower data-confirm='Block {{name}}?' Block
     | {{/guest_authenticated}}
 
     | {{#guest_authenticated}}
