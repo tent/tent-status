@@ -10,6 +10,7 @@ class TentStatus.Views.NewPostForm extends TentStatus.View
     @render()
 
   init: =>
+    @frozen = false
     @$errors = ($ '.alert-error', @$el).first().hide()
 
     @$post_btn = ($ 'input[type=submit]', @$el)
