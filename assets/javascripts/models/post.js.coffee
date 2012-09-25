@@ -113,8 +113,8 @@ class TentStatus.Models.Post extends Backbone.Model
     if attrs.text and attrs.text.match /^[\s\r]*$/
       errors.push { text: 'Status must not be empty' }
 
-    if attrs.text and attrs.text.length > 140
-      errors.push { text: 'Status must be no more than 140 characters' }
+    if attrs.text and attrs.text.length > TentStatus.config.max_length
+      errors.push { text: "Status must be no more than #{TentStatus.config.max_length} characters" }
 
     return errors if errors.length
     null

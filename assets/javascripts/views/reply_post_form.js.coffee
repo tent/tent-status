@@ -36,14 +36,20 @@ class TentStatus.Views.ReplyPostForm extends TentStatus.Views.NewPostForm
     data
 
   context: =>
-    post = @parentView.post
-    return {} unless post
+    data = {
+      max_chars: TentStatus.config.max_length
+    }
 
-    if @is_repost
+    post = @parentView.post
+    return data unless post
+
+    post_data = if @is_repost
       repost = @parentView.post.get('repost')
       @parentView.repostContext(post, repost)
     else
       @parentView.context(post)
+
+    _.extend({}, data, post_data)
 
   render: =>
     @trigger 'ready'
