@@ -7,5 +7,8 @@ class TentStatus.Views.Followings extends TentStatus.View
     @render()
 
   context: =>
-    {}
+    guest_authenticated: !!TentStatus.guest_authenticated
+    domain_entity: TentStatus.config.domain_entity.toStringWithoutSchemePort()
+    formatted:
+      domain_entity: TentStatus.Helpers.formatUrl TentStatus.config.domain_entity.toStringWithoutSchemePort()
 
