@@ -9,7 +9,13 @@ class TentStatus.Views.ProfileStats extends TentStatus.View
     for r in @resources
       do (r) =>
         @on "change:#{r}Count", @render
-        new HTTP 'GET', "#{TentStatus.config.current_tent_api_root}/#{r}/count", null, (count, xhr) =>
+        if r == 'posts'
+          params = {
+            post_types: TentStatus.config.post_types
+          }
+        else
+          params = {}
+        new HTTP 'GET', "#{TentStatus.config.current_tent_api_root}/#{r}/count", params, (count, xhr) =>
           return unless xhr.status == 200
           @set "#{r}Count", count
 
