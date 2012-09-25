@@ -10,18 +10,17 @@ class TentStatus.Models.Follower extends Backbone.Model
 
   initialize: ->
     @on 'sync', @updateProfile
-    @set('profile', profile) if profile = TentStatus.Cache.get("profile:#{@get 'entity'}")
 
-    @fetchProfile() unless @get('profile')
+    @fetchProfile()
 
   fetchProfile: =>
     TentStatus.Models.Post::getProfile.apply(@)
 
   name: =>
-    @get('profile')?.name()
+    @get('profile')?.name?()
 
   hasName: =>
-    @get('profile')?.hasName()
+    @get('profile')?.hasName?()
 
   avatar: =>
-    @get('profile')?.avatar()
+    @get('profile')?.avatar?()
