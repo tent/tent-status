@@ -62,6 +62,24 @@
 
   twttr.txt.stringSupplant = stringSupplant
 
+  var UNICODE_SPACES = [
+    fromCode(0x0020), // White_Space # Zs       SPACE
+    fromCode(0x0085), // White_Space # Cc       <control-0085>
+    fromCode(0x00A0), // White_Space # Zs       NO-BREAK SPACE
+    fromCode(0x1680), // White_Space # Zs       OGHAM SPACE MARK
+    fromCode(0x180E), // White_Space # Zs       MONGOLIAN VOWEL SEPARATOR
+    fromCode(0x2028), // White_Space # Zl       LINE SEPARATOR
+    fromCode(0x2029), // White_Space # Zp       PARAGRAPH SEPARATOR
+    fromCode(0x202F), // White_Space # Zs       NARROW NO-BREAK SPACE
+    fromCode(0x205F), // White_Space # Zs       MEDIUM MATHEMATICAL SPACE
+    fromCode(0x3000)  // White_Space # Zs       IDEOGRAPHIC SPACE
+  ];
+
+  twttr.txt.regexen.spaces_group = regexSupplant(UNICODE_SPACES.join(""));
+  twttr.txt.regexen.spaces = regexSupplant("[" + UNICODE_SPACES.join("") + "]");
+  twttr.txt.regexen.invalid_chars_group = regexSupplant(INVALID_CHARS.join(""));
+  twttr.txt.regexen.punct = /\!'#%&'\(\)*\+,\\\-\.\/:;<=>\?@\[\]\^_{|}~\$/;
+
   // URL related regex collection
   twttr.txt.regexen.validUrlPrecedingChars = regexSupplant(/(?:[^A-Za-z0-9@＠$#＃#{invalid_chars_group}]|^)/);
   twttr.txt.regexen.invalidUrlWithoutProtocolPrecedingChars = /[-_.\/]$/;
