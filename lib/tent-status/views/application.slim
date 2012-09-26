@@ -16,9 +16,9 @@ body
           a href='https://tent.is' Tent.is
 
       ul.nav
+        li
+          a href="https://app.#{tent_host_domain}/global" Global Feed
         - if current_user || guest_user
-          li
-            a href="https://app.#{tent_host_domain}/global" Global Feed
           li
             a href=full_url('/profile') Profile
           li
