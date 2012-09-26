@@ -9,9 +9,11 @@ tr.following data-id='{{id}}'
   td
     a href='{{entity}}' {{entity}}
   td
+    | {{#authenticated}}
     | {{^guest_authenticated}}
     .btn.btn-danger.unfollow-btn data-id='{{id}}' data-confirm='Unfollow {{name}}?' Unfollow
     | {{/guest_authenticated}}
+    | {{/authenticated}}
 
     | {{#guest_authenticated}}
     form.span2.pull-rght data-view='ProfileFollowButton' method='POST'
