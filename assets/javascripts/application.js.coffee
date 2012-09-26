@@ -1,4 +1,4 @@
-#= require sha256
+#= require hmac_sha256
 #= require jquery
 #= require underscore
 #= require store
