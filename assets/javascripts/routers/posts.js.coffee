@@ -4,7 +4,7 @@ TentStatus.Routers.posts = new class PostsRouter extends TentStatus.Router
   routes:
     ""                 : "root"
     "profile"          : "myProfile"
-    "feed"             : "globalFeed"
+    "global"           : "globalFeed"
     "posts"            : "index"
     "posts/:entity/:post_id" : "conversation"
     "posts/:post_id" : "conversation"
@@ -41,7 +41,7 @@ TentStatus.Routers.posts = new class PostsRouter extends TentStatus.Router
   globalFeed: =>
     unless TentStatus.config.tent_host_domain and window.location.hostname == "app.#{TentStatus.config.tent_host_domain}"
       return @index()
-    TentStatus.setPageTitle "Global Feed"
+    TentStatus.setPageTitle "Tent.is Global Feed"
     @view = new TentStatus.Views.GlobalFeed
 
   mentions: =>
