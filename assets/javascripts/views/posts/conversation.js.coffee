@@ -59,8 +59,8 @@ class TentStatus.Views.Conversation extends TentStatus.View
   initPostViews: =>
     _.each ($ 'li.post', @container.$el), (el) =>
       post_id = ($ el).attr('data-id')
-      posts = [@post].concat(@get('posts')?.toArray() || []).
+      posts = [@post, @parent_post].concat(@get('posts')?.toArray() || []).
                       concat(@get('parent_posts')?.toArray() || [])
-      post = _.find posts, (p) => p.get('id') == post_id
+      post = _.find posts, (p) => p?.get('id') == post_id
       view = new TentStatus.Views.Post el: el, post: post, parentView: @
       view.trigger 'ready'
