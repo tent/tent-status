@@ -165,6 +165,10 @@ module Tent
       redirect full_path('/')
     end
 
+    get '/favicon.ico' do
+      halt 404
+    end
+
     get '*' do
       slim :application
     end
