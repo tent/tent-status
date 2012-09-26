@@ -53,6 +53,12 @@ _.extend @TentStatus, Backbone.Events, {
     max_length: 256
   }
 
+  isAppSubdomain: =>
+    TentStatus.config.tent_host_domain and window.location.hostname == "app.#{TentStatus.config.tent_host_domain}"
+
+  redirectToGlobalFeed: =>
+    TentStatus.Routers.posts.navigate('/global', {trigger:true})
+
   setPageTitle: (title) =>
     @base_title ?= document.title
     title = @base_title + ' - ' + title if title

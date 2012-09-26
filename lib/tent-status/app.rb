@@ -79,6 +79,7 @@ module Tent
         return unless defined?(TentD)
         current = TentD::Model::User.current
         return unless current
+        return if current.id.nil?
         current if session[:current_user_id] == current.id
       end
 
