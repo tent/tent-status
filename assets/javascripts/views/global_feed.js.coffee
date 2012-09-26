@@ -5,3 +5,4 @@ class TentStatus.Views.GlobalFeed extends TentStatus.View
     @container = TentStatus.Views.container
     super
     @render()
+

@@ -4,7 +4,7 @@ class TentStatus.FetchPool extends TentStatus.Paginator
     @sinceId = @options.sinceId
 
   paramsForOffsetAndLimit: (since_id_entity, sinceId, limit) =>
-    params = { limit: limit }
+    params = _.extend { limit: limit }, @default_params
     params.since_id = sinceId if sinceId
     params.since_id_entity = since_id_entity if since_id_entity
     params
