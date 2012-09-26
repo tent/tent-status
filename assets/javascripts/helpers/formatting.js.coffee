@@ -16,6 +16,9 @@ _.extend TentStatus.Helpers,
   formatUrl: (url='') ->
     url.replace(/^\w+:\/\/([^\/]+).*?$/, '$1')
 
+  formatUrlWithPath: (url = '') ->
+    url.replace(/^\w+:\/\/(.*)$/, '$1')
+
   replaceIndexRange: (start_index, end_index, string, replacement) ->
     string.substr(0, start_index) + replacement + string.substr(end_index, string.length-1)
 
@@ -41,7 +44,7 @@ _.extend TentStatus.Helpers,
       start_index = i.indices[0] + offset
       end_index = i.indices[1] + offset
       original_text = text.substring(start_index, end_index)
-      replace_text = "<a href='#{TentStatus.Helpers.ensureUrlHasScheme(i.url)}'>#{TentStatus.Helpers.formatUrl original_text}</a>"
+      replace_text = "<a href='#{TentStatus.Helpers.ensureUrlHasScheme(i.url)}'>#{TentStatus.Helpers.formatUrlWithPath original_text}</a>"
       delta = replace_text.length - original_text.length
       offset += delta
       text = TentStatus.Helpers.replaceIndexRange(start_index, end_index, text, replace_text)
