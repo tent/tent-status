@@ -6,9 +6,15 @@
     h1.page-header Followers of <small><a href='{{domain_entity}}'>{{formatted.domain_entity}}</a></small>
     | {{/guest_authenticated}}
 
+    | {{^authenticated}}
+    h1.page-header Followers of <small><a href='{{domain_entity}}'>{{formatted.domain_entity}}</a></small>
+    | {{/authenticated}}
+
+    | {{#authenticated}}
     | {{^guest_authenticated}}
     h1.page-header Your Followers
     | {{/guest_authenticated}}
+    | {{/authenticated}}
     table.table.table-striped
       thead
         tr
@@ -25,7 +31,10 @@
     | {{#guest_authenticated}}
     h1.page-header <small><a href='{{domain_entity}}'>{{formatted.domain_entity}}</a></small> doesn't have any followers yet
     | {{/guest_authenticated}}
+
+    | {{#authenticated}}
     | {{^guest_authenticated}}
     h1.page-header You don't have any Followers yet
     | {{/guest_authenticated}}
+    | {{/authenticated}}
     | {{/followers.length}}
