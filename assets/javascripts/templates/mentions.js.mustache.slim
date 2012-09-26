@@ -1,0 +1,16 @@
+.row
+  .span2 &nbsp;
+  .span8
+    .page-header
+      h1
+        small
+          a href='{{domain_entity}}' {{formatted.domain_entity}} &nbsp;
+        | Mentions
+
+.row
+  .span2 &nbsp;
+  .span8
+    ul.unstyled.posts data-view='MentionsPostFeed'
+      | {{#posts}}
+      | {{> _post}}
+      | {{/posts}}

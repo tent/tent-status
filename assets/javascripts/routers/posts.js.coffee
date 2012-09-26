@@ -8,6 +8,7 @@ TentStatus.Routers.posts = new class PostsRouter extends TentStatus.Router
     "posts"            : "index"
     "posts/:entity/:post_id" : "conversation"
     "posts/:post_id" : "conversation"
+    "mentions" : "mentions"
 
   index: =>
     if !TentStatus.authenticated or (TentStatus.config.current_entity.hostname != TentStatus.config.domain_entity.hostname)
@@ -40,3 +41,8 @@ TentStatus.Routers.posts = new class PostsRouter extends TentStatus.Router
   globalFeed: =>
     TentStatus.setPageTitle "Global Feed"
     @view = new TentStatus.Views.GlobalFeed
+
+  mentions: =>
+    TentStatus.setPageTitle "#{TentStatus.Helpers.formatUrl TentStatus.config.domain_entity.toStringWithoutSchemePort()} - Mentions"
+    @view = new TentStatus.Views.Mentions
+
