@@ -1,6 +1,7 @@
 #= require sha256
 #= require jquery
 #= require underscore
+#= require store
 #= require http
 #= require backbone
 #= require ./backbone_sync
@@ -10,6 +11,8 @@
 #= require_tree ./templates
 #= require_self
 #= require mac_auth
+#= require ./events
+#= require ./cache
 #= require ./paginator
 #= require ./fetch_pool
 #= require ./view
@@ -17,6 +20,7 @@
 #= require_tree ./helpers
 #= require_tree ./views
 #= require_tree ./routers
+#= require ./model
 #= require_tree ./models
 #= require_tree ./collections
 
@@ -34,7 +38,6 @@ _.extend @TentStatus, Backbone.Events, {
   Helpers: {}
   csrf_token: $('meta[name="csrf-token"]').attr('content')
   PER_PAGE: 10
-  base_title: document.title
 
   config: {
     tent_api_root: new HTTP.URI(TentStatus.current_entity + '/tent')
@@ -47,10 +50,11 @@ _.extend @TentStatus, Backbone.Events, {
     PER_PAGE: 10
     FETCH_INTERVAL: 3000
     MAX_FETCH_LATENCY: 30000
+    max_length: 256
   }
 
   setPageTitle: (title) =>
-    return
+    @base_title ?= document.title
     title = @base_title + ' - ' + title if title
     title ?= @base_title
     document.title = title

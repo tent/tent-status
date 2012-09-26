@@ -11,7 +11,7 @@ class TentStatus.Views.FollowingsList extends TentStatus.View
     @on 'ready', @initAutoPaginate
 
     @on 'change:followings', @render
-    new HTTP 'GET', "#{TentStatus.config.tent_api_root}/followings", { limit: TentStatus.config.PER_PAGE }, (followings, xhr) =>
+    new HTTP 'GET', "#{TentStatus.config.current_tent_api_root}/followings", { limit: TentStatus.config.PER_PAGE }, (followings, xhr) =>
       return unless xhr.status == 200
       followings = new TentStatus.Collections.Followings followings
       paginator = new TentStatus.Paginator followings, { sinceId: followings.last()?.get('id') }
@@ -37,10 +37,15 @@ class TentStatus.Views.FollowingsList extends TentStatus.View
       view.trigger 'render'
 
   initAutoPaginate: =>
-    ($ window).off('scroll.followings').on 'scroll.followings', (e)=>
-      height = $(document).height() - $(window).height()
-      delta = height - window.scrollY
-      if delta < 200
-        clearTimeout @_auto_paginate_timeout
-        @_auto_paginate_timeout = setTimeout @followings?.nextPage, 0 unless @followings.onLastPage
+    ($ window).off('scroll.followings').on 'scroll.followings', @windowScrolled
+    setTimeout @windowScrolled, 100
+
+  windowScrolled: =>
+    $last = ($ 'tr.following:last', @$el)
+    last_offset_top = $last.offset()?.top || 0
+    bottom_position = window.scrollY + $(window).height()
+
+    if last_offset_top < (bottom_position + 300)
+      clearTimeout @_auto_paginate_timeout
+      @_auto_paginate_timeout = setTimeout @followings?.nextPage, 0 unless @followings?.onLastPage
 

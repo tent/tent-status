@@ -3,7 +3,7 @@
     a href='{{entity}}'
       img.img-rounded.pull-left.avatar src='{{avatar}}'
 
-  .span5.no-offset
+  .span4.no-offset
     h5 style='margin: 0px;'
       | {{#hasName}}
       a href='{{entity}}' {{name}} <small>{{formatted.entity}}</small>
@@ -18,7 +18,7 @@
 
   | {{#in_reply_to}}
   | {{#authenticated}}
-  .span5
+  .span4
     a href='{{url}}'
       small in reply to {{name}}
   | {{/authenticated}}
@@ -37,11 +37,11 @@
   | {{/repost}}
 
   | {{#repost}}
-  .span7.repost.no-offset style='width:560px;'
+  .span560.repost.no-offset
     | {{> _post_inner}}
   .span6.offset1
     | Reposted by {{parent.name}}
-  small.pull-right via {{app.name}}
+  small.showOnHover.pull-right via {{app.name}}
   | {{/repost}}
 
 | {{#authenticated}}
@@ -49,7 +49,13 @@
   | {{^is_repost}}
   | {{^currentUserOwnsPost}}
   a.reply class='{{#has_parent}}reply-repost{{/has_parent}}' href='#' Reply
+
+  | {{#disable_repost}}
+  span.repost Reposted
+  | {{/disable_repost}}
+  | {{^disable_repost}}
   a.repost class='{{#has_parent}}repost-repost{{/has_parent}}' data-confirm='Repost {{name}}?' href='#' Repost
+  | {{/disable_repost}}
   | {{/currentUserOwnsPost}}
   | {{/is_repost}}
 

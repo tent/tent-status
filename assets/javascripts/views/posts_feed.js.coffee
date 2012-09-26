@@ -7,8 +7,8 @@ class TentStatus.Views.PostsFeed extends TentStatus.View
     super
 
     @on 'change:posts', @render
-    @on 'render', @initPostViews
-    @on 'render', @initAutoPaginate
+    @on 'ready', @initPostViews
+    @on 'ready', @initAutoPaginate
 
     params = _.extend({
       post_types: TentStatus.config.post_types
@@ -32,7 +32,7 @@ class TentStatus.Views.PostsFeed extends TentStatus.View
   render: =>
     html = super
     @$el.html(html)
-    @trigger 'render'
+    @trigger 'ready'
 
   initPostViews: =>
     _.each ($ 'li.post', @$el), (el) =>
@@ -42,9 +42,14 @@ class TentStatus.Views.PostsFeed extends TentStatus.View
       view.trigger 'ready'
 
   initAutoPaginate: =>
-    ($ window).off('scroll.posts').on 'scroll.posts', (e)=>
-      height = $(document).height() - $(window).height()
-      delta = height - window.scrollY
-      if delta < 200
-        clearTimeout @_auto_paginate_timeout
-        @_auto_paginate_timeout = setTimeout @posts?.nextPage, 0 unless @posts.onLastPage
+    ($ window).off('scroll.posts').on 'scroll.posts', @windowScrolled
+    setTimeout @windowScrolled, 100
+
+  windowScrolled: =>
+    $last_post = ($ 'li.post:last', @$el)
+    last_post_offset_top = $last_post.offset()?.top || 0
+    bottom_position = window.scrollY + $(window).height()
+
+    if last_post_offset_top < (bottom_position + 300)
+      clearTimeout @_auto_paginate_timeout
+      @_auto_paginate_timeout = setTimeout @posts?.nextPage, 0 unless @posts.onLastPage

@@ -10,6 +10,7 @@ class TentStatus.Views.NewPostForm extends TentStatus.View
     @render()
 
   init: =>
+    @frozen = false
     @$errors = ($ '.alert-error', @$el).first().hide()
 
     @$post_btn = ($ 'input[type=submit]', @$el)
@@ -97,11 +98,12 @@ class TentStatus.Views.NewPostForm extends TentStatus.View
     @disableWith 'Posting...'
     new HTTP 'POST', "#{TentStatus.config.tent_api_root}/posts", data, (post, xhr) =>
       return @enable() unless xhr.status == 200
-      post = new TentStatus.Models.Post post
-      @postsFeedView ?= @parentView.postsFeedView?()
-      @postsFeedView?.posts.unshift post
-      container = @postsFeedView.$el
-      TentStatus.Views.Post.insertNewPost(post, container, @postsFeedView)
+      if TentStatus.config.current_entity.assertEqual(TentStatus.config.domain_entity)
+        post = new TentStatus.Models.Post post
+        @postsFeedView ?= @parentView.postsFeedView?()
+        @postsFeedView?.posts.unshift post
+        container = @postsFeedView.$el
+        TentStatus.Views.Post.insertNewPost(post, container, @postsFeedView)
       @render()
     false
 
@@ -118,10 +120,16 @@ class TentStatus.Views.NewPostForm extends TentStatus.View
     )
     delete data.mentions
 
-    for entity in (data.text?.match(/\^(\S+)/g) || [])
-      entity = entity.replace(/^\^/, '')
-      entity = entity.replace(/^/, 'https://') unless entity.match(/^https?/)
-      mentions.push { entity: entity }
+    for i in TentStatus.Helpers.extractUrlsWithIndices(data.text)
+      entity = i.url
+
+      exists = false
+      for m in mentions
+        if m.entity == entity
+          exists = true
+          break
+
+      mentions.push { entity: entity } unless exists
 
     data.mentions = mentions if mentions.length
     data
@@ -186,7 +194,7 @@ class TentStatus.Views.NewPostForm extends TentStatus.View
     @$charLimit.text delta
 
   context: =>
-    {}
+    max_chars: TentStatus.config.max_length
 
   render: =>
     return unless html = super

@@ -2,26 +2,25 @@ class TentStatus.Models.Follower extends Backbone.Model
   model: 'follower'
   url: => "#{TentStatus.config.tent_api_root}/followers#{ if @id then "/#{@id}" else ''}"
 
+  parse: (attrs) ->
+    if attrs.profile
+      @set('profile', new TentStatus.Models.Profile attrs.profile)
+      delete attrs.profile
+    attrs
+
   initialize: ->
     @on 'sync', @updateProfile
-    @updateProfile()
 
-  updateProfile: =>
-    profile = @get('profile')
-    core_profile = {}
-    basic_profile = {}
-    for type, content of profile
-      basic_profile = content if type.match(/types\/info\/basic/)
-      core_profile = content if type.match(/types\/info\/core/)
-    @set 'core_profile', core_profile
-    @set 'basic_profile', basic_profile
+    @fetchProfile()
+
+  fetchProfile: =>
+    TentStatus.Models.Post::getProfile.apply(@)
 
   name: =>
-    @get('basic_profile')['name'] || @get('core_profile')['entity']
+    @get('profile')?.name?()
 
   hasName: =>
-    !!(@get('basic_profile')['name'])
+    @get('profile')?.hasName?()
 
   avatar: =>
-    @get('basic_profile')['avatar_url']
-
+    @get('profile')?.avatar?()

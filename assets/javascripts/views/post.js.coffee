@@ -11,23 +11,30 @@ class TentStatus.Views.Post extends TentStatus.View
     @parentView = options.parentView
     @post = options.post
 
-    @post?.on 'change:profile', => @render()
-    @post?.on 'change:repost:profile', => @render()
+    if @post
+      @initPostEvents()
+    else
+      @once 'change:post', @initPostEvents
+
+    @on 'ready', @fetchRepost
     @on 'ready', @bindEvents
 
     super
 
-    @on 'ready', @fetchRepost
-    @fetchRepost()
+  initPostEvents: =>
+    @post.on 'change:profile', => @render()
+    @post.on 'change:disable_repost', => @render()
 
   fetchRepost: =>
     if @post?.isRepost() && !@post.get('repost')
-      if repost = _.find @parentView?.posts?.toArray() || [], ((p) => p.get('id') == @post.get('content')['id'])
-        @post.set('repost', repost)
-      else
-        @$el.hide()
-        @post.on 'change:repost', => @render(); @$el.show()
-        @post.fetchRepost()
+      @$el.hide()
+      @post.on 'change:repost', =>
+        repost = @post.get('repost')
+        repost.on 'change:profile', => @render()
+        repost.on 'change:disable_repost', => @render()
+        @render()
+        @$el.show()
+      @post.fetchRepost()
 
   bindEvents: =>
     @$buttons = {
@@ -55,6 +62,10 @@ class TentStatus.Views.Post extends TentStatus.View
   delete: =>
     @$el.hide()
     @post.destroy
+      success: =>
+        @$el.remove()
+        if @post.isRepost() and (repost = @post.get('repost'))
+          TentStatus.Reposted.unsetReposted(repost.get('id'), repost.get('entity'))
       error: => @$el.show()
 
   delete_repost: =>
@@ -77,11 +88,14 @@ class TentStatus.Views.Post extends TentStatus.View
         id: post.get('id')
     }
 
-    new HTTP 'POST', "#{TentStatus.config.tent_api_root}/posts", data, (post, xhr) =>
+    new HTTP 'POST', "#{TentStatus.config.tent_api_root}/posts", data, (repost, xhr) =>
       return unless xhr.status == 200
-      post = new TentStatus.Models.Post post
-      @parentView.posts.unshift(post)
-      TentStatus.Views.Post.insertNewPost(post, @parentView.$el, @parentView)
+      repost = new TentStatus.Models.Post repost
+      TentStatus.Reposted.setReposted(post.get('id'), post.get('entity'))
+
+      if TentStatus.config.current_entity.assertEqual(TentStatus.config.domain_entity)
+        @parentView.posts.unshift(repost)
+        TentStatus.Views.Post.insertNewPost(repost, @parentView.$el, @parentView)
 
   reply_repost: =>
     @$repost_reply_container.toggle()
@@ -129,9 +143,16 @@ class TentStatus.Views.Post extends TentStatus.View
         published_at: TentStatus.Helpers.formatTime post.get('published_at')
         full_published_at: TentStatus.Helpers.rawTime post.get('published_at')
       currentUserOwnsPost: TentStatus.config.current_entity.assertEqual( new HTTP.URI post.get('entity') )
+      max_chars: TentStatus.config.max_length
     }
 
   render: (context = @context()) =>
+    # wait for template to be loaded
+    if @templateName
+      unless @template
+        @once 'template:load', => @render(arguments...)
+        return false
+
     html = @template.render(context, @parentView.partials)
     el = ($ html)
     @$el.replaceWith(el)

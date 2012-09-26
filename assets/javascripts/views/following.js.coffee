@@ -2,17 +2,15 @@ class TentStatus.Views.Following extends TentStatus.View
   templateName: '_following'
 
   @create: (following, container, parentView) ->
-    el = ($ "<tr class='following' data-id='#{following.get('id')}'>")
-    container = ($ '.followings tbody', container.$el)
-    container.prepend(el)
-    view = new TentStatus.Views.Following el: el, parentView: parentView, following: following
-    view.render()
+    parentView.followings.unshift(following)
+    parentView.render()
 
   initialize: (options) ->
     @parentView = options.parentView
-    @following = options.following
     super
 
+    @following = options.following
+    @following.on 'change:profile', => @render()
     @on 'render', @bindEvents
 
   bindEvents: =>
