@@ -4,6 +4,7 @@ TentStatus.Routers.posts = new class PostsRouter extends TentStatus.Router
   routes:
     ""                 : "root"
     "profile"          : "myProfile"
+    "global"           : "globalFeed"
     "posts"            : "index"
     "posts/:entity/:post_id" : "conversation"
     "posts/:post_id" : "conversation"
@@ -35,3 +36,7 @@ TentStatus.Routers.posts = new class PostsRouter extends TentStatus.Router
   profile: (entity) =>
     TentStatus.setPageTitle "#{TentStatus.Helpers.formatUrl TentStatus.config.domain_entity.toStringWithoutSchemePort()} - Profile"
     @view = new TentStatus.Views.Profile entity: entity
+
+  globalFeed: =>
+    TentStatus.setPageTitle "Global Feed"
+    @view = new TentStatus.Views.GlobalFeed

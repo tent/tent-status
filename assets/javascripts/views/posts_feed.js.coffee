@@ -8,7 +8,7 @@ class TentStatus.Views.PostsFeed extends TentStatus.View
 
     @on 'change:posts', @render
     @on 'ready', @initPostViews
-    @on 'ready', @initAutoPaginate
+    #@on 'ready', @initAutoPaginate
 
     params = _.extend({
       post_types: TentStatus.config.post_types
