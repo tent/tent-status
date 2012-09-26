@@ -35,7 +35,8 @@ class TentStatus.Paginator
     loadedCount = @collection.length
     expectedCount = loadedCount + limit
 
-    new HTTP 'GET', @url, @paramsForOffsetAndLimit(since_id_entity, sinceId, limit), (items, xhr) =>
+    params = @paramsForOffsetAndLimit(since_id_entity, sinceId, limit)
+    new HTTP 'GET', @url, params, (items, xhr) =>
       @unfreeze()
       unless xhr.status == 200
         @trigger 'fetch:error'
