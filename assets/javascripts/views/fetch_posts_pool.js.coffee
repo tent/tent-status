@@ -1,8 +1,9 @@
 class TentStatus.Views.FetchPostsPool extends Backbone.View
-  initialize: (options = {}) ->
-    @parentView = options.parentView
-    unless @postsFeedView = @parentView.child_views.PostsFeed?[0]
-      return @parentView.once 'init:PostsFeed', => @initialize(options)
+  initialize: (@options = {}) ->
+    @parentView = @options.parentView
+    posts_feed_class = @$el.attr('data-posts-feed') or 'PostsFeed'
+    unless @postsFeedView = @parentView.child_views[posts_feed_class]?[0]
+      return @parentView.once "init:#{posts_feed_class}", => @initialize(@options)
 
     @$elements = {
       num_new_posts: ($ '.num_new_posts', @$el)
@@ -17,9 +18,13 @@ class TentStatus.Views.FetchPostsPool extends Backbone.View
   initFetchPool: =>
     @posts = @postsFeedView.posts
 
-    @since_id = @posts.first()?.get('id')
-    @since_id_entity = @posts.first()?.get('entity')
-    @pool = new TentStatus.FetchPool( new TentStatus.Collections.Posts, { since_id_entity: @since_id_entity, sinceId: @since_id, master_collection: @posts })
+    params = _.extend {
+      since_id: @posts.first()?.get('id')
+      since_id_entity: @posts.first()?.get('entity')
+      master_collection: @posts
+    }, (@options.params || {})
+
+    @pool = new TentStatus.FetchPool(new TentStatus.Collections.Posts, params)
     @pool.on 'fetch:success', @update
 
     @fetch_delay = TentStatus.config.FETCH_INTERVAL
