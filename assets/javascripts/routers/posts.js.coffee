@@ -28,8 +28,8 @@ TentStatus.Routers.posts = new class PostsRouter extends TentStatus.Router
   root: => @index(arguments...)
 
   conversation: (entity, post_id) =>
-    if @isAppSubdomain()
-      return @redirectToGlobalFeed()
+    if TentStatus.isAppSubdomain()
+      return TentStatus.redirectToGlobalFeed()
     unless post_id
       [post_id, entity] = [entity, TentStatus.config.domain_entity]
     else
