@@ -131,12 +131,15 @@ module Tent
         }
         params[key] = params[key].id if params[key]
       end
-      conditions[:id.lt] = params['before_id'] if params['before_id']
       conditions[:id.gt] = params['since_id'] if params['since_id']
+      conditions[:id.lt] = params['before_id'] if params['before_id']
 
       conditions[:type_base] = %w(https://tent.io/types/post/status) 
       conditions[:original] = true
       conditions[:public] = true
+      conditions[:order] = :id.desc
+      conditions[:limit] = [TentD::API::MAX_PER_PAGE, params[:limit].to_i].min if params[:limit]
+      conditions[:limit] ||= TentD::API::PER_PAGE
 
       posts = TentD::Model::Post.send(:with_exclusive_scope, :deleted_at => nil) do |q|
         TentD::Model::Post.all(conditions)
