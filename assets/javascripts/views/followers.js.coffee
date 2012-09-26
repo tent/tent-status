@@ -40,7 +40,7 @@ class TentStatus.Views.Followers extends TentStatus.View
     setTimeout @windowScrolled, 100
 
   windowScrolled: =>
-    $last = ($ 'tr.follower:last', @container)
+    $last = ($ 'tr.follower:last', @container.$el)
     last_offset_top = $last.offset()?.top || 0
     bottom_position = window.scrollY + $(window).height()
 
