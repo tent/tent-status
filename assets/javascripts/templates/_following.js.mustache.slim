@@ -10,7 +10,7 @@ tr.following data-id='{{id}}'
     a href='{{entity}}' {{entity}}
   td
     | {{^guest_authenticated}}
-    .btn.btn-danger.remove-follower data-confirm='Block {{name}}?' Block
+    .btn.btn-danger.unfollow-btn data-id='{{id}}' data-confirm='Unfollow {{name}}?' Unfollow
     | {{/guest_authenticated}}
 
     | {{#guest_authenticated}}
