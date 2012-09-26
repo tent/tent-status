@@ -113,6 +113,40 @@ module Tent
       end
     end
 
+    get '/api/posts' do
+      conditions = {}
+
+      id_mapping = [:post_id, :since_id, :before_id].map(&:to_s).select { |key| params.has_key?(key) }.inject({}) { |memo, key|
+        memo[params[key]] = key
+        params[key] = nil
+        memo
+      }
+      posts = TentD::Model::Post.send(:with_exclusive_scope, {}) { |q|
+        TentD::Model::Post.all(:public_id => id_mapping.keys, :fields => [:id, :public_id, :entity]).to_a
+      }
+      id_mapping.each_pair do |public_id, key|
+        entity = params["#{key}_entity"]
+        params[key] = posts.find { |p|
+          p.public_id == public_id && p.entity == entity
+        }
+        params[key] = params[key].id if params[key]
+      end
+      conditions[:id.lt] = params['before_id'] if params['before_id']
+      conditions[:id.gt] = params['since_id'] if params['since_id']
+
+      conditions[:type_base] = %w(https://tent.io/types/post/status) 
+      conditions[:original] = true
+      conditions[:public] = true
+
+      posts = TentD::Model::Post.send(:with_exclusive_scope, :deleted_at => nil) do |q|
+        TentD::Model::Post.all(conditions)
+      end
+
+      TentD::Model::PostVersion.send(:with_exclusive_scope, :deleted_at => nil) do |q|
+        json posts
+      end
+    end
+
     get '/' do
       if env['tent.entity']
         slim :application
