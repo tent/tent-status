@@ -114,6 +114,8 @@ class TentStatus.Views.NewPostForm extends TentStatus.View
     data
 
   buildMentions: (data) =>
+    return data unless data.text
+
     mentions = _.compact (_.map _.flatten(Array data.mentions), (entity) ->
       return unless entity
       { entity: entity }
