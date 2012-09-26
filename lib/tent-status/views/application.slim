@@ -18,7 +18,9 @@ body
       ul.nav
         - if current_user || guest_user
           li
-            a href=full_url('/') Feed
+            a href="https://app.#{tent_host_domain}" Global Feed
+          li
+            a href=full_url('/') Your Feed
           li
             a href=full_url('/profile') Profile
           li
