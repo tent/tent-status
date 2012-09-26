@@ -14,6 +14,10 @@ TentStatus.Routers.posts = new class PostsRouter extends TentStatus.Router
     if !TentStatus.authenticated or (TentStatus.config.current_entity.hostname != TentStatus.config.domain_entity.hostname)
       @profile(encodeURIComponent(TentStatus.domain_entity))
       return
+
+    if TentStatus.isAppSubdomain()
+      return TentStatus.redirectToGlobalFeed()
+
     @view = new TentStatus.Views.Posts
 
     TentStatus.setPageTitle 'Your feed'
@@ -24,6 +28,8 @@ TentStatus.Routers.posts = new class PostsRouter extends TentStatus.Router
   root: => @index(arguments...)
 
   conversation: (entity, post_id) =>
+    if @isAppSubdomain()
+      return @redirectToGlobalFeed()
     unless post_id
       [post_id, entity] = [entity, TentStatus.config.domain_entity]
     else
@@ -31,15 +37,21 @@ TentStatus.Routers.posts = new class PostsRouter extends TentStatus.Router
     @view = new TentStatus.Views.Conversation entity: entity, post_id: post_id
 
   myProfile: =>
+    if TentStatus.isAppSubdomain()
+      return TentStatus.redirectToGlobalFeed()
+
     TentStatus.setPageTitle 'Your profile'
     @profile(TentStatus.current_entity)
 
   profile: (entity) =>
+    if TentStatus.isAppSubdomain()
+      return TentStatus.redirectToGlobalFeed()
+
     TentStatus.setPageTitle "#{TentStatus.Helpers.formatUrl TentStatus.config.domain_entity.toStringWithoutSchemePort()} - Profile"
     @view = new TentStatus.Views.Profile entity: entity
 
   globalFeed: =>
-    unless TentStatus.config.tent_host_domain and window.location.hostname == "app.#{TentStatus.config.tent_host_domain}"
+    unless TentStatus.isAppSubdomain()
       return @index()
     TentStatus.setPageTitle "Tent.is Global Feed"
     @view = new TentStatus.Views.GlobalFeed

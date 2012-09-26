@@ -11,7 +11,7 @@ body
     .navbar-inner
       .brand
         - if current_user || guest_user
-          a href==(current_user || guest_user).entity = (current_user || guest_user).entity.sub(%r{\Ahttps?://([^/]+).*?\z}) { |m| $1 }
+          a href==(current_user || guest_user).entity = (current_user || guest_user).entity.to_s.sub(%r{\Ahttps?://([^/]+).*?\z}) { |m| $1 }
         - else
           a href='https://tent.is' Tent.is
 
@@ -19,8 +19,6 @@ body
         - if current_user || guest_user
           li
             a href="https://app.#{tent_host_domain}" Global Feed
-          li
-            a href=full_url('/') Your Feed
           li
             a href=full_url('/profile') Profile
           li
