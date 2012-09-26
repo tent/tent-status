@@ -15,4 +15,9 @@
     h1.page-header 
       | <small><a href='{{domain_entity}}'>{{formatted.domain_entity}}</a></small> is Following
     | {{/guest_authenticated}}
+
+    | {{^authenticated}}
+    h1.page-header 
+      | <small><a href='{{domain_entity}}'>{{formatted.domain_entity}}</a></small> is Following
+    | {{/authenticated}}
     .followings data-view='FollowingsList'
