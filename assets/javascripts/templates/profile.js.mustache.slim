@@ -13,6 +13,13 @@
             | {{/hasName}}
             | {{#hasName}}
             | {{name}}
+
+            | {{#guest_authenticated}}
+            form.pull-rght style='display:inline' data-view='ProfileFollowButton' method='POST'
+              input type='hidden' name='entity' value='{{entity}}'
+              input.btn.btn-success.pull-right type='submit' value='Follow'
+            | {{/guest_authenticated}}
+
             br/
             a href='{{{entity}}}'
               small {{formatted.entity}}
@@ -24,13 +31,7 @@
       .row
         .profile-stats
           .span2 &nbsp;
-          .span5.no-offset data-view='ProfileStats'
-        | {{#guest_authenticated}}
-        .clearfix.pull-right
-          form.span2 data-view='ProfileFollowButton' method='POST'
-            input type='hidden' name='entity' value='{{entity}}'
-            input.btn.btn-success type='submit' value='Follow'
-        | {{/guest_authenticated}}
+          .span6.no-offset data-view='ProfileStats'
     | {{/profile}}
 
 .row
