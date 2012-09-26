@@ -79,7 +79,7 @@ class TentStatus.Paginator
   paramsForOffsetAndLimit: (since_id_entity, sinceId, limit) =>
     params = _.extend { limit: limit }, @default_params
     params.before_id = sinceId if sinceId
-    params.before_id_entity = since_id_entity
+    params.before_id_entity = since_id_entity if since_id_entity
     params
 
   nextPage: =>

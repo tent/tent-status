@@ -5,7 +5,8 @@
       .alert.alert-error &nbsp;
 
       textarea.span6 name='text' placeholder="What's on your mind?" rows='3'
-      span.char-limit 140
+      span.char-limit
+        | {{max_chars}}
     
     input.btn.btn-success.pull-right type='submit' value='Post'
 | {{/authenticated}}

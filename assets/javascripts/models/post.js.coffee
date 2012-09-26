@@ -3,41 +3,76 @@ class TentStatus.Models.Post extends Backbone.Model
   url: => "#{TentStatus.config.tent_api_root}/posts#{ if @id then "/#{@id}" else ''}"
 
   initialize: ->
+    if @get 'parent'
+      @initParentBindings(@get 'parent')
+    @on 'change:parent', @initParentBindings
+
+    TentStatus.Cache.set "post:#{@get 'id'}", @
+
+    TentStatus.Reposted.on "change", @get('entity'), @get('id'), (is_reposted) =>
+      @set('parent', null) if is_reposted == false
+      @set('disable_repost', is_reposted)
+
     @getProfile()
 
-    if @get('parent')
-      @on 'change:profile', (profile) =>
-        @get('parent').trigger 'change:repost:profile', arguments...
+  initParentBindings: (parent) =>
+    if profile = @get('profile')
+      parent.trigger 'change:repost:profile', profile
+    @on 'change:profile', =>
+      profile = @get('profile')
+      parent.trigger 'change:repost:profile', profile
 
   getProfile: =>
     return if @isNew()
+    cache_key = "profile:#{@get 'entity'}"
+
+    TentStatus.Cache.on cache_key, (profile) =>
+      @set 'profile', profile
+
+    if profile = TentStatus.Cache.get cache_key
+      @set 'profile', profile
+      return
+
     if @get('following_id')
       new HTTP 'GET', "#{TentStatus.config.tent_api_root}/followings/#{@get('following_id')}", null, (following, xhr) =>
         return unless xhr.status == 200
         profile = new TentStatus.Models.Profile following.profile
         @set 'profile', profile
+        TentStatus.Cache.set cache_key, profile
 
     else if TentStatus.config.current_entity.hostname == (new HTTP.URI @get('entity')).hostname
       if TentStatus.Models.profile.get('id')
         @set 'profile', TentStatus.Models.profile
+        TentStatus.Cache.set cache_key, profile
       else
         TentStatus.Models.profile.fetch
-          success: => @set 'profile', TentStatus.Models.profile
+          success: =>
+            @set 'profile', TentStatus.Models.profile
+            TentStatus.Cache.set cache_key, profile
     else if TentStatus.config.domain_entity.hostname == (new HTTP.URI @get('entity')).hostname
       profile = new TentStatus.Models.Profile
       profile.fetch
-        success: => @set 'profile', profile
+        success: =>
+          @set 'profile', profile
+          TentStatus.Cache.set cache_key, profile
     else if TentStatus.Helpers.isEntityOnTentHostDomain(@get 'entity')
       new HTTP 'GET', "#{@get('entity') + TentStatus.config.tent_host_domain_tent_api_path}/profile", null, (profile, xhr) =>
         return unless xhr.status == 200
         profile = new TentStatus.Models.Profile profile
         @set 'profile', profile
+        TentStatus.Cache.set cache_key, profile
 
   fetchRepost: =>
     return @get('repost') if @get('repost')
     repost_entity = @get('content')?.entity
     repost_id = @get('content')?.id
     return unless repost_entity and repost_id
+
+    if repost = TentStatus.Cache.get "post:#{repost_id}"
+      repost.set 'parent', @
+      repost.getProfile()
+      @set 'repost', repost
+      return
 
     new HTTP 'GET', "#{TentStatus.config.tent_api_root}/posts/#{encodeURIComponent repost_entity}/#{repost_id}", null, (repost, xhr) =>
       return unless xhr.status == 200
@@ -78,8 +113,8 @@ class TentStatus.Models.Post extends Backbone.Model
     if attrs.text and attrs.text.match /^[\s\r]*$/
       errors.push { text: 'Status must not be empty' }
 
-    if attrs.text and attrs.text.length > 140
-      errors.push { text: 'Status must be no more than 140 characters' }
+    if attrs.text and attrs.text.length > TentStatus.config.max_length
+      errors.push { text: "Status must be no more than #{TentStatus.config.max_length} characters" }
 
     return errors if errors.length
     null

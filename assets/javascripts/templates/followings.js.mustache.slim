@@ -1,9 +1,16 @@
 .row
   .span1 &nbsp;
   .span10
+    | {{^guest_authenticated}}
     h1.page-header You are following
     form data-view='NewFollowingForm' method='POST'
       input.span8 type='text' name='entity' placeholder='Entity URI'
       input.btn.btn-success.pull-right type='submit' value='Follow'
       .error.alert.alert-error.hide
+    | {{/guest_authenticated}}
+
+    | {{#guest_authenticated}}
+    h1.page-header 
+      | <small><a href='{{domain_entity}}'>{{formatted.domain_entity}}</a></small> is Following
+    | {{/guest_authenticated}}
     .followings data-view='FollowingsList'

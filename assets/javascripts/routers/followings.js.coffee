@@ -5,6 +5,8 @@ TentStatus.Routers.followings = new class FollowingsRouter extends TentStatus.Ro
     "followings" : "index"
 
   index: =>
-    return if TentStatus.guest_authenticated || !TentStatus.authenticated
-    TentStatus.setPageTitle 'You are following'
+    if TentStatus.guest_authenticated || !TentStatus.authenticated
+      TentStatus.setPageTitle "#{TentStatus.Helpers.formatUrl TentStatus.config.domain_entity.toStringWithoutSchemePort()} - Followings"
+    else
+      TentStatus.setPageTitle 'You are following'
     @view = new TentStatus.Views.Followings

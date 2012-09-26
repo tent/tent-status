@@ -12,7 +12,7 @@ class TentStatus.Views.Followers extends TentStatus.View
     @on 'ready', @initAutoPaginate
 
     @on 'change:followers', @render
-    new HTTP 'GET', "#{TentStatus.config.tent_api_root}/followers", { limit: TentStatus.config.PER_PAGE }, (followers, xhr) =>
+    new HTTP 'GET', "#{TentStatus.config.current_tent_api_root}/followers", { limit: TentStatus.config.PER_PAGE }, (followers, xhr) =>
       return unless xhr.status == 200
       followers = new TentStatus.Collections.Followers followers
       paginator = new TentStatus.Paginator followers, { sinceId: followers.last()?.get('id') }
@@ -23,6 +23,10 @@ class TentStatus.Views.Followers extends TentStatus.View
     followers: _.map(@followers?.toArray() || [], (follower) =>
       TentStatus.Views.Follower::context(follower)
     )
+    guest_authenticated: !!TentStatus.guest_authenticated
+    domain_entity: TentStatus.config.domain_entity.toStringWithoutSchemePort()
+    formatted:
+      domain_entity: TentStatus.Helpers.formatUrl TentStatus.config.domain_entity.toStringWithoutSchemePort()
 
   initFollowerViews: =>
     _.each ($ '.follower', @container.$el), (el) =>
@@ -32,10 +36,14 @@ class TentStatus.Views.Followers extends TentStatus.View
       view.trigger 'ready'
 
   initAutoPaginate: =>
-    ($ window).off('scroll.followers').on 'scroll.followers', (e)=>
-      height = $(document).height() - $(window).height()
-      delta = height - window.scrollY
-      if delta < 200
-        clearTimeout @_auto_paginate_timeout
-        @_auto_paginate_timeout = setTimeout @followers?.nextPage(), 0 unless @followers.onLastPage
+    ($ window).off('scroll.followers').on 'scroll.followers', @windowScrolled
+    setTimeout @windowScrolled, 100
 
+  windowScrolled: =>
+    $last = ($ 'tr.follower:last', @container)
+    last_offset_top = $last.offset()?.top || 0
+    bottom_position = window.scrollY + $(window).height()
+
+    if last_offset_top < (bottom_position + 300)
+      clearTimeout @_auto_paginate_timeout
+      @_auto_paginate_timeout = setTimeout @followers?.nextPage, 0 unless @followers?.onLastPage

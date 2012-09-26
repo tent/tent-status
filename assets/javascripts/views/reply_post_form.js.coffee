@@ -25,18 +25,31 @@ class TentStatus.Views.ReplyPostForm extends TentStatus.Views.NewPostForm
     data = super
     if @replyToPostId and @replyToEntity
       data.mentions ||= []
-      data.mentions.push { entity: @replyToEntity, post: @replyToPostId }
+      existing = false
+      for m in data.mentions
+        if m.entity == @replyToEntity && !m.post
+          m.post = @replyToPostId
+          existing = true
+          break
+      unless existing
+        data.mentions.push { entity: @replyToEntity, post: @replyToPostId }
     data
 
   context: =>
-    post = @parentView.post
-    return {} unless post
+    data = {
+      max_chars: TentStatus.config.max_length
+    }
 
-    if @is_repost
+    post = @parentView.post
+    return data unless post
+
+    post_data = if @is_repost
       repost = @parentView.post.get('repost')
       @parentView.repostContext(post, repost)
     else
       @parentView.context(post)
+
+    _.extend({}, data, post_data)
 
   render: =>
     @trigger 'ready'
