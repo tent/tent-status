@@ -52,9 +52,13 @@ _.extend TentStatus.Helpers,
 
     urls_and_mentions = []
     uniq_indices = {}
+    uniq_entities = {}
     for item in urls.concat(mentions)
       for start_index, i in item.indices
         continue if i % 2
+        key = TentStatus.Helpers.formatUrlWithPath(item.url)
+        continue if uniq_entities[key]
+        uniq_entities[key] = true
         end_index = item.indices[i+1]
 
         original = text.substring(start_index, end_index)
