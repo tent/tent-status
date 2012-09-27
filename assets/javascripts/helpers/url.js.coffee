@@ -38,7 +38,9 @@ _.extend TentStatus.Helpers,
     _indices = []
     _length = substring.length
     _offset = 0
-    while string.length and (i = string.substr(_offset, string.length).indexOf(substring)) and i != -1
+    while string.length
+      i = string.substr(_offset, string.length).indexOf(substring)
+      break if i == -1
       _start_index = i + _offset
       _end_index = _start_index + _length
       _offset += i + _length
