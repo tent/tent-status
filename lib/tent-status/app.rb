@@ -8,7 +8,6 @@ require 'hashie'
 require 'uri'
 require 'slim'
 require 'hogan_assets'
-require 'oj'
 
 module Tent
   class Status < Sinatra::Base
@@ -22,7 +21,7 @@ module Tent
     end
 
     configure :production do
-      set :asset_manifest, Oj.load(File.read(ENV['STATUS_ASSET_MANIFEST'])) if ENV['STATUS_ASSET_MANIFEST']
+      set :asset_manifest, Yajl::Parser.parse(File.read(ENV['STATUS_ASSET_MANIFEST'])) if ENV['STATUS_ASSET_MANIFEST']
       set :cdn_url, ENV['STATUS_CDN_URL']
     end
 
