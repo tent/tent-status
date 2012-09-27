@@ -122,34 +122,8 @@ class TentStatus.Views.NewPostForm extends TentStatus.View
     )
     delete data.mentions
 
-    for i in TentStatus.Helpers.extractUrlsWithIndices(data.text)
-      entity = i.url
-      _is_carrot_mention = data.text.substr(i.indices[0]-1, 1) == '^'
-      _is_tent_subdomain = entity.match(new RegExp(TentStatus.config.tent_host_domain))
-      continue unless _is_carrot_mention or _is_tent_subdomain
-
-      unless entity.match(/^https?:\/\//)
-        entity = "https://#{entity}"
-
-      exists = false
-      for m in mentions
-        if m.entity == entity
-          exists = true
-          break
-
-      mentions.push { entity: entity } unless exists
-
-    if TentStatus.config.tent_host_domain
-      m = data.text.match(
-        new RegExp("[\^]([a-z0-9]+(?:\.#{TentStatus.config.tent_host_domain})?)(?=[\\s\\t\\n\\r]|$)")
-      )
-      if m
-        entity = m[1]
-        if entity.match(new RegExp(TentStatus.config.tent_host_domain))
-          entity = "https://#{entity}"
-        else
-          entity = "https://#{entity}.#{TentStatus.config.tent_host_domain}"
-        mentions.push { entity: entity } if entity
+    for i in TentStatus.Helpers.extractMentionsWithIndices(data.text)
+      mentions.push { entity: i.entity }
 
     data.mentions = mentions if mentions.length
     data
