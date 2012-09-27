@@ -137,6 +137,7 @@ class TentStatus.Views.Post extends TentStatus.View
       escaped:
         entity: encodeURIComponent( post.get 'entity' )
       formatted:
+        reply_to_entity: TentStatus.Helpers.minimalEntity post.get('entity')
         content:
           text: TentStatus.Helpers.autoLinkText(post.get('content')?.text)
         entity: TentStatus.Helpers.formatUrl post.get('entity')
