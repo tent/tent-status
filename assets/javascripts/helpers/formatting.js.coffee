@@ -13,6 +13,12 @@ _.extend TentStatus.Helpers,
   rawTime: (time_or_int) ->
     moment.unix(time_or_int).format()
 
+  minimalEntity: (entity) ->
+    if TentStatus.config.tent_host_domain && entity.match(new RegExp("([a-z0-9]{2,})\.#{TentStatus.config.tent_host_domain}"))
+      RegExp.$1
+    else
+      entity
+
   formatUrl: (url='') ->
     url.replace(/^\w+:\/\/([^\/]+).*?$/, '$1')
 
