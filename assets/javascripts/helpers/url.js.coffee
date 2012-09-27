@@ -72,26 +72,25 @@ _.extend TentStatus.Helpers,
         _entities[entity] = true
 
     if TentStatus.config.tent_host_domain
-      _regex = new RegExp("[\\^]([a-z0-9]{2,}(?:\.#{TentStatus.config.tent_host_domain})?)(?=[\\W]|$)")
-      _offset = 0
-      while m = _regex.exec(text.substr(_offset, text.length))
-        if entity = RegExp.$1
-          _offset += text.substr(_offset, text.length).indexOf(entity)
-          original_text = entity
-          _length = original_text.length
-          _indices = TentStatus.Helpers.substringIndices(text, original_text)
-          if entity.match(new RegExp(TentStatus.config.tent_host_domain))
-            entity = "https://#{entity}"
-          else
-            entity = "https://#{entity}.#{TentStatus.config.tent_host_domain}"
+      m = text.match(
+        new RegExp("[\\^]([a-z0-9]+(?:\.#{TentStatus.config.tent_host_domain})?)(?=[\\W]|\\$)")
+      )
+      if entity = m?[1]
+        original_text = entity
+        _length = original_text.length
+        _indices = TentStatus.Helpers.substringIndices(text, original_text)
+        if entity.match(new RegExp(TentStatus.config.tent_host_domain))
+          entity = "https://#{entity}"
+        else
+          entity = "https://#{entity}.#{TentStatus.config.tent_host_domain}"
 
-          _mentions.push {
-            entity: entity
-            text: original_text
-            url: entity
-            indices: _indices
-          }
-          _entities[entity] = true
+        _mentions.push {
+          entity: entity
+          text: original_text
+          url: entity
+          indices: _indices
+        }
+        _entities[entity] = true
 
     _mentions
 
