@@ -5,12 +5,7 @@ form.form-horizontal data-view='ReplyPostForm' method='POST'
   .span7
     .alert.alert-error.hide &nbsp;
 
-    | {{#currentUserOwnsPost}}
-    textarea.span7 name='text' rows='3'
-    | {{/currentUserOwnsPost}}
-    | {{^currentUserOwnsPost}}
-    textarea.span7 name='text' rows='3' == "{{#formatted.reply_to_entities}}^{{m}} {{/formatted.reply_to_entities}}"
-    | {{/currentUserOwnsPost}}
+    textarea.span7 name='text' rows='3' == "{{#formatted.reply_to_entities}}^{{.}} {{/formatted.reply_to_entities}}"
     .clearfix
       span.char-limit
         | {{max_chars}}
