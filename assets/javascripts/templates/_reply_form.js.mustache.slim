@@ -9,7 +9,7 @@ form.form-horizontal data-view='ReplyPostForm' method='POST'
     textarea.span7 name='text' rows='3'
     | {{/currentUserOwnsPost}}
     | {{^currentUserOwnsPost}}
-    textarea.span7 name='text' rows='3' == "^{{formatted.reply_to_entity}} "
+    textarea.span7 name='text' rows='3' == "{{#formatted.reply_to_entities}}^{{m}} {{/formatted.reply_to_entities}}"
     | {{/currentUserOwnsPost}}
     .clearfix
       span.char-limit

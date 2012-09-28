@@ -131,6 +131,19 @@ class TentStatus.Views.Post extends TentStatus.View
       url: TentStatus.Helpers.entityPostUrl(mention.entity, mention.post)
     }
 
+  getReplyToEntities: (post) =>
+    _entities = {}
+    for m in [{ entity: post.get('entity') }, post.postMentions()[0]].concat(TentStatus.Helpers.extractMentionsWithIndices(post.get('content')?.text || ''))
+      continue unless m
+      continue unless m.entity
+      continue if @isCurrentUserEntity(m.entity)
+      _entities[m.entity] = { m: TentStatus.Helpers.minimalEntity(m.entity) }
+    _entities = (v for k,v of _entities)
+    _entities
+
+  isCurrentUserEntity: (entity) =>
+    TentStatus.config.current_entity.assertEqual( new HTTP.URI entity )
+
   context: (post = @post, repostContext) =>
     _.extend super, post.toJSON(), @postProfileJSON(post), {
       is_repost: post.isRepost()
@@ -142,13 +155,13 @@ class TentStatus.Views.Post extends TentStatus.View
       escaped:
         entity: encodeURIComponent( post.get 'entity' )
       formatted:
-        reply_to_entity: TentStatus.Helpers.minimalEntity post.get('entity')
+        reply_to_entities: @getReplyToEntities(post)
         content:
           text: TentStatus.Helpers.autoLinkText(post.get('content')?.text)
         entity: TentStatus.Helpers.formatUrl post.get('entity')
         published_at: TentStatus.Helpers.formatTime post.get('published_at')
         full_published_at: TentStatus.Helpers.rawTime post.get('published_at')
-      currentUserOwnsPost: TentStatus.config.current_entity.assertEqual( new HTTP.URI post.get('entity') )
+      currentUserOwnsPost: @isCurrentUserEntity(post.get 'entity')
       max_chars: TentStatus.config.max_length
     }
 
