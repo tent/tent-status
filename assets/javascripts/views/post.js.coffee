@@ -47,9 +47,6 @@ class TentStatus.Views.Post extends TentStatus.View
       reply_repost: ($ '.actions .reply.reply-repost', @$el)
     }
 
-    @$reply_container = ($ '.reply-container:not(.repost-reply-container)', @$el)
-    @$repost_reply_container = ($ '.reply-container.repost-reply-container', @$el)
-
     for k, el of @$buttons
       do (k, el) =>
         el.off("click.#{k}").on "click.#{k}", (e) =>
@@ -97,11 +94,19 @@ class TentStatus.Views.Post extends TentStatus.View
         @parentView.posts.unshift(repost)
         TentStatus.Views.Post.insertNewPost(repost, @parentView.$el, @parentView)
 
+  getRepostReplyPostForm: =>
+    _.find @child_views?.ReplyPostForm || [], (i) -> i.is_repost
+
+  getReplyPostForm: =>
+    _.find @child_views?.ReplyPostForm || [], (i) -> !i.is_repost
+
   reply_repost: =>
-    @$repost_reply_container.toggle()
+    repost_reply_post_form = @getRepostReplyPostForm()
+    repost_reply_post_form.toggle()
 
   reply: =>
-    @$reply_container.toggle()
+    reply_post_form = @getReplyPostForm()
+    reply_post_form.toggle()
 
   repostContext: (post, repost) =>
     return false unless post.isRepost()
