@@ -99,7 +99,7 @@ class TentStatus.Models.Post extends Backbone.Model
     (TentStatus.Collections.followers.find (follower) => follower.get('entity') == @get('entity'))
 
   name: =>
-    @entity()?.name() || @get('entity')
+    @entity()?.name() || TentStatus.Helpers.formatUrlWithPath(@get('entity'))
 
   hasName: =>
     !!(@entity()?.hasName())
