@@ -132,13 +132,13 @@ class TentStatus.Views.Post extends TentStatus.View
     }
 
   getReplyToEntities: (post) =>
-    _entities = {}
+    _entities = []
     for m in [{ entity: post.get('entity') }, post.postMentions()[0]].concat(TentStatus.Helpers.extractMentionsWithIndices(post.get('content')?.text || ''))
       continue unless m
       continue unless m.entity
       continue if @isCurrentUserEntity(m.entity)
-      _entities[m.entity] = { m: TentStatus.Helpers.minimalEntity(m.entity) }
-    _entities = (v for k,v of _entities)
+      _entity =  TentStatus.Helpers.minimalEntity(m.entity)
+      _entities.push(_entity) if _entities.indexOf(_entity) == -1
     _entities
 
   isCurrentUserEntity: (entity) =>
