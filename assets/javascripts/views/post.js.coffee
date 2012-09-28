@@ -11,6 +11,8 @@ class TentStatus.Views.Post extends TentStatus.View
     @parentView = options.parentView
     @post = options.post
 
+    @repost_enabled = true
+
     if @post
       @initPostEvents()
     else
@@ -76,6 +78,9 @@ class TentStatus.Views.Post extends TentStatus.View
     @repost(repost)
 
   repost: (post=@post) =>
+    return unless @repost_enabled
+    @repost_enabled = false
+
     data = {
       permissions:
         public: true
