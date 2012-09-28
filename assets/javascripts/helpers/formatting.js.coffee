@@ -96,3 +96,7 @@ _.extend TentStatus.Helpers,
       text = TentStatus.Helpers.replaceIndexRange(item.start_index, item.end_index, text, html)
 
     text
+
+  simpleFormatText: (text = '') ->
+    text.replace(/\n+(?!\s*\n)/g, "<br/>")
+
