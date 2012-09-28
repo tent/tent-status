@@ -40,46 +40,59 @@ _.extend TentStatus.Helpers,
     return unless text
     text.replace /[&"'><]/g, (character) -> TentStatus.Helpers.HTML_ENTITIES[character]
 
+  flattenUrlsWithIndices: (items) ->
+    _flattened = []
+    for item in items
+      for start_index, i in item.indices
+        continue if i % 2
+        end_index = item.indices[i+1]
+
+        _item = _.clone(item)
+        delete _item.indices
+        _item.start_index = start_index
+        _item.end_index = end_index
+        _flattened.push _item
+    _flattened
+
   autoLinkText: (text) ->
     return unless text
 
     text = TentStatus.Helpers.htmlEscapeText(text)
 
-    urls = TentStatus.Helpers.extractUrlsWithIndices(text)
-    mentions = TentStatus.Helpers.extractMentionsWithIndices(text, {exclude_urls: true, uniq: false})
+    urls = TentStatus.Helpers.flattenUrlsWithIndices(TentStatus.Helpers.extractUrlsWithIndices text)
+    mentions = TentStatus.Helpers.flattenUrlsWithIndices(
+      TentStatus.Helpers.extractMentionsWithIndices(text, {exclude_urls: true, uniq: false})
+    )
 
     return text unless urls.length or mentions.length
 
-    urls_and_mentions = []
-    uniq_indices = {}
-    uniq_entities = {}
-    for item in urls.concat(mentions)
-      for start_index, i in item.indices
-        continue if i % 2
-        key = TentStatus.Helpers.formatUrlWithPath(item.url)
-        continue if uniq_entities[key]
-        uniq_entities[key] = true
-        end_index = item.indices[i+1]
+    updateIndicesWithOffset = (items, start_index, delta) ->
+      items = for i in items
+        if i.start_index >= start_index
+          i.start_index += delta
+          i.end_index += delta
+        i
+      items
 
-        original = text.substring(start_index, end_index)
-        urls_and_mentions.push {
-          url: item.url
-          html: "<a href='#{TentStatus.Helpers.ensureUrlHasScheme(item.url)}'>#{TentStatus.Helpers.formatUrlWithPath(original)}</a>"
-          start_index: start_index
-          end_index: end_index
-        } unless uniq_indices[start_index]
-        uniq_indices[start_index] = true
+    removeOverlappingItems = (items, start_index, end_index) ->
+      _new_items = []
+      for i in items
+        _indices = [start_index..end_index]
+        _i_indices = [i.start_index..i.end_index]
+        unless _.intersection(_indices, _i_indices).length
+          _new_items.push i
+      _new_items
 
-    urls_and_mentions = _.sortBy(urls_and_mentions, (i) -> i.start_index)
+    urls_and_mentions = urls.concat(mentions)
+    while urls_and_mentions.length
+      item = urls_and_mentions.shift()
+      original = text.substring(item.start_index, item.end_index)
+      html = "<a href='#{TentStatus.Helpers.ensureUrlHasScheme(item.url)}'>" +
+             TentStatus.Helpers.formatUrlWithPath(original) + "</a>"
+      delta = html.length - original.length
+      updateIndicesWithOffset(urls_and_mentions, item.start_index, delta)
+      urls_and_mentions = removeOverlappingItems(urls_and_mentions, item.start_index, item.end_index + delta)
 
-    offset = 0
-    for i in urls_and_mentions
-      start_index = i.start_index + offset
-      end_index = i.end_index + offset
-      original_text = text.substring(start_index, end_index)
-      replace_text = i.html
-      delta = replace_text.length - original_text.length
-      offset += delta
-      text = TentStatus.Helpers.replaceIndexRange(start_index, end_index, text, replace_text)
+      text = TentStatus.Helpers.replaceIndexRange(item.start_index, item.end_index, text, html)
 
     text
