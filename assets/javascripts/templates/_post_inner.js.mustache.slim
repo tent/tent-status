@@ -60,9 +60,7 @@
   | {{/is_repost}}
 
   | {{#is_repost}}
-  | {{^currentUserOwnsPost}}
   a.reply data-id='{{id}}' href='#' Reply
-  | {{/currentUserOwnsPost}}
   | {{/is_repost}}
 
   | {{#currentUserOwnsPost}}

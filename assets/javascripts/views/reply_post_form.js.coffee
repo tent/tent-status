@@ -11,15 +11,49 @@ class TentStatus.Views.ReplyPostForm extends TentStatus.Views.NewPostForm
     @replyToEntity = ($ '[name=mentions_post_entity]', @$el).val()
 
     @$form = @$el
+    @$textarea = ($ 'textarea', @$form)
     @html = @$form.html()
 
-    @is_repost = @$form.parent().hasClass('repost-reply-container')
+    @$container = @$form.parent()
+    @is_repost = @$container.hasClass('repost-reply-container')
+
+    @is_hidden = @$container.hasClass('hide')
+    @hide_text = 'Cancel'
 
     ## this references the wrong instance in render, TODO: debug and fix this issue
     $form = @$form
     html = @html
     @on 'ready', => $form.html(html)
     @on 'ready', => $form.parent().hide()
+
+  getReplyButton: =>
+    key = if @is_repost then 'reply_repost' else 'reply'
+    @parentView.$buttons[key]
+
+  toggle: =>
+    if @is_hidden
+      @show()
+    else
+      @hide()
+
+  focusAfterText: =>
+    pos = @$textarea.val().length
+    input_selection = new TentStatus.Helpers.InputSelection @$textarea.get(0)
+    input_selection.setSelectionRange(pos, pos)
+
+  show: =>
+    @is_hidden = false
+    @$container.removeClass('hide')
+    @focusAfterText()
+    if $button = @getReplyButton()
+      @show_text ?= $button.text()
+      $button.text @hide_text
+
+  hide: =>
+    @is_hidden = true
+    @$container.addClass('hide')
+    if $button = @getReplyButton()
+      $button.text @show_text
 
   buildMentions: (data) =>
     data = super
