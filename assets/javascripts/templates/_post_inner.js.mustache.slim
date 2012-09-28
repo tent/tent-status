@@ -47,9 +47,9 @@
 | {{#authenticated}}
 .row.offset62.showOnHover.actions
   | {{^is_repost}}
-  | {{^currentUserOwnsPost}}
   a.reply class='{{#has_parent}}reply-repost{{/has_parent}}' href='#' Reply
 
+  | {{^currentUserOwnsPost}}
   | {{#disable_repost}}
   span.repost Reposted
   | {{/disable_repost}}
