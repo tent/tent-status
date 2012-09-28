@@ -44,6 +44,7 @@ class TentStatus.Views.ReplyPostForm extends TentStatus.Views.NewPostForm
   show: =>
     @is_hidden = false
     @$container.removeClass('hide')
+    @once 'ready', @hide
     @focusAfterText()
     if $button = @getReplyButton()
       @show_text ?= $button.text()
