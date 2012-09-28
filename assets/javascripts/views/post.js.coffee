@@ -122,7 +122,7 @@ class TentStatus.Views.Post extends TentStatus.View
   inReplyToJSON: (mention) =>
     return unless mention
     {
-      name: mention.entity,
+      name: TentStatus.Helpers.formatUrlWithPath(mention.entity),
       url: TentStatus.Helpers.entityPostUrl(mention.entity, mention.post)
     }
 
