@@ -13,6 +13,7 @@
             | {{/hasName}}
             | {{#hasName}}
             | {{name}}
+            | {{/hasName}}
 
             | {{#guest_authenticated}}
             form.pull-rght style='display:inline' data-view='ProfileFollowButton' method='POST'
@@ -20,6 +21,7 @@
               input.btn.btn-success.pull-right type='submit' value='Follow'
             | {{/guest_authenticated}}
 
+            | {{#hasName}}
             br/
             a href='{{{entity}}}'
               small {{formatted.entity}}
