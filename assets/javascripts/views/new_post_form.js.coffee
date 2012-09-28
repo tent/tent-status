@@ -34,7 +34,7 @@ class TentStatus.Views.NewPostForm extends TentStatus.View
     @$textarea.off('keydown.keysubmit').on 'keydown.keysubmit', (e) =>
       if (e.metaKey || e.ctrlKey) && e.keyCode == 13
         e.preventDefault()
-        @submit()
+        @submit() if @validate()
         false
       else
         true

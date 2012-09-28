@@ -110,10 +110,10 @@ class TentStatus.Models.Post extends Backbone.Model
   validate: (attrs) =>
     errors = []
 
-    if attrs.text and attrs.text.match /^[\s\r]*$/
+    if attrs.content?.text and attrs.content.text.match /^[\s\r]*$/
       errors.push { text: 'Status must not be empty' }
 
-    if attrs.text and attrs.text.length > TentStatus.config.max_length
+    if attrs.content?.text and attrs.content.text.length > TentStatus.config.max_length
       errors.push { text: "Status must be no more than #{TentStatus.config.max_length} characters" }
 
     return errors if errors.length
