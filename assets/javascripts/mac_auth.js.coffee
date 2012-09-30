@@ -11,7 +11,7 @@ class TentStatus.MacAuth
     @options.request.setHeader('Authorization', @buildAuthHeader(signature))
 
   buildRequestString: (body=@options.body) =>
-    [@options.time, @options.nonce, @options.request.method.toUpperCase(), @options.request.path, @options.request.host, @options.request.port, body, null].join("\n")
+    [@options.time, @options.nonce, @options.request.method.toUpperCase(), @options.request.path, @options.request.host, @options.request.port, null, null].join("\n")
 
   buildAuthHeader: (signature) =>
     """
