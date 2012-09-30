@@ -1,0 +1,11 @@
+{{#authenticated}}
+<div class="row clearfix">
+  <form class="form-horizontal" method="POST">
+    <div class="span6">
+      <div class="alert alert-error">&nbsp;</div>
+      <textarea class="span6" name="text" placeholder="What's on your mind?" rows="3"></textarea><span class="char-limit">{{max_chars}}</span>
+    </div>
+    <input class="btn btn-success pull-right" type="submit" value="Post" />
+  </form>
+</div>
+{{/authenticated}}

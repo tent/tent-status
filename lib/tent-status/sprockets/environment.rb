@@ -12,7 +12,6 @@ module Tent
             include SprocketsHelpers
           end
         end
-        @assets.register_engine('.slim', ::Slim::Template)
 
         paths = %w{ javascripts stylesheets images }
         paths.each do |path|

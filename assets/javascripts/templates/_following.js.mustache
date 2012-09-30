@@ -1,0 +1,26 @@
+<tr class="following" data-id="{{id}}">
+  <td>
+    {{#avatar}}
+    <a href="{{entity}}">
+      <img class="img-rounded" src="{{avatar}}" style="height:50px;width:50px;margin-right:4px;" />
+    </a>
+    {{/avatar}}
+    <a href="{{entity}}">{{name}}</a>
+  </td>
+  <td>
+    <a href="{{entity}}">{{entity}}</a>
+  </td>
+  <td>
+    {{#authenticated}}
+    {{^guest_authenticated}}
+    <div class="btn btn-danger unfollow-btn" data-confirm="Unfollow {{name}}?" data-id="{{id}}">Unfollow</div>
+    {{/guest_authenticated}}
+    {{/authenticated}}
+    
+    {{#guest_authenticated}}
+    <form class="span2 pull-rght" data-view="ProfileFollowButton" method="POST">
+      <input name="entity" type="hidden" value="{{entity}}" /><input class="btn btn-success pull-right" type="submit" value="Follow" />
+    </form>
+    {{/guest_authenticated}}
+  </td>
+</tr>

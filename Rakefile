@@ -24,7 +24,6 @@ Rake::SprocketsTask.new do |t|
   end
   t.environment.js_compressor = Uglifier.new
   t.environment.css_compressor = YUI::CssCompressor.new
-  t.environment.register_engine('.slim', ::Slim::Template)
   t.output      = "./public/assets"
   t.assets      = %w( boot.js application.css chosen-sprite.png )
 
