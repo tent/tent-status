@@ -13,7 +13,9 @@ class TentStatus.Views.Profile extends TentStatus.View
 
     @on 'change:profile', @render
 
+    TentStatus.trigger 'loading:start'
     new HTTP 'GET', "#{TentStatus.config.current_tent_api_root}/profile", null, (profile, xhr) =>
+      TentStatus.trigger 'loading:complete'
       return @render404() unless xhr.status == 200
       @set 'profile', new TentStatus.Models.Profile profile
 

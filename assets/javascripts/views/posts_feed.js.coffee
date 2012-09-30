@@ -17,7 +17,9 @@ class TentStatus.Views.PostsFeed extends TentStatus.View
 
     options.api_root ?= TentStatus.config.tent_api_root
     url = "#{options.api_root}/posts"
+    TentStatus.trigger 'loading:start'
     new HTTP 'GET', url, params, (posts, xhr) =>
+      TentStatus.trigger 'loading:complete'
       return unless xhr.status == 200
       since_id = _.last(posts)?.id
       since_id_entity = _.last(posts)?.entity
