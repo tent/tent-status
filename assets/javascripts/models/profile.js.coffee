@@ -25,7 +25,7 @@ class Profile extends Backbone.Model
     !!(@basic_profile()?['name'])
 
   avatar: =>
-    @basic_profile()?['avatar_url'] || TentStatus.config.default_avatar
+    TentStatus.Helpers.sanitizeAvatarUrl(@basic_profile()?['avatar_url']) || TentStatus.config.default_avatar
 
 TentStatus.Models.profile = new Profile
 
