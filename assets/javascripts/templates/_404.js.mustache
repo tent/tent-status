@@ -1,0 +1,15 @@
+<div class="row">
+  <div class="span2">&nbsp</div>
+  <div class="span8 well not-found">
+    {{#text}}
+    <h3>{{text}} <small>404</small></h3>
+    {{/text}}
+    {{#subtext}}
+    <h4 style="text-align:center">{{{subtext}}}</h4>
+    {{/subtext}}
+
+    {{^text}}
+    <h3>The page you are looking for does not exist <small>404</small></h3>
+    {{/text}}
+  </div>
+</div>
