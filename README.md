@@ -33,3 +33,11 @@ Here are some tasks that need to be done:
 - Add full mobile compatibility (fix JavaScript issues on mobile browsers, use bootstrap mobile menu, etc.)
 - Write tests/refactor code.
 - Make it pretty.
+
+
+
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
