@@ -9,6 +9,5 @@ that it can talk to Tent servers.
 
 Here are some tasks that need to be done:
 
-- Implement a omniauth strategy that handles Tent OAuth.
 - Write tests/refactor code.
 - Make it pretty.
