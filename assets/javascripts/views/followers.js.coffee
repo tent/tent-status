@@ -18,7 +18,7 @@ class TentStatus.Views.Followers extends TentStatus.View
       return unless xhr.status == 200
       followers = new TentStatus.Collections.Followers followers
       paginator = new TentStatus.Paginator followers, { sinceId: followers.last()?.get('id') }
-      paginator.on 'fetch:success', @render
+      paginator.on 'fetch:success', @appendRender
       @set 'followers', paginator
 
   context: =>
@@ -49,3 +49,18 @@ class TentStatus.Views.Followers extends TentStatus.View
     if last_offset_top < (bottom_position + 300)
       clearTimeout @_auto_paginate_timeout
       @_auto_paginate_timeout = setTimeout @followers?.nextPage, 0 unless @followers?.onLastPage
+
+  appendRender: (new_followers) =>
+    html = ""
+    $el = $('table', @container.$el)
+    $last_post = $('.follower:last', $el)
+    new_followers = for follower in new_followers
+      follower = new TentStatus.Models.Follower follower
+      html += TentStatus.Views.Follower::renderHTML(TentStatus.Views.Follower::context(follower), @partials)
+      follower
+
+    $el.append(html)
+    _.each $last_post.nextAll('.follower'), (el, index) =>
+      view = new TentStatus.Views.Follower el: el, follower: new_followers[index], parentView: @
+      view.trigger 'ready'
+

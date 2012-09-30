@@ -11,7 +11,7 @@ class TentStatus.Views.Following extends TentStatus.View
 
     @following = options.following
     @following.on 'change:profile', => @render()
-    @on 'render', @bindEvents
+    @on 'ready', @bindEvents
 
   bindEvents: =>
     @$fields = {
@@ -33,7 +33,10 @@ class TentStatus.Views.Following extends TentStatus.View
     _.extend following.toJSON(), {
       name: following.name()
       avatar: following.avatar()
-    }
+    }, super
+
+  renderHTML: (context, partials, template = (@template || partials['_following'])) =>
+    template.render(context, partials)
 
   render: =>
     return unless html = super
