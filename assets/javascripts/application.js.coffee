@@ -88,6 +88,19 @@ _.extend @TentStatus, Backbone.Events, {
     @ready = true
     @trigger 'ready'
 
+    @on 'loading:start', @showLoadingIndicator
+    @on 'loading:complete', @hideLoadingIndicator
+
+  showLoadingIndicator: ->
+    @_num_running_requests ?= 0
+    @_num_running_requests += 1
+    @Views.loading_indicator.show()
+
+  hideLoadingIndicator: ->
+    @_num_running_requests ?= 1
+    @_num_running_requests -= 1
+    @Views.loading_indicator.hide() if @_num_running_requests == 0
+
   #############################
   #       Route Lookup        #
   #############################

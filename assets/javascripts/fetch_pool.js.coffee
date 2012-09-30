@@ -2,6 +2,7 @@ class TentStatus.FetchPool extends TentStatus.Paginator
   constructor: (@collection, @options = {}) ->
     super
     @sinceId = @options.sinceId
+    @options.is_background_operation = true
 
   paramsForOffsetAndLimit: (since_id_entity, sinceId, limit) =>
     params = _.extend { limit: limit }, @default_params
