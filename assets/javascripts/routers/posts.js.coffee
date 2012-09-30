@@ -53,7 +53,7 @@ TentStatus.Routers.posts = new class PostsRouter extends TentStatus.Router
   globalFeed: =>
     unless TentStatus.isAppSubdomain()
       return @navigate('/', {trigger: true})
-    TentStatus.setPageTitle "Tent.is Global Feed"
+    TentStatus.setPageTitle "Tent.is Site Feed"
     @view = new TentStatus.Views.GlobalFeed
 
   mentions: =>
