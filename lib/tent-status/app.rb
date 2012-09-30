@@ -137,7 +137,7 @@ module Tent
       conditions[:type_base] = %w(https://tent.io/types/post/status) 
       conditions[:original] = true
       conditions[:public] = true
-      conditions[:order] = :id.desc
+      conditions[:order] = :published_at.desc
       conditions[:limit] = [TentD::API::MAX_PER_PAGE, params[:limit].to_i].min if params[:limit]
       conditions[:limit] ||= TentD::API::PER_PAGE
 
