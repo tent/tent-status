@@ -54,6 +54,11 @@ _.extend TentStatus.Helpers,
         _flattened.push _item
     _flattened
 
+  truncate: (text, length, elipses='...') ->
+    _truncated = text.substr(0, length-elipses.length)
+    _truncated += elipses if text.length > length
+    _truncated
+
   autoLinkText: (text) ->
     return unless text
 
@@ -88,7 +93,7 @@ _.extend TentStatus.Helpers,
       item = urls_and_mentions.shift()
       original = text.substring(item.start_index, item.end_index)
       html = "<a href='#{TentStatus.Helpers.ensureUrlHasScheme(item.url)}'>" +
-             TentStatus.Helpers.formatUrlWithPath(original) + "</a>"
+             TentStatus.Helpers.truncate(TentStatus.Helpers.formatUrlWithPath(original), TentStatus.config.URL_TRIM_LENGTH) + "</a>"
       delta = html.length - original.length
       updateIndicesWithOffset(urls_and_mentions, item.start_index, delta)
       urls_and_mentions = removeOverlappingItems(urls_and_mentions, item.start_index, item.end_index + delta)
