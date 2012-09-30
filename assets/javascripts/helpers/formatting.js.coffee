@@ -55,6 +55,7 @@ _.extend TentStatus.Helpers,
     _flattened
 
   truncate: (text, length, elipses='...') ->
+    return text unless text
     _truncated = text.substr(0, length-elipses.length)
     _truncated += elipses if text.length > length
     _truncated

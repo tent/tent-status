@@ -162,7 +162,9 @@ class TentStatus.Views.Post extends TentStatus.View
       formatted:
         reply_to_entities: @getReplyToEntities(post)
         content:
-          text: TentStatus.Helpers.simpleFormatText(TentStatus.Helpers.autoLinkText(post.get('content')?.text))
+          text: TentStatus.Helpers.simpleFormatText(
+            TentStatus.Helpers.autoLinkText(TentStatus.Helpers.truncate(post.get('content')?.text, TentStatus.config.MAX_LENGTH, ''))
+          )
         entity: TentStatus.Helpers.formatUrl post.get('entity')
         published_at: TentStatus.Helpers.formatTime post.get('published_at')
         full_published_at: TentStatus.Helpers.rawTime post.get('published_at')
