@@ -172,6 +172,9 @@ class TentStatus.Views.Post extends TentStatus.View
       max_chars: TentStatus.config.MAX_LENGTH
     }
 
+  renderHTML: (context, partials, template=(@template || partials['_post'])) =>
+    template.render(context, partials)
+
   render: (context = @context()) =>
     # wait for template to be loaded
     if @templateName
@@ -179,7 +182,7 @@ class TentStatus.Views.Post extends TentStatus.View
         @once 'template:load', => @render(arguments...)
         return false
 
-    html = @template.render(context, @parentView.partials)
+    html = @renderHTML(context, @parentView.partials)
     el = ($ html)
     @$el.replaceWith(el)
     @setElement el

@@ -58,7 +58,7 @@ class TentStatus.Paginator
 
       @prevSinceId = sinceId
       @prev_since_id_entity = since_id_entity
-      @trigger 'fetch:success'
+      @trigger 'fetch:success', items
 
   filterNewItems: (items, collection=@collection) =>
     collection_ids = collection.map (i) => i.get('id')

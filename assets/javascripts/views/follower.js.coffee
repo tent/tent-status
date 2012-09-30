@@ -28,4 +28,8 @@ class TentStatus.Views.Follower extends TentStatus.View
     _.extend follower.toJSON(), {
       name: follower.name()
       avatar: follower.avatar()
-    }
+    }, super
+
+  renderHTML: (context, partials, template = (@template || partials['_follower'])) =>
+    template.render(context, partials)
+

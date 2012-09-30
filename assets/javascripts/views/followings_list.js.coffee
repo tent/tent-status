@@ -17,13 +17,27 @@ class TentStatus.Views.FollowingsList extends TentStatus.View
       return unless xhr.status == 200
       followings = new TentStatus.Collections.Followings followings
       paginator = new TentStatus.Paginator followings, { sinceId: followings.last()?.get('id') }
-      paginator.on 'fetch:success', @render
+      paginator.on 'fetch:success', @appendRender
       @set 'followings', paginator
 
   context: =>
     followings: _.map( @followings?.toArray() || [], (following) =>
       TentStatus.Views.Following::context(following)
     )
+
+  appendRender: (new_followings) =>
+    html = ""
+    $el = $('table', @$el)
+    $last_post = $('.following:last', $el)
+    new_followings = for following in new_followings
+      following = new TentStatus.Models.Following following
+      html += TentStatus.Views.Following::renderHTML(TentStatus.Views.Following::context(following), @partials)
+      following
+
+    $el.append(html)
+    _.each $last_post.nextAll('.following'), (el, index) =>
+      view = new TentStatus.Views.Following el: el, following: new_followings[index], parentView: @
+      view.trigger 'ready'
 
   render: =>
     return unless html = super
@@ -36,7 +50,7 @@ class TentStatus.Views.FollowingsList extends TentStatus.View
       following_id = ($ el).attr 'data-id'
       following = _.find @followings?.toArray() || [], (f) => f.get('id') == following_id
       view = new TentStatus.Views.Following el: el, following: following, parentView: @
-      view.trigger 'render'
+      view.trigger 'ready'
 
   initAutoPaginate: =>
     ($ window).off('scroll.followings').on 'scroll.followings', @windowScrolled

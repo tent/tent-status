@@ -24,13 +24,26 @@ class TentStatus.Views.PostsFeed extends TentStatus.View
       since_id = _.last(posts)?.id
       since_id_entity = _.last(posts)?.entity
       paginator = new TentStatus.Paginator(new TentStatus.Collections.Posts(posts), { since_id_entity: since_id_entity, sinceId: since_id, url: url, params: params })
-      paginator.on 'fetch:success', @render
+      paginator.on 'fetch:success', @appendRender
       @set 'posts', paginator
 
   context: =>
     posts: (_.map @posts?.toArray() || [], (post) =>
       TentStatus.Views.Post::context(post)
     )
+
+  appendRender: (new_posts) =>
+    html = ""
+    $last_post = $('.post:last', @$el)
+    new_posts = for post in new_posts
+      post = new TentStatus.Models.Post post
+      html += TentStatus.Views.Post::renderHTML(TentStatus.Views.Post::context(post), @partials)
+      post
+
+    @$el.append(html)
+    _.each $last_post.nextAll('.post'), (el, index) =>
+      view = new TentStatus.Views.Post el: el, post: new_posts[index], parentView: @
+      view.trigger 'ready'
 
   render: =>
     html = super
