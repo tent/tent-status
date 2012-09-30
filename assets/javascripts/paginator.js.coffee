@@ -31,6 +31,7 @@ class TentStatus.Paginator
 
     @freeze()
     @trigger 'fetch:start'
+    TentStatus.trigger 'loading:start' unless @options.is_background_operation
 
     loadedCount = @collection.length
     expectedCount = loadedCount + limit
@@ -57,6 +58,7 @@ class TentStatus.Paginator
       @prevSinceId = sinceId
       @prev_since_id_entity = since_id_entity
       @trigger 'fetch:success'
+      TentStatus.trigger 'loading:complete' unless @options.is_background_operation
 
   filterNewItems: (items, collection=@collection) =>
     collection_ids = collection.map (i) => i.get('id')

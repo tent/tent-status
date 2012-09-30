@@ -8,6 +8,37 @@
   -moz-border-radius: $amount
   border-radius: $amount
 
+@mixin transition($property, $duration, $delay)
+  transition-property: $property
+  transition-duration: $duration
+  transition-timing-function: linear
+  transition-delay: $delay
+
+  /* Firefox 4 */
+  -moz-transition-property: $property
+  -moz-transition-duration: $duration
+  -moz-transition-timing-function: linear
+  -moz-transition-delay: $delay
+
+  /* Safari and Chrome */
+  -webkit-transition-property: $property
+  -webkit-transition-duration: $duration
+  -webkit-transition-timing-function: linear
+  -webkit-transition-delay: $delay
+
+  /* Opera */
+  -o-transition-property: $property
+  -o-transition-duration: $duration
+  -o-transition-timing-function: linear
+  -o-transition-delay: $delay
+
+@mixin background-gradient($start, $end)
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from($start), to($end))
+  background-image: -webkit-linear-gradient(top, $start, $end)
+  background-image: -o-linear-gradient(top, $start, $end)
+  background-image: linear-gradient(to bottom, $start, $end)
+  background-image: -moz-linear-gradient(top, $start, $end)
+
 textarea::-webkit-input-placeholder
   padding-top: 20px
   text-align: center
@@ -103,6 +134,22 @@ h2.condensed
 .no-offset
   margin-left: 0px
 
+#loading-indicator
+  @include transition(background, 1s, 0s)
+  @include rounded(4px)
+
+  position: fixed
+  bottom: 54px
+  left: 16px
+
+  width: 8px
+  height: 8px
+  background-color: #fff
+
+  &.pulse
+    background-color: #08C
+
+
 @media (max-width: 979px) and (min-width: 768px)
   li.post
     .span1
@@ -121,6 +168,11 @@ h2.condensed
     margin-left: 31px
   .offset42
     margin-left: 21px
+
+@media (max-width: 979px)
+  #loading-indicator
+    left: 6px
+    bottom: 6px
 
 .profile-stats
   .stat
@@ -160,3 +212,4 @@ footer.navbar-fixed-bottom
 
 textarea
   resize: none
+

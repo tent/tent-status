@@ -91,6 +91,7 @@ class TentStatus.View extends Backbone.View
   # then render @template with @context and @partials
   # and insert html into @container.el
   render: =>
+    TentStatus.trigger 'loading:start'
     # wait for template to be loaded
     if @templateName
       unless @template
@@ -111,6 +112,8 @@ class TentStatus.View extends Backbone.View
         if @get(key) == null
           @once "change:#{key}", => @render(arguments...)
           return false
+
+    TentStatus.trigger 'loading:complete'
 
     context = _.extend {
       authenticated: TentStatus.authenticated
