@@ -167,7 +167,7 @@ class TentStatus.Views.Post extends TentStatus.View
         published_at: TentStatus.Helpers.formatTime post.get('published_at')
         full_published_at: TentStatus.Helpers.rawTime post.get('published_at')
       currentUserOwnsPost: @isCurrentUserEntity(post.get 'entity')
-      max_chars: TentStatus.config.max_length
+      max_chars: TentStatus.config.MAX_LENGTH
     }
 
   render: (context = @context()) =>
