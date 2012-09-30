@@ -51,7 +51,7 @@ _.extend @TentStatus, Backbone.Events, {
     FETCH_INTERVAL: 3000
     MAX_FETCH_LATENCY: 30000
     max_length: 256
-    default_avatar: 'http://dr49qsqhb5y4j.cloudfront.net/default.png'
+    default_avatar: 'http://dr49qsqhb5y4j.cloudfront.net/default1.png'
   }
 
   isAppSubdomain: =>
