@@ -50,6 +50,7 @@ _.extend @TentStatus, Backbone.Events, {
     PER_PAGE: 10
     FETCH_INTERVAL: 3000
     MAX_FETCH_LATENCY: 30000
+    URL_TRIM_LENGTH: 30
     MAX_LENGTH: 256
     default_avatar: 'http://dr49qsqhb5y4j.cloudfront.net/default1.png'
   }
