@@ -23,7 +23,7 @@ class TentStatus.Views.PostsFeed extends TentStatus.View
       return unless xhr.status == 200
       since_id = _.last(posts)?.id
       since_id_entity = _.last(posts)?.entity
-      paginator = new TentStatus.Paginator(new TentStatus.Collections.Posts(posts), _.extend({ since_id_entity: since_id_entity, sinceId: since_id, url: url, params: params }, { params: params }))
+      paginator = new TentStatus.Paginator(new TentStatus.Collections.Posts(posts), { since_id_entity: since_id_entity, sinceId: since_id, url: url, params: params })
       paginator.on 'fetch:success', @render
       @set 'posts', paginator
 
