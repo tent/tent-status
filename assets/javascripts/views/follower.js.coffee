@@ -8,6 +8,8 @@ class TentStatus.Views.Follower extends TentStatus.View
     @follower.on 'change:profile', => @render()
     @on 'ready', @initRemoveFollowerBtn
 
+    super
+
   initRemoveFollowerBtn: =>
     @$fields ?= {}
     @$fields.remove_button = ($ '.remove-follower', @$el)
@@ -32,4 +34,11 @@ class TentStatus.Views.Follower extends TentStatus.View
 
   renderHTML: (context, partials, template = (@template || partials['_follower'])) =>
     template.render(context, partials)
+
+  render: =>
+    html = @renderHTML(@context(), @parentView.partials)
+    el = ($ html)
+    @$el.replaceWith(el)
+    @setElement el
+    @trigger 'ready'
 

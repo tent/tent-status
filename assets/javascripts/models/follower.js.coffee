@@ -9,8 +9,6 @@ class TentStatus.Models.Follower extends Backbone.Model
     attrs
 
   initialize: ->
-    @on 'sync', @updateProfile
-
     @fetchProfile()
 
   fetchProfile: =>
