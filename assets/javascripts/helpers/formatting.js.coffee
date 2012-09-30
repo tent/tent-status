@@ -54,6 +54,10 @@ _.extend TentStatus.Helpers,
         _flattened.push _item
     _flattened
 
+  sanitizeAvatarUrl: (url='') ->
+    return unless url.match(/^https?:\/\//)
+    url
+
   truncate: (text, length, elipses='...') ->
     return text unless text
     _truncated = text.substr(0, length-elipses.length)
