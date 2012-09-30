@@ -39,6 +39,7 @@ class TentStatus.Paginator
     params = @paramsForOffsetAndLimit(since_id_entity, sinceId, limit)
     new HTTP 'GET', @url, params, (items, xhr) =>
       @unfreeze()
+      TentStatus.trigger 'loading:complete' unless @options.is_background_operation
       unless xhr.status == 200
         @trigger 'fetch:error'
         @onLastPage = true unless options.n_pages == 'infinite'
@@ -58,7 +59,6 @@ class TentStatus.Paginator
       @prevSinceId = sinceId
       @prev_since_id_entity = since_id_entity
       @trigger 'fetch:success'
-      TentStatus.trigger 'loading:complete' unless @options.is_background_operation
 
   filterNewItems: (items, collection=@collection) =>
     collection_ids = collection.map (i) => i.get('id')
