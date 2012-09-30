@@ -25,9 +25,9 @@ class TentStatus.Views.FetchPostsPool extends Backbone.View
       url: @posts.url
     }, (@options.params || {})
 
-    params.params = {
+    params.params = _.extend {
       post_types: TentStatus.config.post_types
-    }
+    }, (@postsFeedView.options?.posts_params || {})
 
     @pool = new TentStatus.FetchPool(new TentStatus.Collections.Posts, params)
     @pool.on 'fetch:success', @update

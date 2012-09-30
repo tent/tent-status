@@ -4,4 +4,4 @@ class TentStatus.Views.MentionsPostFeed extends TentStatus.Views.PostsFeed
     options.posts_params = {
       mentioned_entity: TentStatus.config.domain_entity.toStringWithoutSchemePort()
     }
-    super
+    super(options)
