@@ -72,7 +72,7 @@ class TentStatus.Views.ReplyPostForm extends TentStatus.Views.NewPostForm
 
   context: =>
     data = {
-      max_chars: TentStatus.config.max_length
+      max_chars: TentStatus.config.MAX_LENGTH
     }
 
     post = @parentView.post
