@@ -79,7 +79,7 @@ class TentStatus.Views.FetchPostsPool extends Backbone.View
     @$elements.posts_list.prepend(html)
 
     _.each $top_post.prevAll('.post'), (el, index) =>
-      view = new TentStatus.Views.Post el: el, post: new_posts[(new_posts.length-1) - index], parentView: @postsFeedView
+      view = new TentStatus.Views.Post el: el, post: new_posts[index], parentView: @postsFeedView
       view.trigger 'ready'
 
     @pool.since_id = @postsFeedView.posts.first()?.get('id')
