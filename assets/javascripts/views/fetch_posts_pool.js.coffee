@@ -66,12 +66,21 @@ class TentStatus.Views.FetchPostsPool extends Backbone.View
   hide: => @$el.hide()
 
   emptyPool: =>
-    pool = @pool.sortBy (i) -> i.published_at
-    for i in [0...@num_new_posts]
-      post = pool.pop()
-      @pool.collection.pop()
+    new_posts = @pool.sortBy (i) -> i.published_at
+    @pool.collection.reset()
+
+    html = []
+    for post in new_posts
       @posts.unshift(post)
-      TentStatus.Views.Post.insertNewPost(post, @$elements.posts_list, @postsFeedView)
+      html.unshift TentStatus.Views.Post::renderHTML(TentStatus.Views.Post::context(post), @postsFeedView.partials)
+    html = html.join('')
+
+    $top_post = $('.post:first', @$elements.posts_list)
+    @$elements.posts_list.prepend(html)
+
+    _.each $top_post.prevAll('.post'), (el, index) =>
+      view = new TentStatus.Views.Post el: el, post: new_posts[(new_posts.length-1) - index], parentView: @postsFeedView
+      view.trigger 'ready'
 
     @pool.since_id = @postsFeedView.posts.first()?.get('id')
     @num_new_posts = 0
