@@ -69,6 +69,7 @@ class TentStatus.Views.FetchPostsPool extends Backbone.View
     pool = @pool.sortBy (i) -> i.published_at
     for i in [0...@num_new_posts]
       post = pool.pop()
+      @pool.collection.pop()
       @posts.unshift(post)
       TentStatus.Views.Post.insertNewPost(post, @$elements.posts_list, @postsFeedView)
 
