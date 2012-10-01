@@ -48,6 +48,9 @@ _.extend TentStatus.Helpers,
 
     _indices
 
+  escapeRegExChars: (string) ->
+    string.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&")
+
   extractMentionsWithIndices: (text, options = {}) ->
     _mentions = []
     _entities = {}
@@ -76,7 +79,7 @@ _.extend TentStatus.Helpers,
 
     _from_mentions = []
     if TentStatus.config.tent_host_domain
-      _regex = new RegExp("([\\^]([a-z0-9]{2,}(?:\.#{TentStatus.config.tent_host_domain})?))(?!:\/\/)(?=[\\W]|$)")
+      _regex = new RegExp("([\\^]([a-z0-9]{2,}(?:\.#{TentStatus.Helpers.escapeRegExChars(TentStatus.config.tent_host_domain)})?))(?!:\/\/)(?=[\\W]|$)")
       _offset = 0
       _text = text
       while (_text = text.substr(_offset, text.length)) && _text.length && _regex.exec(_text)
