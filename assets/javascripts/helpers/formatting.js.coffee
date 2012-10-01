@@ -108,5 +108,8 @@ _.extend TentStatus.Helpers,
     text
 
   simpleFormatText: (text = '') ->
-    text.replace(/\n+(?!\s*\n)/g, "<br/>")
+    text.replace /\s+/g, (match) ->
+      newlines = match.replace(/[^\n]*/g, '')
+      return match if newlines.length == 0
+      if newlines.length >= 2 then "<br/><br/>" else "<br/>"
 
