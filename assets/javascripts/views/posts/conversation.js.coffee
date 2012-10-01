@@ -20,7 +20,9 @@ class TentStatus.Views.Conversation extends TentStatus.View
     params = {
       post_types: TentStatus.config.post_types
     }
+    TentStatus.trigger 'loading:start'
     new HTTP 'GET', url, params, (post, xhr) =>
+      TentStatus.trigger 'loading:complete'
       return @render404() if xhr.status == 404
       return unless xhr.status == 200
       post = new TentStatus.Models.Post post
@@ -28,10 +30,12 @@ class TentStatus.Views.Conversation extends TentStatus.View
       @set 'post', post
 
       @on 'change:posts', @render
+      TentStatus.trigger 'loading:start'
       new HTTP 'GET', "#{TentStatus.config.tent_api_root}/posts", _.extend({
         limit: TentStatus.config.PER_PAGE
         mentioned_post: @post_id
       }, params), (posts, xhr) =>
+        TentStatus.trigger 'loading:complete'
         return unless xhr.status == 200
         since_id = posts[posts.length-1]?.id
         posts = new TentStatus.Collections.Posts posts
@@ -46,7 +50,9 @@ class TentStatus.Views.Conversation extends TentStatus.View
         @set 'parent_post', post
       else
         @on 'change:parent_post', @render
+        TentStatus.trigger 'loading:start'
         new HTTP 'GET', "#{TentStatus.config.tent_api_root}/posts/#{encodeURIComponent entity}/#{post_id}", null, (post, xhr) =>
+          TentStatus.trigger 'loading:complete'
           return unless xhr.status == 200
           post = new TentStatus.Models.Post post
           @set 'parent_post', post
