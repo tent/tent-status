@@ -60,8 +60,11 @@ _.extend TentStatus.Helpers,
 
   truncate: (text, length, elipses='...') ->
     return text unless text
-    _truncated = text.substr(0, length-elipses.length)
-    _truncated += elipses if text.length > length
+    if text.length > length
+      _truncated = text.substr(0, length-elipses.length)
+      _truncated += elipses
+    else
+      _truncated = text
     _truncated
 
   autoLinkText: (text) ->
