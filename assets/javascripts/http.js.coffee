@@ -1,5 +1,6 @@
 class @HTTP
   @active_requests: {}
+  MAX_NUM_RETRIES: 3
 
   constructor: (@method, @url, @data, callback) ->
     @key = "#{@method}:#{@url}:#{JSON.stringify(@data || '{}')}"
@@ -9,6 +10,12 @@ class @HTTP
       HTTP.active_requests[@key] = @
 
     @callbacks = if callback then [callback] else []
+
+    @retry_count = 0
+
+    @retry_arguments = _.inject(arguments, ((memo, i)-> memo.push(i); memo), [])
+    @retry = =>
+      new HTTP @retry_arguments...
 
     @request = new HTTP.Request
 
@@ -53,6 +60,12 @@ class @HTTP
 
     @request.on 'complete', (xhr) =>
       delete HTTP.active_requests[@key]
+
+      if xhr.status == 503 and (@retry_count < @MAX_NUM_RETRIES)
+        @retry_count += 1
+        @retry()
+        return
+
       data = if xhr.status == 200 and xhr.response then JSON.parse(xhr.response) else null
       for fn in @callbacks
         continue unless typeof fn == 'function'
