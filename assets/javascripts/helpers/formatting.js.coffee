@@ -6,7 +6,7 @@ _.extend TentStatus.Helpers,
     formatted_time = if time.format('YYYY-MM-DD') == now.format('YYYY-MM-DD')
       time.format('HH:mm') # time only
     else
-      time.format('DD/MM/YY') # date and time
+      time.format('DD-MMM-YY') # date and time
 
     "#{formatted_time}"
 
