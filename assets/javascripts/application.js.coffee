@@ -40,6 +40,7 @@ _.extend @TentStatus, Backbone.Events, {
   PER_PAGE: 10
 
   config: {
+    tent_host_api_root: "/api"
     tent_api_root: new HTTP.URI(TentStatus.current_entity + '/tent')
     current_tent_api_root: new HTTP.URI(window.location.protocol + '//' + window.location.hostname + '/tent')
     tent_host_domain: TentStatus.tent_host_domain
