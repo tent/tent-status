@@ -101,9 +101,11 @@ class TentStatus.Views.NewPostForm extends TentStatus.View
       if TentStatus.config.current_entity.assertEqual(TentStatus.config.domain_entity)
         post = new TentStatus.Models.Post post
         @postsFeedView ?= @parentView.postsFeedView?()
-        @postsFeedView?.posts.unshift post
-        container = @postsFeedView.$el
-        TentStatus.Views.Post.insertNewPost(post, container, @postsFeedView)
+        if @postsFeedView
+          @postsFeedView.posts.unshift post
+          container = @postsFeedView.$el
+          TentStatus.Views.Post.insertNewPost(post, container, @postsFeedView)
+      @trigger 'submit:success'
       @render()
     false
 
