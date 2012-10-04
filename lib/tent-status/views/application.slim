@@ -30,6 +30,12 @@ body
             a href=full_url('/followings') Following
           li
             a href=full_url('/admin') Account
+          li.position-relative
+            a#new_post_button href=full_url('#') New Post
+            #new_post_popdown.popover.bottom
+              .arrow &nbsp;
+              .popover-content
+                div data-view='NewPostForm'
         - else
           li
             a href='https://tent.is/blog' Blog

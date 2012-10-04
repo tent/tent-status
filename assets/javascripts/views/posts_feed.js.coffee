@@ -10,6 +10,8 @@ class TentStatus.Views.PostsFeed extends TentStatus.View
     @on 'ready', @initPostViews
     @on 'ready', @initAutoPaginate
 
+    TentStatus.Views.posts_feed_view = @
+
     params = _.extend({
       post_types: TentStatus.config.post_types
       limit: TentStatus.config.PER_PAGE
