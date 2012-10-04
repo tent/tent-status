@@ -62,7 +62,7 @@ class @HTTP
     @request.on 'complete', (xhr) =>
       delete HTTP.active_requests[@key]
 
-      if xhr.status == 503 and (@retry_count < @MAX_NUM_RETRIES)
+      if (xhr.status == 503 or xhr.status == 0) and (@retry_count < @MAX_NUM_RETRIES)
         @retry_count += 1
         @retry()
         return
