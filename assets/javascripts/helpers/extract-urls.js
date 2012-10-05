@@ -169,7 +169,9 @@
             url: asciiDomain,
             indices: [startPosition + asciiStartPosition, startPosition + asciiEndPosition]
           };
-          lastUrlInvalidMatch = asciiDomain.match(twttr.txt.regexen.invalidShortDomain);
+          if (!before.match(/^[\^]$/)) {
+            lastUrlInvalidMatch = asciiDomain.match(twttr.txt.regexen.invalidShortDomain);
+          }
           if (!lastUrlInvalidMatch) {
             urls.push(lastUrl);
           }
