@@ -185,6 +185,8 @@ module Tent
         TentD::Model::Post.first(conditions)
       end
 
+      halt 404 unless post
+
       with_exclusive_scope(TentD::Model::PostVersion) do
         json post
       end
