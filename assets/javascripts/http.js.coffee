@@ -76,6 +76,7 @@ class @HTTP
 
   class @URI
     constructor: (@url) ->
+      return @url unless @url
       return @url if @url.isURI
 
       m = @url.match(/^(https?:\/\/)?([^\/]+)?(.*)$/)
