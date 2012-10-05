@@ -24,7 +24,6 @@ class TentStatus.Views.ReplyPostForm extends TentStatus.Views.NewPostForm
     $form = @$form
     html = @html
     @on 'ready', => $form.html(html)
-    @on 'ready', => $form.parent().hide()
 
   getReplyButton: =>
     key = if @is_repost then 'reply_repost' else 'reply'
