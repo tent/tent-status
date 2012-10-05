@@ -100,7 +100,12 @@ _.extend TentStatus.Helpers,
     while urls_and_mentions.length
       item = urls_and_mentions.shift()
       original = text.substring(item.start_index, item.end_index)
-      html = "<a href='#{TentStatus.Helpers.ensureUrlHasScheme(item.url)}'>" +
+      link_attributes = []
+
+      if TentStatus.Helpers.isURLExternal(item.url)
+        link_attributes.push "data-view='ExternalLink'"
+
+      html = "<a href='#{TentStatus.Helpers.ensureUrlHasScheme(item.url)}' #{link_attributes.join(' ')}>" +
              TentStatus.Helpers.truncate(TentStatus.Helpers.formatUrlWithPath(original), TentStatus.config.URL_TRIM_LENGTH) + "</a>"
       delta = html.length - original.length
       updateIndicesWithOffset(urls_and_mentions, item.start_index, delta)
