@@ -8,7 +8,7 @@ head
   title Tent.is Simple Tent Hosting
 
 body
-  .navbar.navbar-fixed-top
+  #main-nav.navbar.navbar-fixed-top
     .navbar-inner
       .brand
         - if current_user || guest_user
@@ -16,39 +16,45 @@ body
         - else
           a href='https://tent.is' Tent.is
 
-      ul.nav
-        li
-          a href="https://app.#{tent_host_domain}/global" Site Feed
-        - if current_user || guest_user
-          li
-            a href=full_url('/profile') Profile
-          li
-            a href=full_url('/mentions') Mentions
-          li
-            a href=full_url('/followers') Followers
-          li
-            a href=full_url('/followings') Following
-          li
-            a href=full_url('/admin') Account
-          li.position-relative
-            a#new_post_button href=full_url('#') New Post
-            #new_post_popdown.popover.bottom
-              .arrow &nbsp;
-              .popover-content
-                div data-view='NewPostForm'
-        - else
-          li
-            a href='https://tent.is/blog' Blog
+      a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"
+        .icon-bar &nbsp;
+        .icon-bar &nbsp;
+        .icon-bar &nbsp;
 
-      ul.nav.pull-right
-        - if current_user || guest_user
+      .nav-collapse
+        ul.nav
           li
-            a href=full_url('/signout') Signout
-        - else
-          li
-            a href='https://tent.is/login' Login
-          li
-            a href='https://tent.is' Signup
+            a href="https://app.#{tent_host_domain}/global" Site Feed
+          - if current_user || guest_user
+            li
+              a href=full_url('/profile') Profile
+            li
+              a href=full_url('/mentions') Mentions
+            li
+              a href=full_url('/followers') Followers
+            li
+              a href=full_url('/followings') Following
+            li
+              a href=full_url('/admin') Account
+            li.position-relative
+              a#new_post_button href=full_url('#') New Post
+              #new_post_popdown.popover.bottom
+                .arrow &nbsp;
+                .popover-content
+                  div data-view='NewPostForm'
+          - else
+            li
+              a href='https://tent.is/blog' Blog
+
+        ul.nav.pull-right
+          - if current_user || guest_user
+            li
+              a href=full_url('/signout') Signout
+          - else
+            li
+              a href='https://tent.is/login' Login
+            li
+              a href='https://tent.is' Signup
 
   .container#main
     == yield if block_given?
