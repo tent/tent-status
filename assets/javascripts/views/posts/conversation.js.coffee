@@ -13,11 +13,6 @@ class TentStatus.Views.Conversation extends TentStatus.View
     @on 'ready', @initPostViews
 
     @on 'change:post', @render
-    @on 'change:parent_post', @render
-    @on 'change:posts', @render
-    @getPost()
-
-  getPost: =>
     url = if TentStatus.config.domain_entity.assertEqual(@entity)
       "#{TentStatus.config.current_tent_api_root}/posts/#{@post_id}"
     else
@@ -25,92 +20,42 @@ class TentStatus.Views.Conversation extends TentStatus.View
     params = {
       post_types: TentStatus.config.post_types
     }
-
-    hosted_url = "#{TentStatus.config.tent_host_api_root}/posts/#{@post_id}"
-    hosted_params = _.extend {
-      entity: @entity
-    }, params
-
     TentStatus.trigger 'loading:start'
     new HTTP 'GET', url, params, (post, xhr) =>
-      if xhr.status != 200
-        new HTTP 'GET', hosted_url, hosted_params, @getPostComplete
-      else
-        @getPostComplete(arguments...)
+      TentStatus.trigger 'loading:complete'
+      return @render404() if xhr.status == 404
+      return unless xhr.status == 200
+      post = new TentStatus.Models.Post post
+      post.on 'change:profile', => @render()
+      @set 'post', post
 
-  getPostComplete: (post, xhr) =>
-    TentStatus.trigger 'loading:complete'
-    return @render404() if xhr.status == 404
-    return unless xhr.status == 200
-    post = new TentStatus.Models.Post post
-    post.on 'change:profile', => @render()
-    @set 'post', post
-
-    @getParentPost()
-    @getChildPosts()
-
-  getParentPost: =>
-    return unless @post.postMentions().length
-
-    entity = @post.postMentions()[0].entity
-    post_id = @post.postMentions()[0].post
-
-    url = "#{TentStatus.config.tent_api_root}/posts/#{encodeURIComponent entity}/#{post_id}"
-    params = null
-
-    hosted_url = "#{TentStatus.config.tent_host_api_root}/posts/#{post_id}"
-    hosted_params = {
-      entity: entity
-    }
-
-    if post = TentStatus.Cache.get("post:#{post_id}")
-      @set 'parent_post', post
-    else
+      @on 'change:posts', @render
       TentStatus.trigger 'loading:start'
-      new HTTP 'GET', url, params, (post, xhr) =>
-        if xhr.status != 200
-          new HTTP 'GET', hosted_url, hosted_params, @getParentPostComplete
-        else
-          @getParentPostComplete(arguments...)
+      new HTTP 'GET', "#{TentStatus.config.tent_api_root}/posts", _.extend({
+        limit: TentStatus.config.PER_PAGE
+        mentioned_post: @post_id
+      }, params), (posts, xhr) =>
+        TentStatus.trigger 'loading:complete'
+        return unless xhr.status == 200
+        since_id = posts[posts.length-1]?.id
+        posts = new TentStatus.Collections.Posts posts
+        @set 'posts', posts
 
-  getParentPostComplete: (post, xhr) =>
-    TentStatus.trigger 'loading:complete'
-    return unless xhr.status == 200
-    post = new TentStatus.Models.Post post
-    @set 'parent_post', post
+      return unless @post.postMentions().length
 
-  getChildPosts: =>
-    url = "#{TentStatus.config.tent_api_root}/posts"
-    params = {
-      limit: TentStatus.config.PER_PAGE
-      mentioned_post: @post_id
-      post_types: TentStatus.config.post_types
-    }
+      entity = @post.postMentions()[0].entity
+      post_id = @post.postMentions()[0].post
 
-    hosted_url = "#{TentStatus.config.tent_host_api_root}/posts"
-    hosted_params = _.extend {
-      mentioned_entity: @entity
-    }, params
-
-    TentStatus.trigger 'loading:start'
-    new HTTP 'GET', hosted_url, hosted_params, @getChildPostsComplete
-
-    TentStatus.trigger 'loading:start'
-    new HTTP 'GET', url, params, @getChildPostsComplete
-
-  getChildPostsComplete: (posts_attributes, xhr) =>
-    TentStatus.trigger 'loading:complete'
-    return unless xhr.status == 200
-
-    posts = @posts
-    if posts
-      _.each posts_attributes, (post_attributes) =>
-        return if posts.find (p) -> p.get('id') == post_attributes.id
-        posts.push new TentStatus.Models.Post post_attributes
-      posts = new TentStatus.Collections.Posts posts.sortBy( (p) -> p.published_at * -1 )
-    else
-      posts = new TentStatus.Collections.Posts posts_attributes
-    @set 'posts', posts
+      if post = TentStatus.Cache.get("post:#{post_id}")
+        @set 'parent_post', post
+      else
+        @on 'change:parent_post', @render
+        TentStatus.trigger 'loading:start'
+        new HTTP 'GET', "#{TentStatus.config.tent_api_root}/posts/#{encodeURIComponent entity}/#{post_id}", null, (post, xhr) =>
+          TentStatus.trigger 'loading:complete'
+          return unless xhr.status == 200
+          post = new TentStatus.Models.Post post
+          @set 'parent_post', post
 
   context: =>
     post: TentStatus.Views.Post::context(@post)
@@ -125,4 +70,3 @@ class TentStatus.Views.Conversation extends TentStatus.View
       post = _.find posts, (p) => p?.get('id') == post_id
       view = new TentStatus.Views.Post el: el, post: post, parentView: @
       view.trigger 'ready'
-
