@@ -66,7 +66,7 @@ class TentStatus.Views.FetchPostsPool extends Backbone.View
   hide: => @$el.hide()
 
   emptyPool: =>
-    new_posts = @pool.sortBy (i) -> i.published_at
+    new_posts = @pool.sortBy (i) -> i.get('published_at')
     @pool.collection.reset()
 
     html = []
