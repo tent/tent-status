@@ -105,14 +105,22 @@ module Tent
       [200, { 'Content-Type' => 'application/json' }, [data.to_json]]
     end
 
-    def get_real_post_ids!(params)
-      id_mapping = %w( post_id since_id before_id ).
-        select { |key| params.has_key?(key) }.inject({}) { |memo, key|
-          memo[params[key]] = key
-          params[key] = nil
-          memo
-        }
+    if ENV['RACK_ENV'] != 'production'
+      get '/assets/*' do
+        new_env = env.clone
+        new_env["PATH_INFO"].gsub!("/assets", "")
+        settings.assets.call(new_env)
+      end
+    end
 
+    get '/api/posts' do
+      conditions = {}
+
+      id_mapping = [:post_id, :since_id, :before_id].map(&:to_s).select { |key| params.has_key?(key) }.inject({}) { |memo, key|
+        memo[params[key]] = key
+        params[key] = nil
+        memo
+      }
       posts = TentD::Model::Post.send(:with_exclusive_scope, {}) { |q|
         TentD::Model::Post.all(:public_id => id_mapping.keys, :fields => [:id, :public_id, :entity]).to_a
       }
@@ -123,70 +131,22 @@ module Tent
         }
         params[key] = params[key].id if params[key]
       end
-    end
-
-    def post_conditions(params)
-      conditions = {}
-
       conditions[:id.gt] = params['since_id'] if params['since_id']
       conditions[:id.lt] = params['before_id'] if params['before_id']
 
-      conditions[:entity] = params['entity'] if params['entity']
-
-      if params['mentioned_post'] || params['mentioned_entity']
-        conditions[:mentions] = {}
-        conditions[:mentions][:mentioned_post_id] = params['mentioned_post'] if params['mentioned_post']
-        conditions[:mentions][:entity] = params['mentioned_entity'] if params['mentioned_entity']
-      end
-
-      conditions[:type_base] = %w( https://tent.io/types/post/status )
+      conditions[:type_base] = %w(https://tent.io/types/post/status) 
       conditions[:original] = true
       conditions[:public] = true
       conditions[:order] = :published_at.desc
       conditions[:limit] = [TentD::API::MAX_PER_PAGE, params[:limit].to_i].min if params[:limit]
       conditions[:limit] ||= TentD::API::PER_PAGE
 
-      conditions
-    end
-
-    def with_exclusive_scope(klass, scope={ :deleted_at => nil }, &block)
-      klass.send(:with_exclusive_scope, scope) do |q|
-        block.call
-      end
-    end
-
-    if ENV['RACK_ENV'] != 'production'
-      get '/assets/*' do
-        new_env = env.clone
-        new_env["PATH_INFO"].gsub!("/assets", "")
-        settings.assets.call(new_env)
-      end
-    end
-
-    get '/api/posts' do
-      get_real_post_ids!(params)
-      conditions = post_conditions(params)
-
-      posts = with_exclusive_scope(TentD::Model::Post) do
+      posts = TentD::Model::Post.send(:with_exclusive_scope, :deleted_at => nil) do |q|
         TentD::Model::Post.all(conditions)
       end
 
-      with_exclusive_scope(TentD::Model::PostVersion) do
+      TentD::Model::PostVersion.send(:with_exclusive_scope, :deleted_at => nil) do |q|
         json posts
-      end
-    end
-
-    get '/api/posts/:post_id' do
-      get_real_post_ids!(params)
-      conditions = post_conditions(params)
-      conditions[:id] = params['post_id']
-
-      post = with_exclusive_scope(TentD::Model::Post) do
-        TentD::Model::Post.first(conditions)
-      end
-
-      with_exclusive_scope(TentD::Model::PostVersion) do
-        json post
       end
     end
 
