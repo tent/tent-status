@@ -76,6 +76,7 @@ class TentStatus.Views.Conversation extends TentStatus.View
   getParentPostComplete: (post, xhr) =>
     TentStatus.trigger 'loading:complete'
     return unless xhr.status == 200
+    return unless post
     post = new TentStatus.Models.Post post
     @set 'parent_post', post
 
