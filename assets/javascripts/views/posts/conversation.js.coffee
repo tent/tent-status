@@ -6,7 +6,7 @@ class TentStatus.Views.Conversation extends TentStatus.View
 
   initialize: (options = {}) ->
     @post_id = options.post_id
-    @entity = options.entity
+    @entity = (new HTTP.URI options.entity).toStringWithoutSchemePort()
     @container = TentStatus.Views.container
     super
 
