@@ -24,8 +24,20 @@ _.extend TentStatus.Helpers,
     else
       "/posts/#{encodeURIComponent entity}"
 
+  currentHostWithoutSubdomain: ->
+    window.location.hostname.replace(/^.*?([^.]*\.[^.]+)$/, '$1')
+
   isEntityOnTentHostDomain: (entity) ->
-    TentStatus.config.tent_host_domain && entity.match(new RegExp(TentStatus.config.tent_host_domain))
+    TentStatus.config.tent_host_domain && entity.match(
+      new RegExp(TentStatus.Helpers.escapeRegExChars(TentStatus.config.tent_host_domain))
+    )
+
+  isURLExternal: (url) ->
+    !url.match(
+      new RegExp(TentStatus.Helpers.escapeRegExChars(
+        TentStatus.Helpers.currentHostWithoutSubdomain()
+      ))
+    )
 
   ensureUrlHasScheme: (url) ->
     return unless url
