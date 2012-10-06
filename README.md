@@ -41,3 +41,8 @@ Here are some tasks that need to be done:
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+### Setup notes
+
+It's expected that Node.js be installed as a javascript runtime (`brew install node` on OS X)
+
