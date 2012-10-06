@@ -18,6 +18,7 @@ module Tent
       set :assets, SprocketsEnvironment.assets
       set :cdn_url, false
       set :asset_manifest, false
+      set :views, File.expand_path(File.join(File.dirname(__FILE__), 'views'))
     end
 
     configure :production do
