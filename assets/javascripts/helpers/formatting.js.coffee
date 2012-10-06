@@ -40,6 +40,20 @@ _.extend TentStatus.Helpers,
     return unless text
     text.replace /[&"'><]/g, (character) -> TentStatus.Helpers.HTML_ENTITIES[character]
 
+  htmlUnescapeText: (text) ->
+    for char, entities of HTML_ENTITIES
+      text = text.replace(entities, char)
+    text
+
+  extractTrailingHtmlEntitiesFromText: (text) ->
+    trailing_text = ""
+    for char, entities of TentStatus.Helpers.HTML_ENTITIES
+      regex = new RegExp("(#{TentStatus.Helpers.escapeRegExChars(entities)}?)$")
+      if regex.test(text)
+        trailing_text = text.match(regex)[1] + trailing_text
+        text = text.replace(regex, "")
+    [text, trailing_text]
+
   flattenUrlsWithIndices: (items) ->
     _flattened = []
     for item in items
@@ -102,11 +116,14 @@ _.extend TentStatus.Helpers,
       original = text.substring(item.start_index, item.end_index)
       link_attributes = []
 
+      [item.url, trailing_text] = TentStatus.Helpers.extractTrailingHtmlEntitiesFromText(item.url)
+      [original, original_trailing_text] = TentStatus.Helpers.extractTrailingHtmlEntitiesFromText(original)
+
       if TentStatus.Helpers.isURLExternal(item.url)
         link_attributes.push "data-view='ExternalLink'"
 
       html = "<a href='#{TentStatus.Helpers.ensureUrlHasScheme(item.url)}' #{link_attributes.join(' ')}>" +
-             TentStatus.Helpers.truncate(TentStatus.Helpers.formatUrlWithPath(original), TentStatus.config.URL_TRIM_LENGTH) + "</a>"
+             TentStatus.Helpers.truncate(TentStatus.Helpers.formatUrlWithPath(original), TentStatus.config.URL_TRIM_LENGTH) + "</a>#{trailing_text}"
       delta = html.length - original.length
       updateIndicesWithOffset(urls_and_mentions, item.start_index, delta)
       urls_and_mentions = removeOverlappingItems(urls_and_mentions, item.start_index, item.end_index + delta)
