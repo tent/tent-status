@@ -135,7 +135,7 @@ module Tent
       conditions[:entity] = params['entity'] if params['entity']
 
       if params['mentioned_post'] || params['mentioned_entity']
-        conditions[:mentions] = {}
+        conditions[:mentions] = { :original_post => true }
         conditions[:mentions][:mentioned_post_id] = params['mentioned_post'] if params['mentioned_post']
         conditions[:mentions][:entity] = params['mentioned_entity'] if params['mentioned_entity']
       end
