@@ -3,6 +3,7 @@ class TentStatus.Views.ReplyPostForm extends TentStatus.Views.NewPostForm
 
   initialize: (options = {}) ->
     @postsFeedView = options.parentView.parentView
+    @is_reply_form = true
 
     super
 
@@ -20,10 +21,14 @@ class TentStatus.Views.ReplyPostForm extends TentStatus.Views.NewPostForm
     @is_hidden = @$container.hasClass('hide')
     @hide_text = 'Cancel'
 
-    ## this references the wrong instance in render, TODO: debug and fix this issue
-    $form = @$form
-    html = @html
-    @on 'ready', => $form.html(html)
+    @_initialized = true
+    @init()
+
+  init: =>
+    return unless @_initialized is true
+    @$form.html(@html)
+
+    super
 
   getReplyButton: =>
     key = if @is_repost then 'reply_repost' else 'reply'
