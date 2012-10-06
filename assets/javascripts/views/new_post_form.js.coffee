@@ -15,7 +15,7 @@ class TentStatus.Views.NewPostForm extends TentStatus.View
 
     @$post_btn = ($ 'input[type=submit]', @$el)
 
-    @$form = ($ 'form', @$el)
+    @$form = ($ 'form', @$el) unless @is_reply_form
     @$form.off('submit.post').on 'submit.post', @submit
     @$post_btn.off('click.post').on 'click.post', @submit
 
