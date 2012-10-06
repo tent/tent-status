@@ -7,15 +7,6 @@ require 'hogan_assets'
 require 'uglifier'
 require 'yui/compressor'
 
-namespace :spec do
-  desc "Run JavaScript specs via Evergreen"
-  task :javascripts do
-    require './config/evergreen'
-    result = Evergreen::Runner.new.run
-    Kernel.exit(1) unless result
-  end
-end
-
 Rake::SprocketsTask.new do |t|
   %x{rm -rf ./public}
   t.environment = Sprockets::Environment.new
