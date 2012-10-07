@@ -1,6 +1,7 @@
 TentStatus.Views.new_post_button = new class NewPostButton extends TentStatus.View
   initialize: ->
     @setElement document.getElementById('new_post_button')
+    return unless @el
 
     @popdown = document.getElementById('new_post_popdown')
     @$popdown = $(@popdown)

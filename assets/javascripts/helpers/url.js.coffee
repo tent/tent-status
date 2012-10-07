@@ -19,13 +19,32 @@ _.extend TentStatus.Helpers,
 
   entityProfileUrl: (entity) ->
     return unless entity
-    if TentStatus.Helpers.isEntityOnTentHostDomain(entity)
-      "#{entity}"
+    if TentStatus.Helpers.isDomainEntity(entity)
+      "/profile"
+    else if TentStatus.Helpers.isEntityOnTentHostDomain(entity)
+      entity
     else
-      "/posts/#{encodeURIComponent entity}"
+      "/#{encodeURIComponent entity}/profile"
+
+  followingsUrl: (entity) ->
+    return unless entity
+    if TentStatus.Helpers.isDomainEntity(entity)
+      "/followings"
+    else
+      "/#{encodeURIComponent entity}/followings"
+
+  followersUrl: (entity) ->
+    return unless entity
+    if TentStatus.Helpers.isDomainEntity(entity)
+      "/followers"
+    else
+      "/#{encodeURIComponent entity}/followers"
 
   currentHostWithoutSubdomain: ->
     window.location.hostname.replace(/^.*?([^.]*\.[^.]+)$/, '$1')
+
+  isDomainEntity: (entity) ->
+    TentStatus.config.domain_entity && TentStatus.config.domain_entity.assertEqual(entity)
 
   isEntityOnTentHostDomain: (entity) ->
     TentStatus.config.tent_host_domain && entity.match(

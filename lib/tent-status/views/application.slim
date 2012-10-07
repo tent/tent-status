@@ -1,88 +1,35 @@
 doctype html
 
 head
-  link href="#{{domain_entity}}/tent/profile" rel="https://tent.io/rels/profile"
+  link href="#{{tent_api_root}}/profile" rel="https://tent.io/rels/profile"
   meta name="viewport" content="width=device-width, initial-scale=1.0"
   link rel="stylesheet" type="text/css" href=asset_path("application.css")
   link rel="shortcut icon" href="http://dr49qsqhb5y4j.cloudfront.net/favicon.png"
   link rel="apple-touch-icon" sizes="57x57" href="http://dr49qsqhb5y4j.cloudfront.net/appicon57.png"
   link rel="apple-touch-icon" sizes="72x72" href="http://dr49qsqhb5y4j.cloudfront.net/appicon72.png"
   link rel="apple-touch-icon" sizes="114x114" href="http://dr49qsqhb5y4j.cloudfront.net/appicon114.png"
-  title Tent.is Simple Tent Hosting
+  title = app_title
 
 body
   #main-nav.navbar.navbar-fixed-top
     .navbar-inner
-      .brand
-        - if current_user || guest_user
-          a href==(current_user || guest_user).entity = (current_user || guest_user).entity.to_s.sub(%r{\Ahttps?://([^/]+).*?\z}) { |m| $1 }
-        - else
-          a href='https://tent.is' Tent.is
-
-      .nav-collapse
-        .clearfix
-          ul.nav
-            li
-              a href="https://app.#{tent_host_domain}/global" Site Feed
-            - if current_user || guest_user
-              li
-                a href=full_url('/profile') Profile
-              li
-                a href=full_url('/mentions') Mentions
-              li
-                a href=full_url('/followers') Followers
-              li
-                a href=full_url('/followings') Following
-              li
-                a href=full_url('/admin') Account
-              li.position-relative
-                a#new_post_button href=full_url('#') New Post
-                #new_post_popdown.popover.bottom
-                  .arrow &nbsp;
-                  .popover-content
-                    div data-view='NewPostForm'
-            - else
-              li
-                a href='https://tent.is/blog' Blog
-
-            - if current_user || guest_user
-              li
-                a href=full_url('/signout') Signout
-            - else
-              li
-                a href='https://tent.is/login' Login
-              li
-                a href='https://tent.is' Signup
+      - if tent_host_domain
+        == slim :hosted_nav
+      - else
+        == slim :standalone_nav
 
   .container#main
     == yield if block_given?
 
-  #loading-indicator.pulse &nbsp;
+  - if in_application?
+    #loading-indicator.pulse &nbsp;
 
   footer.navbar-fixed-bottom
-    a href='https://tent.is/terms' Terms 
-    ' |
-    a href='https://tent.is/privacy' Privacy 
-    ' |
-    a href='https://tent.is/partners' Partners 
-    ' |
-    a href='https://tent.io' More about Tent 
-    ' |
-    a href='mailto:contact@tent.is' Contact 
-    ' |
-    | &copy; 2012 Apollic Software, LLC  
+    - if tent_host_domain
+      == slim :hosted_footer
+    - else
+      == slim :standalone_footer
 
-
-  javascript:
-    window.TentStatus = {
-      url_root: "#{{full_path('/')}}",
-      authenticated: #{{!!(current_user || guest_user)}},
-      guest_authenticated: #{{!!guest_user}},
-      tent_api_root: "#{{tent_api_root}}",
-      tent_host_domain: "#{{tent_host_domain}}",
-      domain_entity: "#{{domain_entity}}",
-      current_entity: "#{{(current_user || guest_user) ? (current_user || guest_user).entity : nil}}",
-      current_auth_details: JSON.parse('#{{auth_details ? auth_details.to_json : '{}'}}')
-    }
-
-  script src=asset_path("boot.js")
+  - if in_application?
+    == slim :config
+    script src=asset_path("boot.js")

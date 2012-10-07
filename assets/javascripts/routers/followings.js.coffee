@@ -3,14 +3,18 @@ TentStatus.Routers.followings = new class FollowingsRouter extends TentStatus.Ro
 
   routes:
     "followings" : "index"
+    ":entity/followings" : "index"
 
-  index: =>
+  index: (entity = TentStatus.config.domain_entity) =>
     if TentStatus.isAppSubdomain()
       return TentStatus.redirectToGlobalFeed()
 
+    if !entity.isURI
+      entity = new HTTP.URI decodeURIComponent(entity)
+
     if TentStatus.guest_authenticated || !TentStatus.authenticated
-      TentStatus.setPageTitle "#{TentStatus.Helpers.formatUrl TentStatus.config.domain_entity.toStringWithoutSchemePort()} - Followings"
+      TentStatus.setPageTitle "#{TentStatus.Helpers.formatUrl entity.toStringWithoutSchemePort()} - Followings"
     else
       TentStatus.setPageTitle 'You are following'
-    @view = new TentStatus.Views.Followings
+    @view = new TentStatus.Views.Followings entity: entity
 

@@ -4,6 +4,7 @@ class TentStatus.Views.Follower extends TentStatus.View
   initialize: (options = {}) ->
     @parentView = options.parentView
     @follower = options.follower
+    @entity = @parentView.entity
 
     @follower.on 'change:profile', => @render()
     @on 'ready', @initRemoveFollowerBtn
@@ -26,11 +27,13 @@ class TentStatus.Views.Follower extends TentStatus.View
     return false unless @follower
     confirm @$fields.remove_button.attr('data-confirm')
 
-  context: (follower = @follower) =>
-    _.extend follower.toJSON(), {
+  context: (follower = @follower, entity = @entity) =>
+    _.extend follower.toJSON(), super, {
       name: follower.name()
       avatar: follower.avatar()
-    }, super
+      profileUrl: TentStatus.Helpers.entityProfileUrl follower.get('entity')
+      guest_authenticated: TentStatus.guest_authenticated || !TentStatus.config.domain_entity.assertEqual(entity)
+    }
 
   renderHTML: (context, partials, template = (@template || partials['_follower'])) =>
     template.render(context, partials)

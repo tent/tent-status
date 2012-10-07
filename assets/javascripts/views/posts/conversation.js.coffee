@@ -26,14 +26,15 @@ class TentStatus.Views.Conversation extends TentStatus.View
       post_types: TentStatus.config.post_types
     }
 
-    hosted_url = "#{TentStatus.config.tent_host_api_root}/posts/#{@post_id}"
-    hosted_params = _.extend {
-      entity: @entity
-    }, params
+    if TentStatus.config.tent_host_api_root
+      hosted_url = "#{TentStatus.config.tent_host_api_root}/posts/#{@post_id}"
+      hosted_params = _.extend {
+        entity: @entity
+      }, params
 
     TentStatus.trigger 'loading:start'
     new HTTP 'GET', url, params, (post, xhr) =>
-      if xhr.status != 200
+      if xhr.status != 200 && TentStatus.config.tent_host_api_root
         new HTTP 'GET', hosted_url, hosted_params, @getPostComplete
       else
         @getPostComplete(arguments...)
@@ -58,17 +59,18 @@ class TentStatus.Views.Conversation extends TentStatus.View
     url = "#{TentStatus.config.tent_api_root}/posts/#{encodeURIComponent entity}/#{post_id}"
     params = null
 
-    hosted_url = "#{TentStatus.config.tent_host_api_root}/posts/#{post_id}"
-    hosted_params = {
-      entity: entity
-    }
+    if TentStatus.config.tent_host_api_root
+      hosted_url = "#{TentStatus.config.tent_host_api_root}/posts/#{post_id}"
+      hosted_params = {
+        entity: entity
+      }
 
     if post = TentStatus.Cache.get("post:#{post_id}")
       @set 'parent_post', post
     else
       TentStatus.trigger 'loading:start'
       new HTTP 'GET', url, params, (post, xhr) =>
-        if xhr.status != 200
+        if xhr.status != 200 && TentStatus.config.tent_host_api_root
           new HTTP 'GET', hosted_url, hosted_params, @getParentPostComplete
         else
           @getParentPostComplete(arguments...)
@@ -88,13 +90,14 @@ class TentStatus.Views.Conversation extends TentStatus.View
       post_types: TentStatus.config.post_types
     }
 
-    hosted_url = "#{TentStatus.config.tent_host_api_root}/posts"
-    hosted_params = _.extend {
-      mentioned_entity: @entity
-    }, params
+    if TentStatus.config.tent_host_api_root
+      hosted_url = "#{TentStatus.config.tent_host_api_root}/posts"
+      hosted_params = _.extend {
+        mentioned_entity: @entity
+      }, params
 
-    TentStatus.trigger 'loading:start'
-    new HTTP 'GET', hosted_url, hosted_params, @getChildPostsComplete
+      TentStatus.trigger 'loading:start'
+      new HTTP 'GET', hosted_url, hosted_params, @getChildPostsComplete
 
     TentStatus.trigger 'loading:start'
     new HTTP 'GET', url, params, @getChildPostsComplete

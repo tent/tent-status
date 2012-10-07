@@ -9,6 +9,8 @@ TentStatus.Routers.posts = new class PostsRouter extends TentStatus.Router
     "posts/:entity/:post_id" : "conversation"
     "posts/:post_id" : "conversation"
     "mentions" : "mentions"
+    ":entity/mentions" : "mentions"
+    ":entity/profile" : "profile"
 
   index: =>
     if !TentStatus.authenticated or (TentStatus.config.current_entity.hostname != TentStatus.config.domain_entity.hostname)
@@ -40,14 +42,19 @@ TentStatus.Routers.posts = new class PostsRouter extends TentStatus.Router
     if TentStatus.isAppSubdomain()
       return TentStatus.redirectToGlobalFeed()
 
-    TentStatus.setPageTitle 'Your profile'
-    @profile(TentStatus.current_entity)
+    @profile(TentStatus.config.domain_entity)
 
   profile: (entity) =>
     if TentStatus.isAppSubdomain()
       return TentStatus.redirectToGlobalFeed()
 
-    TentStatus.setPageTitle "#{TentStatus.Helpers.formatUrl TentStatus.config.domain_entity.toStringWithoutSchemePort()} - Profile"
+    if !entity.isURI
+      entity = new HTTP.URI decodeURIComponent(entity)
+
+    if TentStatus.config.domain_entity.assertEqual(entity)
+      TentStatus.setPageTitle 'Your profile'
+    else
+      TentStatus.setPageTitle "#{TentStatus.Helpers.formatUrl TentStatus.config.domain_entity.toStringWithoutSchemePort()} - Profile"
     @view = new TentStatus.Views.Profile entity: entity
 
   globalFeed: =>
@@ -56,7 +63,17 @@ TentStatus.Routers.posts = new class PostsRouter extends TentStatus.Router
     TentStatus.setPageTitle "Site Feed"
     @view = new TentStatus.Views.GlobalFeed
 
-  mentions: =>
-    TentStatus.setPageTitle "#{TentStatus.Helpers.formatUrl TentStatus.config.domain_entity.toStringWithoutSchemePort()} - Mentions"
-    @view = new TentStatus.Views.Mentions
+  mentions: (entity) =>
+    if TentStatus.isAppSubdomain()
+      return TentStatus.redirectToGlobalFeed()
+    else if entity
+      entity = new HTTP.URI decodeURIComponent(entity)
+    else
+      entity = TentStatus.config.domain_entity
+
+    if TentStatus.config.domain_entity.assertEqual(entity)
+      TentStatus.setPageTitle "Your mentions"
+    else
+      TentStatus.setPageTitle "#{TentStatus.Helpers.formatUrl entity.toStringWithoutSchemePort()} - Mentions"
+    @view = new TentStatus.Views.Mentions entity: entity
 

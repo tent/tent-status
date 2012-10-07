@@ -1,0 +1,42 @@
+.brand
+  - if current_user || guest_user
+    a href==(current_user || guest_user).entity = (current_user || guest_user).entity.to_s.sub(%r{\Ahttps?://([^/]+).*?\z}) { |m| $1 }
+  - else
+    a href=="https://#{tent_host_domain}" = app_title
+
+.nav-collapse
+  .clearfix
+    ul.nav
+      li
+        a href="https://app.#{tent_host_domain}/global" Site Feed
+      - if current_user || guest_user
+        li
+          a href=full_url('/profile') Profile
+        li
+          a href=full_url('/mentions') Mentions
+        li
+          a href=full_url('/followers') Followers
+        li
+          a href=full_url('/followings') Following
+        li
+          a href=full_url('/admin') Account
+        li.position-relative
+          a#new_post_button href=full_url('#') New Post
+          #new_post_popdown.popover.bottom
+            .arrow &nbsp;
+            .popover-content
+              div data-view='NewPostForm'
+      - else
+        li
+          a href='https://#{tent_host_domain}/blog' Blog
+
+      - if current_user || guest_user
+        li
+          a href=full_url('/signout') Signout
+    - unless current_user || guest_user
+      ul.nav.pull-right
+        li
+          a href='https://#{tent_host_domain}/login' Login
+        li
+          a href='https://#{tent_host_domain}' Signup
+

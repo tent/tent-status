@@ -13,13 +13,13 @@
     
     {{#guest_authenticated}}
     <h1 class="page-header">
-      <small><a href='{{domain_entity}}'>{{formatted.domain_entity}}</a></small> is Following
+      <small><a href='{{profileUrl}}'>{{formatted.domain_entity}}</a></small> is Following
     </h1>
     {{/guest_authenticated}}
 
     {{^authenticated}}
     <h1 class="page-header">
-      <small><a href='{{domain_entity}}'>{{formatted.domain_entity}}</a></small> is Following
+      <small><a href='{{profileUrl}}'>{{formatted.domain_entity}}</a></small> is Following
     </h1>
     {{/authenticated}}
     

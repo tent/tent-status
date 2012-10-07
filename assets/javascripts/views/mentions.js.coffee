@@ -1,14 +1,16 @@
 class TentStatus.Views.Mentions extends TentStatus.View
   templateName: 'mentions'
 
-  initialize: ->
+  initialize: (options = {}) ->
     @container = TentStatus.Views.container
+    @entity = options.entity
 
     super
 
     @render()
 
   context: =>
-    domain_entity: TentStatus.config.domain_entity.toStringWithoutSchemePort()
+    domain_entity: @entity.toStringWithoutSchemePort()
+    profileUrl: TentStatus.Helpers.entityProfileUrl @entity
     formatted:
-      domain_entity: TentStatus.Helpers.formatUrl TentStatus.config.domain_entity.toStringWithoutSchemePort()
+      domain_entity: TentStatus.Helpers.formatUrl @entity.toStringWithoutSchemePort()
