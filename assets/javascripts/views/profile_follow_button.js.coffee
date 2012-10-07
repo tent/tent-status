@@ -8,17 +8,23 @@ class TentStatus.Views.ProfileFollowButton extends Backbone.View
     @$entity = ($ '[name=entity]', @$el)
     @entity = @$entity.val()
 
-    new HTTP 'GET', "#{TentStatus.config.tent_api_root}/followings", {
-      entity: @entity
-    }, (followings, xhr) =>
-      return unless xhr.status == 200
-      if followings.length
-        @following_id = followings[0].id
-        @setFollowing()
+    @current_entity = @parentView.entity
+    if TentStatus.config.domain_entity.assertEqual(@current_entity)
+      api_root = TentStatus.config.tent_api_root
+    else
+      api_root = TentStatus.config.tent_proxy_root + "/#{encodeURIComponent @current_entity}"
 
     if @entity == TentStatus.config.current_entity.toStringWithoutSchemePort()
       @buttons.submit.attr 'disabled', 'disabled'
       @buttons.submit.val 'You'
+    else
+      new HTTP 'GET', "#{api_root}/followings", {
+        entity: @entity
+      }, (followings, xhr) =>
+        return unless xhr.status == 200
+        if followings.length
+          @following_id = followings[0].id
+          @setFollowing()
 
     @$el.on 'submit', @submit
 

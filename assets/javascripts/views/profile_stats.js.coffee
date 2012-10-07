@@ -6,6 +6,12 @@ class TentStatus.Views.ProfileStats extends TentStatus.View
 
     @resources = ['posts', 'followers', 'followings']
 
+    @entity = options.parentView.entity
+    if TentStatus.config.domain_entity.assertEqual(@entity)
+      api_root = TentStatus.config.domain_tent_api_root
+    else
+      api_root = TentStatus.config.tent_proxy_root + "/#{encodeURIComponent @entity}"
+
     for r in @resources
       do (r) =>
         @on "change:#{r}Count", @render
@@ -16,7 +22,7 @@ class TentStatus.Views.ProfileStats extends TentStatus.View
         else
           params = {}
 
-        new HTTP 'GET', "#{TentStatus.config.current_tent_api_root}/#{r}/count", params, (count, xhr) =>
+        new HTTP 'GET', "#{api_root}/#{r}/count", params, (count, xhr) =>
           return unless xhr.status == 200
           @set "#{r}Count", count
 
@@ -26,6 +32,8 @@ class TentStatus.Views.ProfileStats extends TentStatus.View
     postsCount: @postsCount
     followersCount: @followersCount
     followingsCount: @followingsCount
+    followers_url: TentStatus.Helpers.followersUrl(@entity)
+    followings_url: TentStatus.Helpers.followingsUrl(@entity)
 
   render: =>
     for r in @resources

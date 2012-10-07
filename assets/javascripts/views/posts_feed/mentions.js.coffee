@@ -2,8 +2,15 @@ class TentStatus.Views.MentionsPostFeed extends TentStatus.Views.PostsFeed
   viewName: 'mentions_post_feed'
 
   initialize: (options = {}) ->
-    options.api_root ?= TentStatus.config.tent_api_root
+    @entity = options.parentView.entity
+    if TentStatus.config.domain_entity.assertEqual(@entity)
+      api_root = TentStatus.config.domain_tent_api_root
+    else
+      api_root = TentStatus.config.tent_proxy_root + "/#{encodeURIComponent @entity}"
+
+    options.api_root ?= api_root
     options.posts_params = {
-      mentioned_entity: TentStatus.config.domain_entity.toStringWithoutSchemePort()
+      mentioned_entity: @entity.toStringWithoutSchemePort()
     }
+
     super(options)

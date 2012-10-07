@@ -25,6 +25,9 @@ _.extend TentStatus.Helpers,
   formatUrlWithPath: (url = '') ->
     url.replace(/^\w+:\/\/(.*)$/, '$1')
 
+  capitalize: (string) ->
+    string.substr(0, 1).toUpperCase() + string.substr(1, string.length)
+
   replaceIndexRange: (start_index, end_index, string, replacement) ->
     string.substr(0, start_index) + replacement + string.substr(end_index, string.length-1)
 

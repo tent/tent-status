@@ -25,7 +25,7 @@
 #= require_tree ./collections
 
 @TentStatus ?= {
-  api_root: '/api'
+  api_root: ''
   url_root: '/'
   authenticated: false
   guest_authenticated: false
@@ -40,13 +40,15 @@ _.extend @TentStatus, Backbone.Events, {
   PER_PAGE: 10
 
   config: {
-    tent_host_api_root: "/api"
-    tent_api_root: new HTTP.URI(TentStatus.current_entity + '/tent')
-    current_tent_api_root: new HTTP.URI(window.location.protocol + '//' + window.location.hostname + '/tent')
+    tent_host_api_root: TentStatus.tent_host_api_root
+    tent_api_root: new HTTP.URI(TentStatus.tent_api_root) if TentStatus.tent_api_root
+    current_tent_api_root: new HTTP.URI(TentStatus.domain_tent_api_root) if TentStatus.domain_tent_api_root
     tent_host_domain: TentStatus.tent_host_domain
     tent_host_domain_tent_api_path: '/tent'
-    domain_entity: new HTTP.URI(window.location.href.replace(new RegExp("#{window.location.pathname}$"), ''))
-    current_entity: new HTTP.URI(TentStatus.current_entity)
+    tent_proxy_root: new HTTP.URI(TentStatus.tent_proxy_root)
+    domain_entity: new HTTP.URI(TentStatus.domain_entity) if TentStatus.domain_entity
+    domain_tent_api_root: new HTTP.URI(TentStatus.domain_tent_api_root) if TentStatus.domain_tent_api_root
+    current_entity: new HTTP.URI(TentStatus.current_entity) if TentStatus.current_entity
     post_types: ["https://tent.io/types/post/status/v0.1.0", "https://tent.io/types/post/repost/v0.1.0"]
     PER_PAGE: 10
     FETCH_INTERVAL: 3000

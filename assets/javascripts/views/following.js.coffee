@@ -7,6 +7,7 @@ class TentStatus.Views.Following extends TentStatus.View
 
   initialize: (options) ->
     @parentView = options.parentView
+    @entity = @parentView.entity
     super
 
     @following = options.following
@@ -29,11 +30,13 @@ class TentStatus.Views.Following extends TentStatus.View
     return false unless @following
     confirm @$fields.unfollow.attr('data-confirm')
 
-  context: (following=@following) =>
-    _.extend following.toJSON(), {
+  context: (following=@following, entity=@entity) =>
+    _.extend following.toJSON(), super, {
       name: following.name()
       avatar: following.avatar()
-    }, super
+      profileUrl: TentStatus.Helpers.entityProfileUrl following.get('entity')
+      guest_authenticated: TentStatus.guest_authenticated || !TentStatus.config.domain_entity.assertEqual(entity)
+    }
 
   renderHTML: (context, partials, template = (@template || partials['_following'])) =>
     template.render(context, partials)

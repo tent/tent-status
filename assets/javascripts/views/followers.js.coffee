@@ -4,31 +4,40 @@ class TentStatus.Views.Followers extends TentStatus.View
 
   dependentRenderAttributes: ['followers']
 
-  initialize: ->
+  initialize: (options = {}) ->
     @container = TentStatus.Views.container
+    @entity = options.entity
     super
 
     @on 'ready', @initFollowerViews
     @on 'ready', @initAutoPaginate
 
+    if TentStatus.config.domain_entity.assertEqual(@entity)
+      api_root = TentStatus.config.domain_tent_api_root
+    else
+      api_root = "#{TentStatus.config.tent_proxy_root}/#{encodeURIComponent @entity}"
+
     @on 'change:followers', @render
     TentStatus.trigger 'loading:start'
-    new HTTP 'GET', "#{TentStatus.config.current_tent_api_root}/followers", { limit: TentStatus.config.PER_PAGE }, (followers, xhr) =>
+    url = "#{api_root}/followers"
+    new HTTP 'GET', url, { limit: TentStatus.config.PER_PAGE }, (followers, xhr) =>
       TentStatus.trigger 'loading:complete'
       return unless xhr.status == 200
       followers = new TentStatus.Collections.Followers followers
+      followers.url = url
       paginator = new TentStatus.Paginator followers, { sinceId: followers.last()?.get('id') }
       paginator.on 'fetch:success', @appendRender
       @set 'followers', paginator
 
   context: =>
     followers: _.map(@followers?.toArray() || [], (follower) =>
-      TentStatus.Views.Follower::context(follower)
+      TentStatus.Views.Follower::context(follower, @entity)
     )
-    guest_authenticated: !!TentStatus.guest_authenticated
-    domain_entity: TentStatus.config.domain_entity.toStringWithoutSchemePort()
+    guest_authenticated: TentStatus.guest_authenticated || !TentStatus.config.domain_entity.assertEqual(@entity)
+    profileUrl: TentStatus.Helpers.entityProfileUrl(@entity)
+    domain_entity: @entity.toStringWithoutSchemePort()
     formatted:
-      domain_entity: TentStatus.Helpers.formatUrl TentStatus.config.domain_entity.toStringWithoutSchemePort()
+      domain_entity: TentStatus.Helpers.formatUrl @entity.toStringWithoutSchemePort()
 
   initFollowerViews: =>
     _.each ($ '.follower', @container.$el), (el) =>
@@ -56,7 +65,7 @@ class TentStatus.Views.Followers extends TentStatus.View
     $last_post = $('.follower:last', $el)
     new_followers = for follower in new_followers
       follower = new TentStatus.Models.Follower follower
-      html += TentStatus.Views.Follower::renderHTML(TentStatus.Views.Follower::context(follower), @partials)
+      html += TentStatus.Views.Follower::renderHTML(TentStatus.Views.Follower::context(follower, @entity), @partials)
       follower
 
     $el.append(html)

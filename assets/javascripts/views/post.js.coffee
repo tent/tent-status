@@ -27,16 +27,20 @@ class TentStatus.Views.Post extends TentStatus.View
     @post.on 'change:profile', => @render()
     @post.on 'change:disable_repost', => @render()
 
+    @render() if @post.get('repost')?.get('profile')
+    @render() if @post.get('profile')
+
   fetchRepost: =>
-    if @post?.isRepost() && !@post.get('repost')
-      @$el.hide()
+    if @post?.isRepost()
       @post.on 'change:repost', =>
         repost = @post.get('repost')
         repost.on 'change:profile', => @render()
         repost.on 'change:disable_repost', => @render()
         @render()
         @$el.show()
-      @post.fetchRepost()
+      unless @post.get('repost')
+        @$el.hide()
+        @post.fetchRepost()
 
   bindEvents: =>
     @$buttons = {
@@ -120,7 +124,7 @@ class TentStatus.Views.Post extends TentStatus.View
     return false unless repost
     return false if post.get('id') == repost.get('id')
     _.extend( @context(repost), {
-      parent: { name: post.name(), id: post.get('id') }
+      parent: { name: post.name(), id: post.get('id'), app: post.get('app') }
       has_parent: true
     })
 
@@ -147,6 +151,7 @@ class TentStatus.Views.Post extends TentStatus.View
     _entities
 
   isCurrentUserEntity: (entity) =>
+    return false unless TentStatus.config.current_entity
     TentStatus.config.current_entity.assertEqual( new HTTP.URI entity )
 
   context: (post = @post, repostContext) =>

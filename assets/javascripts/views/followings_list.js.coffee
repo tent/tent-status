@@ -4,26 +4,37 @@ class TentStatus.Views.FollowingsList extends TentStatus.View
 
   dependentRenderAttributes: ['followings']
 
-  initialize: ->
+  initialize: (options = {}) ->
     super
+
+    @entity = options.parentView.entity
 
     @on 'ready', @initFollowingViews
     @on 'ready', @initAutoPaginate
 
+    if TentStatus.config.domain_entity.assertEqual(@entity)
+      api_root = TentStatus.config.domain_tent_api_root
+    else
+      api_root = "#{TentStatus.config.tent_proxy_root}/#{encodeURIComponent @entity}"
+
+    url = "#{api_root}/followings"
+
     @on 'change:followings', @render
     TentStatus.trigger 'loading:start'
-    new HTTP 'GET', "#{TentStatus.config.current_tent_api_root}/followings", { limit: TentStatus.config.PER_PAGE }, (followings, xhr) =>
+    new HTTP 'GET', url, { limit: TentStatus.config.PER_PAGE }, (followings, xhr) =>
       TentStatus.trigger 'loading:complete'
       return unless xhr.status == 200
       followings = new TentStatus.Collections.Followings followings
+      followings.url = url
       paginator = new TentStatus.Paginator followings, { sinceId: followings.last()?.get('id') }
       paginator.on 'fetch:success', @appendRender
       @set 'followings', paginator
 
   context: =>
     followings: _.map( @followings?.toArray() || [], (following) =>
-      TentStatus.Views.Following::context(following)
+      TentStatus.Views.Following::context(following, @entity)
     )
+    guest_authenticated: TentStatus.guest_authenticated || !TentStatus.config.domain_entity.assertEqual(@entity)
 
   appendRender: (new_followings) =>
     html = ""
@@ -31,7 +42,7 @@ class TentStatus.Views.FollowingsList extends TentStatus.View
     $last_post = $('.following:last', $el)
     new_followings = for following in new_followings
       following = new TentStatus.Models.Following following
-      html += TentStatus.Views.Following::renderHTML(TentStatus.Views.Following::context(following), @partials)
+      html += TentStatus.Views.Following::renderHTML(TentStatus.Views.Following::context(following, @entity), @partials)
       following
 
     $el.append(html)

@@ -1,15 +1,15 @@
 <div class="row">
   <div class="span1">
-    <a href="{{entity}}"><img class="img-rounded pull-left avatar" src="{{avatar}}" /></a>
+    <a href="{{profileUrl}}"><img class="img-rounded pull-left avatar" src="{{avatar}}" /></a>
   </div>
   <div class="span4 no-offset">
     <h5 style="margin: 0px;">
       {{#hasName}}
-      <a href="{{entity}}">{{name}} <small>{{formatted.entity}}</small></a>
+      <a href="{{profileUrl}}">{{name}} <small>{{formatted.entity}}</small></a>
       {{/hasName}}
       
       {{^hasName}}
-      <a href="{{entity}}">{{formatted.entity}}</a>
+      <a href="{{profileUrl}}">{{formatted.entity}}</a>
       {{/hasName}}
     </h5>
   </div>
@@ -37,7 +37,7 @@
   {{#repost}}
   <div class="span560 repost no-offset">{{> _post_inner}}</div>
   <div class="span6 offset1">Reposted by {{parent.name}}</div>
-  <small class="showOnHover pull-right">via {{app.name}}</small>
+  <small class="showOnHover pull-right">via {{parent.app.name}}</small>
   {{/repost}}
 </div>
 

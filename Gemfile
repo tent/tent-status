@@ -4,6 +4,7 @@ ruby '1.9.3'
 gemspec
 
 gem 'tent-client', :git => 'git://github.com/tent/tent-client-ruby.git', :branch => 'master'
+gem 'omniauth-tent'
 
 group :development do
   gem 'asset_sync', :git => 'git://github.com/titanous/asset_sync.git', :branch => 'fix-mime'
