@@ -60,6 +60,11 @@ class TentStatus.Views.FetchPostsPool extends Backbone.View
     @num_new_posts = @pool.collection.length
     @$elements.num_new_posts.text @num_new_posts
 
+    title = document.title
+    unread_text = if @num_new_posts then "(#{@num_new_posts}) " else ""
+    title = title.replace(/^(\(\d+\)\s*)*/, unread_text)
+    TentStatus.setPageTitle title
+
     @show() if @num_new_posts > 0
 
   show: => @$el.show()
