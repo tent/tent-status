@@ -7,7 +7,7 @@ class TentStatus.Views.DomainPostsFeed extends TentStatus.Views.PostsFeed
         entity: TentStatus.config.domain_entity.toStringWithoutSchemePort()
       }
     else
-      options.api_root ?= "#{TentStatus.config.tent_proxy_root}/#{encodeURIComponent entity}"
+      options.api_root ?= "#{TentStatus.config.tent_proxy_root}/#{encodeURIComponent entity.toStringWithoutSchemePort()}"
       options.posts_params = {
         entity: entity
       }

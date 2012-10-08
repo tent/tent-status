@@ -15,7 +15,7 @@ class TentStatus.Views.FollowingsList extends TentStatus.View
     if TentStatus.config.domain_entity.assertEqual(@entity)
       api_root = TentStatus.config.domain_tent_api_root
     else
-      api_root = "#{TentStatus.config.tent_proxy_root}/#{encodeURIComponent @entity}"
+      api_root = "#{TentStatus.config.tent_proxy_root}/#{encodeURIComponent @entity.toStringWithoutSchemePort()}"
 
     url = "#{api_root}/followings"
 
