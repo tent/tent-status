@@ -10,7 +10,7 @@ class TentStatus.Views.ProfileStats extends TentStatus.View
     if TentStatus.config.domain_entity.assertEqual(@entity)
       api_root = TentStatus.config.domain_tent_api_root
     else
-      api_root = TentStatus.config.tent_proxy_root + "/#{encodeURIComponent @entity}"
+      api_root = TentStatus.config.tent_proxy_root + "/#{encodeURIComponent @entity.toStringWithoutSchemePort()}"
 
     for r in @resources
       do (r) =>

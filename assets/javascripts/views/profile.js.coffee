@@ -16,7 +16,7 @@ class TentStatus.Views.Profile extends TentStatus.View
     if TentStatus.config.domain_entity.assertEqual(@entity)
       new HTTP 'GET', "#{TentStatus.config.domain_tent_api_root}/profile", null, @getProfileComplete
     else
-      new HTTP 'GET', "#{TentStatus.config.tent_proxy_root}/#{encodeURIComponent(@entity)}/profile", null, @getProfileComplete
+      new HTTP 'GET', "#{TentStatus.config.tent_proxy_root}/#{encodeURIComponent(@entity.toStringWithoutSchemePort())}/profile", null, @getProfileComplete
 
   getProfileComplete: (profile, xhr) =>
     TentStatus.trigger 'loading:complete'
