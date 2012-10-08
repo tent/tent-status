@@ -4,6 +4,8 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'bundler'
 Bundler.require
 
+$stdout.sync = true
+
 require 'tent-status/app'
 
 map '/' do
