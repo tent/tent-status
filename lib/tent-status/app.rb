@@ -31,8 +31,10 @@ module Tent
     end
 
     configure :production do
-      set :asset_manifest, Yajl::Parser.parse(File.read(ENV['STATUS_ASSET_MANIFEST'])) if ENV['STATUS_ASSET_MANIFEST']
-      set :cdn_url, ENV['STATUS_CDN_URL']
+      if ENV['STATUS_CDN_URL']
+        set :asset_manifest, Yajl::Parser.parse(File.read(ENV['STATUS_ASSET_MANIFEST'])) if ENV['STATUS_ASSET_MANIFEST']
+        set :cdn_url, ENV['STATUS_CDN_URL']
+      end
     end
 
     if ENV['TENT_HOST_DOMAIN']
@@ -358,7 +360,7 @@ module Tent
       [200, { 'Content-Type' => 'application/json' }, [data.to_json]]
     end
 
-    if ENV['RACK_ENV'] != 'production'
+    if ENV['RACK_ENV'] != 'production' || !ENV['STATUS_CDN_URL']
       get '/assets/*' do
         new_env = env.clone
         new_env["PATH_INFO"].gsub!("/assets", "")
