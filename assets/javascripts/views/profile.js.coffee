@@ -6,7 +6,7 @@ class TentStatus.Views.Profile extends TentStatus.View
 
   initialize: (options = {}) ->
     @container = TentStatus.Views.container
-    @entity = decodeURIComponent(options.entity)
+    @entity = new HTTP.URI decodeURIComponent(options.entity)
 
     super
 
