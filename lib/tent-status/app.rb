@@ -362,9 +362,22 @@ module Tent
 
     if ENV['RACK_ENV'] != 'production' || !ENV['STATUS_CDN_URL']
       get '/assets/*' do
-        new_env = env.clone
-        new_env["PATH_INFO"].gsub!("/assets", "")
-        settings.assets.call(new_env)
+        asset = params[:splat].first
+        path = "./public/assets/#{asset}"
+        if File.exists?(path)
+          content_type = case asset.split('.').last
+                         when 'css'
+                           'text/css'
+                         when 'js'
+                           'application/javascript'
+                         end
+          headers = { 'Content-Type' => content_type } if content_type
+          [200, headers, [File.read(path)]]
+        else
+          new_env = env.clone
+          new_env["PATH_INFO"].gsub!("/assets", "")
+          settings.assets.call(new_env)
+        end
       end
     end
 
