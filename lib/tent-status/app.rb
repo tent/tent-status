@@ -390,8 +390,8 @@ module Tent
       halt 404
     end
 
-    get '/tent-proxy/:entity/profile' do
-      profile, server_url = discover(params[:entity])
+    get '/tent-proxy/:proxy_entity/profile' do
+      profile, server_url = discover(params[:proxy_entity])
       if server_url
         session["#{params[:entity]}-server_url"] = server_url
       end
@@ -403,8 +403,8 @@ module Tent
       end
     end
 
-    get '/tent-proxy/:entity/*' do
-      entity = params.delete('entity')
+    get '/tent-proxy/:proxy_entity/*' do
+      entity = params.delete('proxy_entity')
       unless server_url = session["#{entity}-server_url"]
         server_url = discover(entity).last
         halt 404 unless server_url
