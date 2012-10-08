@@ -2,7 +2,7 @@ class TentStatus.Views.DomainPostsFeed extends TentStatus.Views.PostsFeed
   initialize: (options = {}) ->
     entity = options.parentView.entity
     if TentStatus.config.domain_entity.assertEqual(entity)
-      options.api_root ?= TentStatus.config.tent_api_root
+      options.api_root ?= TentStatus.config.current_tent_api_root
       options.posts_params = {
         entity: TentStatus.config.domain_entity.toStringWithoutSchemePort()
       }
