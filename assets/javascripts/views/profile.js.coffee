@@ -34,6 +34,7 @@ class TentStatus.Views.Profile extends TentStatus.View
     return {} unless @profile
     _.extend super,
       entity: @profile.entity()
+      guest_authenticated: TentStatus.guest_authenticated || !TentStatus.config.domain_entity.assertEqual(@entity)
       profile:
         name: @profile.name()
         bio: @profile.bio()
