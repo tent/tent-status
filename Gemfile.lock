@@ -154,6 +154,8 @@ GEM
       omniauth (~> 1.1.1)
       tent-client
     open4 (1.3.0)
+    puma (1.6.3)
+      rack (~> 1.2)
     rack (1.4.1)
     rack-protection (1.2.0)
       rack
@@ -192,6 +194,7 @@ DEPENDENCIES
   kicker
   mime-types
   omniauth-tent
+  puma
   tent-client!
   tent-status!
   yui-compressor
