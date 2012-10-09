@@ -9,7 +9,7 @@ TentStatus is a Sinatra/Backbone app that sends/receives Tent status posts.
 ```shell
 heroku create --addons heroku-postgresql:dev
 heroku pg:promote $(heroku pg | head -1 | cut -f2 -d" ")
-heroku config:add APP_NAME='TentStatus Standalone' STATUS_ASSET_MANIFEST='./public/assets/manifest.json' COOKIE_SECRET=abc
+heroku config:add APP_NAME='TentStatus Standalone' STATUS_ASSET_MANIFEST='./public/assets/manifest.json' COOKIE_SECRET=$(openssl rand -hex 16 | tr -d '\r\n')
 git push heroku master
 heroku open
 ```
