@@ -13,10 +13,12 @@
 #= require mac_auth
 #= require ./events
 #= require ./cache
+#= require ./fetch_interval
 #= require ./paginator
 #= require ./fetch_pool
 #= require ./view
 #= require ./router
+#= require ./background_mentions_pool
 #= require_tree ./helpers
 #= require_tree ./views
 #= require_tree ./routers

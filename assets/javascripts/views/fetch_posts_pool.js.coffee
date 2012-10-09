@@ -41,6 +41,8 @@ class TentStatus.Views.FetchPostsPool extends Backbone.View
       e.preventDefault()
       @emptyPool()
       false
+
+    @trigger 'pool:init'
     
   setFetchInterval: (interval=@fetch_delay+@fetch_delay_offset) =>
     clearInterval TentStatus._fetchPostsPoolInterval
@@ -57,6 +59,7 @@ class TentStatus.Views.FetchPostsPool extends Backbone.View
     @since_id = @pool.since_id
 
     if last_since_id == @since_id
+      # TODO: use TentStatus.FetchInterval
       @fetch_delay_offset = Math.min(@fetch_delay_offset + @fetch_delay, TentStatus.config.MAX_FETCH_LATENCY - @fetch_delay)
       @setFetchInterval()
     else
