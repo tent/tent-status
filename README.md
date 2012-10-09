@@ -88,12 +88,9 @@ that it can talk to Tent servers.
 
 Here are some tasks that need to be done:
 
-- Integrate with [omniauth-tent](https://github.com/tent/omniauth-tent)
 - Add HTML5 location to posts (opt-in)
 - Fix replies to mentions when on the mentions page from inserting into the feed
-- Make navbar sticky (visible when scrolling)
 - Add inline conversation view (or a modal which renders the existing one)
-- Add new post form to profile page (should be pre-filled with mention)
 - Show location and other data from basic profile on the profile page
 - Dim domain.com when subdomain isn't www
 - Show number of unread posts in parens in page title
