@@ -83,9 +83,6 @@ There are additional ENV variables not presented above which can be configured a
 
 ## Contributing
 
-The app currently isn't very useful because it needs OAuth authentication so
-that it can talk to Tent servers.
-
 Here are some tasks that need to be done:
 
 - Add HTML5 location to posts (opt-in)
