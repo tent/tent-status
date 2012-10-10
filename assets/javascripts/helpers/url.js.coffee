@@ -63,7 +63,7 @@ _.extend TentStatus.Helpers,
     return url if url.match /^[a-z]+:\/\//i
     'http://' + url
 
-  substringIndices: (string, substring) ->
+  substringIndices: (string, substring, invalid_after) ->
     return [] unless string and substring
 
     _indices = []
@@ -74,6 +74,7 @@ _.extend TentStatus.Helpers,
       break if i == -1
       _start_index = i + _offset
       _end_index = _start_index + _length
+      break if string.substr(_end_index, 1).match(invalid_after) if invalid_after
       _offset += i + _length
       _indices.push _start_index, _end_index
 
@@ -121,7 +122,7 @@ _.extend TentStatus.Helpers,
         _offset += _text.indexOf(matched) + matched.length
         original_text = entity
         _length = original_text.length
-        _indices = TentStatus.Helpers.substringIndices(text, matched)
+        _indices = TentStatus.Helpers.substringIndices(text, matched, /[a-z0-9]/)
         if entity.match(new RegExp(TentStatus.config.tent_host_domain))
           entity = "https://#{entity}"
         else
