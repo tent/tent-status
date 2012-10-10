@@ -64,10 +64,11 @@ _.extend @TentStatus, Backbone.Events, {
   redirectToGlobalFeed: =>
     TentStatus.Routers.posts.navigate('/global', {trigger:true})
 
-  setPageTitle: (title) =>
+  setPageTitle: (title, options={}) =>
     @base_title ?= document.title
-    title = title + ' - ' + @base_title if title
-    title ?= @base_title
+    base_title = if options.includes_base_title then "" else " - #{@base_title}"
+    title = title + base_title if title
+    title ?= base_title
     document.title = title
 
   devWarning: (fn, msg) ->
