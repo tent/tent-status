@@ -111,7 +111,7 @@ _.extend TentStatus.Helpers,
 
     _from_mentions = []
     if TentStatus.config.tent_host_domain
-      _regex = new RegExp("([\\^]([a-z0-9]{2,}(?:\.#{TentStatus.Helpers.escapeRegExChars(TentStatus.config.tent_host_domain)})?))(?!:\/\/)(?=[\\W]|$)")
+      _regex = new RegExp("([\\^]([a-z0-9]{2,}(?:\.#{TentStatus.Helpers.escapeRegExChars(TentStatus.config.tent_host_domain)})?))(?!:\/\/)(?=[\\W]|$)", "i")
       _offset = 0
       _text = text
       while (_text = text.substr(_offset, text.length)) && _text.length && _regex.exec(_text)
@@ -122,7 +122,7 @@ _.extend TentStatus.Helpers,
         _offset += _text.indexOf(matched) + matched.length
         original_text = entity
         _length = original_text.length
-        _indices = TentStatus.Helpers.substringIndices(text, matched, /[a-z0-9]/)
+        _indices = TentStatus.Helpers.substringIndices(text, matched, /[a-z0-9]/i)
         if entity.match(new RegExp(TentStatus.config.tent_host_domain))
           entity = "https://#{entity}"
         else
@@ -155,9 +155,9 @@ _.extend TentStatus.Helpers,
         continue if should_skip
 
         _from_mentions.push {
-          entity: entity
+          entity: entity.toLowerCase()
           text: original_text
-          url: entity
+          url: entity.toLowerCase()
           indices: _indices
         } unless (_entities[entity] and options.uniq != false)
         _entities[entity] = true
