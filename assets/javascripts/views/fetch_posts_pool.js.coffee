@@ -46,6 +46,12 @@ class TentStatus.Views.FetchPostsPool extends Backbone.View
     clearInterval TentStatus._fetchPostsPoolInterval
     TentStatus._fetchPostsPoolInterval = setInterval @pool.fetch, interval
 
+  updateUnreadTitle: =>
+    title = document.title
+    unread_text = if @num_new_posts then "(#{@num_new_posts}) " else ""
+    title = title.replace(/^(\(\d+\)\s*)*/, unread_text)
+    TentStatus.setPageTitle title, {includes_base_title:true}
+
   update: =>
     last_since_id = @since_id
     @since_id = @pool.since_id
@@ -60,10 +66,7 @@ class TentStatus.Views.FetchPostsPool extends Backbone.View
     @num_new_posts = @pool.collection.length
     @$elements.num_new_posts.text @num_new_posts
 
-    title = document.title
-    unread_text = if @num_new_posts then "(#{@num_new_posts}) " else ""
-    title = title.replace(/^(\(\d+\)\s*)*/, unread_text)
-    TentStatus.setPageTitle title
+    @updateUnreadTitle()
 
     @show() if @num_new_posts > 0
 
@@ -91,4 +94,5 @@ class TentStatus.Views.FetchPostsPool extends Backbone.View
     @num_new_posts = 0
     @$elements.num_new_posts.text @num_new_posts
     @hide()
+    @updateUnreadTitle()
 
