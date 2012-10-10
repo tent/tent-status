@@ -23,6 +23,7 @@
 #= require ./model
 #= require_tree ./models
 #= require_tree ./collections
+#= require iphone
 
 @TentStatus ?= {
   api_root: ''
