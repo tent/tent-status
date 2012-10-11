@@ -70,6 +70,10 @@
 }
 
 @media (max-width: 841px) {
+  .mobile-hide {
+    display: none;
+  }
+
   #main-nav {
     ul.nav.main {
       display: none;
@@ -270,6 +274,13 @@
   #nav-right {
     left: 0px;
     right: 0px;
+  }
+  #main-container {
+    .followings table, .followers table {
+      td {
+        max-width: 180px;
+      }
+    }
   }
 }
 

@@ -32,9 +32,10 @@ class TentStatus.Views.Following extends TentStatus.View
 
   context: (following=@following, entity=@entity) =>
     _.extend following.toJSON(), super, {
-      name: following.name()
+      name: following.name() || following.get('entity')
       avatar: following.avatar()
       profileUrl: TentStatus.Helpers.entityProfileUrl following.get('entity')
+      has_name: following.hasName()
       guest_authenticated: TentStatus.guest_authenticated || !TentStatus.config.domain_entity.assertEqual(entity)
     }
 

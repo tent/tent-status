@@ -3,10 +3,7 @@
     {{#avatar}}
     <a href="{{profileUrl}}"><img class="avatar img-rounded" src="{{avatar}}" /></a>
     {{/avatar}}
-    <a href="{{profileUrl}}">{{name}}</a>
-  </td>
-  <td>
-    <a href="{{profileUrl}}">{{entity}}</a>
+    <a href="{{profileUrl}}">{{name}}</a>{{#hasName}} – <a href="{{profileUrl}}">{{entity}}</a>{{/hasName}}
   </td>
   <td>
     {{#authenticated}}
