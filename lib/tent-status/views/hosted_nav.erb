@@ -1,0 +1,36 @@
+<ul id='menu-toggle' class='nav scale nav-icon'>
+  <li><i class='ticon-menu_open'></i></li>
+</ul>
+
+<div class='brand'>
+  <% if current_user || guest_user %>
+    <%= (current_user || guest_user).entity.to_s.sub(%r{\Ahttps?://([^/]+).*?\z}) { |m| $1 } %>
+  <% else %>
+    <a href="https://<%= tent_host_domain %>"><%= app_title %></a>
+  <% end %>
+</div>
+
+<ul class='nav main'>
+  <% if current_user || guest_user %>
+    <li class='<%= nav_selected_class('/') %>'>
+      <a href="<%= (current_user || guest_user).entity %>">My Feed</a>
+    </li>
+  <% end %>
+  <li class='<%= nav_selected_class('/global') %>'>
+    <a href="https://app.<%= tent_host_domain %>/global">Site Feed</a>
+  </li>
+</ul>
+
+<% if current_user || guest_user %>
+  <ul class='nav nav-icon pull-right'>
+    <li>
+      <i id='new_post_button' class='ticon-compose'></i>
+      <div id='new_post_popdown' class='popover bottom'>
+        <div class='arrow'>&nbsp;</div>
+        <div class='popover-content'>
+          <div data-view='NewPostForm'></div>
+        </div>
+      </div>
+    </li>
+  </ul>
+<% end %>

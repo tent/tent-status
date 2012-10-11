@@ -4,9 +4,7 @@
   <div class="span7">
     <div class="alert alert-error hide">&nbsp;</div>
     <textarea class="span7" name="text" rows="3">{{#formatted.reply_to_entities}}^{{.}} {{/formatted.reply_to_entities}}</textarea>
-    <div class="clearfix">
-      <span class="char-limit">{{max_chars}}</span>
-    </div>
+    <span class="char-limit">{{max_chars}}</span>
     <input class="btn btn-success pull-right" type="submit" value="Post" />
   </div>
 </form>

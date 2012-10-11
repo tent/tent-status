@@ -27,10 +27,6 @@ TentStatus.Views.new_post_button = new class NewPostButton extends TentStatus.Vi
       is_in_container = !!(_.find $(e.target).parents(), (el) => el == @popdown)
       @hide() unless is_in_container
 
-    @calibrate()
-
-    $(window).off('resize.new_post_button').on 'resize.new_post_button', @calibrate
-
   initNewPostFormViewBindings: =>
     @new_post_form = @child_views.NewPostForm?[0]
     return unless @new_post_form
@@ -54,25 +50,4 @@ TentStatus.Views.new_post_button = new class NewPostButton extends TentStatus.Vi
   hide: =>
     @is_visible = false
     @$popdown.hide()
-
-  calibrate: =>
-    clearTimeout @_calibrate_timeout
-    setTimeout @_calibrate, 100
-
-  _calibrate: =>
-    offset_left = @$el.offset().left
-    container_width = @$main_nav.width()
-    popdown_width = @$popdown.width()
-    button_width = @$el.width()
-    left = (container_width - popdown_width) - offset_left
-    left -= button_width / 2
-    left = 0 unless left < 0
-    @$popdown.css
-      left: left
-
-    arrow_width = @$arrow.width()
-    arrow_left = Math.abs(left) + arrow_width + (button_width / 2)
-
-    @$arrow.css
-      left: arrow_left
 

@@ -1,9 +1,7 @@
 {{#authenticated}}
 {{^guest_authenticated}}
-<div class="row">&nbsp;</div>
-<div class="row">
-  <div class="span3">&nbsp;</div>
-  <div class="well span6" style="margin-left:0px">
+<div class="row new-post-container">
+  <div class="well span8">
     <div data-view="NewPostForm"></div>
   </div>
 </div>
@@ -11,7 +9,6 @@
 {{/authenticated}}
 
 <div class="row">
-  <div class="span2">&nbsp</div>
   <div class="span8 fetch-pool hide" data-view="FetchPostsPool">
     <a href="#">
       <div class="alert alert-info" style="text-align:center">
@@ -21,7 +18,6 @@
   </div>
 </div>
 <div class="row">
-  <div class="span2">&nbsp;</div>
   <div class="span8">
     <ul class="unstyled posts" data-view="PostsFeed"></ul>
   </div>

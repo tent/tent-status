@@ -1,11 +1,10 @@
 <div class="row">
-  <div class="span1">&nbsp;</div>
-  <div class="span10">
+  <div class="span8">
     {{#authenticated}}
     {{^guest_authenticated}}
     <h1 class="page-header">You are following</h1>
     <form data-view="NewFollowingForm" method="POST">
-      <input class="span8" name="entity" placeholder="Entity URI" type="text" /><input class="btn btn-success pull-right" type="submit" value="Follow" />
+      <input class="span7" name="entity" placeholder="Entity URI" type="text" /><input class="btn btn-success pull-right" type="submit" value="Follow" />
       <div class="error alert alert-error hide"></div>
     </form>
     {{/guest_authenticated}}
