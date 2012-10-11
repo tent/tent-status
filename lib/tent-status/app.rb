@@ -6,7 +6,6 @@ require 'tent-client'
 require 'rack/csrf'
 require 'hashie'
 require 'uri'
-require 'slim'
 require 'sass'
 require 'hogan_assets'
 
@@ -175,10 +174,10 @@ module Tent
 
       get '/' do
         if env['tent.entity']
-          slim :application
+          erb :application
         else
           status 404
-          slim :application
+          erb :application
         end
       end
     else
@@ -212,7 +211,7 @@ module Tent
       end
 
       get '/auth' do
-        slim :auth, :layout => :application
+        erb :auth, :layout => :application
       end
 
       get '/auth/tent/callback' do
@@ -226,7 +225,7 @@ module Tent
       end
 
       get '/' do
-        slim :application
+        erb :application
       end
 
       helpers do
@@ -347,6 +346,10 @@ module Tent
         url
       end
 
+      def nav_selected_class(path)
+        env['PATH_INFO'] == path ? 'active' : ''
+      end
+
       def discover(entity)
         client = ::TentClient.new
         entity = URI.decode_www_form_component(entity)
@@ -443,7 +446,7 @@ module Tent
     end
 
     get '*' do
-      slim :application
+      erb :application
     end
   end
 end

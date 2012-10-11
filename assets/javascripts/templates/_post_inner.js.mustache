@@ -1,9 +1,14 @@
 <div class="row">
-  <div class="span1">
+  <div class="span1 avatar-container">
     <a href="{{profileUrl}}"><img class="img-rounded pull-left avatar" src="{{avatar}}" /></a>
   </div>
-  <div class="span4 no-offset">
-    <h5 style="margin: 0px;">
+  {{#has_parent}}
+  <div class="span6 post-header">
+  {{/has_parent}}
+  {{^has_parent}}
+  <div class="span7 post-header">
+  {{/has_parent}}
+    <h5>
       {{#hasName}}
       <a href="{{profileUrl}}">{{name}} <small>{{formatted.entity}}</small></a>
       {{/hasName}}
@@ -11,65 +16,58 @@
       {{^hasName}}
       <a href="{{profileUrl}}">{{formatted.entity}}</a>
       {{/hasName}}
+
+      <div class="post-date">
+        <a class="{{#has_parent}}gray{{/has_parent}}" href="{{url}}" title="{{formatted.full_published_at}}">{{formatted.published_at}}</a>
+      </div>
     </h5>
-  </div>
-  <div class="pull-right">
-    <a class="{{#has_parent}}gray{{/has_parent}}" href="{{url}}" title="{{formatted.full_published_at}}">{{formatted.published_at}}</a>
   </div>
   {{#in_reply_to}}
   {{#authenticated}}
-  <div class="span4">
+  <div class="span4 post-sub-header">
     <a href="{{url}}"><small>in reply to {{name}}</small></a>
   </div>
   {{/authenticated}}
   {{/in_reply_to}}
   
   {{^repost}}
-  {{#has_parent}}
-  <p class="span440 no-offset has-overflow">{{{formatted.content.text}}}</p>
-  {{/has_parent}}
-  
-  {{^has_parent}}
-  <p class="span490 no-offset has-overflow">{{{formatted.content.text}}}</p>
-  {{/has_parent}}
+  <p class="{{#has_parent}}span6{{/has_parent}}{{^has_parent}}span7{{/has_parent}} post-body">
+    {{{formatted.content.text}}}
+  </p>
   {{/repost}}
   
   {{#repost}}
-  <div class="span560 repost no-offset">{{> _post_inner}}</div>
-  <div class="span6 offset1">Reposted by {{parent.name}}</div>
-  <small class="showOnHover pull-right">via {{parent.app.name}}</small>
+  <div class="span7 repost post">{{> _post_inner}}</div>
   {{/repost}}
 </div>
 
 {{#authenticated}}
-<div class="row offset62 showOnHover actions">
-  {{^is_repost}}
-  <a class="reply {{#has_parent}}reply-repost{{/has_parent}}" href="#">Reply</a>
+<div class="row showOnHover actions">
+  <div class='{{^has_parent}}span7{{/has_parent}}{{#has_parent}}span6{{/has_parent}} offset1'>
+    {{^is_repost}}
+    <a class="reply {{#has_parent}}reply-repost{{/has_parent}}" href="#"><i class='sicon-reply'></i>&nbsp;Reply</a>
 
-  {{^currentUserOwnsPost}}
-  {{#disable_repost}}
-  <span class="repost">Reposted</span>
-  {{/disable_repost}}
-  
-  {{^disable_repost}}
-  <a class="repost {{#has_parent}}repost-repost{{/has_parent}}" data-confirm="Repost {{name}}?" href="#">Repost</a>
-  {{/disable_repost}}
-  {{/currentUserOwnsPost}}
-  {{/is_repost}}
-  
-  {{#is_repost}}
-  <a class="reply" data-id="{{id}}" href="#">Reply</a>
-  {{/is_repost}}
-  
-  {{#currentUserOwnsPost}}
-  <a class="delete {{#has_parent}}delete-repost{{/has_parent}}" data-confirm="Delete Post?" data-id="{{id}}" href="#">Delete</a>
-  {{/currentUserOwnsPost}}
+    {{^currentUserOwnsPost}}
+    {{#has_parent}}
+    <span class="repost"><i class='sicon-repost'></i>&nbsp;Reposted by {{parent.name}}</span>
+    {{/has_parent}}
+    
+    {{^disable_repost}}
+    <a class="repost {{#has_parent}}repost-repost{{/has_parent}}" data-confirm="Repost {{name}}?" href="#"><i class='sicon-repost'></i>&nbsp;Repost</a>
+    {{/disable_repost}}
+    {{/currentUserOwnsPost}}
+    {{/is_repost}}
+    
+    {{#is_repost}}
+    <a class="reply" data-id="{{id}}" href="#"><i class='sicon-reply'></i>&nbsp;Reply</a>
+    {{/is_repost}}
+    
+    {{#currentUserOwnsPost}}
+    <a class="delete {{#has_parent}}delete-repost{{/has_parent}}" data-confirm="Delete Post?" data-id="{{id}}" href="#"><i class='sicon-delete'></i>&nbsp;Delete</a>
+    {{/currentUserOwnsPost}}
 
-  {{^repost}}
-  {{^has_parent}}
-  <small class="pull-right">via {{app.name}}</small>
-  {{/has_parent}}
-  {{/repost}}
+    <small class="pull-right">via {{app.name}}</small>
+  </div>
 </div>
 {{/authenticated}}
 
