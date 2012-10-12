@@ -5,6 +5,11 @@
       <i class='caret'></i>
 
       <ul class='menu'>
+        <% if tent_host_domain %>
+          <li class='<%= nav_selected_class('/global') %> mobile-hide-landscape'>
+            <a href="https://app.<%= tent_host_domain %>/global">Site Feed</a>
+          </li>
+        <% end %>
         <li class="<%= nav_selected_class('/profile') %>">
           <a href="<%= full_url('/profile') %>">Profile</a>
         </li>
@@ -56,7 +61,7 @@
     <% end %>
   <% end %>
   <% if tent_host_domain %>
-    <li class='<%= nav_selected_class('/global') %> mobile-hide'>
+    <li class='<%= nav_selected_class('/global') %> mobile-hide-portrait'>
       <a href="https://app.<%= tent_host_domain %>/global">Site Feed</a>
     </li>
   <% end %>
