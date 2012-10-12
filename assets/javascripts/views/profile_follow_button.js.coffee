@@ -25,6 +25,7 @@ class TentStatus.Views.ProfileFollowButton extends Backbone.View
           if followings.length
             @following_id = followings[0].id
             @setFollowing()
+          @show()
 
     @$el.on 'submit', @submit
 
