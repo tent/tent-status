@@ -49,7 +49,7 @@
 
     {{^currentUserOwnsPost}}
     {{#has_parent}}
-    <span class="repost"><i class='sicon-repost'></i>&nbsp;Reposted by {{parent.name}}</span>
+    <span class="repost mobile-hide"><i class='sicon-repost'></i>&nbsp;Reposted by {{parent.name}}</span>
     {{/has_parent}}
     
     {{^disable_repost}}
@@ -72,7 +72,7 @@
     <a class="delete {{#has_parent}}delete-repost{{/has_parent}}" data-confirm="Delete Post?" data-id="{{id}}" href="#"><i class='sicon-delete'></i>&nbsp;Delete</a>
     {{/currentUserOwnsPost}}
 
-    <small class="pull-right">via {{app.name}}</small>
+    <small class="pull-right mobile-hide">via {{app.name}}</small>
   </div>
 </div>
 {{/authenticated}}
