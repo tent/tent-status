@@ -126,7 +126,7 @@ body {
 
   .navbar-inner {
     min-height: 48px;
-    padding-left: 28px;
+    padding-left: 20px;
     padding-right: 28px;
     border-bottom: 1px solid #DCDCDC;
     @include box_shadow(none);
@@ -137,7 +137,14 @@ body {
     }
 
     .brand {
-      padding: 2px;
+      a.title {
+        padding: 6px;
+        line-height: 48px;
+      }
+    }
+
+    .brand {
+      padding: 0px;
       padding-left: 0px;
 
       #user-menu {
@@ -145,12 +152,13 @@ body {
         cursor: pointer;
 
         .avatar {
-          width: 44px;
-          height: 44px;
+          width: 48px;
+          height: 48px;
         }
 
         .caret {
           margin-top: 38px;
+          margin-left: 0px;
         }
 
         .menu {
@@ -170,7 +178,7 @@ body {
           li {
             padding: 8px;
             border-top: 1px solid #DCDCDC;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 400px;
 
             &.active {
@@ -240,7 +248,7 @@ body {
 }
 
 li.post {
-  border-bottom: 1px solid #DCDCDC;
+  border-bottom: 1px solid #EEE;
   padding: 0px;
   margin-bottom: 14px;
   padding-bottom: 2px;
