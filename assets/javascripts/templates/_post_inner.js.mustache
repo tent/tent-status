@@ -65,7 +65,7 @@
     {{/is_repost}}
     
     {{#is_repost}}
-    <a class="reply" data-id="{{id}}" href="#"><i class='sicon-reply'></i>&nbsp;Reply</a>
+    <a class="reply" data-id="{{id}}" href="#"><i class='sicon-reply'></i>&nbsp;<span class='text'>Reply</span></a>
     {{/is_repost}}
     
     {{#currentUserOwnsPost}}
@@ -79,7 +79,7 @@
 
 {{#authenticated}}
 {{^has_parent}}
-<div class="row offset42 reply-container clearfix hide">{{> _reply_form}}</div>
+<div class="row reply-container clearfix hide">{{> _reply_form}}</div>
 {{/has_parent}}
 
 {{#has_parent}}
