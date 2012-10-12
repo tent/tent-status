@@ -62,6 +62,9 @@ Bundler is a project dependency manager for Ruby.
 gem install bundler
 ```
 
+### ExecJS
+
+Node.js should be installed as a javascript runtime for asset compiliation (`brew install node` on OS X).
 
 ### Starting tent-status
 
@@ -105,17 +108,6 @@ Here are some tasks that need to be done:
 - Add pagination query string to url and reload that position when reloading the page (load specified page and show 'x Newer Posts' bar above it which should load the previous page.)
 - Add full mobile compatibility (fix JavaScript issues on mobile browsers, use bootstrap mobile menu, etc.)
 - Write tests/refactor code.
-- Make it pretty.
 
-
-
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
-
-### Setup notes
-
-It's expected that Node.js be installed as a javascript runtime (`brew install node` on OS X)
-
+Design by [Jordan Staniscia](http://jordanstaniscia.com/) and [Jesse
+Stuart](https://github.com/jvatic).
