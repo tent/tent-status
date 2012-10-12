@@ -1,6 +1,6 @@
 <div class='brand'>
   <% if current_user || guest_user %>
-    <div id='user-menu' class='dropdown'>
+    <div id='user-menu' class='dropdown' href='<%= full_url('/profile') %>'>
       <img src='' class='avatar' />
       <i class='caret'></i>
 
