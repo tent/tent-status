@@ -11,9 +11,15 @@ TentStatus.Views.user_menu = new class UserMenuView extends Backbone.View
 
     @$el.off().on 'touchstart', =>
       [@scrollX, @scrollY] = [window.scrollX, window.scrollY]
-    @$el.off().on 'touchend', @toggle
+      @block_click = true
+    @$el.on 'touchend', @toggle
+    @$el.on 'click', =>
+      return false if @block_click
+      return unless url = @$el.attr('href')
+      window.location.href = url
 
     $('body').off('touchstart.hide-menu').on 'touchstart.hide-menu', (e) =>
+      @block_click = true
       [@scrollX, @scrollY] = [window.scrollX, window.scrollY]
 
     $('body').off('touchend.hide-menu').on 'touchend.hide-menu', (e) =>
