@@ -167,6 +167,7 @@ _.extend @TentStatus, Backbone.Events, {
     params
 
   fetchCurrentProfile: ->
+    return unless @config.current_entity
     entity = @config.current_entity.toStringWithoutSchemePort()
     cache_key = "profile:#{entity}"
     expires_at_cache_key = "profile:#{entity}:expires_at"
