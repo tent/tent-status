@@ -1,5 +1,27 @@
 @import './mixins.css.scss';
 
+@media
+only screen and (-webkit-min-device-pixel-ratio: 2),
+only screen and (   min--moz-device-pixel-ratio: 2),
+only screen and (     -o-min-device-pixel-ratio: 2/1),
+only screen and (        min-device-pixel-ratio: 2),
+only screen and (                min-resolution: 192dpi),
+only screen and (                min-resolution: 2dppx) { 
+  
+  [class^="sicon-"],
+  [class*=" sicon-"] {
+    background-image: url(<%= asset_path("stream_sprites@2x.png") %>);
+    background-size: 36px;
+  }
+
+  [class^="ticon-"],
+  [class*=" ticon-"] {
+    background-image: url(<%= asset_path("topbar_sprites@2x.png") %>);
+    background-size: 76px;
+  }
+
+}
+
 @media (max-width: 979px) {
   #new_post_popdown {
     left: 0px;
