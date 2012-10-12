@@ -1,5 +1,6 @@
 class TentStatus.Views.ReplyPostForm extends TentStatus.Views.NewPostForm
   templateName: '_reply_form'
+  is_reply_form: true
 
   initialize: (options = {}) ->
     @postsFeedView = options.parentView.parentView

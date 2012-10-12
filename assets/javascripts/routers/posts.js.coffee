@@ -22,7 +22,7 @@ TentStatus.Routers.posts = new class PostsRouter extends TentStatus.Router
 
     @view = new TentStatus.Views.Posts
 
-    TentStatus.setPageTitle 'Your feed'
+    TentStatus.setPageTitle 'My feed'
 
     @setCurrentAction 'index', =>
       @view.render()
@@ -52,7 +52,7 @@ TentStatus.Routers.posts = new class PostsRouter extends TentStatus.Router
       entity = new HTTP.URI decodeURIComponent(entity)
 
     if TentStatus.config.domain_entity.assertEqual(entity)
-      TentStatus.setPageTitle 'Your profile'
+      TentStatus.setPageTitle 'Profile'
     else
       TentStatus.setPageTitle "#{TentStatus.Helpers.formatUrl TentStatus.config.domain_entity.toStringWithoutSchemePort()} - Profile"
     @view = new TentStatus.Views.Profile entity: entity
@@ -72,7 +72,7 @@ TentStatus.Routers.posts = new class PostsRouter extends TentStatus.Router
       entity = TentStatus.config.domain_entity
 
     if TentStatus.config.domain_entity.assertEqual(entity)
-      TentStatus.setPageTitle "Your mentions"
+      TentStatus.setPageTitle "Mentions"
     else
       TentStatus.setPageTitle "#{TentStatus.Helpers.formatUrl entity.toStringWithoutSchemePort()} - Mentions"
     @view = new TentStatus.Views.Mentions entity: entity

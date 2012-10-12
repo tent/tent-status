@@ -17,51 +17,11 @@
   <body>
     <div id='main-nav' class='navbar navbar-fixed-top'>
       <div class='navbar-inner'>
-        <% if tent_host_domain %>
-          <%= erb :hosted_nav %>
-        <% else %>
-          <%= erb :standalone_nav %>
-        <% end %>
+        <%= erb :nav %>
       </div>
     </div>
 
     <div id='main-container' class='container-fluid'>
-      <div id='nav-right' class='span3 mobile-hide'>
-        <ul class='unstyled clearfix'>
-          <% if current_user || guest_user %>
-            <li class='scale <%= nav_selected_class('/') %>'>
-              <a href="<%= (current_user || guest_user).entity %>">My Feed</a>
-            </li>
-          <% end %>
-          <li class='scale <%= nav_selected_class('/global') %>'>
-            <a href="https://app.<%= tent_host_domain %>/global">Site Feed</a>
-          </li>
-          <% if current_user || guest_user %>
-            <li class="<%= nav_selected_class('/profile') %>">
-              <a href="<%= full_url('/profile') %>">Profile</a>
-            </li>
-            <li class="<%= nav_selected_class('/mentions') %>">
-              <a href="<%= full_url('/mentions') %>">Mentions</a>&nbsp;
-            </li>
-            <li class="<%= nav_selected_class('/followers') %>">
-              <a href="<%= full_url('/followers') %>"><span id='num_followers'></span> Followers</a>
-            </li>
-            <li class="<%= nav_selected_class('/followings') %>">
-              <a href="<%= full_url('/followings') %>"><span id='num_followings'></span> Following</a>
-            </li>
-            <li>
-              <a href="<%= full_url('/admin') %>">Account</a>
-            </li>
-            <li>
-              <a href="<%= full_url('/signout') %>">Signout</a>
-            </li>
-          <% end %>
-          <li class='footer'>
-            <%= erb :footer %>
-          </li>
-        </ul>
-      </div>
-
       <% if in_application? %>
         <div id='loading-indicator' class='pulse'>&nbsp;</div>
       <% end %>

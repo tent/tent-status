@@ -15,6 +15,6 @@ TentStatus.Routers.followings = new class FollowingsRouter extends TentStatus.Ro
     if TentStatus.guest_authenticated || !TentStatus.authenticated
       TentStatus.setPageTitle "#{TentStatus.Helpers.formatUrl entity.toStringWithoutSchemePort()} - Followings"
     else
-      TentStatus.setPageTitle 'You are following'
+      TentStatus.setPageTitle 'Following'
     @view = new TentStatus.Views.Followings entity: entity
 

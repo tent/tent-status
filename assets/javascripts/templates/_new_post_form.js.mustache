@@ -1,11 +1,26 @@
 {{#authenticated}}
-<div class="row clearfix">
-  <form class="form-horizontal" method="POST">
-    <div class="span8">
-      <div class="alert alert-error">&nbsp;</div>
-      <textarea class="span8" name="text" placeholder="What's on your mind?" rows="3"></textarea><span class="char-limit">{{max_chars}}</span>
-      <input class="btn btn-success pull-right" type="submit" value="Post" />
-    </div>
-  </form>
+<div class="span8">
+  <ul class="unstyled posts">
+    <li class="post clearfix" data-id="eqnjn7">
+      <div class="row">
+        <div class="span1 avatar-container">
+          <a href="{{profileUrl}}"><img class="img-rounded pull-left avatar" src="{{avatar}}" /></a>
+        </div>
+
+        <div class="span7 post-header">
+          <h5>
+            <a href="{{profileUrl}}">{{name}} <small>{{formatted.entity}}</small></a>
+          </h5>
+        </div>
+
+        <form class="form-horizontal span7 post-body new-post-form" method="POST">
+          <div class="alert alert-error">&nbsp;</div>
+          <textarea class="span7" name="text" placeholder="What's on your mind?" rows="3"></textarea>
+          <input class="m-btn blue pull-right" type="submit" value="Post" />
+          <span class="char-limit pull-right">{{max_chars}}</span>
+        </form>
+      </div>
+    </li>
+  </ul>
 </div>
 {{/authenticated}}
