@@ -44,6 +44,10 @@
     <li class="<%= nav_selected_class('/mentions') %>">
       <a href="<%= full_url('/mentions') %>">Mentions</a>
     </li>
+  <% else %>
+    <li>
+      <a href="<%= full_url('/login') %>">Signin</a>
+    </li>
   <% end %>
   <% if tent_host_domain %>
     <li class='<%= nav_selected_class('/global') %> mobile-hide'>
