@@ -7,6 +7,14 @@ class TentStatus.Views.NewPostForm extends TentStatus.View
     super
 
     @on 'ready', @init
+    unless @is_reply_form
+      if TentStatus.Models.profile?.get('id')
+        @profile = TentStatus.Models.profile
+      else
+        TentStatus.on 'profile:fetch:success', =>
+          @profile = TentStatus.Models.profile
+          @render()
+
     @render()
 
   init: =>
@@ -191,6 +199,11 @@ class TentStatus.Views.NewPostForm extends TentStatus.View
 
   context: =>
     max_chars: TentStatus.config.MAX_LENGTH
+    profileUrl: TentStatus.Helpers.entityProfileUrl(@profile.entity()) if @profile
+    avatar: @profile?.avatar()
+    name: @profile?.name()
+    formatted:
+      entity: TentStatus.Helpers.formatUrl(@profile.entity()) if @profile
 
   render: =>
     return unless html = super

@@ -30,7 +30,7 @@ class TentStatus.Models.Post extends Backbone.Model
       @set 'profile', profile
 
     if profile = TentStatus.Cache.get cache_key
-      @set 'profile', profile
+      @set 'profile', new TentStatus.Models.Profile(profile)
       return
 
     if @get('following_id')
@@ -43,30 +43,30 @@ class TentStatus.Models.Post extends Backbone.Model
     else if TentStatus.config.current_entity?.hostname == (new HTTP.URI @get('entity')).hostname
       if TentStatus.Models.profile.get('id')
         @set 'profile', TentStatus.Models.profile
-        TentStatus.Cache.set cache_key, profile
+        TentStatus.Cache.set cache_key, profile.toJSON()
       else
         TentStatus.Models.profile.fetch
           success: =>
             @set 'profile', TentStatus.Models.profile
-            TentStatus.Cache.set cache_key, profile
+            TentStatus.Cache.set cache_key, profile.toJSON()
     else if TentStatus.config.domain_entity.hostname == (new HTTP.URI @get('entity')).hostname
       profile = new TentStatus.Models.Profile
       profile.fetch
         success: =>
           @set 'profile', profile
-          TentStatus.Cache.set cache_key, profile
+          TentStatus.Cache.set cache_key, profile.toJSON()
     else if TentStatus.Helpers.isEntityOnTentHostDomain(@get 'entity')
       new HTTP 'GET', "#{@get('entity') + TentStatus.config.tent_host_domain_tent_api_path}/profile", null, (profile, xhr) =>
         return unless xhr.status == 200
         profile = new TentStatus.Models.Profile profile
         @set 'profile', profile
-        TentStatus.Cache.set cache_key, profile
+        TentStatus.Cache.set cache_key, profile.toJSON()
     else
       new HTTP 'GET', "#{TentStatus.config.tent_proxy_root}/#{encodeURIComponent @get('entity')}/profile", null, (profile, xhr) =>
         return unless xhr.status == 200
         profile = new TentStatus.Models.Profile profile
         @set 'profile', profile
-        TentStatus.Cache.set cache_key, profile
+        TentStatus.Cache.set cache_key, profile.toJSON()
 
   fetchRepost: =>
     return @get('repost') if @get('repost')

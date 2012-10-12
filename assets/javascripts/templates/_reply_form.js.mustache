@@ -1,11 +1,11 @@
 {{#authenticated}}
-<form class="form-horizontal" data-view="ReplyPostForm" method="POST">
+<form class="form-horizontal reply-post-form" data-view="ReplyPostForm" method="POST">
   <input name="mentions_post_id" type="hidden" value="{{id}}" /><input name="mentions_post_entity" type="hidden" value="{{entity}}" />
   <div class="span7">
     <div class="alert alert-error hide">&nbsp;</div>
     <textarea class="span7" name="text" rows="3">{{#formatted.reply_to_entities}}^{{.}} {{/formatted.reply_to_entities}}</textarea>
-    <span class="char-limit">{{max_chars}}</span>
-    <input class="btn btn-success pull-right" type="submit" value="Post" />
+    <input class="m-btn blue pull-right" type="submit" value="Post" />
+    <span class="char-limit pull-right">{{max_chars}}</span>
   </div>
 </form>
 {{/authenticated}}
