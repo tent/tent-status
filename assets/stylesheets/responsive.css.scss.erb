@@ -102,10 +102,6 @@ only screen and (                min-resolution: 2dppx) {
       display: none;
     }
 
-    &.mobile-hide {
-      display: none;
-    }
-
     ul.posts {
       width: auto;
     }
@@ -328,6 +324,24 @@ only screen and (                min-resolution: 2dppx) {
         max-width: 180px;
       }
     }
+  }
+}
+
+@media (max-width: 479px) {
+  .mobile-hide-landscape {
+    display: block;
+  }
+  .mobile-hide-portrait {
+    display: none;
+  }
+}
+
+@media (min-width: 480px) {
+  .mobile-hide-landscape {
+    display: none;
+  }
+  .mobile-hide-portrait {
+    display: block;
   }
 }
 
