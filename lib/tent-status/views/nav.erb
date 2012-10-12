@@ -45,9 +45,15 @@
       <a href="<%= full_url('/mentions') %>">Mentions</a>
     </li>
   <% else %>
-    <li>
-      <a href="<%= full_url('/login') %>">Signin</a>
-    </li>
+    <% if tent_host_domain %>
+      <li>
+        <a href="https://<%= tent_host_domain %>/login">Signin</a>
+      </li>
+    <% else %>
+      <li>
+        <a href="<%= full_url('/login') %>">Signin</a>
+      </li>
+    <% end %>
   <% end %>
   <% if tent_host_domain %>
     <li class='<%= nav_selected_class('/global') %> mobile-hide'>
