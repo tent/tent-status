@@ -10,13 +10,13 @@
   <td>
     {{#authenticated}}
     {{^guest_authenticated}}
-    <div class="btn btn-danger unfollow-btn" data-confirm="Unfollow {{name}}?" data-id="{{id}}">Unfollow</div>
+    <div class="m-btn red unfollow-btn" data-confirm="Unfollow {{name}}?" data-id="{{id}}">Unfollow</div>
     {{/guest_authenticated}}
     {{/authenticated}}
     
     {{#guest_authenticated}}
     <form class="span2 pull-rght" data-view="ProfileFollowButton" {{^guest_authenticated}}data-following='true'{{/guest_authenticated}} method="POST">
-      <input name="entity" type="hidden" value="{{entity}}" /><input class="btn btn-success pull-right" type="submit" value="Follow" />
+      <input name="entity" type="hidden" value="{{entity}}" /><input class="m-btn blue pull-right" type="submit" value="Follow" />
     </form>
     {{/guest_authenticated}}
   </td>
