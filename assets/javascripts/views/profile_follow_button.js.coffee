@@ -48,14 +48,14 @@ class TentStatus.Views.ProfileFollowButton extends Backbone.View
   setFollowing: =>
     @is_following = true
     @buttons.submit.val 'Unfollow'
-    @buttons.submit.removeClass('btn-success').addClass('btn-danger')
+    @buttons.submit.removeClass('blue').addClass('red')
     @buttons.submit.removeAttr 'disabled'
     @show()
 
   unsetFollowing: =>
     @is_following = false
     @buttons.submit.val 'Follow'
-    @buttons.submit.removeClass('btn-danger').addClass('btn-success')
+    @buttons.submit.removeClass('red').addClass('blue')
     @buttons.submit.removeAttr 'disabled'
     @show()
 
