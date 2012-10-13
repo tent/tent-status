@@ -2,7 +2,6 @@ class TentStatus.Views.Mentions extends TentStatus.View
   templateName: 'mentions'
 
   initialize: (options = {}) ->
-    return
     @container = TentStatus.Views.container
     @entity = options.entity
 
