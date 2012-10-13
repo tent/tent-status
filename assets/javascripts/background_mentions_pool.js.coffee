@@ -1,7 +1,6 @@
 class BackgroundMentionsPool
   sep: '__SEP__'
   constructor: ->
-    return
     @entity = TentStatus.config.current_entity.toStringWithoutSchemePort()
     @cache_key = {
       since_id: "#{@entity}#{@sep}mentions_since_id"
