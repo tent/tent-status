@@ -6,6 +6,7 @@ class BackgroundMentionsPool
       since_id: "#{@entity}#{@sep}mentions_since_id"
       since_id_entity: "#{@entity}#{@sep}mentions_since_id_entity"
     }
+    return
 
     TentStatus.Cache.on "change:#{@cache_key.since_id}", (since_id) =>
       @set 'since_id', since_id
