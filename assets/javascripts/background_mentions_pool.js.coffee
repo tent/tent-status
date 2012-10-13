@@ -16,7 +16,10 @@ class BackgroundMentionsPool
     @on 'change:since_id', @initFetchInterval
     @on 'change:since_id_entity', @initFetchInterval
 
-    unless @since_id and @since_id_entity
+    [@since_id, @since_id_entity] = [TentStatus.Cache.get(@cache_key.since_id), TentStatus.Cache.get(@cache_key.since_id_entity)]
+    if @since_id and @since_id_entity
+      @initFetchInterval()
+    else
       new HTTP 'GET', "#{TentStatus.config.tent_api_root}/posts", {
         mentioned_entity: @entity
         post_types: TentStatus.config.post_types
@@ -64,7 +67,7 @@ class BackgroundMentionsPool
   set: (key, val) =>
     @[key] = val
     cache_key = @cache_key[key]
-    TentStatus.Cache.set(cache_key, val) if cache_key
+    TentStatus.Cache.set(cache_key, val, {saveToLocalStorage:true}) if cache_key
     @trigger "change:#{key}", val
     val
 
