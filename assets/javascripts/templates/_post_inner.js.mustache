@@ -18,7 +18,7 @@
       {{/hasName}}
 
       <div class="post-date">
-        <a class="{{#has_parent}}gray{{/has_parent}}" href="{{url}}" title="{{formatted.full_published_at}}">{{formatted.published_at}}</a>
+        <a class="{{#has_parent}}gray{{/has_parent}}" href="{{url}}" data-view='RelativeTimestamp' data-datetime='{{published_at}}' title="{{formatted.full_published_at}}">{{formatted.published_at}}</a>
       </div>
     </h5>
   </div>

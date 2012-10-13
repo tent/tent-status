@@ -197,7 +197,7 @@ class TentStatus.Views.Post extends TentStatus.View
             TentStatus.Helpers.autoLinkText(TentStatus.Helpers.truncate(post.get('content')?.text, TentStatus.config.MAX_LENGTH, ''))
           )
         entity: TentStatus.Helpers.formatUrl post.get('entity')
-        published_at: TentStatus.Helpers.formatTime post.get('published_at')
+        published_at: TentStatus.Helpers.formatRelativeTime post.get('published_at')
         full_published_at: TentStatus.Helpers.rawTime post.get('published_at')
       currentUserOwnsPost: @isCurrentUserEntity(post.get 'entity')
       max_chars: TentStatus.config.MAX_LENGTH

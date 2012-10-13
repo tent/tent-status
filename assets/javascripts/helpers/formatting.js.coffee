@@ -10,6 +10,17 @@ _.extend TentStatus.Helpers,
 
     "#{formatted_time}"
 
+  formatRelativeTime: (time_or_int) ->
+    now = moment()
+    time = moment.unix(time_or_int)
+
+    formatted_time = if time.format('YYYY-MM-DD') == now.format('YYYY-MM-DD')
+      time.fromNow()
+    else
+      time.format('DD-MMM-YY') # date and time
+
+    "#{formatted_time}"
+
   rawTime: (time_or_int) ->
     moment.unix(time_or_int).format()
 
