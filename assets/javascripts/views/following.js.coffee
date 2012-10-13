@@ -35,7 +35,7 @@ class TentStatus.Views.Following extends TentStatus.View
       name: following.name() || following.get('entity')
       avatar: following.avatar()
       profileUrl: TentStatus.Helpers.entityProfileUrl following.get('entity')
-      has_name: following.hasName()
+      hasName: following.hasName()
       guest_authenticated: TentStatus.guest_authenticated || !TentStatus.config.domain_entity.assertEqual(entity)
     }
 
