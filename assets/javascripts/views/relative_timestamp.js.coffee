@@ -16,7 +16,7 @@ class TentStatus.Views.RelativeTimestamp extends Backbone.View
     else if now.diff(@datetime, 'minutes') > 0
       @_updateTimestampTimeout = setTimeout @update, 60000
     else
-      @_updateTimestampTimeout = setTimeout @update, 1000
+      @_updateTimestampTimeout = setTimeout @update, 15000
 
     @$el.text @datetime.fromNow()
 

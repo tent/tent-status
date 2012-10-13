@@ -27,6 +27,22 @@
 #= require_tree ./collections
 #= require iphone
 
+moment.relativeTime = {
+  future: "in %s",
+  past: "%s",
+  s: "%ds",
+  m: "1m",
+  mm: "%dm",
+  h: "1h",
+  hh: "%dh",
+  d: "1d",
+  dd: "%dd",
+  M: "1 mon",
+  MM: "%d mon",
+  y: "a year",
+  yy: "%d years"
+}
+
 @TentStatus ?= {
   api_root: ''
   url_root: '/'
