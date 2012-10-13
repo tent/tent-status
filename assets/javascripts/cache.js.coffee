@@ -3,6 +3,7 @@ class Cache extends TentStatus.Events
 
   set: (key, value, options = {}) =>
     return unless key && value
+    return if value == @CACHE[key]
     @CACHE[key] = value
     @trigger "change:#{key}", value
 
@@ -35,7 +36,9 @@ class Cache extends TentStatus.Events
   _storeKey: (key) -> "cache:#{key}"
 
   on: (key, callback) =>
-    callback?(@CACHE[key]) if @CACHE[key]
+    [event, key...] = key.split(':')
+    key = key.join(':') if key.join
+    callback?(@CACHE[key]) if event == 'change' && @CACHE[key]
     super
 
 TentStatus.Cache = new Cache

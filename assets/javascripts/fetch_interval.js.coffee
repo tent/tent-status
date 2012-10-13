@@ -8,8 +8,7 @@ class TentStatus.FetchInterval
     @reset()
 
   resetInterval: =>
-    console.log 'delay_offset', @delay_offset
-    clearInterval @_delay_interval
+    @clear()
     @_delay_interval = setInterval @options.fetch_callback, @delay_offset
 
   increaseDelay: =>
@@ -19,4 +18,7 @@ class TentStatus.FetchInterval
   reset: =>
     @delay_offset = @options.delay_increment
     @resetInterval()
+
+  clear: =>
+    clearInterval @_delay_interval
 

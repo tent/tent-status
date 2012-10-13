@@ -6,20 +6,40 @@ class BackgroundMentionsPool
       since_id: "#{@entity}#{@sep}mentions_since_id"
       since_id_entity: "#{@entity}#{@sep}mentions_since_id_entity"
     }
-    @since_id = TentStatus.Cache.get @cache_key.since_id
-    @since_id_entity = TentStatus.Cache.get @cache_key.since_id_entity
+
+    TentStatus.Cache.on "change:#{@cache_key.since_id}", (since_id) =>
+      @set 'since_id', since_id
+
+    TentStatus.Cache.on "change:#{@cache_key.since_id_entity}", (since_id_entity) =>
+      @set 'since_id_entity', since_id_entity
+
+    @on 'change:since_id', @initFetchInterval
+    @on 'change:since_id_entity', @initFetchInterval
+
+    unless @since_id and @since_id_entity
+      new HTTP 'GET', "#{TentStatus.config.tent_api_root}/posts", {
+        mentioned_entity: @entity
+        post_types: TentStatus.config.post_types
+      }, (posts, xhr) =>
+        return unless xhr.status == 200
+        return unless posts?.length
+        return unless post = posts[0]
+        @set 'since_id', post.id
+        @set 'since_id_entity', post.entity
+
+  initFetchInterval: =>
+    @fetch_interval?.clear()
+
+    return unless @since_id && @since_id_entity
 
     @fetch_params = {
-      sinceId: @since_id
+      since_id: @since_id
       since_id_entity: @since_id_entity
       mentioned_entity: @entity
       post_types: TentStatus.config.post_types
     }
 
     @mentions_count = 0
-
-    @on 'change:since_id', (since_id) => TentStatus.Cache.set @cache_key.since_id, since_id, { saveToLocalStorage: true }
-    @on 'change:since_id_entity', (since_id_entity) => TentStatus.Cache.set @cache_key.since_id_entity, since_id_entity, { saveToLocalStorage: true }
 
     @fetch_interval = new TentStatus.FetchInterval {
       fetch_callback: @fetch
@@ -43,6 +63,8 @@ class BackgroundMentionsPool
 
   set: (key, val) =>
     @[key] = val
+    cache_key = @cache_key[key]
+    TentStatus.Cache.set(cache_key, val) if cache_key
     @trigger "change:#{key}", val
     val
 
