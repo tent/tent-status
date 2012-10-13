@@ -62,6 +62,32 @@ class TentStatus.Views.Post extends TentStatus.View
           @[k]?()
           false
 
+    @$actions_container = $('.actions', @$el)
+    @touch_info = {}
+    @$el.on 'touchstart.show-actions', =>
+      [@touch_info.scrollX, @touch_info.scrollY] = [window.scrollX, window.scrollY]
+    @$el.on 'touchend.show-actions', =>
+      return unless @touch_info.scrollX == window.scrollX && @touch_info.scrollY == window.scrollY
+      @showActions() unless @touch_info.actions_visible
+
+    $('body').on 'touchstart.hide-actions', =>
+      [@touch_info.bscrollX, @touch_info.bscrollY] = [window.scrollX, window.scrollY]
+
+    $('body').on 'touchend.hide-actions', (e) =>
+      return unless @touch_info.bscrollX == window.scrollX && @touch_info.bscrollY == window.scrollY
+      return if e.target == @el || (_.find $(e.target).parents(), (el) => el == @el)
+      @hideActions()
+
+  hideActions: =>
+    console.log 'hideActions', @el
+    @touch_info.actions_visible = false
+    @$actions_container.removeClass('show').addClass('hide')
+
+  showActions: =>
+    console.log 'showActions', @el
+    @touch_info.actions_visible = true
+    @$actions_container.removeClass('hide').addClass('show')
+
   delete: =>
     @$el.hide()
     @post.destroy
