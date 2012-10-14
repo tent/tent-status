@@ -93,6 +93,66 @@ class TentStatus.Models.Post extends Backbone.Model
       repost = new TentStatus.Models.Post repost
       @set 'repost', repost
 
+  fetchParents: (callback) =>
+    return callback() unless @postMentions().length
+    num_fetches = @postMentions().length
+    posts = new TentStatus.Collections.Posts
+    fetch_complete = (post, xhr) =>
+      num_fetches -= 1
+      if xhr.status == 200
+        posts.push new TentStatus.Models.Post(post)
+
+      callback(posts) if num_fetches == 0
+
+    for m in @postMentions()
+      do (m) =>
+        entity = m.entity
+        post_id = m.post
+
+        url = "#{TentStatus.config.tent_api_root}/posts/#{encodeURIComponent entity}/#{post_id}"
+        params = null
+
+        if TentStatus.config.tent_host_api_root
+          hosted_url = "#{TentStatus.config.tent_host_api_root}/posts/#{post_id}"
+          hosted_params = {
+            entity: entity
+          }
+
+        if post = TentStatus.Cache.get("post:#{entity}:#{post_id}")
+          fetch_complete post, {status:200}
+        else
+          new HTTP 'GET', url, params, (post, xhr) =>
+            if TentStatus.config.tent_host_api_root && xhr.status != 200
+              new HTTP 'GET', hosted_url, hosted_params, fetch_complete
+            else
+              fetch_complete(arguments...)
+
+  fetchChildren: (callback) =>
+    url = "#{TentStatus.config.tent_api_root}/posts"
+    params = {
+      limit: TentStatus.config.PER_PAGE
+      mentioned_post: @get('id')
+      post_types: TentStatus.config.post_types
+    }
+
+    fetch_complete = (posts, xhr) =>
+      return callback() unless xhr.status == 200
+      posts = new TentStatus.Collections.Posts posts
+      callback(posts)
+
+    if TentStatus.config.tent_host_api_root
+      hosted_url = "#{TentStatus.config.tent_host_api_root}/posts"
+      hosted_params = _.extend {
+        mentioned_entity: @get('entity')
+      }, params
+
+    new HTTP 'GET', url, params, (posts, xhr) =>
+      if TentStatus.config.tent_host_api_root && (xhr.status != 200 || !posts.length)
+        new HTTP 'GET', hosted_url, hosted_params, fetch_complete
+      else
+        fetch_complete(arguments...)
+
+
   isRepost: =>
     !!(@get('type') || '').match(/repost/)
 

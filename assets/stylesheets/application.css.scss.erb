@@ -298,7 +298,7 @@ li.post {
     }
   }
 
-  .showOnHover {
+  .showOnHover, &.details li.post .showOnHover {
     visibility: hidden;
 
     &.show {
@@ -310,7 +310,7 @@ li.post {
     }
   }
 
-  &:hover {
+  &:hover, &.details li.post:hover {
     .showOnHover {
       visibility: visible;
       @include transition(visibility, ease-in-out, 0s, 0.1s);
@@ -337,6 +337,77 @@ li.post {
         display: inline-block;
         float: none;
       }
+    }
+  }
+
+  &.details > .row {
+    margin-left: -41px;
+    padding-left: 40px;
+    margin-right: -43px;
+    margin-top: -10px;
+    margin-bottom: -3px;
+    background-color: #FEFEFE;
+    border: 1px solid #DCDCDC;
+
+    &.sep {
+      border-left: 0px;
+      border-right: 0px;
+      padding-top: 20px;
+      height: 6px;
+      background-color: #F3f3f3;
+      background-image: url(<%= asset_path('texture.png') %>);
+
+      &:last-of-type {
+        padding-top: 10px;
+      }
+    }
+
+    li.post {
+      margin-bottom: 0px;
+      padding-top: 12px;
+      padding-bottom: 12px;
+      border-bottom: 0px;
+    }
+
+    .external li.post {
+      background-color: #EEEEEE;
+      margin-left: -40px;
+      padding-left: 40px;
+      margin-right: -42px;
+      padding-right: 42px;
+      padding-top: 12px;
+    }
+
+    .showOnHover {
+      visibility: hidden;
+
+      &.show {
+        visibility: hidden;
+      }
+
+      &.hide {
+        visibility: hidden;
+      }
+    }
+
+    &:hover {
+      .showOnHover {
+        visibility: hidden;
+      }
+
+      &.hide {
+        visibility: hidden;
+      }
+
+      &.show {
+        visibility: hidden;
+      }
+    }
+  }
+
+  &.details + &.details {
+    .row.sep:first-of-type {
+      display: none;
     }
   }
 }

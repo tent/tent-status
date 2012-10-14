@@ -62,6 +62,7 @@ class TentStatus.Views.Post extends TentStatus.View
           @[k]?()
           false
 
+    ## Show/Hide actions on touch devices
     @$actions_container = $('.actions', @$el)
     @touch_info = {}
     @$el.on 'touchstart.show-actions', =>
@@ -71,6 +72,7 @@ class TentStatus.Views.Post extends TentStatus.View
       if !@touch_info.actions_visible && e.target.tagName.toLowerCase() != 'a'
         e.preventDefault()
         @showActions()
+        @showDetails()
 
     $('body').on 'touchstart.hide-actions', =>
       [@touch_info.bscrollX, @touch_info.bscrollY] = [window.scrollX, window.scrollY]
@@ -79,6 +81,28 @@ class TentStatus.Views.Post extends TentStatus.View
       return unless @touch_info.bscrollX == window.scrollX && @touch_info.bscrollY == window.scrollY
       return if e.target == @el || (_.find $(e.target).parents(), (el) => el == @el)
       @hideActions()
+      @hideDetails()
+
+    ## Show/Hide conversation view
+    @details_view = null
+    @$el.off('click.toggle_details').on 'click.toggle_details', (e) =>
+      return if @touch_info.actions_visible
+      return if e.target.tagName.toLowerCase() == 'a' || (_.find $(e.target).parents(), (el) => el.tagName.toLowerCase() == 'a')
+      @toggleDetails()
+
+  toggleDetails: =>
+    if @details_view
+      @hideDetails()
+    else
+      @showDetails()
+
+  hideDetails: =>
+    @details_view.unbind()
+    @render()
+
+  showDetails: =>
+    return if @details_view
+    @details_view = new TentStatus.Views.PostDetails parentView: @
 
   hideActions: =>
     @touch_info.actions_visible = false
