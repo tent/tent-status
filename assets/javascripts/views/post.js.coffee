@@ -62,31 +62,9 @@ class TentStatus.Views.Post extends TentStatus.View
           @[k]?()
           false
 
-    ## Show/Hide actions on touch devices
-    @$actions_container = $('.actions', @$el)
-    @touch_info = {}
-    @$el.on 'touchstart.show-actions', =>
-      [@touch_info.scrollX, @touch_info.scrollY] = [window.scrollX, window.scrollY]
-    @$el.on 'touchend.show-actions', (e) =>
-      return unless @touch_info.scrollX == window.scrollX && @touch_info.scrollY == window.scrollY
-      if !@touch_info.actions_visible && e.target.tagName.toLowerCase() != 'a'
-        e.preventDefault()
-        @showActions()
-        @showDetails()
-
-    $('body').on 'touchstart.hide-actions', =>
-      [@touch_info.bscrollX, @touch_info.bscrollY] = [window.scrollX, window.scrollY]
-
-    $('body').on 'touchend.hide-actions', (e) =>
-      return unless @touch_info.bscrollX == window.scrollX && @touch_info.bscrollY == window.scrollY
-      return if e.target == @el || (_.find $(e.target).parents(), (el) => el == @el)
-      @hideActions()
-      @hideDetails()
-
     ## Show/Hide conversation view
     @details_view = null
     @$el.off('click.toggle_details').on 'click.toggle_details', (e) =>
-      return if @touch_info.actions_visible
       return if e.target.tagName.toLowerCase() == 'a' || (_.find $(e.target).parents(), (el) => el.tagName.toLowerCase() == 'a')
       @toggleDetails()
 
@@ -103,14 +81,6 @@ class TentStatus.Views.Post extends TentStatus.View
   showDetails: =>
     return if @details_view
     @details_view = new TentStatus.Views.PostDetails parentView: @
-
-  hideActions: =>
-    @touch_info.actions_visible = false
-    @$actions_container.removeClass('show').addClass('hide')
-
-  showActions: =>
-    @touch_info.actions_visible = true
-    @$actions_container.removeClass('hide').addClass('show')
 
   delete: =>
     @$el.hide()
