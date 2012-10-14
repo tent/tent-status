@@ -3,7 +3,13 @@ class TentStatus.Views.ReplyPostForm extends TentStatus.Views.NewPostForm
   is_reply_form: true
 
   initialize: (options = {}) ->
-    @postsFeedView = options.parentView.parentView
+    parentView = options.parentView
+    while parentView
+      if parentView.view_name == 'posts_feed'
+        @postsFeedView = parentView
+        break
+      else
+        parentView = parentView.parentView
     @is_reply_form = true
 
     super
