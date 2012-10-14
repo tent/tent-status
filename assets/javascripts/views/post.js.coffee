@@ -67,20 +67,25 @@ class TentStatus.Views.Post extends TentStatus.View
     @details_view = @parentView if @parentView.view_name == 'post_details'
 
     touch_details = {}
+    tag_blacklist = ['a', 'textarea']
     @$el.off('touchstart.toggle_details').on 'touchstart.toggle_details', (e) =>
       [touch_details.scrollX, touch_details.scrollY] = [window.scrollX, window.scrollY]
 
     @$el.off('touchend.toggle_details').on 'touchend.toggle_details', (e) =>
-      return true unless e.target.tagName.toLowerCase() != 'a' &&
-                    !(_.find $(e.target).parents(), (el) => el.tagName.toLowerCase() == 'a') &&
+      return true unless (_.find tag_blacklist, (t)=> t == e.target.tagName.toLowerCase()) &&
+                    !(_.find $(e.target).parents(), (el) => _.find(tag_blacklist, (t) => t == el.tagName.toLowerCase())) &&
                     touch_details.scrollX == window.scrollX && touch_details.scrollY == window.scrollY
       e.preventDefault()
       @toggleDetails()
       false
 
+    @$el.off('mousedown.toggle_details').on 'mousedown.toggle_details', (e) =>
+      [touch_details.pageX, touch_details.pageY] = [e.pageX, e.pageY]
+
     @$el.off('click.toggle_details').on 'click.toggle_details', (e) =>
-      return if e.target.tagName.toLowerCase() == 'a' ||
-                (_.find $(e.target).parents(), (el) => el.tagName.toLowerCase() == 'a')
+      return unless touch_details.pageX == e.pageX && touch_details.pageY == e.pageY
+      return if (_.find tag_blacklist, (t)=> t == e.target.tagName.toLowerCase()) ||
+                (_.find $(e.target).parents(), (el) => _.find(tag_blacklist, (t) => t == el.tagName.toLowerCase()))
       @toggleDetails()
 
   toggleDetails: =>
