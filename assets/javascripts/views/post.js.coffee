@@ -64,8 +64,23 @@ class TentStatus.Views.Post extends TentStatus.View
 
     ## Show/Hide conversation view
     @details_view = null
+    @details_view = @parentView if @parentView.view_name == 'post_details'
+
+    touch_details = {}
+    @$el.off('touchstart.toggle_details').on 'touchstart.toggle_details', (e) =>
+      [touch_details.scrollX, touch_details.scrollY] = [window.scrollX, window.scrollY]
+
+    @$el.off('touchend.toggle_details').on 'touchend.toggle_details', (e) =>
+      return true unless e.target.tagName.toLowerCase() != 'a' &&
+                    !(_.find $(e.target).parents(), (el) => el.tagName.toLowerCase() == 'a') &&
+                    touch_details.scrollX == window.scrollX && touch_details.scrollY == window.scrollY
+      e.preventDefault()
+      @toggleDetails()
+      false
+
     @$el.off('click.toggle_details').on 'click.toggle_details', (e) =>
-      return if e.target.tagName.toLowerCase() == 'a' || (_.find $(e.target).parents(), (el) => el.tagName.toLowerCase() == 'a')
+      return if e.target.tagName.toLowerCase() == 'a' ||
+                (_.find $(e.target).parents(), (el) => el.tagName.toLowerCase() == 'a')
       @toggleDetails()
 
   toggleDetails: =>
@@ -76,7 +91,7 @@ class TentStatus.Views.Post extends TentStatus.View
 
   hideDetails: =>
     @details_view.unbind()
-    @render()
+    @details_view.parentView.render()
 
   showDetails: =>
     return if @details_view

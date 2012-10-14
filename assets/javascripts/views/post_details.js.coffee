@@ -1,6 +1,7 @@
 class TentStatus.Views.PostDetails extends TentStatus.View
   templateName: 'post_details'
   partialNames: ['_post', '_post_inner', '_reply_form']
+  view_name: 'post_details'
 
   initialize: (options = {}) ->
     super
@@ -50,8 +51,6 @@ class TentStatus.Views.PostDetails extends TentStatus.View
 
   initPostView: (post, el) =>
     view = new TentStatus.Views.Post post: post, el: el, parentView: @
-    view.showDetils = ->
-    view.hideDetails = ->
     view.trigger 'ready'
 
   initPostViews: =>
@@ -66,10 +65,4 @@ class TentStatus.Views.PostDetails extends TentStatus.View
     for post in (@child_posts?.toArray() || [])
       el = post_els.shift()
       @initPostView post, el
-
-  bindEvents: =>
-    @parentView.$el.on 'click.hide_details', (e) =>
-      unless e.target.tagName.toLowerCase() == 'a' || (_.find $(e.target).parents(), (el)=> el.tagName.toLowerCase() == 'a')
-        @unbind()
-        @parentView.render()
 
