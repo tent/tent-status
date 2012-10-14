@@ -97,6 +97,7 @@ class TentStatus.Views.Post extends TentStatus.View
     @details_view.parentView.render()
 
   showDetails: =>
+    return if @parentView.view_name == 'conversation'
     return if @details_view
     @details_view = new TentStatus.Views.PostDetails parentView: @
 
