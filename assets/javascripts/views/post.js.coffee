@@ -67,7 +67,7 @@ class TentStatus.Views.Post extends TentStatus.View
     @details_view = @parentView if @parentView.view_name == 'post_details'
 
     touch_details = {}
-    tag_blacklist = ['a', 'textarea']
+    tag_blacklist = ['a', 'textarea', 'input']
     @$el.off('touchstart.toggle_details').on 'touchstart.toggle_details', (e) =>
       [touch_details.scrollX, touch_details.scrollY] = [window.scrollX, window.scrollY]
 
