@@ -72,9 +72,7 @@ class TentStatus.Views.Post extends TentStatus.View
       [touch_details.scrollX, touch_details.scrollY] = [window.scrollX, window.scrollY]
 
     @$el.off('touchend.toggle_details').on 'touchend.toggle_details', (e) =>
-      return true unless (_.find tag_blacklist, (t)=> t == e.target.tagName.toLowerCase()) &&
-                    !(_.find $(e.target).parents(), (el) => _.find(tag_blacklist, (t) => t == el.tagName.toLowerCase())) &&
-                    touch_details.scrollX == window.scrollX && touch_details.scrollY == window.scrollY
+      return true unless (!(_.find tag_blacklist, (t)=> t == e.target.tagName.toLowerCase()) && !(_.find $(e.target).parents(), (el) => _.find(tag_blacklist, (t) => t == el.tagName.toLowerCase())) && touch_details.scrollX == window.scrollX && touch_details.scrollY == window.scrollY)
       e.preventDefault()
       @toggleDetails()
       false
