@@ -347,7 +347,7 @@ module Tent
       end
 
       def nav_selected_class(path)
-        return '' if guest_user
+        return '' if guest_user && !(env['PATH_INFO'] == '/global' && env['HTTP_HOST'] =~ %r{^app\.})
         env['PATH_INFO'] == path ? 'active' : ''
       end
 
