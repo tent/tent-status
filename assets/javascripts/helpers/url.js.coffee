@@ -47,7 +47,7 @@ _.extend TentStatus.Helpers,
     TentStatus.config.domain_entity && TentStatus.config.domain_entity.assertEqual(entity)
 
   isEntityOnTentHostDomain: (entity) ->
-    TentStatus.config.tent_host_domain && entity.match(
+    TentStatus.config.tent_host_domain && entity.toString().match(
       new RegExp(TentStatus.Helpers.escapeRegExChars(TentStatus.config.tent_host_domain))
     )
 
