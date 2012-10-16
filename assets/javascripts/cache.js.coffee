@@ -1,9 +1,22 @@
 class Cache extends TentStatus.Events
   CACHE: {}
 
+  wrapValueWithExpiry: (value) =>
+    expires = moment().add('minutes', 30) * 1
+    { val: value, exp: expires }
+
+  unwrapValueWithExpiry: (value) =>
+    return unless value
+    expires = value.exp
+    return unless expires
+    now = new Date * 1
+    return unless now < expires
+    value.val
+
   set: (key, value, options = {}) =>
     return unless key && value
-    return if value == @CACHE[key]
+    return if value == @unwrapValueWithExpiry(@CACHE[key])
+    value = @wrapValueWithExpiry(value)
     @CACHE[key] = value
     @trigger "change:#{key}", value
 
@@ -16,7 +29,8 @@ class Cache extends TentStatus.Events
     store.set(key, value)
 
   get: (key) =>
-    @CACHE[key] or @_storeGet(key)
+    value = @CACHE[key] or @_storeGet(key)
+    @unwrapValueWithExpiry(value)
 
   _storeGet: (key) =>
     return unless window.store and store.enabled
