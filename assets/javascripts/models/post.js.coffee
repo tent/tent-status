@@ -118,12 +118,20 @@ class TentStatus.Models.Post extends Backbone.Model
             entity: entity
           }
 
+        getPostViaProxy = =>
+          new HTTP 'GET', "#{TentStatus.config.tent_proxy_root}/#{encodeURIComponent entity}/posts/#{post_id}", null, fetch_complete
+
         if post = TentStatus.Cache.get("post:#{entity}:#{post_id}")
           fetch_complete post, {status:200}
         else
           new HTTP 'GET', url, params, (post, xhr) =>
-            if TentStatus.config.tent_host_api_root && xhr.status != 200
-              new HTTP 'GET', hosted_url, hosted_params, fetch_complete
+            if xhr.status != 200
+              if TentStatus.config.tent_host_api_root
+                new HTTP 'GET', hosted_url, hosted_params, (post, xhr) =>
+                  return getPostViaProxy() unless xhr.status == 200
+                  fetch_complete(arguments...)
+              else
+                getPostViaProxy()
             else
               fetch_complete(arguments...)
 
