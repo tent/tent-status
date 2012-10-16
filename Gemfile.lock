@@ -150,7 +150,7 @@ GEM
     omniauth (1.1.1)
       hashie (~> 1.2)
       rack
-    omniauth-tent (0.1.2)
+    omniauth-tent (0.1.3)
       omniauth (~> 1.1.1)
       tent-client
     open4 (1.3.0)
