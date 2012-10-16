@@ -188,13 +188,8 @@ _.extend @TentStatus, Backbone.Events, {
     return unless @config.current_entity
     entity = @config.current_entity.toStringWithoutSchemePort()
     cache_key = "profile:#{entity}"
-    expires_at_cache_key = "profile:#{entity}:expires_at"
 
-    expires_at = @Cache.get(expires_at_cache_key)
-    expires_at = new Date(expires_at) if expires_at
-    now = new Date * 1
-
-    if expires_at and expires_at > now and (profile = @Cache.get(cache_key))
+    if profile = @Cache.get(cache_key)
       @Models.profile = new @Models.profile.constructor(profile)
       @trigger 'profile:fetch:success'
     else
@@ -202,6 +197,5 @@ _.extend @TentStatus, Backbone.Events, {
         success: =>
           @trigger 'profile:fetch:success'
           @Cache.set cache_key, @Models.profile.toJSON(), {saveToLocalStorage:true}
-          @Cache.set expires_at_cache_key, ((new Date * 1) + 86400000), {saveToLocalStorage:true}
 
 }
