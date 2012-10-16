@@ -418,6 +418,9 @@ module Tent
       client = ::TentClient.new(server_url)
       begin
         res = case params.delete('splat').to_a.first
+        when %r{\Aposts/([^/]+)/?\Z}
+          post_id = $1
+          client.post.get(post_id)
         when 'posts'
           client.post.list(params)
         when 'posts/count'
