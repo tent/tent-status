@@ -106,7 +106,7 @@ module Tent
           id_mapping.each_pair do |public_id, key|
             entity = params["#{key}_entity"]
             params[key] = posts.find { |p|
-              p.public_id == public_id && p.entity == entity
+              p.public_id == public_id && (!entity || p.entity == entity)
             }
             params[key] = params[key].id if params[key]
           end
@@ -144,7 +144,7 @@ module Tent
       end
 
       get '/api/posts' do
-          get_real_post_ids!(params)
+        get_real_post_ids!(params)
         conditions = post_conditions(params)
 
         posts = with_exclusive_scope(TentD::Model::Post) do
