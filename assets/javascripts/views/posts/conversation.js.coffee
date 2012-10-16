@@ -33,10 +33,18 @@ class TentStatus.Views.Conversation extends TentStatus.View
         entity: @entity
       }, params
 
+    getPostViaProxy = =>
+      new HTTP 'GET', "#{TentStatus.config.tent_proxy_root}/#{encodeURIComponent @entity}/posts/#{@post_id}", null, @getPostComplete
+
     TentStatus.trigger 'loading:start'
     new HTTP 'GET', url, params, (post, xhr) =>
-      if xhr.status != 200 && TentStatus.config.tent_host_api_root
-        new HTTP 'GET', hosted_url, hosted_params, @getPostComplete
+      if xhr.status != 200
+        if TentStatus.config.tent_host_api_root
+          new HTTP 'GET', hosted_url, hosted_params, (post, xhr) =>
+            return getPostViaProxy() unless xhr.status == 200
+            @getPostComplete(arguments...)
+        else
+          getPostViaProxy()
       else
         @getPostComplete(arguments...)
 
