@@ -85,7 +85,7 @@ class @HTTP
       @hostname = if h then h[0] else window.location.hostname
       @port = parseInt(h[1]) if h and h[1]
       if @hostname == window.location.hostname and window.location.port
-        @port = parseInt(window.location.port)
+        @port ?= parseInt(window.location.port)
       if !@port
         @port ?= if @scheme.match(/^https/) then 443 else 80
       @path = m[3]
