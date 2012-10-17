@@ -25,6 +25,8 @@ _.extend TentStatus.Helpers,
       "/profile"
     else if TentStatus.Helpers.isEntityOnTentHostDomain(entity)
       entity
+    else if TentStatus.Helpers.isEntityOnTentHostDomain(TentStatus.config.current_entity)
+      "#{TentStatus.config.current_entity.toStringWithoutSchemePort()}/#{encodeURIComponent entity}/profile"
     else
       "/#{encodeURIComponent entity}/profile"
 
