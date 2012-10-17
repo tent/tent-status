@@ -52,13 +52,31 @@ class TentStatus.Views.PostDetails extends TentStatus.View
   initPostView: (post, el) =>
     view = new TentStatus.Views.Post post: post, el: el, parentView: @
     view.trigger 'ready'
+    view
+
+  initInreplyToLink: (post, post_view) =>
+    el = $('a.parent-post', post_view.$el)
+    el.off 'click.show-in-details_view'
+    el.on 'click.show-in-defailt_view', (e) =>
+      e.preventDefault()
+      TentStatus.trigger 'loading:start'
+      post.fetchParents (posts) =>
+        TentStatus.trigger 'loading:complete'
+        return unless posts
+        for post in posts.toArray()
+          @parent_posts.unshift(post)
+        @trigger 'change:parent_posts'
+      false
 
   initPostViews: =>
     post_els = ($ 'li.post', @parentView.$el).toArray()
 
     for post in (@parent_posts?.toArray() || [])
-      el = post_els.shift()
-      @initPostView post, el
+      do (post) =>
+        el = post_els.shift()
+        view = @initPostView post, el
+        @initInreplyToLink post, view
+        view.on 'ready', => @initInreplyToLink(post, view)
 
     @initPostView @parentView.post, post_els.shift()
 
