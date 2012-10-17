@@ -135,13 +135,13 @@ class TentStatus.Models.Post extends Backbone.Model
             else
               fetch_complete(arguments...)
 
-  fetchChildren: (callback) =>
+  fetchChildren: (callback, params={}) =>
     url = "#{TentStatus.config.tent_api_root}/posts"
-    params = {
+    params = _.extend {
       limit: TentStatus.config.PER_PAGE
       mentioned_post: @get('id')
       post_types: TentStatus.config.post_types
-    }
+    }, params
 
     fetch_complete = (posts, xhr) =>
       return callback() unless xhr.status == 200
@@ -159,7 +159,6 @@ class TentStatus.Models.Post extends Backbone.Model
         new HTTP 'GET', hosted_url, hosted_params, fetch_complete
       else
         fetch_complete(arguments...)
-
 
   isRepost: =>
     !!(@get('type') || '').match(/repost/)
