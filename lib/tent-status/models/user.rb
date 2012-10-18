@@ -21,13 +21,11 @@ module Tent
 
       def self.find_or_create_from_auth_hash(auth_hash)
         user = first(:entity => auth_hash.uid)
-        return user if user
 
         app = auth_hash.extra.raw_info.app
         app_auth = auth_hash.extra.raw_info.app_authorization
         credentials = auth_hash.extra.credentials
-        p ['find_or_create_from_auth_hash', app_auth, credentials]
-        create(
+        attributes = {
           :entity => auth_hash.uid,
           :app_id => app.id,
           :app_mac => {
@@ -41,7 +39,14 @@ module Tent
           :mac_algorithm => app_auth.mac_algorithm,
           :profile_info_types => app_auth.profile_info_types,
           :post_types => app_auth.post_types
-        )
+        }
+
+        if user
+          user.update(attributes)
+          user
+        else
+          create(attributes)
+        end
       end
 
       def self.app_created_for_entity(app, entity)
