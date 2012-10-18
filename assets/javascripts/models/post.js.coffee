@@ -33,14 +33,7 @@ class TentStatus.Models.Post extends Backbone.Model
       @set 'profile', new TentStatus.Models.Profile(profile)
       return
 
-    if @get('following_id')
-      new HTTP 'GET', "#{TentStatus.config.tent_api_root}/followings/#{@get('following_id')}", null, (following, xhr) =>
-        return unless xhr.status == 200
-        profile = new TentStatus.Models.Profile following.profile
-        @set 'profile', profile
-        TentStatus.Cache.set cache_key, profile
-
-    else if TentStatus.config.current_entity?.hostname == (new HTTP.URI @get('entity')).hostname
+    if TentStatus.config.current_entity?.hostname == (new HTTP.URI @get('entity')).hostname
       if TentStatus.Models.profile.get('id')
         @set 'profile', TentStatus.Models.profile
         TentStatus.Cache.set cache_key, profile.toJSON()
