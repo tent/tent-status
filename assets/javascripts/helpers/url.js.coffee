@@ -96,7 +96,7 @@ _.extend TentStatus.Helpers,
       for i in TentStatus.Helpers.extractUrlsWithIndices(text)
         entity = i.url
         _is_carrot_mention = text.substr(i.indices[0]-1, 1) == '^'
-        _is_tent_subdomain = entity.match(new RegExp("\\w+\.#{TentStatus.Helpers.escapeRegExChars(TentStatus.config.tent_host_domain)}"))
+        _is_tent_subdomain = entity.match(new RegExp("\\w+\.#{TentStatus.Helpers.escapeRegExChars(TentStatus.config.tent_host_domain)}/?\\$"))
         continue unless _is_carrot_mention or _is_tent_subdomain
 
         original_text = entity
