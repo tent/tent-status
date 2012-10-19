@@ -51,7 +51,7 @@ class @HTTP
       @request.setHeader('Content-type','application/vnd.tent.v0+json')
 
     uri = new HTTP.URI @url
-    if TentStatus.current_auth_details.mac_key and uri.hostname == TentStatus.config.current_entity.hostname
+    if TentStatus.current_auth_details.mac_key and uri.hostname == TentStatus.config.tent_api_root.hostname
       (new TentStatus.MacAuth
         request: @
         body: data
