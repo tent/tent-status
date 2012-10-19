@@ -13,8 +13,9 @@ TentStatus.Views.user_menu = new class UserMenuView extends Backbone.View
       [@scrollX, @scrollY] = [window.scrollX, window.scrollY]
       @block_click = true
     @$el.on 'touchend', @toggle
-    @$el.on 'click', =>
+    @$el.on 'click', (e) =>
       return false if @block_click
+      return true if e.target.tagName == 'A'
       return unless url = @$el.attr('href')
       window.location.href = url
 
