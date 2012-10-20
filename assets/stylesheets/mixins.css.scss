@@ -41,3 +41,24 @@
      -moz-box-shadow: $value;
           box-shadow: $value;
 }
+
+@mixin background-gradient($start_color, $end_color) {
+  background-color: $start_color;
+  background-image: -moz-linear-gradient(top, $start_color, $end_color);
+  background-image: -ms-linear-gradient(top, $start_color, $end_color);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from($start_color), to($end_color));
+  background-image: -webkit-linear-gradient(top, $start_color, $end_color);
+  background-image: -o-linear-gradient(top, $start_color, $end_color);
+  background-image: linear-gradient(top, $start_color, $end_color);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#{$start_color}', endColorstr='#{$end_color}', GradientType=0);
+}
+
+@mixin button-gradient($color) {
+  $end_color: $color - hsl(0, 0, 6);
+  @include background-gradient($color, $end_color);
+}
+
+@mixin disabled-button-gradient($color) {
+  @include button-gradient($color + hsl(0, 20, 0) - hsl(0, 0, 26));
+}
