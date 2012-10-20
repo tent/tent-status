@@ -16,6 +16,7 @@ class @HTTP
     @retry_arguments = _.inject(arguments, ((memo, i)-> memo.push(i); memo), [])
     @retry = =>
       http = new HTTP @retry_arguments...
+      http.retry_count = @retry_count
       http.callbacks = @callbacks
 
     @request = new HTTP.Request
