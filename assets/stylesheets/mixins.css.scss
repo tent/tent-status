@@ -62,3 +62,7 @@
 @mixin disabled-button-gradient($color) {
   @include button-gradient($color + hsl(0, 20, 0) - hsl(0, 0, 26));
 }
+
+@mixin active-button-gradient($color) {
+  @include button-gradient($color - hsl(14, 0, 26) + hsl(0, 10, 0));
+}

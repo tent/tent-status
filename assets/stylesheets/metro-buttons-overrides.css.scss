@@ -14,3 +14,8 @@ $blue: #0099ff;
 .m-btn.blue.disabled {
   @include disabled-button-gradient($blue);
 }
+
+.m-btn.blue:active,
+.m-btn.blue.active {
+  @include active-button-gradient($blue);
+}
