@@ -198,6 +198,7 @@ module Tent
               "read_posts" => "See status posts",
               "write_posts" => "Create status posts",
               "read_profile" => "Show your basic profile",
+              "write_profile" => "Save app specific data",
               "read_followings" => "See who you are following",
               "write_followings" => "Follow new entities",
               "read_followers" => "See who is following you",
@@ -207,7 +208,7 @@ module Tent
             }
           },
           :post_types => %w( https://tent.io/types/post/status/v0.1.0 https://tent.io/types/post/repost/v0.1.0 ),
-          :profile_info_types => %w( https://tent.io/types/info/basic/v0.1.0 https://tent.io/types/info/core/v0.1.0 )
+          :profile_info_types => %w( https://tent.io/types/info/tent-status/v0.1.0 )
       end
 
       get '/auth' do

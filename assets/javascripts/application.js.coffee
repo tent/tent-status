@@ -13,12 +13,13 @@
 #= require mac_auth
 #= require ./events
 #= require ./cache
+#= require ./cursors
+#= require ./background_mentions_pool
 #= require ./fetch_interval
 #= require ./paginator
 #= require ./fetch_pool
 #= require ./view
 #= require ./router
-#= require ./background_mentions_pool
 #= require_tree ./helpers
 #= require_tree ./views
 #= require_tree ./routers
@@ -183,6 +184,14 @@ _.extend @TentStatus, Backbone.Events, {
       if p.slice(0, 1) == ":"
         params[p.slice(1, p.length)] = pathParts[index]
     params
+
+  getCurrentProfile: (callback) ->
+    if @Models.profile.get('id')
+      callback(@Models.profile)
+    else
+      @Models.profile.fetch
+        success: (profile) =>
+          callback(profile)
 
   fetchCurrentProfile: ->
     return unless @config.current_entity

@@ -1,44 +1,36 @@
 class BackgroundMentionsPool
-  sep: '__SEP__'
   constructor: ->
     return unless @entity = TentStatus.config.current_entity?.toStringWithoutSchemePort()
-    @cache_key = {
-      since_id: "#{@entity}#{@sep}mentions_since_id"
-      since_id_entity: "#{@entity}#{@sep}mentions_since_id_entity"
-    }
-    return
 
-    TentStatus.Cache.on "change:#{@cache_key.since_id}", (since_id) =>
-      @set 'since_id', since_id
+    TentStatus.on 'ready', @init
 
-    TentStatus.Cache.on "change:#{@cache_key.since_id_entity}", (since_id_entity) =>
-      @set 'since_id_entity', since_id_entity
+  init: =>
+    TentStatus.Cursors.on "change:mentions", (cursor) =>
+      @set 'cursor', cursor
 
-    @on 'change:since_id', @initFetchInterval
-    @on 'change:since_id_entity', @initFetchInterval
+    @on 'change:cursor', @initFetchInterval
 
-    [@since_id, @since_id_entity] = [TentStatus.Cache.get(@cache_key.since_id), TentStatus.Cache.get(@cache_key.since_id_entity)]
-    if @since_id and @since_id_entity
-      @initFetchInterval()
-    else
-      new HTTP 'GET', "#{TentStatus.config.tent_api_root}/posts", {
-        mentioned_entity: @entity
-        post_types: TentStatus.config.post_types
-      }, (posts, xhr) =>
-        return unless xhr.status == 200
-        return unless posts?.length
-        return unless post = posts[0]
-        @set 'since_id', post.id
-        @set 'since_id_entity', post.entity
+    TentStatus.Cursors.get "mentions", (cursor) =>
+      if cursor and cursor.post_entity and cursor.post_id
+        @set 'cursor', cursor
+      else
+        new HTTP 'GET', "#{TentStatus.config.tent_api_root}/posts", {
+          mentioned_entity: @entity
+          post_types: TentStatus.config.post_types
+        }, (posts, xhr) =>
+          return unless xhr.status == 200
+          return unless posts?.length
+          return unless post = posts[0]
+          TentStatus.Cursors.set "mentions", post.entity, post.id
 
   initFetchInterval: =>
     @fetch_interval?.clear()
 
-    return unless @since_id && @since_id_entity
+    return unless @cursor and @cursor.post_entity and @cursor.post_id
 
     @fetch_params = {
-      since_id: @since_id
-      since_id_entity: @since_id_entity
+      since_id: @cursor.post_id
+      since_id_entity: @cursor.post_entity
       mentioned_entity: @entity
       post_types: TentStatus.config.post_types
     }
@@ -67,10 +59,11 @@ class BackgroundMentionsPool
 
   set: (key, val) =>
     @[key] = val
-    cache_key = @cache_key[key]
-    TentStatus.Cache.set(cache_key, val, {saveToLocalStorage:true}) if cache_key
     @trigger "change:#{key}", val
     val
+
+  setCursor: (post_entity, post_id) =>
+    TentStatus.Cursors.set "mentions", post_entity, post_id
 
 _.extend BackgroundMentionsPool::, Backbone.Events
 
