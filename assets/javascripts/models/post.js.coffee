@@ -73,7 +73,7 @@ class TentStatus.Models.Post extends Backbone.Model
       repost.getProfile()
       repost = new TentStatus.Models.Post repost
       return @fetchRepost(repost, level + 1) if repost.isRepost()
-      @set('repost', repost)
+      @set('repost', repost) unless repost.attributes == @get('repost')?.attributes
       return
 
     fetchFromTentHost = =>
@@ -84,14 +84,14 @@ class TentStatus.Models.Post extends Backbone.Model
         repost.parent = @
         repost = new TentStatus.Models.Post repost
         return @fetchRepost(repost, level + 1) if repost.isRepost()
-        @set('repost', repost)
+        @set('repost', repost) unless repost.attributes == @get('repost')?.attributes
 
     new HTTP 'GET', "#{TentStatus.config.tent_api_root}/posts/#{encodeURIComponent repost_entity}/#{repost_id}", null, (repost, xhr) =>
       return fetchFromTentHost() unless xhr.status == 200
       repost.parent = @
       repost = new TentStatus.Models.Post repost
       return @fetchRepost(repost, level + 1) if repost.isRepost()
-      @set('repost', repost)
+      @set('repost', repost) unless repost.attributes == @get('repost')?.attributes
 
   fetchParents: (callback) =>
     return callback() unless @postMentions().length
