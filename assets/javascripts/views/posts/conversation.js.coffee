@@ -1,6 +1,6 @@
 class TentStatus.Views.Conversation extends TentStatus.View
   templateName: 'conversation'
-  partialNames: ['_post_inner', '_post', '_reply_form']
+  partialNames: ['_post_inner', '_post', '_reply_form', 'conversation_parent_posts', 'conversation_child_posts']
   view_name: 'conversation'
 
   dependentRenderAttributes: ['post']
@@ -13,10 +13,10 @@ class TentStatus.Views.Conversation extends TentStatus.View
 
     @on 'ready', @initPostViews
 
-    @on 'change:post', => @post.on 'repost:fetch:failed', @render404
-    @on 'change:post', @render
-    @on 'change:parent_posts', @render
-    @on 'change:posts', @render
+    @once 'change:post', => @post.on 'repost:fetch:failed', @render404
+    @once 'change:post', @render
+    @once 'change:parent_posts', @renderParentPosts
+    @once 'change:posts', @renderChildPosts
     @getPost()
 
   getPost: =>
@@ -54,7 +54,6 @@ class TentStatus.Views.Conversation extends TentStatus.View
     return @render404() if xhr.status == 404
     return unless xhr.status == 200
     post = new TentStatus.Models.Post post
-    post.on 'change:profile', => @render()
     @set 'post', post
 
     @getParentPost()
@@ -77,8 +76,20 @@ class TentStatus.Views.Conversation extends TentStatus.View
     parent_posts: (_.map (@parent_posts?.toArray() || []), (p) => if p then TentStatus.Views.Post::context(p))
     posts: _.map( @posts?.toArray() || [], (p) -> TentStatus.Views.Post::context(p))
 
-  initPostViews: =>
-    _.each ($ 'li.post', @container.$el), (el) =>
+  renderParentPosts: =>
+    html = @partials['conversation_parent_posts'].render(@context(), @partials)
+    $el = $(html)
+    @container.$el.prepend($el)
+    @initPostViews($el)
+
+  renderChildPosts: =>
+    html = @partials['conversation_child_posts'].render(@context(), @partials)
+    $el = $(html)
+    @container.$el.append($el)
+    @initPostViews($el)
+
+  initPostViews: ($el = @container.$el) =>
+    _.each ($ 'li.post', $el), (el) =>
       post_id = ($ el).attr('data-id')
       posts = [@post, @parent_post].concat(@get('posts')?.toArray() || []).
                       concat(@get('parent_posts')?.toArray() || [])
