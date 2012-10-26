@@ -51,12 +51,14 @@ class TentStatus.Models.Post extends Backbone.Model
     else if TentStatus.Helpers.isEntityOnTentHostDomain(@get 'entity')
       new HTTP 'GET', "#{@get('entity') + TentStatus.config.tent_host_domain_tent_api_path}/profile", null, (profile, xhr) =>
         return unless xhr.status == 200
+        return unless profile
         profile = new TentStatus.Models.Profile profile
         @set 'profile', profile
         TentStatus.Cache.set cache_key, profile.toJSON()
     else
       new HTTP 'GET', "#{TentStatus.config.tent_proxy_root}/#{encodeURIComponent @get('entity')}/profile", null, (profile, xhr) =>
         return unless xhr.status == 200
+        return unless profile
         profile = new TentStatus.Models.Profile profile
         @set 'profile', profile
         TentStatus.Cache.set cache_key, profile.toJSON()
