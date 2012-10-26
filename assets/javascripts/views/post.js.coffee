@@ -32,13 +32,13 @@ class TentStatus.Views.Post extends TentStatus.View
 
   fetchRepost: =>
     if @post?.isRepost()
-      @post.once 'repost:fetch:failed', =>
+      @post.on 'repost:fetch:failed', =>
         @$el.hide()
 
-      @post.once 'change:repost', =>
+      @post.on 'change:repost', =>
         repost = @post.get('repost')
-        repost.once 'change:profile', => @render()
-        repost.once 'change:disable_repost', => @render()
+        repost.on 'change:profile', => @render()
+        repost.on 'change:disable_repost', => @render()
         @render()
         @$el.show()
       unless @post.get('repost')
