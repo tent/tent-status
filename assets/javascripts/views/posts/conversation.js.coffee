@@ -13,6 +13,7 @@ class TentStatus.Views.Conversation extends TentStatus.View
 
     @on 'ready', @initPostViews
 
+    @on 'change:post', => @post.on 'repost:fetch:failed', @render404
     @on 'change:post', @render
     @on 'change:parent_posts', @render
     @on 'change:posts', @render
