@@ -18,7 +18,7 @@ class TentStatus.Views.Post extends TentStatus.View
     else
       @once 'change:post', @initPostEvents
 
-    @on 'ready', @fetchRepost
+    @once 'ready', @fetchRepost
     @on 'ready', @bindEvents
 
     super
