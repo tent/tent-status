@@ -61,30 +61,37 @@ class TentStatus.Models.Post extends Backbone.Model
         @set 'profile', profile
         TentStatus.Cache.set cache_key, profile.toJSON()
 
-  fetchRepost: =>
-    return @get('repost') if @get('repost')
-    repost_entity = @get('content')?.entity
-    repost_id = @get('content')?.id
-    return unless repost_entity and repost_id
+  fetchRepost: (self = @, level = 1) =>
+    return self.get('repost') if self.get('repost')
+    return @trigger('repost:fetch:failed') if level >= 3
+    repost_entity = self.get('content')?.entity
+    repost_id = self.get('content')?.id
+    return @trigger('repost:fetch:failed') unless repost_entity and repost_id
 
     if repost = TentStatus.Cache.get "post:#{repost_id}"
       repost.set 'parent', @
       repost.getProfile()
-      @set 'repost', repost
+      repost = new TentStatus.Models.Post repost
+      return @fetchRepost(repost, level + 1) if repost.isRepost()
+      @set('repost', repost)
       return
 
-    new HTTP 'GET', "#{TentStatus.config.tent_api_root}/posts/#{encodeURIComponent repost_entity}/#{repost_id}", null, (repost, xhr) =>
-      return unless xhr.status == 200
-      repost.parent = @
-      repost = new TentStatus.Models.Post repost
-      @set 'repost', repost
+    fetchFromTentHost = =>
+      new HTTP 'GET', "#{repost_entity + TentStatus.config.tent_host_domain_tent_api_path}/posts/#{repost_id}", null, (repost, xhr) =>
+        unless xhr.status == 200
+          @trigger 'repost:fetch:failed'
+          return
+        repost.parent = @
+        repost = new TentStatus.Models.Post repost
+        return @fetchRepost(repost, level + 1) if repost.isRepost()
+        @set('repost', repost)
 
-    new HTTP 'GET', "#{repost_entity + TentStatus.config.tent_host_domain_tent_api_path}/posts/#{repost_id}", null, (repost, xhr) =>
-      return unless xhr.status == 200
-      return if @get('repost')
+    new HTTP 'GET', "#{TentStatus.config.tent_api_root}/posts/#{encodeURIComponent repost_entity}/#{repost_id}", null, (repost, xhr) =>
+      return fetchFromTentHost() unless xhr.status == 200
       repost.parent = @
       repost = new TentStatus.Models.Post repost
-      @set 'repost', repost
+      return @fetchRepost(repost, level + 1) if repost.isRepost()
+      @set('repost', repost)
 
   fetchParents: (callback) =>
     return callback() unless @postMentions().length
