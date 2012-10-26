@@ -27,18 +27,18 @@ class TentStatus.Views.Post extends TentStatus.View
     @post.on 'change:profile', => @render()
     @post.on 'change:disable_repost', => @render()
 
-    @render() if @post.get('repost')?.get('profile')
-    @render() if @post.get('profile')
+    if @post.get('repost')?.get('profile') or @post.get('profile')
+      @render()
 
   fetchRepost: =>
     if @post?.isRepost()
       @post.on 'repost:fetch:failed', =>
         @$el.hide()
 
-      @post.on 'change:repost', =>
+      @post.once 'change:repost', =>
         repost = @post.get('repost')
-        repost.on 'change:profile', => @render()
-        repost.on 'change:disable_repost', => @render()
+        repost.once 'change:profile', => @render()
+        repost.once 'change:disable_repost', => @render()
         @render()
         @$el.show()
       unless @post.get('repost')
