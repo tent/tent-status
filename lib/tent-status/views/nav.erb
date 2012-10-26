@@ -51,7 +51,7 @@
       <% end %>
     </li>
     <li class="<%= nav_selected_class('/mentions') %>">
-      <a href="<%= full_url('/mentions') %>">Mentions</a>
+      <a href="<%= full_url('/mentions') %>">Mentions&nbsp;<span id='mentions_count' class='hide badge badge-important'></span></a>
     </li>
   <% else %>
     <% if tent_host_domain %>
