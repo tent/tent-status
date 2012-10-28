@@ -132,6 +132,8 @@ body {
     padding-right: 28px;
     border-bottom: 1px solid #DCDCDC;
     @include box_shadow(none);
+    @include border-bottom-left-radius(4px);
+    @include border-bottom-right-radius(4px);
 
     .brand, .nav li a {
       line-height: 28px;
@@ -156,6 +158,7 @@ body {
         .avatar {
           width: 48px;
           height: 48px;
+          @include border-bottom-left-radius(4px);
         }
 
         .caret {
@@ -231,18 +234,22 @@ body {
   }
 }
 
-#main-container, #main-nav .navbar-inner {
-  background-color: #FEFEFE;
-  background-image: url(<%= asset_path('bodytexture.png') %>);
-  border-right: 1px solid #DCDCDC;
-  border-left: 1px solid #DCDCDC;
-}
-
 #main {
   margin-top: 20px;
+
+  h1 {
+    margin: 0px 0px 10px 0px;
+    border-bottom: 0px;
+  }
+
+  .page-header {
+    margin: 0px;
+    border-bottom: 0px;
+  }
 }
 
 .new-post-form, .reply-post-form {
+  margin-bottom: 0px;
   .char-limit {
     margin-top: 6px;
     margin-right: 12px;
@@ -257,29 +264,69 @@ ul.posts.no-seps .post-sep {
   display: none;
 }
 
+ul.posts {
+  margin-bottom: 0px;
+}
+
+
+.primary {
+  li.post {
+    .post-container {
+      background-color: #EEEEEE;
+      background-image: none;
+    }
+
+    .post.repost {
+      .post-container {
+        background-color: #FEFEFE;
+        background-image: url(<%= asset_path('bodytexture.png') %>);
+      }
+    }
+  }
+}
+
 li.post {
   padding: 0px;
-  margin-bottom: 0px;
   padding-bottom: 2px;
+  margin-bottom: 20px;
 
   .m-btn {
     margin-top: 0px;
   }
 
   .avatar-container {
-    min-height: 60px;
+    margin-right: 10px;
+    img.avatar {
+      @include rounded(3px);
+    }
   }
 
-  .post-header, .post-body, .post-sub-header {
-    margin-left: 6px;
+  .low-margin {
+    [class*='span'] {
+      margin-left: 0px;
+      margin-bottom: 0px;
+    }
   }
 
   .reply-container {
-    margin-left: 40px;
-
     &.repost-reply-container {
       margin-left: -20px;
     }
+  }
+
+  .post-container {
+    @include rounded(3px);
+    float: left;
+    width: 540px;
+    padding: 2px 6px 2px 6px;
+    margin-left: 0px;
+    margin-right: -10px;
+    background-color: #FEFEFE;
+    background-image: url(<%= asset_path('bodytexture.png') %>);
+  }
+
+  .actions {
+    line-height: 12px;
   }
 
   .post-header {
@@ -334,9 +381,6 @@ li.post {
   .post.repost {
     margin-left: 68px;
     margin-top: -32px;
-    padding: 6px;
-    background-color: #EEEEEE;
-    border: 1px solid #DCDCDC;
 
     .post-header {
       .post-date {
@@ -344,62 +388,57 @@ li.post {
         float: none;
       }
     }
-  }
 
-  .post-sep {
-    height: 3px;
-    background-image: url(<%= asset_path('texture.png') %>);
-    margin-left: -41px;
-    margin-right: -43px;
-  }
+    .avatar-container {
+      width: 46px;
+      margin-right: 0px;
+    }
 
-  .row.first {
-    padding-top: 4px;
+    .post-container {
+      background-color: #EEEEEE;
+      background-image: none;
+      border: 1px solid #DCDCDC;
+      width: 480px;
+      margin-right: 0px;
+    }
+
+    form {
+      margin-left: 20px;
+    }
   }
 
   &.details .post-sep {
     display: none;
   }
 
-  &.details > .row {
-    margin-left: -41px;
-    padding-left: 40px;
-    margin-right: -43px;
-    margin-bottom: -3px;
-    background-color: #FEFEFE;
-    border: 1px solid #DCDCDC;
-
-    &.sep {
-      border-left: 0px;
-      border-right: 0px;
-      padding-top: 20px;
-      height: 6px;
-      background-color: #F3f3f3;
-      background-image: url(<%= asset_path('texture.png') %>);
-
-      &:last-of-type {
-        padding-top: 10px;
-      }
-    }
-
+  &.details {
     li.post {
       margin-bottom: 0px;
-      padding-top: 12px;
-      padding-bottom: 12px;
-      border-bottom: 0px;
+      padding-bottom: 0px;
+
+      .post-container {
+        @include rounded(0px);
+        padding-bottom: 8px;
+        border-bottom: 1px solid #DCDCDC;
+      }
 
       .showOnHover {
         visibility: visible;
       }
     }
 
-    .external li.post {
-      background-color: #EEEEEE;
-      margin-left: -40px;
-      padding-left: 40px;
-      margin-right: -42px;
-      padding-right: 42px;
-      padding-top: 12px;
+    .external {
+      .post-container {
+        background-color: #EEEEEE;
+        background-image: none;
+      }
+
+      .post.repost {
+        .post-container {
+          background-color: #FEFEFE;
+          background-image: url(<%= asset_path('bodytexture.png') %>);
+        }
+      }
     }
 
     .showOnHover {
@@ -426,12 +465,6 @@ li.post {
       &.show {
         visibility: hidden;
       }
-    }
-  }
-
-  &.details + &.details {
-    .row.sep:first-of-type {
-      display: none;
     }
   }
 }

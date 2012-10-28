@@ -44,6 +44,10 @@ only screen and (                min-resolution: 2dppx) {
 }
 
 @media (min-width: 842px) {
+  .mobile-only {
+    display: none;
+  }
+
   #main-nav {
     .navbar-inner {
       .brand {
@@ -65,7 +69,11 @@ only screen and (                min-resolution: 2dppx) {
 
 @media (max-width: 841px) {
   .mobile-hide {
-    display: none;
+    display: none !important;
+  }
+
+  body {
+    margin-top: 90px;
   }
 
   #main-nav {
@@ -95,8 +103,8 @@ only screen and (                min-resolution: 2dppx) {
   }
 
   #main {
-    margin-left: 20px;
-    margin-right: 20px;
+    margin-left: 0px;
+    margin-right: 0px;
 
     .new-post-container {
       display: none;
@@ -112,17 +120,26 @@ only screen and (                min-resolution: 2dppx) {
         min-height: 50px;
       }
 
-      .post-header, .post-body, .post-sub-header, .post.repost, .actions .offset1 {
-        margin-left: 48px;
-      }
-
       .reply-container {
         margin-left: 0px;
       }
 
+      .post-container {
+        width: 100%;
+        padding-left: 2px;
+        padding-right: 2px;
+      }
+
       .post.repost {
         margin-top: 26px;
-        margin-left: 0px;
+        margin-left: -6px;
+
+        .post-container {
+          border-left: 0px;
+          border-right: 0px;
+          padding: 0px;
+        }
+
         [class*='span'] {
           margin-left: 0px;
         }

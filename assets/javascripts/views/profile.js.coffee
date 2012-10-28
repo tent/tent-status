@@ -1,6 +1,6 @@
 class TentStatus.Views.Profile extends TentStatus.View
   templateName: 'profile'
-  partialNames: ['_post', '_post_inner', '_reply_form']
+  partialNames: ['_post', '_post_inner', '_post_inner_actions', '_reply_form']
 
   dependentRenderAttributes: ['profile']
 

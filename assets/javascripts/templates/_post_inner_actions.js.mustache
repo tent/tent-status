@@ -1,0 +1,34 @@
+{{#authenticated}}
+<div class='showOnHover actions {{^has_parent}}span7{{/has_parent}}{{#has_parent}}span6{{/has_parent}}'>
+  {{^is_repost}}
+  <a class="reply {{#has_parent}}reply-repost{{/has_parent}}" href="#"><i class='sicon-reply'></i>&nbsp;<span class='text'>Reply</span></a>
+
+  {{^currentUserOwnsPost}}
+  {{#has_parent}}
+  <span class="mobile-hide"><i class='sicon-repost'></i>&nbsp;Reposted by {{parent.name}}</span>
+  {{/has_parent}}
+  
+  {{^disable_repost}}
+  <a class="repost {{#has_parent}}repost-repost{{/has_parent}}" data-confirm="Repost {{name}}?" href="#"><i class='sicon-repost'></i>&nbsp;<span class='text'>Repost</span></a>
+  {{/disable_repost}}
+
+  {{#disable_repost}}
+  {{^has_parent}}
+  <span><i class='sicon-repost'></i>&nbsp;<span class='text'>Reposted</span></span>
+  {{/has_parent}}
+  {{/disable_repost}}
+  {{/currentUserOwnsPost}}
+  {{/is_repost}}
+  
+  {{#is_repost}}
+  <a class="reply" data-id="{{id}}" href="#"><i class='sicon-reply'></i>&nbsp;<span class='text'>Reply</span></a>
+  {{/is_repost}}
+  
+  {{#currentUserOwnsPost}}
+  <a class="delete {{#has_parent}}delete-repost{{/has_parent}}" data-confirm="Delete Post?" data-id="{{id}}" href="#"><i class='sicon-delete'></i>&nbsp;Delete</a>
+  {{/currentUserOwnsPost}}
+
+  <small class="pull-right">via {{app.name}}</small>
+</div>
+{{/authenticated}}
+

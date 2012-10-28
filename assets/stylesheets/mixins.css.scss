@@ -4,6 +4,30 @@
   border-radius: $amount;
 }
 
+@mixin border-bottom-left-radius($amount) {
+  -webkit-border-bottom-left-radius: $amount;
+  -moz-border-bottom-left-radius: $amount;
+  border-bottom-left-radius: $amount;
+}
+
+@mixin border-bottom-right-radius($amount) {
+  -webkit-border-bottom-right-radius: $amount;
+  -moz-border-bottom-right-radius: $amount;
+  border-bottom-right-radius: $amount;
+}
+
+@mixin border-top-left-radius($amount) {
+  -webkit-border-top-left-radius: $amount;
+  -moz-border-top-left-radius: $amount;
+  border-top-left-radius: $amount;
+}
+
+@mixin border-top-right-radius($amount) {
+  -webkit-border-top-right-radius: $amount;
+  -moz-border-top-right-radius: $amount;
+  border-top-right-radius: $amount;
+}
+
 @mixin transition($property, $fn, $duration, $delay) {
   transition-property: $property;
   transition-duration: $duration;
