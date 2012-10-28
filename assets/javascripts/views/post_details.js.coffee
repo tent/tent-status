@@ -1,6 +1,6 @@
 class TentStatus.Views.PostDetails extends TentStatus.View
   templateName: 'post_details'
-  partialNames: ['_post', '_post_inner', '_reply_form']
+  partialNames: ['_post', '_post_inner', '_post_inner_actions', '_reply_form']
   view_name: 'post_details'
 
   initialize: (options = {}) ->

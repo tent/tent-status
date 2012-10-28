@@ -1,23 +1,19 @@
 <li class='post details'>
-  <div class='row sep'>&nbsp;</div>
-  <div class='row'>
-    <ul class='unstyled posts external'>
-      {{#parent_posts}}
-      {{>_post}}
-      {{/parent_posts}}
-    </ul>
+  <ul class='unstyled posts external'>
+    {{#parent_posts}}
+    {{>_post}}
+    {{/parent_posts}}
+  </ul>
 
-    <ul class='unstyled posts'>
-      {{#post}}
-      {{> _post}}
-      {{/post}}
-    </ul>
+  <ul class='unstyled posts'>
+    {{#post}}
+    {{> _post}}
+    {{/post}}
+  </ul>
 
-    <ul class='unstyled posts external'>
-      {{#child_posts}}
-      {{>_post}}
-      {{/child_posts}}
-    </ul>
-  </div>
-  <div class='row sep'>&nbsp;</div>
+  <ul class='unstyled posts external'>
+    {{#child_posts}}
+    {{>_post}}
+    {{/child_posts}}
+  </ul>
 </li>

@@ -1,6 +1,6 @@
 class TentStatus.Views.Conversation extends TentStatus.View
   templateName: 'conversation'
-  partialNames: ['_post_inner', '_post', '_reply_form', 'conversation_parent_posts', 'conversation_child_posts']
+  partialNames: ['_post_inner', '_post_inner_actions', '_post', '_reply_form', 'conversation_parent_posts', 'conversation_child_posts']
   view_name: 'conversation'
 
   dependentRenderAttributes: ['post']
