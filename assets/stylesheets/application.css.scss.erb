@@ -254,9 +254,8 @@ body {
 }
 
 li.post {
-  border-bottom: 1px solid #EEE;
   padding: 0px;
-  margin-bottom: 8px;
+  margin-bottom: 0px;
   padding-bottom: 2px;
 
   .m-btn {
@@ -343,11 +342,25 @@ li.post {
     }
   }
 
+  .post-sep {
+    height: 3px;
+    background-image: url(<%= asset_path('texture.png') %>);
+    margin-left: -41px;
+    margin-right: -43px;
+  }
+
+  .row.first {
+    padding-top: 4px;
+  }
+
+  &.details .post-sep {
+    display: none;
+  }
+
   &.details > .row {
     margin-left: -41px;
     padding-left: 40px;
     margin-right: -43px;
-    margin-top: -10px;
     margin-bottom: -3px;
     background-color: #FEFEFE;
     border: 1px solid #DCDCDC;
