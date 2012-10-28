@@ -166,6 +166,7 @@ class TentStatus.Views.NewPostForm extends TentStatus.View
 
   validate: (data = @getData()) =>
     post = new TentStatus.Models.Post data
+    data.content?.text = @$textarea.val()
     errors = post.validate(data)
     @$el.find(".error").removeClass('error')
     @$errors.hide()
