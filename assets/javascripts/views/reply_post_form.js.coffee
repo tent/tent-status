@@ -26,6 +26,7 @@ class TentStatus.Views.ReplyPostForm extends TentStatus.Views.NewPostForm
     @is_repost = @$container.hasClass('repost-reply-container')
 
     @is_hidden = @$container.hasClass('hide')
+    @show_text = 'Reply'
     @hide_text = 'Cancel'
 
     @_initialized = true
@@ -59,7 +60,6 @@ class TentStatus.Views.ReplyPostForm extends TentStatus.Views.NewPostForm
     @focusAfterText()
     if $button = @getReplyButton()
       $text = $('.text', $button)
-      @show_text ?= $text.text()
       $text.text @hide_text
 
   hide: =>
