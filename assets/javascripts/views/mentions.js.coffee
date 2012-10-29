@@ -9,10 +9,14 @@ class TentStatus.Views.Mentions extends TentStatus.View
 
     @on 'ready', =>
       @fetch_posts_pool_view = @child_views.FetchPostsPool?[0]
+
       if @fetch_posts_pool_view.pool
-        @initFetchPostsPoolListener()
+        @cacheFetchPostsPoolSinceId()
       else
-        @fetch_posts_pool_view.once 'pool:init', @initFetchPostsPoolListener
+        @fetch_posts_pool_view.once 'pool:init', @cacheFetchPostsPoolSinceId
+
+      TentStatus.background_mentions_pool?.on 'change:mentions_count', =>
+        @fetch_posts_pool_view.pool?.fetch()
 
     @render()
 
@@ -21,10 +25,6 @@ class TentStatus.Views.Mentions extends TentStatus.View
     profileUrl: TentStatus.Helpers.entityProfileUrl @entity
     formatted:
       domain_entity: TentStatus.Helpers.formatUrl @entity.toStringWithoutSchemePort()
-
-  initFetchPostsPoolListener: =>
-    TentStatus.background_mentions_pool?.set 'mentions_count', 0
-    @fetch_posts_pool_view.pool.on 'fetch:success', => @cacheFetchPostsPoolSinceId()
 
   cacheFetchPostsPoolSinceId: (since_id = @fetch_posts_pool_view.pool.sinceId, since_id_entity = @fetch_posts_pool_view.pool.since_id_entity) =>
     TentStatus.background_mentions_pool?.setCursor since_id_entity, since_id

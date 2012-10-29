@@ -78,6 +78,9 @@ _.extend @TentStatus, Backbone.Events, {
     default_avatar: 'http://dr49qsqhb5y4j.cloudfront.net/default1.png'
   }
 
+  isMentionsPage: =>
+    window.location.pathname == '/mentions'
+
   isAppSubdomain: =>
     TentStatus.config.tent_host_domain and window.location.hostname == "app.#{TentStatus.config.tent_host_domain}"
 

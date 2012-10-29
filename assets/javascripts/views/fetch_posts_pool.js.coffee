@@ -98,4 +98,5 @@ class TentStatus.Views.FetchPostsPool extends Backbone.View
     @$elements.num_new_posts.text @num_new_posts
     @hide()
     @updateUnreadTitle()
+    @postsFeedView.trigger 'pool:emptied'
 

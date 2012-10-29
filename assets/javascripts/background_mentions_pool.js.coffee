@@ -10,6 +10,10 @@ class BackgroundMentionsPool
 
     @on 'change:cursor', @initFetchInterval
 
+    if TentStatus.isMentionsPage()
+      @set 'mentions_count', 0
+      return
+
     TentStatus.Cursors.get "mentions", (cursor) =>
       if cursor and cursor.post_entity and cursor.post_id
         @set 'cursor', cursor
