@@ -76,6 +76,16 @@ module Tent
           user if user && (session[:current_user_id] == user.id)
         end
 
+        def custom_background_image
+          user = (current_user || guest_user)
+          return unless user
+
+          profile_info = user.profile_infos.first(:type_base => 'https://tent.io/types/info/tent-status')
+          return unless profile_info && profile_info.content.kind_of?(Hash)
+
+          profile_info.content['background_image_url']
+        end
+
         def domain_entity
           self_url_root
         end
@@ -277,6 +287,9 @@ module Tent
 
         def in_application?
           env['PATH_INFO'] !~ %r{^(/setup)|(/assets)|(/auth)}
+        end
+
+        def custom_background_image
         end
       end
 
