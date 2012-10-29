@@ -83,7 +83,9 @@ module Tent
           profile_info = user.profile_infos.first(:type_base => 'https://tent.io/types/info/tent-status')
           return unless profile_info && profile_info.content.kind_of?(Hash)
 
-          profile_info.content['background_image_url']
+          image_url = profile_info.content['background_image_url']
+          return if !image_url || image_url.to_s =~ /\A[\s\r\t]*\Z/
+          image_url
         end
 
         def domain_entity
