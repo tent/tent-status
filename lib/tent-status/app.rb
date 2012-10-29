@@ -77,10 +77,13 @@ module Tent
         end
 
         def custom_background_image
-          user = (current_user || guest_user)
+          user = current_user || guest_user
           return unless user
 
-          profile_info = user.profile_infos.first(:type_base => 'https://tent.io/types/info/tent-status')
+          profile_info = TentD::Model::ProfileInfo.send(:with_exclusive_scope, {}) { |q|
+            user.profile_infos.first(:type_base => 'https://tent.io/types/info/tent-status')
+          }
+
           return unless profile_info && profile_info.content.kind_of?(Hash)
 
           image_url = profile_info.content['background_image_url']
