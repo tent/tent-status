@@ -13,7 +13,8 @@ class TentStatus.Views.MentionsPostFeed extends TentStatus.Views.PostsFeed
       mentioned_entity: @entity.toStringWithoutSchemePort()
     }
 
-    @on 'change:posts', =>
+    @on 'pool:emptied', =>
+      TentStatus.background_mentions_pool?.set 'mentions_count', 0
       options.parentView.cacheFetchPostsPoolSinceId(@posts.first().get('id'), @posts.first().get('entity'))
 
     super(options)
