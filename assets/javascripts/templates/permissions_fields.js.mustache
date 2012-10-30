@@ -1,0 +1,11 @@
+<div class='permissions-options-container'>
+  <div class='show-option-picker'>+</div>
+
+  <ul class='options'>
+    {{#options}}
+    <li class='option {{#group}}green{{/group}}'><span class='text'>{{text}}</span><span class='remove'>&times;</span></li>
+    {{/options}}
+  </ul>
+
+  <div class='option-picker' data-view='PermissionsFieldsPicker'></div>
+</div>
