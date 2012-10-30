@@ -41,6 +41,9 @@
     <% if in_application? %>
       <%= erb :config %>
       <script type='application/javascript' src="<%= asset_path("boot.js") %>"></script>
+      <script type='application/javascript' src="<%= asset_path("tests/mentions.js") %>"></script>
+
+      <iframe id='iframe-cache' src='<%= self_app_root + '/iframe-cache' %>'></iframe>
     <% end %>
   </body>
 </html>

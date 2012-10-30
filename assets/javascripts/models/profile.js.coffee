@@ -4,7 +4,7 @@ class Profile extends Backbone.Model
 
   initialize: ->
     if entity = @entity()
-      TentStatus.Cache.set "profile:#{entity}", @
+      TentStatus.Cache.set "profile:#{entity}", @toJSON(), {saveToLocalStorage: true}
 
   core_profile: =>
     @get('https://tent.io/types/info/core/v0.1.0')

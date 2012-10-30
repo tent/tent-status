@@ -7,7 +7,11 @@ class TentStatus.Models.Post extends Backbone.Model
       @initParentBindings(@get 'parent')
     @on 'change:parent', @initParentBindings
 
-    TentStatus.Cache.set "post:#{@get 'id'}", @
+    TentStatus.Cache.set "post:#{@get 'id'}", _.extend(@toJSON(), {
+      parent: null,
+      repost: null,
+      profile: null
+    })
 
     TentStatus.Reposted.on "change", @get('entity'), @get('id'), (is_reposted) =>
       @set('parent', null) if is_reposted == false
@@ -26,42 +30,44 @@ class TentStatus.Models.Post extends Backbone.Model
     return if @isNew()
     cache_key = "profile:#{@get 'entity'}"
 
-    TentStatus.Cache.on cache_key, (profile) =>
-      @set 'profile', profile
-
-    if profile = TentStatus.Cache.get cache_key
+    TentStatus.Cache.on "change:#{cache_key}", (profile) =>
       @set 'profile', new TentStatus.Models.Profile(profile)
-      return
 
-    if TentStatus.config.current_entity?.hostname == (new HTTP.URI @get('entity')).hostname
-      if TentStatus.Models.profile.get('id')
-        @set 'profile', TentStatus.Models.profile
-        TentStatus.Cache.set cache_key, profile.toJSON()
-      else
-        TentStatus.Models.profile.fetch
+    TentStatus.Cache.get cache_key, (profile) =>
+      if profile
+        @set 'profile', new TentStatus.Models.Profile(profile)
+        return
+
+      if TentStatus.config.current_entity?.hostname == (new HTTP.URI @get('entity')).hostname
+        if TentStatus.Models.profile.get('id')
+          @set 'profile', TentStatus.Models.profile
+          TentStatus.Cache.set cache_key, profile.toJSON()
+        else
+          TentStatus.Models.profile.fetch
+            success: (profile) =>
+              @set 'profile', TentStatus.Models.profile
+              TentStatus.Cache.set cache_key, profile.toJSON()
+
+      else if TentStatus.config.domain_entity.hostname == (new HTTP.URI @get('entity')).hostname
+        profile = new TentStatus.Models.Profile
+        profile.fetch
           success: =>
-            @set 'profile', TentStatus.Models.profile
+            @set 'profile', profile
             TentStatus.Cache.set cache_key, profile.toJSON()
-    else if TentStatus.config.domain_entity.hostname == (new HTTP.URI @get('entity')).hostname
-      profile = new TentStatus.Models.Profile
-      profile.fetch
-        success: =>
+      else if TentStatus.Helpers.isEntityOnTentHostDomain(@get 'entity')
+        new HTTP 'GET', "#{@get('entity') + TentStatus.config.tent_host_domain_tent_api_path}/profile", null, (profile, xhr) =>
+          return unless xhr.status == 200
+          return unless profile
+          profile = new TentStatus.Models.Profile profile
           @set 'profile', profile
           TentStatus.Cache.set cache_key, profile.toJSON()
-    else if TentStatus.Helpers.isEntityOnTentHostDomain(@get 'entity')
-      new HTTP 'GET', "#{@get('entity') + TentStatus.config.tent_host_domain_tent_api_path}/profile", null, (profile, xhr) =>
-        return unless xhr.status == 200
-        return unless profile
-        profile = new TentStatus.Models.Profile profile
-        @set 'profile', profile
-        TentStatus.Cache.set cache_key, profile.toJSON()
-    else
-      new HTTP 'GET', "#{TentStatus.config.tent_proxy_root}/#{encodeURIComponent @get('entity')}/profile", null, (profile, xhr) =>
-        return unless xhr.status == 200
-        return unless profile
-        profile = new TentStatus.Models.Profile profile
-        @set 'profile', profile
-        TentStatus.Cache.set cache_key, profile.toJSON()
+      else
+        new HTTP 'GET', "#{TentStatus.config.tent_proxy_root}/#{encodeURIComponent @get('entity')}/profile", null, (profile, xhr) =>
+          return unless xhr.status == 200
+          return unless profile
+          profile = new TentStatus.Models.Profile profile
+          @set 'profile', profile
+          TentStatus.Cache.set cache_key, profile.toJSON()
 
   fetchRepost: (self = @, level = 1) =>
     return self.get('repost') if self.get('repost')
@@ -70,30 +76,30 @@ class TentStatus.Models.Post extends Backbone.Model
     repost_id = self.get('content')?.id
     return @trigger('repost:fetch:failed') unless repost_entity and repost_id
 
-    if repost = TentStatus.Cache.get "post:#{repost_id}"
-      repost.set 'parent', @
-      repost.getProfile()
-      repost = new TentStatus.Models.Post repost
-      return @fetchRepost(repost, level + 1) if repost.isRepost()
-      @set('repost', repost) unless repost.attributes == @get('repost')?.attributes
-      return
-
-    fetchFromTentHost = =>
-      new HTTP 'GET', "#{repost_entity + TentStatus.config.tent_host_domain_tent_api_path}/posts/#{repost_id}", null, (repost, xhr) =>
-        unless xhr.status == 200
-          @trigger 'repost:fetch:failed'
-          return
-        repost.parent = @
+    TentStatus.Cache.get "post:#{repost_id}", (repost) =>
+      if repost
         repost = new TentStatus.Models.Post repost
+        repost.set 'parent', @
+        repost.getProfile()
         return @fetchRepost(repost, level + 1) if repost.isRepost()
         @set('repost', repost) unless repost.attributes == @get('repost')?.attributes
+      else
+        fetchFromTentHost = =>
+          new HTTP 'GET', "#{repost_entity + TentStatus.config.tent_host_domain_tent_api_path}/posts/#{repost_id}", null, (repost, xhr) =>
+            unless xhr.status == 200
+              @trigger 'repost:fetch:failed'
+              return
+            repost.parent = @
+            repost = new TentStatus.Models.Post repost
+            return @fetchRepost(repost, level + 1) if repost.isRepost()
+            @set('repost', repost) unless repost.attributes == @get('repost')?.attributes
 
-    new HTTP 'GET', "#{TentStatus.config.tent_api_root}/posts/#{encodeURIComponent repost_entity}/#{repost_id}", null, (repost, xhr) =>
-      return fetchFromTentHost() unless xhr.status == 200
-      repost.parent = @
-      repost = new TentStatus.Models.Post repost
-      return @fetchRepost(repost, level + 1) if repost.isRepost()
-      @set('repost', repost) unless repost.attributes == @get('repost')?.attributes
+        new HTTP 'GET', "#{TentStatus.config.tent_api_root}/posts/#{encodeURIComponent repost_entity}/#{repost_id}", null, (repost, xhr) =>
+          return fetchFromTentHost() unless xhr.status == 200
+          repost.parent = @
+          repost = new TentStatus.Models.Post repost
+          return @fetchRepost(repost, level + 1) if repost.isRepost()
+          @set('repost', repost) unless repost.attributes == @get('repost')?.attributes
 
   fetchParents: (callback) =>
     return callback() unless @postMentions().length
@@ -123,19 +129,20 @@ class TentStatus.Models.Post extends Backbone.Model
         getPostViaProxy = =>
           new HTTP 'GET', "#{TentStatus.config.tent_proxy_root}/#{encodeURIComponent entity}/posts/#{post_id}", null, fetch_complete
 
-        if post = TentStatus.Cache.get("post:#{entity}:#{post_id}")
-          fetch_complete post, {status:200}
-        else
-          new HTTP 'GET', url, params, (post, xhr) =>
-            if xhr.status != 200
-              if TentStatus.config.tent_host_api_root
-                new HTTP 'GET', hosted_url, hosted_params, (post, xhr) =>
-                  return getPostViaProxy() unless xhr.status == 200
-                  fetch_complete(arguments...)
+        TentStatus.Cache.get "post:#{entity}:#{post_id}", (post) =>
+          if post
+            fetch_complete post, {status:200}
+          else
+            new HTTP 'GET', url, params, (post, xhr) =>
+              if xhr.status != 200
+                if TentStatus.config.tent_host_api_root
+                  new HTTP 'GET', hosted_url, hosted_params, (post, xhr) =>
+                    return getPostViaProxy() unless xhr.status == 200
+                    fetch_complete(arguments...)
+                else
+                  getPostViaProxy()
               else
-                getPostViaProxy()
-            else
-              fetch_complete(arguments...)
+                fetch_complete(arguments...)
 
   fetchChildren: (callback, params={}) =>
     url = "#{TentStatus.config.tent_api_root}/posts"

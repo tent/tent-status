@@ -3,6 +3,7 @@
 #= require underscore
 #= require store
 #= require http
+#= require uri
 #= require backbone
 #= require ./backbone_sync
 #= require hogan
@@ -201,13 +202,14 @@ _.extend @TentStatus, Backbone.Events, {
     entity = @config.current_entity.toStringWithoutSchemePort()
     cache_key = "profile:#{entity}"
 
-    if profile = @Cache.get(cache_key)
-      @Models.profile = new @Models.profile.constructor(profile)
-      @trigger 'profile:fetch:success'
-    else
-      @Models.profile.fetch
-        success: =>
-          @trigger 'profile:fetch:success'
-          @Cache.set cache_key, @Models.profile.toJSON(), {saveToLocalStorage:true}
+    @Cache.get cache_key, (profile) =>
+      if profile
+        @Models.profile = new @Models.profile.constructor(profile)
+        @trigger 'profile:fetch:success'
+      else
+        @Models.profile.fetch
+          success: =>
+            @trigger 'profile:fetch:success'
+            @Cache.set cache_key, @Models.profile.toJSON(), {saveToLocalStorage:true}
 
 }
