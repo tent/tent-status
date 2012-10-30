@@ -365,6 +365,16 @@ module Tent
         url
       end
 
+      def self_app_root
+        host = env['HTTP_HOST']
+        host.sub!(/^[^.]+/, 'app') if host =~ /[^.]+\./
+        url = env['rack.url_scheme'] + "://" + host
+        if (port = self_port) && url !~ /:\d+\Z/
+          url += ":#{port}"
+        end
+        url
+      end
+
       def nav_selected_class(path)
         return '' if guest_user && !(env['PATH_INFO'] == '/global' && env['HTTP_HOST'] =~ %r{^app\.})
         env['PATH_INFO'] == path ? 'active' : ''
@@ -466,6 +476,11 @@ module Tent
       else
         status 404
       end
+    end
+
+    get '/iframe-cache' do
+      headers 'X-FRAME-OPTIONS' => "ALLOW-FROM #{env['HTTP_HOST'].sub(/^[^.]+\./, '')}"
+      erb :iframe_cache
     end
 
     get '*' do

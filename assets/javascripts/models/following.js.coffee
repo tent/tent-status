@@ -9,8 +9,8 @@ class TentStatus.Models.Following extends Backbone.Model
     attrs
 
   initialize: ->
-    if profile = TentStatus.Cache.get("profile:#{@get 'entity'}")
-      @set 'profile', profile
+    TentStatus.Cache.get "profile:#{@get 'entity'}", (profile) =>
+      @set('profile', new TentStatus.Models.Profile profile) if profile
     @on 'sync', @updateProfile
 
     @fetchProfile()

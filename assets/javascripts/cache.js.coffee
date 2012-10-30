@@ -1,59 +1,54 @@
 class Cache extends TentStatus.Events
-  CACHE: {}
+  constructor: ->
+    window.addEventListener("message", @receiveMessage, false)
 
-  wrapValueWithExpiry: (value) =>
-    expires = moment().add('minutes', 30) * 1
-    { val: value, exp: expires }
+  receiveMessage: (event) =>
+    origin_uri = new HTTP.URI(event.origin)
+    self_uri = new HTTP.URI(window.location.href)
 
-  unwrapValueWithExpiry: (value) =>
-    return unless value
-    expires = value.exp
-    return unless expires
-    now = new Date * 1
-    return unless now < expires
-    value.val
+    return unless origin_uri.base_host == self_uri.base_host &&
+                  origin_uri.port == self_uri.port
+
+    msg = event.data || {}
+    switch msg.action
+      when 'init'
+        @iframe = event.source
+        @trigger 'init'
+      when 'trigger'
+        @trigger msg.event, msg.event_args...
+
+  postMessage: (msg) =>
+    unless @iframe
+      @once 'init', => @postMessage(msg)
+      return
+
+    try
+      @iframe.postMessage(msg, '*')
+    catch e
+      setTimeout (-> throw e), 0
 
   set: (key, value, options = {}) =>
     return unless key && value
-    return if value == @unwrapValueWithExpiry(@CACHE[key])
-    value = @wrapValueWithExpiry(value)
-    @CACHE[key] = value
-    @trigger "change:#{key}", value
+    @postMessage {
+      action: 'set'
+      key: key
+      value: value
+      options: options
+    }
 
-    if options.saveToLocalStorage == true
-      @_storeSet(key, value)
-
-  _storeSet: (key, value) =>
-    return unless window.store and store.enabled
-    key = @_storeKey(key)
-    store.set(key, value)
-
-  get: (key) =>
-    value = @CACHE[key] or @_storeGet(key)
-    @unwrapValueWithExpiry(value)
-
-  _storeGet: (key) =>
-    return unless window.store and store.enabled
-    key = @_storeKey(key)
-    store.get(key)
+  get: (key, callback) =>
+    return unless callback
+    @once "receive:#{key}", callback
+    @postMessage {
+      action: 'get'
+      key: key
+    }
 
   remove: (key) =>
-    delete @CACHE[key]
-    @_storeRemove(key)
-    @trigger "remove:#{key}"
-
-  _storeRemove: (key) =>
-    return unless window.store and store.enabled
-    key = @_storeKey(key)
-    store.remove(key)
-
-  _storeKey: (key) -> "cache:#{key}"
-
-  on: (key, callback) =>
-    [event, key...] = key.split(':')
-    key = key.join(':') if key.join
-    callback?(@CACHE[key]) if event == 'change' && @CACHE[key]
-    super
+    @postMessage {
+      action: 'delete'
+      key: key
+    }
 
 TentStatus.Cache = new Cache
 
