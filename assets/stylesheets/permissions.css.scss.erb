@@ -1,0 +1,133 @@
+@import './mixins.css.scss';
+$blue: #0099ff;
+$green: #35aa47;
+
+.permissions-options-container {
+  display: inline-block;
+  position: relative;
+
+  ul.options li.option .text, ul.options li.option .remove, .show-option-picker {
+    font-size: 11.844px;
+    font-weight: bold;
+    line-height: 14px;
+    height: 14px;
+    padding: 6px;
+  }
+
+  .show-option-picker {
+    display: block;
+    float: left;
+    padding: 4px 8px;
+    margin-top: 6px;
+    color: white;
+    cursor: pointer;
+    @include rounded(2px);
+    @include button-gradient($blue);
+
+    &:hover {
+      @include active-button-gradient($blue);
+    }
+  }
+
+  ul.options {
+    list-style: none;
+    margin: 0px;
+    margin-left: 6px;
+    padding: 0px;
+    float: left;
+
+    border: 1px solid #DCDCDC;
+    padding: 2px;
+    position: relative;
+    width: 392px;
+    min-height: 28px;
+    cursor: text;
+
+    li.option {
+      float: left;
+      margin-right: 2px;
+
+      cursor: default;
+
+      color: white;
+      @include button-gradient($blue);
+
+      @include rounded(3px);
+      border: 1px solid #DCDCDC;
+
+      &.green {
+        @include button-gradient($green);
+      }
+
+      .remove:hover, .remove.active {
+        @include active-button-gradient($blue);
+      }
+
+      &.green .remove:hover, .remove.active {
+        @include active-button-gradient($green);
+      }
+
+      .text, .remove {
+        display: block;
+        float: left;
+
+        text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+        white-space: nowrap;
+        vertical-align: baseline;
+      }
+
+      .text {
+        padding-right: 3px;
+
+        @include border-top-left-radius(2px);
+        @include border-bottom-left-radius(2px);
+      }
+
+      .remove {
+        cursor: pointer;
+
+        @include border-top-right-radius(2px);
+        @include border-bottom-right-radius(2px);
+      }
+    }
+  }
+
+  .option-picker {
+    position: absolute;
+    left: 29px;
+    top: 100%;
+    background-color: #FEFEFE;
+    border: 1px solid #DCDCDC;
+    border-top: 0px;
+    cursor: default;
+    width: 396px;
+
+    ul.picker-options {
+      list-style: none;
+      padding: 0px;
+      margin: 0px;
+
+      li.option {
+        padding: 6px;
+        border-top: 1px solid #DCDCDC;
+
+        &:first-of-type {
+          border-top: 0px;
+        }
+
+        input[type=text] {
+          display: inline-block;
+          outline: 0;
+          width: 384px;
+          border: 0px;
+          padding: 0px;
+          box-shadow: none;
+
+          &:focus {
+            outline: 0;
+          }
+        }
+      }
+    }
+  }
+}
