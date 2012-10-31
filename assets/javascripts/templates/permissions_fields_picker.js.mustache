@@ -1,7 +1,3 @@
-<ul class='picker-options'>
-  <li class='option input'><input type='text' /></li>
-
-  {{#options}}
-  <li class='option'>{{text}}</li>
-  {{/options}}
-</ul>
+{{#options}}
+<li class='option {{#group}}green{{/group}}'>{{#name}}{{name}} <small>{{entity}}</small>{{/name}}{{^name}}{{entity}}{{/name}}</li>
+{{/options}}

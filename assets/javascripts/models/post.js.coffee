@@ -28,46 +28,9 @@ class TentStatus.Models.Post extends Backbone.Model
 
   getProfile: =>
     return if @isNew()
-    cache_key = "profile:#{@get 'entity'}"
-
-    TentStatus.Cache.on "change:#{cache_key}", (profile) =>
+    TentStatus.Models.Profile.fetchEntityProfile @get('entity'), (profile) =>
+      return unless profile
       @set 'profile', new TentStatus.Models.Profile(profile)
-
-    TentStatus.Cache.get cache_key, (profile) =>
-      if profile
-        @set 'profile', new TentStatus.Models.Profile(profile)
-        return
-
-      if TentStatus.config.current_entity?.hostname == (new HTTP.URI @get('entity')).hostname
-        if TentStatus.Models.profile.get('id')
-          @set 'profile', TentStatus.Models.profile
-          TentStatus.Cache.set cache_key, profile.toJSON()
-        else
-          TentStatus.Models.profile.fetch
-            success: (profile) =>
-              @set 'profile', TentStatus.Models.profile
-              TentStatus.Cache.set cache_key, profile.toJSON()
-
-      else if TentStatus.config.domain_entity.hostname == (new HTTP.URI @get('entity')).hostname
-        profile = new TentStatus.Models.Profile
-        profile.fetch
-          success: =>
-            @set 'profile', profile
-            TentStatus.Cache.set cache_key, profile.toJSON()
-      else if TentStatus.Helpers.isEntityOnTentHostDomain(@get 'entity')
-        new HTTP 'GET', "#{@get('entity') + TentStatus.config.tent_host_domain_tent_api_path}/profile", null, (profile, xhr) =>
-          return unless xhr.status == 200
-          return unless profile
-          profile = new TentStatus.Models.Profile profile
-          @set 'profile', profile
-          TentStatus.Cache.set cache_key, profile.toJSON()
-      else
-        new HTTP 'GET', "#{TentStatus.config.tent_proxy_root}/#{encodeURIComponent @get('entity')}/profile", null, (profile, xhr) =>
-          return unless xhr.status == 200
-          return unless profile
-          profile = new TentStatus.Models.Profile profile
-          @set 'profile', profile
-          TentStatus.Cache.set cache_key, profile.toJSON()
 
   fetchRepost: (self = @, level = 1) =>
     return self.get('repost') if self.get('repost')

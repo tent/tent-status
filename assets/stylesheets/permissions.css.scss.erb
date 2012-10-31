@@ -19,7 +19,7 @@ $green: #35aa47;
     float: left;
     padding: 4px 8px;
     margin-top: 6px;
-    color: white;
+    color: #FEFEFE;
     cursor: pointer;
     @include rounded(2px);
     @include button-gradient($blue);
@@ -49,7 +49,7 @@ $green: #35aa47;
 
       cursor: default;
 
-      color: white;
+      color: #FEFEFE;
       @include button-gradient($blue);
 
       @include rounded(3px);
@@ -106,26 +106,59 @@ $green: #35aa47;
       list-style: none;
       padding: 0px;
       margin: 0px;
+      max-height: 203px;
+      overflow-y: auto;
 
       li.option {
-        padding: 6px;
-        border-top: 1px solid #DCDCDC;
+        cursor: pointer;
 
-        &:first-of-type {
-          border-top: 0px;
-        }
-
-        input[type=text] {
-          display: inline-block;
-          outline: 0;
-          width: 384px;
-          border: 0px;
-          padding: 0px;
-          box-shadow: none;
-
-          &:focus {
-            outline: 0;
+        &:hover, &.active {
+          color: #FEFEFE;
+          background-color: $blue;
+          &.green {
+            background-color: $green;
           }
+        }
+      }
+    }
+
+    ul.picker-options li.option, .picker-input {
+      padding: 6px;
+      border-top: 1px solid #DCDCDC;
+    }
+
+    .picker-input {
+      border-top: 0px;
+      position: relative;
+
+      input[type=text] {
+        display: inline-block;
+        outline: 0;
+        width: 384px;
+        border: 0px;
+        padding: 0px;
+        box-shadow: none;
+
+        &:focus {
+          outline: 0;
+        }
+      }
+
+      .loading {
+        @include rounded(4px);
+        @include transparent(0);
+        @include transition(opacity, ease-in-out, 1s, 0s);
+
+        position: absolute;
+        top: 14px;
+        right: 6px;
+
+        width: 8px;
+        height: 8px;
+        background-color: #0099FF;
+
+        &.pulse {
+          @include transparent(100);
         }
       }
     }
