@@ -8,7 +8,7 @@ TentStatus.Views.LoadingIndicator = class LoadingIndicatorView extends Backbone.
       @_pulseTimeout = setTimeout =>
         @$el.removeClass('pulse')
       , 1000
-    , 1200
+    , 1500
 
   hide: =>
     clearInterval @_pulseInterval
