@@ -24,7 +24,7 @@ TentStatus.Views.PermissionsFieldsPicker = class PermissionsFieldsPickerView ext
       view.destroy()
 
     should_activate_first_option = true
-    active_option_view = @option_views[@active_option]
+    active_option_value = @option_views[@active_option]?.getValue()
     @active_option = null
     @option_views = []
     option_els = $('li.option', @el)
@@ -32,7 +32,7 @@ TentStatus.Views.PermissionsFieldsPicker = class PermissionsFieldsPickerView ext
       el = option_els[index]
       view = new PickerOptionView parentView: @, el: el, index: index
       @option_views.push(view)
-      if view.getValue() == active_option_view?.getValue()
+      if view.getValue() == active_option_value
         should_activate_first_option = false
         view.setActive()
 
@@ -66,8 +66,12 @@ TentStatus.Views.PermissionsFieldsPicker = class PermissionsFieldsPickerView ext
     return unless @option_views.length
     index = @active_option
     return unless @option_views[index]
-    @nextOption()
     @option_views[index].add()
+    return unless @option_views.length
+    if index > @option_views.length-1
+      @option_views[@option_views.length-1].setActive()
+    else
+      @option_views[index].setActive()
 
   displayMatches: (@matches) =>
     if !@matches.length && (q = @current_query?.replace(/^[\s\r\t\n]*/, '').replace(/[\s\r\t\n]*$/, '')) &&
@@ -198,7 +202,7 @@ class PickerOptionView
     @parentView.matches[@index]
 
   getValue: =>
-    @getOption().value
+    @getOption()?.value
 
   getText: =>
     @getOption().name || @getOption().entity.replace(/^https?:\/\/(?:www\.)?/, '')
@@ -238,9 +242,13 @@ class PickerOptionView
       group: @isGroup()
     }
     @destroy()
+    views = @parentView.option_views
+    @parentView.option_views = views.slice(0, @index).concat(views.slice(@index+1, views.length))
     matches = @parentView.matches
-    matches = matches.slice(0, @index).concat(matches.slice(@index+1, matches.length))
-    @parentView.displayMatches(matches)
+    @parentView.matches = matches.slice(0, @index).concat(matches.slice(@index+1, matches.length))
+
+    for view, index in @parentView.option_views
+      view.index = index
 
 class PickerInputView extends PickerOptionView
   constructor: ->
