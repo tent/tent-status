@@ -1,11 +1,14 @@
 <div class='permissions-options-container'>
   <div class='show-option-picker'>+</div>
 
-  <ul class='options'>
-    {{#options}}
-    <li class='option {{#group}}green{{/group}}'><span class='text'>{{text}}</span><span class='remove'>&times;</span></li>
-    {{/options}}
-  </ul>
+  <ul class='options' data-view='PermissionsFieldsOptions'></ul>
 
-  <div class='option-picker' data-view='PermissionsFieldsPicker'></div>
+  <div class='option-picker'>
+    <div class='picker-input'>
+      <input type='text' value='{{query}}' />
+      <div class='loading'>&nbsp;</div>
+    </div>
+    <ul class='picker-options' data-view='PermissionsFieldsPicker'></ul>
+  </div>
+
 </div>

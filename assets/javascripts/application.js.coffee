@@ -1,7 +1,10 @@
 #= require hmac_sha256
 #= require jquery
 #= require underscore
+#= require string_score
 #= require store
+#= require dom
+#= require setImmediate
 #= require http
 #= require uri
 #= require backbone
