@@ -1,7 +1,4 @@
-TentStatus.Views.loading_indicator = new class LoadingIndicatorView extends Backbone.View
-  initialize: ->
-    @setElement document.getElementById('loading-indicator')
-
+TentStatus.Views.LoadingIndicator = class LoadingIndicatorView extends Backbone.View
   show: =>
     clearInterval @_pulseInterval
     clearTimeout @_pulseTimeout
@@ -16,3 +13,5 @@ TentStatus.Views.loading_indicator = new class LoadingIndicatorView extends Back
   hide: =>
     clearInterval @_pulseInterval
     @$el.removeClass 'pulse'
+
+TentStatus.Views.loading_indicator = new LoadingIndicatorView el: document.getElementById('loading-indicator')
