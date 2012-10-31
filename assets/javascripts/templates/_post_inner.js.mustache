@@ -53,11 +53,11 @@
 
     {{#authenticated}}
     {{^has_parent}}
-    <div class="row reply-container clearfix hide">{{> _reply_form}}</div>
+    <div class="row reply-container clearfix hide" data-sub-view='ReplyPostForm'></div>
     {{/has_parent}}
 
     {{#has_parent}}
-    <div class="row reply-container repost-reply-container clearfix hide">{{> _reply_form}}</div>
+    <div class="row reply-container repost-reply-container clearfix hide" data-sub-view='ReplyPostForm'></div>
     {{/has_parent}}
     {{/authenticated}}
   </div>

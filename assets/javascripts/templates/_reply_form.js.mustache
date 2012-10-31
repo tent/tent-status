@@ -1,5 +1,5 @@
 {{#authenticated}}
-<form class="form-horizontal reply-post-form" data-view="ReplyPostForm" method="POST">
+<form class="form-horizontal reply-post-form" method="POST">
   <input name="mentions_post_id" type="hidden" value="{{id}}" /><input name="mentions_post_entity" type="hidden" value="{{entity}}" />
   <div class="{{#has_parent}}span6{{/has_parent}}{{^has_parent}}span7{{/has_parent}}">
     <div class="alert alert-error hide">&nbsp;</div>

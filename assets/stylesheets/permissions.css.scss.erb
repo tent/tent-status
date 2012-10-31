@@ -37,6 +37,7 @@ $green: #35aa47;
     float: left;
 
     border: 1px solid #DCDCDC;
+    background-color: #FEFEFE;
     padding: 2px;
     position: relative;
     width: 392px;
@@ -159,6 +160,24 @@ $green: #35aa47;
 
         &.pulse {
           @include transparent(100);
+        }
+      }
+    }
+  }
+}
+
+.repost {
+  .permissions-options-container {
+    ul.options {
+      width: 320px;
+    }
+
+    .option-picker {
+      width: 324px;
+
+      .picker-input {
+        input[type=text] {
+          width: 308px;
         }
       }
     }
