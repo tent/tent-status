@@ -40,3 +40,12 @@ TentStatus.Views.PermissionsFields = class PermissionsFieldsView extends TentSta
   focusInput: =>
     @picker_view.input.focus()
 
+  buildPermissions: =>
+    data = {
+      entities: {}
+    }
+    for option in @options_view.options
+      return { public: true } if option.value == 'all'
+      data.entities[option.value] = true
+    data
+

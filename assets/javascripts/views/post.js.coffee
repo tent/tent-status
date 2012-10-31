@@ -71,19 +71,20 @@ class TentStatus.Views.Post extends TentStatus.View
 
     touch_details = {}
     tag_blacklist = ['a', 'textarea', 'input']
-    @$el.off('touchstart.toggle_details').on 'touchstart.toggle_details', (e) =>
+    $el = @$el.find('.post-body')
+    $el.off('touchstart.toggle_details').on 'touchstart.toggle_details', (e) =>
       [touch_details.scrollX, touch_details.scrollY] = [window.scrollX, window.scrollY]
 
-    @$el.off('touchend.toggle_details').on 'touchend.toggle_details', (e) =>
+    $el.off('touchend.toggle_details').on 'touchend.toggle_details', (e) =>
       return true unless (!(_.find tag_blacklist, (t)=> t == e.target.tagName.toLowerCase()) && !(_.find $(e.target).parents(), (el) => _.find(tag_blacklist, (t) => t == el.tagName.toLowerCase())) && touch_details.scrollX == window.scrollX && touch_details.scrollY == window.scrollY)
       e.preventDefault()
       @toggleDetails()
       false
 
-    @$el.off('mousedown.toggle_details').on 'mousedown.toggle_details', (e) =>
+    $el.off('mousedown.toggle_details').on 'mousedown.toggle_details', (e) =>
       [touch_details.pageX, touch_details.pageY] = [e.pageX, e.pageY]
 
-    @$el.off('click.toggle_details').on 'click.toggle_details', (e) =>
+    $el.off('click.toggle_details').on 'click.toggle_details', (e) =>
       return unless touch_details.pageX == e.pageX && touch_details.pageY == e.pageY
       return if (_.find tag_blacklist, (t)=> t == e.target.tagName.toLowerCase()) ||
                 (_.find $(e.target).parents(), (el) => _.find(tag_blacklist, (t) => t == el.tagName.toLowerCase()))
