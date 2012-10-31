@@ -18,10 +18,13 @@ class TentStatus.Views.Post extends TentStatus.View
     else
       @once 'change:post', @initPostEvents
 
+    super
+
     @once 'ready', @fetchRepost
     @on 'ready', @bindEvents
+    @on 'ready', @bindSubViews
 
-    super
+  bindSubViews: => @bindViews('data-sub-view')
 
   initPostEvents: =>
     @post.on 'change:profile', => @render()

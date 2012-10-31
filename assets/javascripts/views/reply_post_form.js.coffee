@@ -10,10 +10,13 @@ class TentStatus.Views.ReplyPostForm extends TentStatus.Views.NewPostForm
         break
       else
         parentView = parentView.parentView
-    @is_reply_form = true
 
     super
 
+    @on 'ready', @hide
+    @render()
+
+  init: =>
     ## reply fields
     @replyToPostId = ($ '[name=mentions_post_id]', @$el).val()
     @replyToEntity = ($ '[name=mentions_post_entity]', @$el).val()
@@ -22,19 +25,11 @@ class TentStatus.Views.ReplyPostForm extends TentStatus.Views.NewPostForm
     @$textarea = ($ 'textarea', @$form)
     @html = @$form.html()
 
-    @$container = @$form.parent()
-    @is_repost = @$container.hasClass('repost-reply-container')
+    @is_repost = @$el.hasClass('repost-reply-container')
 
-    @is_hidden = @$container.hasClass('hide')
+    @is_hidden = @$el.hasClass('hide')
     @show_text = 'Reply'
     @hide_text = 'Cancel'
-
-    @_initialized = true
-    @init()
-
-  init: =>
-    return unless @_initialized is true
-    @$form.html(@html)
 
     super
 
@@ -55,7 +50,7 @@ class TentStatus.Views.ReplyPostForm extends TentStatus.Views.NewPostForm
 
   show: =>
     @is_hidden = false
-    @$container.removeClass('hide')
+    @$el.removeClass('hide')
     @once 'ready', @hide
     @focusAfterText()
     if $button = @getReplyButton()
@@ -64,7 +59,7 @@ class TentStatus.Views.ReplyPostForm extends TentStatus.Views.NewPostForm
 
   hide: =>
     @is_hidden = true
-    @$container.addClass('hide')
+    @$el.addClass('hide')
     if $button = @getReplyButton()
       $text = $('.text', $button)
       $text.text @show_text
@@ -100,5 +95,7 @@ class TentStatus.Views.ReplyPostForm extends TentStatus.Views.NewPostForm
     _.extend({}, data, post_data)
 
   render: =>
+    return unless html = TentStatus.View::render.apply(@)
+    @$el.html(html)
     @trigger 'ready'
 
