@@ -23,6 +23,8 @@ TentStatus.Views.PermissionsFieldsPicker = class PermissionsFieldsPickerView ext
     for view in @option_views
       view.destroy()
 
+    should_activate_first_option = true
+    active_option_view = @option_views[@active_option]
     @active_option = null
     @option_views = []
     option_els = $('li.option', @el)
@@ -30,9 +32,13 @@ TentStatus.Views.PermissionsFieldsPicker = class PermissionsFieldsPickerView ext
       el = option_els[index]
       view = new PickerOptionView parentView: @, el: el, index: index
       @option_views.push(view)
+      if view.getValue() == active_option_view?.getValue()
+        should_activate_first_option = false
+        view.setActive()
 
-    @active_option = -1
-    @nextOption()
+    if should_activate_first_option
+      @active_option = -1
+      @nextOption()
 
   nextOption: =>
     return unless @option_views.length
@@ -186,7 +192,7 @@ class PickerOptionView
         @add()
       $(@el).on 'mouseover', (e) =>
         @parentView.option_views[@parentView.active_option]?.unsetActive()
-        @setActive()
+        @setActive(false)
 
   getOption: =>
     @parentView.matches[@index]
@@ -203,10 +209,21 @@ class PickerOptionView
   destroy: =>
     $(@el).remove()
 
-  setActive: =>
+  scrollIntoView: =>
+    offset = @el.offsetTop
+    scrollY = @parentView.el.scrollTop
+
+    if offset < scrollY
+      @parentView.el.scrollTop = offset
+    else if (offset + $(@el).height()) > (scrollY + $(@parentView.el).height())
+      @parentView.el.scrollTop = offset - $(@parentView.el).height() + $(@el).outerHeight()
+
+  setActive: (should_scroll = true) =>
     @active = true
     @parentView.active_option = @index
     $(@el).addClass('active')
+
+    @scrollIntoView() if should_scroll
 
   unsetActive: =>
     @active = false
