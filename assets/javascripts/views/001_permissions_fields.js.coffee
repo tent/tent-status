@@ -76,6 +76,7 @@ TentStatus.Views.PermissionsFields = class PermissionsFieldsView extends TentSta
 
   buildPermissions: =>
     data = {
+      public: false
       entities: {}
     }
     for option in @options_view.options
