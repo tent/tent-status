@@ -184,7 +184,9 @@ class PickerInputView extends PickerOptionView
     @is_input = true
     super
     @elements.input = $('input[type=text]', @el).get(0)
+
     @elements.loading = $('.loading', @el).get(0)
+    @loading_view = new TentStatus.Views.LoadingIndicator el: @elements.loading
 
     $(@elements.input).on 'keydown', (e) =>
       if e.keyCode == 13
@@ -227,10 +229,10 @@ class PickerInputView extends PickerOptionView
   showLoading: =>
     @_loading_requests ?= 0
     @_loading_requests += 1
-    $(@elements.loading).addClass('pulse') if @_loading_requests == 1
+    @loading_view.show() if @_loading_requests == 1
 
   hideLoading: =>
     @_loading_requests ?= 1
     @_loading_requests -= 1
-    $(@elements.loading).removeClass('pulse') if @_loading_requests == 0
+    @loading_view.hide() if @_loading_requests == 0
 
