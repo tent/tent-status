@@ -23,12 +23,45 @@ TentStatus.Views.PermissionsFieldsPicker = class PermissionsFieldsPickerView ext
     for view in @option_views
       view.destroy()
 
+    @active_option = null
     @option_views = []
     option_els = $('li.option', @el)
     for option, index in (@matches || [])
       el = option_els[index]
       view = new PickerOptionView parentView: @, el: el, index: index
       @option_views.push(view)
+
+    @active_option = -1
+    @nextOption()
+
+  nextOption: =>
+    return unless @option_views.length
+    index = @active_option
+    index ?= 0
+    @option_views[index]?.unsetActive()
+    if index == @option_views.length-1
+      index = 0
+    else
+      index += 1
+    @option_views[index].setActive()
+
+  prevOption: =>
+    return unless @option_views.length
+    index = @active_option
+    index ?= @option_views.length-1
+    @option_views[index]?.unsetActive()
+    if index == 0
+      index = @option_views.length-1
+    else
+      index -= 1
+    @option_views[index].setActive()
+
+  addActiveOption: =>
+    return unless @option_views.length
+    index = @active_option
+    return unless @option_views[index]
+    @nextOption()
+    @option_views[index].add()
 
   displayMatches: (@matches) =>
     if !@matches.length && (q = @current_query?.replace(/^[\s\r\t\n]*/, '').replace(/[\s\r\t\n]*$/, '')) &&
@@ -151,6 +184,9 @@ class PickerOptionView
       $(@el).on 'click', (e) =>
         e.stopPropagation()
         @add()
+      $(@el).on 'mouseover', (e) =>
+        @parentView.option_views[@parentView.active_option]?.unsetActive()
+        @setActive()
 
   getOption: =>
     @parentView.matches[@index]
@@ -167,6 +203,17 @@ class PickerOptionView
   destroy: =>
     $(@el).remove()
 
+  setActive: =>
+    @active = true
+    @parentView.active_option = @index
+    $(@el).addClass('active')
+
+  unsetActive: =>
+    @active = false
+    if @parentView.active_option == @index
+      @parentView.active_option = null
+    $(@el).removeClass('active')
+
   add: =>
     @permissions_fields_view.addOption {
       text: @getText()
@@ -174,10 +221,9 @@ class PickerOptionView
       group: @isGroup()
     }
     @destroy()
-    delete @parentView.matches[@index]
-    if _.filter(@parentView.matches.length, (m) => !!m).length == 0
-      @parentView.input.clear()
-      @parentView.hide()
+    matches = @parentView.matches
+    matches = matches.slice(0, @index).concat(matches.slice(@index+1, matches.length))
+    @parentView.displayMatches(matches)
 
 class PickerInputView extends PickerOptionView
   constructor: ->
@@ -189,15 +235,24 @@ class PickerInputView extends PickerOptionView
     @loading_view = new TentStatus.Views.LoadingIndicator el: @elements.loading
 
     $(@elements.input).on 'keydown', (e) =>
-      if e.keyCode == 13
-        e.preventDefault()
-        @add()
-        false
-      else if e.keyCode == 27
-        e.preventDefault()
-        @clear()
-        @parentView.hide()
-        false
+      switch e.keyCode
+        when 13 # enter/return
+          e.preventDefault()
+          @parentView.addActiveOption()
+          false
+        when 27 # escape
+          e.preventDefault()
+          @clear()
+          @parentView.hide()
+          false
+        when 38 # up arrow
+          e.preventDefault()
+          @parentView.prevOption()
+          false
+        when 40 # down arrow
+          e.preventDefault()
+          @parentView.nextOption()
+          false
 
     $(@elements.input).on 'keyup', (e) =>
       clearTimeout @_fetch_timeout
