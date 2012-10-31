@@ -6,6 +6,8 @@
     <textarea class="{{#has_parent}}span6{{/has_parent}}{{^has_parent}}span7{{/has_parent}}" name="text" rows="3">{{#formatted.reply_to_entities}}^{{.}} {{/formatted.reply_to_entities}}</textarea>
     <input class="m-btn blue pull-right" type="submit" value="Post" />
     <span class="char-limit pull-right">{{max_chars}}</span>
+
+    <div class='permissions' data-view='PermissionsFields'></div>
   </div>
 </form>
 {{/authenticated}}

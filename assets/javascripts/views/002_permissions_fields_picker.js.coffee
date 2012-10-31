@@ -12,8 +12,7 @@ TentStatus.Views.PermissionsFieldsPicker = class PermissionsFieldsPickerView ext
     @hide()
     @render()
 
-    $(document).off('click.permissions-fields-picker')
-    $(document).on 'click.permissions-fields-picker', (e) =>
+    $(document).on 'click', (e) =>
       unless (_.any $(e.target).parents(), (el) => el == @parentView.el)
         @hide()
 

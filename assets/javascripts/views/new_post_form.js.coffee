@@ -47,45 +47,10 @@ class TentStatus.Views.NewPostForm extends TentStatus.View
       else
         true
 
-    ## permissions
-    @$publicCheckbox = ($ '[name=public]', @$el)
-    @$permissions = ($ 'select[name=permissions]', @$el)
-    @$permissions.chosen
-      no_results_text: 'No matching entities or groups'
-
-    # disable public checkbox when permissions are added
-    @$permissions.change @checkPublicEnabled
-
     ## mentions
     @$mentionsSelect = ($ 'select[name=mentions]', @$el)
     @$mentionsSelect.chosen
       no_results_text: 'No matching entities'
-
-    ## licenses
-    @$licensesSelect = ($ 'select[name=licenses]', @$el)
-    @$licensesSelect.chosen
-      no_results_text: 'No matching licenses'
-
-    ## advanced options toggle
-    @$advancedOptions = ($ '.advanced-options', @$el).hide()
-    @$advancedOptionsToggle = ($ '.advanced-options-toggle', @$el)
-    @$advancedOptionsToggle.on 'click', (e) =>
-      e.preventDefault()
-      @$advancedOptions.toggle()
-      false
-
-  checkPublicEnabled: =>
-    if @$permissions.val() == null
-      @enablePublic()
-    else
-      @disablePublic()
-
-  enablePublic: =>
-    @$publicCheckbox.removeAttr('disabled')
-
-  disablePublic: =>
-    @$publicCheckbox.removeAttr('checked')
-    @$publicCheckbox.attr('disabled', 'disabled')
 
   disableWith: (text) =>
     @frozen = true
@@ -117,10 +82,13 @@ class TentStatus.Views.NewPostForm extends TentStatus.View
       @render()
     false
 
-  buildPermissions: (data) =>
-    data.permissions = {
-      public: true
-    }
+  buildPermissions: (data = {}) =>
+    if permissions_view = @child_views.PermissionsFields?[0]
+      data.permissions = permissions_view.buildPermissions()
+    else
+      data.permissions = {
+        public: true
+      }
     data
 
   buildMentions: (data) =>
