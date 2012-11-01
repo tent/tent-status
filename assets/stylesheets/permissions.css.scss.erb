@@ -2,7 +2,7 @@
 $blue: #0099ff;
 $green: #35aa47;
 
-.permissions-options-container {
+.permissions-options-container, .mentions-autocomplete {
   display: inline-block;
   position: relative;
 
@@ -164,6 +164,12 @@ $green: #35aa47;
         }
       }
     }
+  }
+}
+
+.mentions-autocomplete {
+  .option-picker {
+    z-index: 200;
   }
 }
 

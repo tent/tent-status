@@ -3,6 +3,7 @@
 #= require underscore
 #= require string_score
 #= require store
+#= require textarea_cursor_position
 #= require dom
 #= require setImmediate
 #= require http
