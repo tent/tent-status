@@ -62,6 +62,15 @@ class OptionView
 
     $(@elements.remove).on 'click', @remove
 
+  unmarkDelete: =>
+    @marked_delete = false
+    $(@elements.remove).removeClass('active')
+
+  markDelete: =>
+    @marked_delete = true
+    $(@elements.remove).addClass('active')
+
   remove: (e) =>
     e?.stopPropagation()
     @parentView.removeOption(@option)
+

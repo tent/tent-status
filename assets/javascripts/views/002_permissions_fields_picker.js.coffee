@@ -264,6 +264,8 @@ class PickerInputView extends PickerOptionView
     @elements.loading = $('.loading', @el).get(0)
     @loading_view = new TentStatus.Views.LoadingIndicator el: @elements.loading
 
+    @options_view = @parentView.parentView.options_view
+
     $(@elements.input).on 'keydown', (e) =>
       @calibrate(e)
       switch e.keyCode
@@ -289,6 +291,16 @@ class PickerInputView extends PickerOptionView
       @calibrate()
       clearTimeout @_fetch_timeout
       @_fetch_timeout = setTimeout (=> @parentView.fetchResults(@elements.input.value)), 60
+
+      if !@getValue().length
+        option_view = _.last(@options_view.option_views)
+        if e.keyCode == 8 # backspace
+          if option_view.marked_delete
+            option_view.remove()
+          else
+            option_view.markDelete()
+        else
+          option_view.unmarkDelete()
 
   calibrate: (e) =>
     el = @elements.input
