@@ -266,8 +266,11 @@ class PickerInputView extends PickerOptionView
 
     @options_view = @parentView.parentView.options_view
 
+    @_keydown_value = ''
+
     $(@elements.input).on 'keydown', (e) =>
       @calibrate(e)
+      @_keydown_value = @elements.input.value
       switch e.keyCode
         when 13 # enter/return
           e.preventDefault()
@@ -292,15 +295,16 @@ class PickerInputView extends PickerOptionView
       clearTimeout @_fetch_timeout
       @_fetch_timeout = setTimeout (=> @parentView.fetchResults(@elements.input.value)), 60
 
-      if !@getValue().length
+      if !@_keydown_value.length
         option_view = _.last(@options_view.option_views)
-        if e.keyCode == 8 # backspace
-          if option_view.marked_delete
-            option_view.remove()
+        if option_view
+          if e.keyCode == 8 # backspace
+            if option_view.marked_delete
+              option_view.remove()
+            else
+              option_view.markDelete()
           else
-            option_view.markDelete()
-        else
-          option_view.unmarkDelete()
+            option_view.unmarkDelete()
 
   calibrate: (e) =>
     el = @elements.input
