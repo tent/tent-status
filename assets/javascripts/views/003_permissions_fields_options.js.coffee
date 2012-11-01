@@ -62,5 +62,6 @@ class OptionView
 
     $(@elements.remove).on 'click', @remove
 
-  remove: =>
+  remove: (e) =>
+    e?.stopPropagation()
     @parentView.removeOption(@option)
