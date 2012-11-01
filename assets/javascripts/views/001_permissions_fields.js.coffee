@@ -13,9 +13,17 @@ TentStatus.Views.PermissionsFields = class PermissionsFieldsView extends TentSta
     @options_view.optionsInclude(option)
 
   initPicker: (@picker_view) =>
+    @initInput()
+
+  initInput: =>
+    value = @picker_view.input?.getValue() || ''
     @picker_view.initInput $('.picker-input', @el).get(0)
+    @picker_view.input.elements.input.value = value
+    @picker_view.input.focusAtEnd()
 
   initOptions: (@options_view) =>
+    @options_view.on 'ready', => @initInput()
+
     @bindEvents()
     @hide()
 

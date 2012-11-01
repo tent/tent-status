@@ -87,7 +87,10 @@ TentStatus.Views.PermissionsFieldsPicker = class PermissionsFieldsPickerView ext
         value: 'all'
         group: true
       })
+
+    return @hide() unless @matches.length
     @render()
+    @show()
 
   fetchResults: (query) =>
     return if @current_query == query
@@ -260,6 +263,7 @@ class PickerInputView extends PickerOptionView
     @loading_view = new TentStatus.Views.LoadingIndicator el: @elements.loading
 
     $(@elements.input).on 'keydown', (e) =>
+      @calibrate(e)
       switch e.keyCode
         when 13 # enter/return
           e.preventDefault()
@@ -280,8 +284,28 @@ class PickerInputView extends PickerOptionView
           false
 
     $(@elements.input).on 'keyup', (e) =>
+      @calibrate()
       clearTimeout @_fetch_timeout
       @_fetch_timeout = setTimeout (=> @parentView.fetchResults(@elements.input.value)), 60
+
+  calibrate: (e) =>
+    el = @elements.input
+    value = el.value
+    if e
+      if e.keyCode == 8 # backspace
+        value = value.substr(0, value.length-1)
+      else if !e.ctrlKey && !e.metaKey && !e.altKey
+        char = String.fromCharCode(e.keyCode)
+        char = char.toLowerCase() unless e.shiftKey
+        value += char
+
+    padding = parseInt($(@el).css('padding-left')) + parseInt($(@el).css('padding-right'))
+    max_width = $(@el.parentNode).innerWidth() - padding
+    text_width = maxkir.CursorPosition.getTextMetrics(el, value, padding)[0]
+
+    $(el).css(
+      width: Math.max(Math.min(text_width, max_width), 20)
+    )
 
   getValue: =>
     value = @elements.input.value
@@ -303,8 +327,14 @@ class PickerInputView extends PickerOptionView
     @elements.input.value = ''
 
   focus: =>
-    @parentView.show()
+    @calibrate()
     $(@elements.input).focus()
+
+  focusAtEnd: =>
+    @calibrate()
+    selection = new DOM.InputSelection @elements.input
+    end = @elements.input.value.length
+    selection.setSelectionRange(end, end)
 
   showLoading: =>
     @_loading_requests ?= 0
