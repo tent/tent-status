@@ -311,6 +311,31 @@ only screen and (                min-resolution: 2dppx) {
     form {
       margin: 0px;
     }
+
+    .post-container {
+      width: auto;
+    }
+
+    .mentions-autocomplete {
+      display: block;
+      margin-top: 6px;
+    }
+
+    .permissions-options-container, .mentions-autocomplete {
+      ul.options {
+        width: 231px;
+      }
+
+      .option-picker {
+        width: 235px;
+
+        .picker-input {
+          input[type=text] {
+            width: 223px;
+          }
+        }
+      }
+    }
   }
 }
 
@@ -337,7 +362,7 @@ only screen and (                min-resolution: 2dppx) {
   }
 }
 
-@media (max-width: 540px) {
+@media (max-width: 841px) {
   #main-nav {
     #new_post_popdown {
       width: 312px;
