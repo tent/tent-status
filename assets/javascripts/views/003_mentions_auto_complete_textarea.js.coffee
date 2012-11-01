@@ -3,6 +3,9 @@ TentStatus.Views.MentionsAutoCompleteTextarea = class MentionsAutoCompleteTextar
   initialize: (options = {}) ->
     @parentView = options.parentView
 
+    if @parentView.is_reply_form
+      @templateName = 'reply_form_autocomplete_textarea'
+
     super
 
     @on 'init:PermissionsFieldsPicker', @initPickerView
@@ -25,6 +28,10 @@ TentStatus.Views.MentionsAutoCompleteTextarea = class MentionsAutoCompleteTextar
 
   addOption: (option) =>
     @textarea_view.addOption(option)
+
+  context: =>
+    return {} unless @parentView.is_reply_form
+    @parentView.context()
 
   render: =>
     return unless html = super
