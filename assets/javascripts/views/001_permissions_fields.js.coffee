@@ -19,7 +19,7 @@ TentStatus.Views.PermissionsFields = class PermissionsFieldsView extends TentSta
     value = @picker_view.input?.getValue() || ''
     @picker_view.initInput $('.picker-input', @el).get(0)
     @picker_view.input.clear()
-    @picker_view.input.focusAtEnd()
+    @picker_view.input.focusAtEnd() unless @parentView.$textarea?.is(':focus')
 
   initOptions: (@options_view) =>
     @options_view.on 'ready', => @initInput()
