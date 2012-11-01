@@ -205,7 +205,7 @@ class PickerOptionView
     @getOption()?.value
 
   getText: =>
-    @getOption().name || @getOption().entity.replace(/^https?:\/\/(?:www\.)?/, '')
+    @getOption().name || TentStatus.Helpers.minimalEntity(@getOption().value)
 
   isGroup: =>
     !!@getOption().group
