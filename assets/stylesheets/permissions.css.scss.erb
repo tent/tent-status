@@ -19,13 +19,11 @@ $green: #35aa47;
     float: left;
     padding: 4px 8px;
     margin-top: 6px;
-    color: #FEFEFE;
+    color: $blue;
     cursor: pointer;
-    @include rounded(2px);
-    @include button-gradient($blue);
 
     &:hover {
-      @include active-button-gradient($blue);
+      color: $blue - hsl(14, 0, 26) + hsl(0, 10, 0);
     }
   }
 
