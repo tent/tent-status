@@ -7,9 +7,9 @@ TentStatus.Views.MentionsAutoCompleteTextarea = class MentionsAutoCompleteTextar
       @templateName = 'reply_form_autocomplete_textarea'
 
       @parentView.on 'init:PermissionsFields', (view) =>
-        for entity in @parentView.context().formatted.reply_to_entities
+        for entity in @getReplyToEntities()
           view.addOption(
-            text: entity.replace(/^https?:\/\/(?:www\.)?/, '')
+            text: TentStatus.Helpers.minimalEntity(entity)
             value: entity
             group: false
           )
@@ -39,6 +39,17 @@ TentStatus.Views.MentionsAutoCompleteTextarea = class MentionsAutoCompleteTextar
     if permissions_fields_view = @parentView.child_views.PermissionsFields?[0]
       permissions_fields_view.addOption(option)
       permissions_fields_view.show(false)
+
+  getReplyToEntities: =>
+    return [] unless @parentView.is_reply_form
+
+    post = @parentView.parentView.post
+    return [] unless post
+
+    post = post.get('repost') if @parentView.is_repost
+    return [] unless post
+
+    TentStatus.Views.Post::getReplyToEntities(post, false)
 
   context: =>
     return {} unless @parentView.is_reply_form
