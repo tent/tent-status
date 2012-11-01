@@ -54,11 +54,11 @@ TentStatus.Views.PermissionsFields = class PermissionsFieldsView extends TentSta
     @picker_view?.hide()
     $(@elements.visibility_toggle).text(@text.visibility_toggle.show)
 
-  show: =>
+  show: (should_focus = true) =>
     @visible = true
     $(@options_view.el).show()
     $(@elements.visibility_toggle).text(@text.visibility_toggle.hide)
-    @focusInput()
+    @focusInput() if should_focus
 
   addOption: (option) =>
     @options_view.addOption(option)

@@ -6,6 +6,14 @@ TentStatus.Views.MentionsAutoCompleteTextarea = class MentionsAutoCompleteTextar
     if @parentView.is_reply_form
       @templateName = 'reply_form_autocomplete_textarea'
 
+      @parentView.on 'init:PermissionsFields', (view) =>
+        for entity in @parentView.context().formatted.reply_to_entities
+          view.addOption(
+            text: entity.replace(/^https?:\/\/(?:www\.)?/, '')
+            value: entity
+            group: false
+          )
+
     super
 
     @on 'init:PermissionsFieldsPicker', @initPickerView
@@ -28,6 +36,9 @@ TentStatus.Views.MentionsAutoCompleteTextarea = class MentionsAutoCompleteTextar
 
   addOption: (option) =>
     @textarea_view.addOption(option)
+    if permissions_fields_view = @parentView.child_views.PermissionsFields?[0]
+      permissions_fields_view.addOption(option)
+      permissions_fields_view.show(false)
 
   context: =>
     return {} unless @parentView.is_reply_form
