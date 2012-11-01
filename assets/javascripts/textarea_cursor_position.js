@@ -213,7 +213,7 @@ maxkir.CursorPosition.getTextMetrics = function(styledElement, s, padding) {
   div.style.width = '0';
   div.style.paddingLeft = padding + "px";
 
-  div.innerHTML = s.replace(' ', "&nbsp;");
+  div.innerHTML = s.replace(/\s/g, "&nbsp;");
   div.style.width = 'auto';
   return [div.offsetWidth, div.offsetHeight];
 

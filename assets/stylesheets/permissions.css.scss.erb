@@ -91,6 +91,11 @@ $green: #35aa47;
     }
   }
 
+  .option-picker ul.picker-options li.option, .picker-input {
+    padding: 6px;
+    border-top: 1px solid #DCDCDC;
+  }
+
   .option-picker {
     position: absolute;
     left: 34px;
@@ -121,45 +126,40 @@ $green: #35aa47;
         }
       }
     }
+  }
 
-    ul.picker-options li.option, .picker-input {
-      padding: 6px;
-      border-top: 1px solid #DCDCDC;
+  .picker-input {
+    border-top: 0px;
+    float: left;
+
+    input[type=text] {
+      display: inline-block;
+      outline: 0;
+      width: 20px;
+      border: 0px;
+      padding: 0px;
+      box-shadow: none;
+
+      &:focus {
+        outline: 0;
+      }
     }
 
-    .picker-input {
-      border-top: 0px;
-      position: relative;
+    .loading {
+      @include rounded(4px);
+      @include transparent(0);
+      @include transition(opacity, ease-in-out, 1s, 0s);
 
-      input[type=text] {
-        display: inline-block;
-        outline: 0;
-        width: 384px;
-        border: 0px;
-        padding: 0px;
-        box-shadow: none;
+      position: absolute;
+      top: 14px;
+      right: 6px;
 
-        &:focus {
-          outline: 0;
-        }
-      }
+      width: 8px;
+      height: 8px;
+      background-color: #0099FF;
 
-      .loading {
-        @include rounded(4px);
-        @include transparent(0);
-        @include transition(opacity, ease-in-out, 1s, 0s);
-
-        position: absolute;
-        top: 14px;
-        right: 6px;
-
-        width: 8px;
-        height: 8px;
-        background-color: #0099FF;
-
-        &.pulse {
-          @include transparent(100);
-        }
+      &.pulse {
+        @include transparent(100);
       }
     }
   }
@@ -181,12 +181,6 @@ $green: #35aa47;
 
     .option-picker {
       width: 324px;
-
-      .picker-input {
-        input[type=text] {
-          width: 308px;
-        }
-      }
     }
   }
 }
