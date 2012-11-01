@@ -118,6 +118,30 @@ only screen and (                min-resolution: 2dppx) {
       width: auto;
     }
 
+    .mentions-autocomplete {
+      display: block;
+
+      .option-picker {
+        margin-top: 6px;
+      }
+    }
+
+    .permissions-options-container, .mentions-autocomplete {
+      ul.options {
+        width: 246px;
+      }
+
+      .option-picker {
+        width: 250px;
+
+        .picker-input {
+          input[type=text] {
+            width: 234px;
+          }
+        }
+      }
+    }
+
     li.post {
       margin-bottom: 0px;
 
