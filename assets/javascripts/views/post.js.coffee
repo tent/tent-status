@@ -208,6 +208,7 @@ class TentStatus.Views.Post extends TentStatus.View
       url: TentStatus.Helpers.postUrl(post)
       profileUrl: TentStatus.Helpers.entityProfileUrl(post.get 'entity')
       licenses: _.map post.get('licenses') || [], (url) => { name: TentStatus.Helpers.formatUrl(url), url: url }
+      public: post.get('permissions')['public']
       escaped:
         entity: encodeURIComponent( post.get 'entity' )
       formatted:
