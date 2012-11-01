@@ -199,11 +199,20 @@ class TentStatus.Views.Post extends TentStatus.View
       _entities.push(_entity) if _entities.indexOf(_entity) == -1
     _entities
 
+  getPermissibleEntities: (post, should_trim=true) =>
+    _entities = []
+    for entity, can_see of (post.get('permissions').entities || {})
+      continue unless can_see
+      entity = TentStatus.Helpers.minimalEntity(entity) if should_trim
+      _entities.push(entity)
+    _entities
+
   isCurrentUserEntity: (entity) =>
     return false unless TentStatus.config.current_entity
     TentStatus.config.current_entity.assertEqual( new HTTP.URI entity )
 
   context: (post = @post, repostContext) =>
+    permissible_entities = @getPermissibleEntities(post)
     _.extend super, post.toJSON(), @postProfileJSON(post), {
       is_repost: post.isRepost()
       repost: repostContext || @repostContext(post)
@@ -212,10 +221,12 @@ class TentStatus.Views.Post extends TentStatus.View
       profileUrl: TentStatus.Helpers.entityProfileUrl(post.get 'entity')
       licenses: _.map post.get('licenses') || [], (url) => { name: TentStatus.Helpers.formatUrl(url), url: url }
       public: post.get('permissions')['public']
+      only_me: !permissible_entities.length && @isCurrentUserEntity(post.get('entity'))
       escaped:
         entity: encodeURIComponent( post.get 'entity' )
       formatted:
         reply_to_entities: @getReplyToEntities(post)
+        permissible_entities: permissible_entities.join(', ')
         content:
           text: TentStatus.Helpers.simpleFormatText(
             TentStatus.Helpers.autoLinkText(TentStatus.Helpers.truncate(post.get('content')?.text, TentStatus.config.MAX_LENGTH, ''))

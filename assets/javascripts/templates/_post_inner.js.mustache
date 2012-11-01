@@ -20,7 +20,7 @@
           <a href="{{profileUrl}}">{{formatted.entity}}</a>
           {{/hasName}}
 
-          {{^public}}&nbsp;<span class='label label-info'>Private</span>{{/public}}
+          {{^public}}&nbsp;<span class='label label-info' title='{{#only_me}}Only Me{{/only_me}}{{formatted.permissible_entities}}'>{{#only_me}}Private{{/only_me}}{{^only_me}}Limited{{/only_me}}</span>{{/public}}
 
           <div class="post-date">
             <a class="{{#has_parent}}gray{{/has_parent}}" href="{{url}}" data-view='RelativeTimestamp' data-datetime='{{published_at}}' title="{{formatted.full_published_at}}">{{formatted.published_at}}</a>
