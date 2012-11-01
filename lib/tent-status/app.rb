@@ -219,7 +219,8 @@ module Tent
               "read_followers" => "See who is following you",
               "write_followers" => "Block followers from receiving notifications",
               "read_groups" => "Add group to post permissions",
-              "write_groups" => "Add new group to post permissions"
+              "write_groups" => "Add new group to post permissions",
+              "read_permissions" => "Display who can see a post"
             }
           },
           :post_types => %w( https://tent.io/types/post/status/v0.1.0 https://tent.io/types/post/repost/v0.1.0 ),
