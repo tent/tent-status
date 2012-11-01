@@ -239,7 +239,7 @@ class PickerOptionView
     $(@el).removeClass('active')
 
   add: =>
-    @permissions_fields_view.addOption {
+    option = {
       text: @getText()
       value: @getValue()
       group: @isGroup()
@@ -252,6 +252,8 @@ class PickerOptionView
 
     for view, index in @parentView.option_views
       view.index = index
+
+    @permissions_fields_view.addOption(option)
 
 class PickerInputView extends PickerOptionView
   constructor: ->
@@ -325,6 +327,7 @@ class PickerInputView extends PickerOptionView
 
   clear: =>
     @elements.input.value = ''
+    @calibrate()
 
   focus: =>
     @calibrate()
