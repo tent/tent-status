@@ -154,7 +154,7 @@ TentStatus.Views.PermissionsFieldsPicker = class PermissionsFieldsPickerView ext
         return callback(follows, nextPage) if follows.length
 
         @input.showLoading()
-        new HTTP 'GET', "#{TentStatus.config.domain_tent_api_root}/followings", params, (res, xhr) =>
+        new HTTP 'GET', "#{TentStatus.config.tent_api_root}/followings", params, (res, xhr) =>
           return callback() unless xhr.status == 200
           @input.hideLoading()
 
