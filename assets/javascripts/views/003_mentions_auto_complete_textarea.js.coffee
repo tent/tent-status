@@ -64,6 +64,11 @@ class TextareaView
   constructor: (params = {}) ->
     @[k] = v for k,v of params
 
+    @elements = {
+      loading: $('.loading', @parentView.el).get(0)
+    }
+    @loading_view = new TentStatus.Views.LoadingIndicator el: @elements.loading
+
     $(@el).on 'keydown', (e) =>
       switch e.keyCode
         when 13 # enter/return
@@ -150,6 +155,12 @@ class TextareaView
     delete @selection
 
   showLoading: =>
+    @_loading_requests ?= 0
+    @_loading_requests += 1
+    @loading_view.show() if @_loading_requests == 1
 
   hideLoading: =>
+    @_loading_requests ?= 1
+    @_loading_requests -= 1
+    @loading_view.hide() if @_loading_requests == 0
 
