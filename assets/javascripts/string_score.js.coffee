@@ -1,5 +1,6 @@
 String::score = (abbreviation) ->
-  string = @
+  string = @toLowerCase()
+  abbreviation = abbreviation.toLowerCase()
 
   return 1 if string == abbreviation
 
