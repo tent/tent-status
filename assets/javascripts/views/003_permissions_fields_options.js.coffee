@@ -7,13 +7,26 @@ TentStatus.Views.PermissionsFieldsOptions = class PermissionsFieldsOptionsView e
 
     @on 'ready', @initOptions
 
-    @set 'options', [
-      {
-        text: 'Everyone'
-        value: 'all'
-        group: true
-      }
-    ]
+    post = @parentView.parentView.parentView.post
+    if !post || post.isPublic()
+      @set 'options', [
+        {
+          text: 'Everyone'
+          value: 'all'
+          group: true
+        }
+      ]
+    else
+      options = []
+      if post
+        for m in post.postMentions()
+          continue unless m.entity
+          options.push {
+            text: TentStatus.Helpers.minimalEntity(m.entity)
+            value: m.entity
+            group: false
+          }
+      @set 'options', options
 
     @on 'change:options', @render
     @render()
