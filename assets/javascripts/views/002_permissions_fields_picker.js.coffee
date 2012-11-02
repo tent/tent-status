@@ -274,7 +274,10 @@ class PickerInputView extends PickerOptionView
       switch e.keyCode
         when 13 # enter/return
           e.preventDefault()
-          @parentView.addActiveOption()
+          if !@parentView.option_views.length && (e.ctrlKey || e.metaKey)
+            @parentView.parentView.parentView?.submit()
+          else
+            @parentView.addActiveOption()
           false
         when 27 # escape
           e.preventDefault()

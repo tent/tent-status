@@ -152,10 +152,10 @@ class TentStatus.Models.Post extends Backbone.Model
   avatar: =>
     @entity()?.avatar()
 
-  validate: (attrs) =>
+  validate: (attrs, changes, validate_empty=false) =>
     errors = []
 
-    if attrs.content?.text and attrs.content.text.match /^[\s\r\t]*$/
+    if (attrs.content?.text and attrs.content.text.match /^[\s\r\t]*$/) || (validate_empty and attrs.content?.text == "")
       errors.push { text: 'Status must not be empty' }
 
     if attrs.content?.text and attrs.content.text.length > TentStatus.config.MAX_LENGTH
@@ -163,3 +163,4 @@ class TentStatus.Models.Post extends Backbone.Model
 
     return errors if errors.length
     null
+
