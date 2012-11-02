@@ -135,6 +135,9 @@ class TentStatus.Models.Post extends Backbone.Model
   isRepost: =>
     !!(@get('type') || '').match(/repost/)
 
+  isPublic: =>
+    !!@get('permissions').public
+
   postMentions: =>
     @post_mentions ?= _.select @get('mentions') || [], (m) => m.entity && m.post
 
