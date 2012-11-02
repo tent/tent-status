@@ -33,6 +33,7 @@ class TentStatus.Views.NewPostForm extends TentStatus.View
     @charLimit = parseInt(@$charLimit.text())
     @$textarea.on 'keyup', =>
       clearTimeout @_validateTimeout
+      return if @frozen
       @_validateTimeout = setTimeout @validate, 300
       @updateCharCounter()
       null
@@ -42,7 +43,7 @@ class TentStatus.Views.NewPostForm extends TentStatus.View
     @$textarea.off('keydown.keysubmit').on 'keydown.keysubmit', (e) =>
       if (e.metaKey || e.ctrlKey) && e.keyCode == 13
         e.preventDefault()
-        @submit() if @validate()
+        @submit()
         false
       else
         true
@@ -66,6 +67,7 @@ class TentStatus.Views.NewPostForm extends TentStatus.View
   submit: (e) =>
     e.preventDefault() if e
     data = @getData()
+    clearTimeout @_validateTimeout
     return false unless @validate data
 
     @disableWith 'Posting...'
@@ -133,9 +135,10 @@ class TentStatus.Views.NewPostForm extends TentStatus.View
     @buildDataObject @$form.serializeArray()
 
   validate: (data = @getData()) =>
-    post = new TentStatus.Models.Post data
+    return if @frozen
+    post = new TentStatus.Models.Post
     data.content?.text = @$textarea.val()
-    errors = post.validate(data)
+    errors = post.validate(data, {}, true)
     @$el.find(".error").removeClass('error')
     @$errors.hide()
     @showErrors(errors) if errors
