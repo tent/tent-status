@@ -22,6 +22,9 @@ class DOM.InputSelection
       return @el.selectionEnd
 
   setSelectionRange: (start, end) =>
+    # Firefox bug throws error setting selection of hidden el
+    return unless @el.offsetHeight && @el.offsetWidth
+
     if @el.createTextRange
       selRange = @el.createTextRange()
       selRange.collapse(true)
