@@ -68,7 +68,7 @@ class TentStatus.Views.NewPostForm extends TentStatus.View
     e.preventDefault() if e
     data = @getData()
     clearTimeout @_validateTimeout
-    return false unless @validate data
+    return false unless @validate data, true
 
     @disableWith 'Posting...'
     new HTTP 'POST', "#{TentStatus.config.tent_api_root}/posts", data, (post, xhr) =>
@@ -134,11 +134,11 @@ class TentStatus.Views.NewPostForm extends TentStatus.View
   getData: =>
     @buildDataObject @$form.serializeArray()
 
-  validate: (data = @getData()) =>
+  validate: (data = @getData(), validate_empty=false) =>
     return if @frozen
     post = new TentStatus.Models.Post
     data.content?.text = @$textarea.val()
-    errors = post.validate(data, {}, true)
+    errors = post.validate(data, {}, validate_empty)
     @$el.find(".error").removeClass('error')
     @$errors.hide()
     @showErrors(errors) if errors
