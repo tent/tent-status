@@ -201,7 +201,10 @@
   var Model = Backbone.Model = function(attributes, options) {
     var defaults;
     attributes || (attributes = {});
-    if (options && options.parse) attributes = this.parse(attributes);
+
+    // Changed to opt-out parsing
+    if (!options || options.parse !== false) attributes = this.parse(attributes);
+
     if (defaults = getValue(this, 'defaults')) {
       attributes = _.extend({}, defaults, attributes);
     }

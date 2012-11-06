@@ -21,11 +21,9 @@ class TentStatus.Views.Profile extends TentStatus.View
   getProfileComplete: (profile, xhr) =>
     TentStatus.trigger 'loading:complete'
     return @render404() unless xhr.status == 200
-    profile_cache_key = "profile:#{@entity}"
 
-    TentStatus.Cache.set profile_cache_key, profile, {saveToLocalStorage:true}
-
-    @set 'profile', new TentStatus.Models.Profile profile
+    profile = new TentStatus.Models.Profile profile
+    @set 'profile', profile
 
   notFoundContext: =>
     if TentStatus.config.tent_host_domain

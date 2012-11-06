@@ -81,6 +81,9 @@ _.extend @TentStatus, Backbone.Events, {
     URL_TRIM_LENGTH: 30
     MAX_LENGTH: 256
     default_avatar: 'http://dr49qsqhb5y4j.cloudfront.net/default1.png'
+    CORE_PROFILE_TYPE: 'https://tent.io/types/info/core/v0.1.0'
+    BASIC_PROFILE_TYPE: 'https://tent.io/types/info/basic/v0.1.0'
+    TENT_STATUS_PROFILE_TYPE: 'https://tent.io/types/info/tent-status/v0.1.0'
   }
 
   isMentionsPage: =>
