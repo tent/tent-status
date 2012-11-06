@@ -130,7 +130,7 @@ TentStatus.Views.PermissionsFieldsPicker = class PermissionsFieldsPickerView ext
         @input.showLoading()
         @fetchProfile result.entity, (profile) =>
           @input.hideLoading()
-          basic = profile?['https://tent.io/types/info/basic/v0.1.0']
+          basic = profile?[TentStatus.config.BASIC_PROFILE_TYPE]
           results[index].name = basic?.name
           complete()
 
