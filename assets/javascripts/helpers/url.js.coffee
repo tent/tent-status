@@ -14,7 +14,7 @@ _.extend TentStatus.Helpers,
     return unless entity and post_id
     if TentStatus.Helpers.isEntityOnTentHostDomain(entity)
       "#{entity}/posts/#{post_id}"
-    else if TentStatus.Helpers.isEntityOnTentHostDomain(TentStatus.config.current_entity)
+    else if TentStatus.config.current_entity && TentStatus.Helpers.isEntityOnTentHostDomain(TentStatus.config.current_entity)
       "#{TentStatus.config.current_entity.toStringWithoutSchemePort()}/posts/#{encodeURIComponent entity}/#{post_id}"
     else
       "/posts/#{encodeURIComponent entity}/#{post_id}"
