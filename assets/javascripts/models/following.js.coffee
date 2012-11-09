@@ -4,8 +4,7 @@ class TentStatus.Models.Following extends Backbone.Model
 
   parse: (attrs) ->
     if attrs.profile
-      @set('profile', new TentStatus.Models.Profile attrs.profile)
-      delete attrs.profile
+      attrs.profile = new TentStatus.Models.Profile attrs.profile
     attrs
 
   initialize: ->
