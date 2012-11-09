@@ -180,7 +180,7 @@ class TentStatus.Views.Post extends TentStatus.View
     avatar: post.get('profile')?.avatar() || ''
 
   inReplyToJSON: (mention) =>
-    return unless mention
+    return unless mention && mention.entity && mention.post
     {
       name: TentStatus.Helpers.formatUrlWithPath(mention.entity),
       url: TentStatus.Helpers.entityPostUrl(mention.entity, mention.post)
