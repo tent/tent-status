@@ -293,6 +293,7 @@ module Tent
 
         def current_entity
           return unless current_user
+          current_user.entity
         end
 
         def domain_entity
