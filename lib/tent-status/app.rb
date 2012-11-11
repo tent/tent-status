@@ -43,7 +43,7 @@ module Tent
           @username_entity ||= begin
             uri = URI("https://#{(current_user || guest_user).username}.#{ENV['TENT_HOST_DOMAIN']}")
             uri.scheme = ENV['TENT_HOST_SCHEME'] || 'https'
-            uri.port = ENV['TENT_HOST_PORT'].gsub(/\D/, '').to_i || 80
+            uri.port = (ENV['TENT_HOST_PORT'] || 80).to_s.gsub(/\D/, '').to_i
             uri.to_s
           end
         end
