@@ -427,7 +427,7 @@ module Tent
     get '/tent-proxy/:proxy_entity/profile' do
       profile, server_url = discover(params[:proxy_entity])
       if server_url
-        session["#{params[:entity]}-server_url"] = server_url
+        session["#{params[:proxy_entity]}-server_url"] = server_url
       end
 
       if profile
