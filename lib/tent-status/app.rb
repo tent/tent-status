@@ -38,9 +38,19 @@ module Tent
 
     if ENV['TENT_HOST_DOMAIN']
       helpers do
+        def username_entity
+          return unless (current_user || guest_user)
+          @username_entity ||= begin
+            uri = URI("https://#{(current_user || guest_user).username}.#{ENV['TENT_HOST_DOMAIN']}")
+            uri.scheme = ENV['TENT_HOST_SCHEME'] || 'https'
+            uri.port = ENV['TENT_HOST_PORT'].gsub(/\D/, '').to_i || 80
+            uri.to_s
+          end
+        end
+
         def tent_api_root
-          return domain_tent_api_root unless (current_user || guest_user)
-          (current_user || guest_user).entity + '/tent'
+          return domain_tent_api_root unless username_entity
+          username_entity + '/tent'
         end
 
         def full_url(path)
@@ -89,6 +99,10 @@ module Tent
           image_url = profile_info.content['background_image_url']
           return if !image_url || image_url.to_s =~ /\A[\s\r\t]*\Z/
           image_url
+        end
+
+        def current_entity
+          username_entity
         end
 
         def domain_entity
@@ -310,11 +324,6 @@ module Tent
       def user_brand
         return unless current_entity
         current_entity.to_s.sub(%r{\Ahttps?://([^/]+).*?\z}) { |m| $1 }
-      end
-
-      def current_entity
-        return unless current_user || guest_user
-        (current_user || guest_user).entity
       end
 
       def tent_host_domain
