@@ -45,7 +45,7 @@
   <% if current_user || guest_user %>
     <li class='<%= nav_selected_class('/') %>'>
       <% if tent_host_domain %>
-        <a href="<%= (current_user || guest_user).entity %>">My Feed</a>
+        <a href="<%= current_entity %>">My Feed</a>
       <% else %>
         <a href="<%= full_path('/') %>">My Feed</a>
       <% end %>
