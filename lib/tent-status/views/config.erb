@@ -1,3 +1,15 @@
+<% if (api_key = ENV['AIRBRAKE_API_KEY']) && (host = ENV['AIRBRAKE_HOST']) %>
+  <script type='application/javascript' src="<%= asset_path("notifier.js") %>"></script>
+  <script type="text/javascript">
+    Airbrake.setKey('<%= api_key %>');
+    Airbrake.setHost('<%= host %>');
+    Airbrake.setEnvironment("<%= ENV['RACK_ENV'] %>");
+    Airbrake.setErrorDefaults({
+      url: document.URL,
+    });
+  </script>
+<% end %>
+
 <script type='application/javascript'>
   window.TentStatus = {
     url_root: "<%= full_path('/') %>",
