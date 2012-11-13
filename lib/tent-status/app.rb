@@ -40,12 +40,7 @@ module Tent
       helpers do
         def username_entity
           return unless (current_user || guest_user)
-          @username_entity ||= begin
-            uri = URI("https://#{(current_user || guest_user).username}.#{ENV['TENT_HOST_DOMAIN']}")
-            uri.scheme = ENV['TENT_HOST_SCHEME'] || 'https'
-            uri.port = (ENV['TENT_HOST_PORT'] || 80).to_s.gsub(/\D/, '').to_i
-            uri.to_s
-          end
+          (current_user || guest_user).username_entity
         end
 
         def tent_api_root
