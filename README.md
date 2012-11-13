@@ -83,6 +83,8 @@ There are additional ENV variables not presented above which can be configured a
 | APP_URL | URL app your app (e.g. https://status.example.com) that is also used in the OAuth flow |
 | APP_DESCRIPTION | Short description of your app that is used in the OAuth flow |
 | PRIMARY_ENTITY | An entity URI used to display a profile page instead of requiring authentication |
+| AIRBRAKE_API_KEY | API key for exception logging via Airbrake |
+| AIRBREAKE_HOST | Airbrake host to send exceptions to |
 
 ## Contributing
 
