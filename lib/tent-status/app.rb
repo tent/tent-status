@@ -50,7 +50,7 @@ module Tent
 
         def full_url(path)
           if guest_user
-            prefix = guest_user.entity
+            prefix = guest_user.username_entity
           else
             prefix = self_url_root
           end
@@ -97,15 +97,15 @@ module Tent
         end
 
         def current_entity
-          username_entity
+          (current_user || guest_user).entity
         end
 
         def domain_entity
-          self_url_root
+          TentD::Model::User.get(env['user_id']).entity
         end
 
         def domain_tent_api_root
-          domain_entity + '/tent'
+          TentD::Model::User.get(env['user_id']).username_entity + '/tent'
         end
 
         def app_api_root
@@ -284,6 +284,9 @@ module Tent
         end
 
         def guest_user
+        end
+
+        def username_entity
         end
 
         def current_entity
