@@ -101,11 +101,13 @@ module Tent
         end
 
         def domain_entity
-          TentD::Model::User.get(env['user_id']).entity
+          return self_url_root unless user = TentD::Model::User.get(env['user_id'])
+          user.entity
         end
 
         def domain_tent_api_root
-          TentD::Model::User.get(env['user_id']).username_entity + '/tent'
+          return (self_url_root + '/tent') unless user = TentD::Model::User.get(env['user_id'])
+          user.username_entity + '/tent'
         end
 
         def app_api_root
