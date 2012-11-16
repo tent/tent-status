@@ -97,7 +97,8 @@ module Tent
         end
 
         def current_entity
-          (current_user || guest_user).entity
+          return unless user = (current_user || guest_user)
+          user.entity
         end
 
         def domain_entity
