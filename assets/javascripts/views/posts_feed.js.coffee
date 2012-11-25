@@ -18,8 +18,8 @@ TentStatus.Views.PostsFeed = class PostsFeedView extends TentStatus.View
     @posts_collection.fetch params, _.extend(options,
       success: (posts) =>
         TentStatus.trigger 'loading:stop'
-        @posts_collection.since_id = _.last(posts)?.id
-        @posts_collection.since_id_entity = _.last(posts)?.entity
+        @posts_collection.before_id = _.last(posts)?.id
+        @posts_collection.before_id_entity = _.last(posts)?.entity
 
         unless posts.length
           @last_page = true
@@ -35,8 +35,8 @@ TentStatus.Views.PostsFeed = class PostsFeedView extends TentStatus.View
 
   nextPage: =>
     @fetch {
-      since_id: @posts_collection.since_id
-      since_id_entity: @posts_collection.since_id_entity
+      before_id: @posts_collection.before_id
+      before_id_entity: @posts_collection.before_id_entity
     }, {
       append: true
     }
