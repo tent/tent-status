@@ -1,6 +1,8 @@
 <div class="{{^has_parent}}row{{/has_parent}}">
-  <div class="span1 avatar-container mobile-hide">
-    <a href="{{profileUrl}}"><img class="pull-left avatar" src="{{avatar}}" /></a>
+  <div class="span1 avatar-container">
+    <div data-view='PostProfileAvatar' data-post_cid='{{cid}}'>
+      <a href="{{profileUrl}}"><img class="pull-left avatar" src="{{avatar}}" /></a>
+    </div>
   </div>
 
   <div class='post-container'>
@@ -12,13 +14,9 @@
       <div class="span7 post-header">
       {{/has_parent}}
         <h5>
-          {{#hasName}}
-          <a href="{{profileUrl}}">{{name}} <small>{{formatted.entity}}</small></a>
-          {{/hasName}}
-          
-          {{^hasName}}
-          <a href="{{profileUrl}}">{{formatted.entity}}</a>
-          {{/hasName}}
+          <div data-view='PostProfileName' data-post_cid='{{cid}}'>
+            <a href="{{profileUrl}}">{{formatted.entity}}</a>
+          </div>
 
           {{^public}}&nbsp;<span class='label {{#only_me}}label-inverse{{/only_me}}{{^only_me}}label-info{{/only_me}}' title='{{#only_me}}Only Me{{/only_me}}{{formatted.permissible_entities}}'>{{#only_me}}Private{{/only_me}}{{^only_me}}Limited{{/only_me}}</span>{{/public}}
 
@@ -38,11 +36,7 @@
       
       {{^repost}}
       <div class="{{#has_parent}}span6{{/has_parent}}{{^has_parent}}span7{{/has_parent}} post-body has-overflow">
-        <div class="span1 avatar-container mobile-only">
-          <a href="{{profileUrl}}"><img class="pull-left avatar" src="{{avatar}}" /></a>
-        </div>
         <p>{{{formatted.content.text}}}</p>
-        <div class='mobile-only'>{{> _post_inner_actions}}</div>
       </div>
       {{/repost}}
       
@@ -50,7 +44,7 @@
       <div class="span7 repost post">{{> _post_inner}}</div>
       {{/repost}}
 
-      <div class='mobile-hide'>{{> _post_inner_actions}}</div>
+      {{> _post_inner_actions}}
     </div>
 
     {{#authenticated}}
