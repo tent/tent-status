@@ -1,6 +1,3 @@
-TentStatus.Views.container = new class ContainerView extends Backbone.View
-  initialize: ->
-    @setElement document.getElementById('main')
+class ContainerView extends TentStatus.View
 
-  render: (html) =>
-    @$el.html(html)
+TentStatus.Views.container = new ContainerView el: document.getElementById('main')

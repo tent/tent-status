@@ -1,6 +1,6 @@
 <% if (api_key = ENV['AIRBRAKE_API_KEY']) && (host = ENV['AIRBRAKE_HOST']) %>
   <script type='application/javascript' src="<%= asset_path("notifier.js") %>"></script>
-  <script type="text/javascript">
+  <script type="application/javascript">
     Airbrake.setKey('<%= api_key %>');
     Airbrake.setHost('<%= host %>');
     Airbrake.setEnvironment("<%= ENV['RACK_ENV'] %>");
@@ -11,7 +11,10 @@
 <% end %>
 
 <script type='application/javascript'>
-  window.TentStatus = {
+  if (!window.TentStatus)
+    window.TentStatus = {}
+
+  window.TentStatus._config = {
     url_root: "<%= full_path('/') %>",
     authenticated: <%= !!(current_user || guest_user) %>,
     guest_authenticated: <%= !!guest_user %>,
@@ -22,6 +25,8 @@
     domain_entity: "<%= domain_entity %>",
     domain_tent_api_root: "<%= domain_tent_api_root %>",
     current_entity: "<%= current_entity %>",
-    current_auth_details: <%= auth_details ? auth_details.to_json : '{}' %>
+    current_user: {
+      auth_details: <%= auth_details ? auth_details.to_json : '{}' %>
+    }
   }
 </script>

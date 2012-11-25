@@ -1,137 +1,85 @@
-# Custom View Class extending Backbone.View
-#
-# Sample View Class:
-# class TentStatus.Views.DashboardArticles extends TentStatus.View
-#   templateName: 'foo/bar'
-#
-#   # e.g. dashboard/_header is available as @partials.header
-#   partialNames: ['baz/_header']
-#
-#   # wait for attributes to be set with @set before rendering
-#   dependentRenderAttributes: ['foos']
-# 
-#   initialize: (options) ->
-#     super
-#
-#     # Custom view initialization, e.g.:
-#     @on 'ready', @bindEvents
-# 
-#   # setup context object passed to template
-#   # context is the data object for the view
-#   # See (mustache syntax): http://mustache.github.com/mustache.5.html
-#   # See (hogan example): http://twitter.github.com/hogan.js/
-#   context: =>
-#     foos: foos.toJSON()
-#
-#   render: =>
-#     # do anything special here
-#
-#     super
+TentStatus.View = class View
+  @instances: {
+    all: {}
+  }
+  @_id_counter: 0
+  @view_name: '_default'
 
-class TentStatus.View extends Backbone.View
-  # simpler version of @set and @get than given with Backbone.Model
-  # @set sets the key directly on the View instance
-  # it's used to pass data from the router to the view
-  set: (key, val) =>
-    @[key] = val
-    @trigger "change:#{key}"
+  @find: (cid) ->
+    @instances.all[cid]
 
-  # see render method in above sample
-  get: (key) =>
-    @[key]
+  @getTemplate: (template_path) ->
+    HoganTemplates[template_path]
 
-  # fetch template and partials
-  # once loaded @template will hold the compiled hogan template specified with @templateName
-  # and @partials will hold all compiled templates defined in @partialNames
-  initialize: (options) ->
-    # fetch main template
-    if @templateName
-      TentStatus.fetchTemplate @templateName, (@template) =>
-        @trigger 'template:load'
+  @detach: (cid) ->
+    delete @instances[cid]
 
-    # load all partials listed in partialNames
-    if @partialNames
-      @partialNames.push '_404'
+  detach: =>
+    @constructor.detach(@cid)
 
-      @partials = {}
-      for p in @partialNames
-        do (p) =>
-          TentStatus.fetchTemplate p, (template) =>
-            name = @getPartialName(p)
-            @partials[name] = template
-            @trigger "partials:#{name}:load"
+  constructor: (options = {}) ->
+    @generateCid()
+    @trackInstance()
+    @initTemplates()
+
+    for k in ['el', 'parent_view', 'container']
+      @set(k, options[k]) if options[k]
 
     @on 'ready', @bindViews
 
-  bindViews: (data_binding='data-view') =>
-    @child_views = {}
-    _.each $("[#{data_binding}]", (@container?.el || @$el)), (el) =>
-      viewClassName = $(el).attr data_binding
-      if viewClass = TentStatus.Views[viewClassName]
-        view = new viewClass el: el, parentView: @
-        @child_views[viewClassName] ?= []
-        @child_views[viewClassName].push view
-        @trigger "init:#{viewClassName}", view
+  generateCid: =>
+    @cid = "#{@constructor.view_name}_#{@constructor._id_counter++}"
+
+  trackInstance: =>
+    @constructor.instances.all[@cid] = @
+    @constructor.instances[@constructor.view_name] ?= []
+    @constructor.instances[@constructor.view_name].push @cid
+
+  initTemplates: =>
+    @constructor.template ?= @constructor.getTemplate(@constructor.template_name) if @constructor.template_name
+    if !@constructor.partials && @constructor.partial_names
+      @constructor.partials = {}
+      for name in @constructor.partial_names
+        @constructor.partials[name] = @constructor.getTemplate(name)
+
+  bindViews: =>
+    # detach old child views
+    for class_name, cids of (@_child_views || {})
+      for cid in cids
+        @constructor.instances[cid]?.detach()
+
+    @_child_views = {}
+    _.each DOM.querySelectorAll('[data-view]', (@container?.el || @el)), (el) =>
+      view_class_name = DOM.attr(el, 'data-view')
+
+      if viewClass = TentStatus.Views[view_class_name]
+        view = new viewClass el: el, parent_view: @
+        @_child_views[view_class_name] ?= []
+        @_child_views[view_class_name].push view.cid
+        @trigger "init:#{view_class_name}", view
       else
-        TentStatus.devWarning @, "TentStatus.Views.#{viewClassName} is not defined!"
-        console?.log el
+        console.warn "TentStatus.Views.#{view_class_name} is not defined!"
 
-  getPartialName: (path) =>
-    path.replace(/.+\/_(.+)$/, "$1")
-
-  # called before fetching data in the router
-  empty: =>
-    @container?.render("")
+  childViews: (view_class_name) =>
+    _.map @_child_views[view_class_name], (cid) => @constructor.find(cid)
 
   context: =>
-    authenticated: TentStatus.authenticated
-    guest_authenticated: TentStatus.guest_authenticated
+    config: TentStatus.config
 
-  # wait for @template and @partials to load
-  # then render @template with @context and @partials
-  # and insert html into @container.el
-  render: =>
-    # wait for template to be loaded
-    if @templateName
-      unless @template
-        @once 'template:load', => @render(arguments...)
-        return false
+  renderHTML: (context = @context()) =>
+    @constructor.template.render(context, @constructor.partials)
 
-    # wait for partials to be loaded
-    if @partialNames
-      for p in @partialNames
-        name = @getPartialName(p)
-        unless @partials[name]
-          @once "partials:#{name}:load", => @render(arguments...)
-          return false
+  render: (context = @context()) =>
+    html = @renderHTML(context)
 
-    # wait for data to be loaded
-    if @dependentRenderAttributes
-      for key in @dependentRenderAttributes
-        if @get(key) == null
-          @once "change:#{key}", => @render(arguments...)
-          return false
-
-    context = _.extend {
-      authenticated: TentStatus.authenticated
-      guest_authenticated: TentStatus.guest_authenticated
-    }, @context()
-
-    html = @template.render(context, @partials)
-    if @container
-      @container.render(html)
-      @trigger 'ready'
-      true
+    if @container?.el
+      @el = document.createElement('div')
+      @el.innerHTML = html
+      DOM.replaceChildren(@container.el, @el)
     else
-      html
+      @el.innerHTML = html
 
-  render404: =>
-    return false unless template = @partials['_404']
-    html = template.render(@notFoundContext?() || {})
-    if @container
-      @container.render(html)
-      @trigger '404:ready'
-      true
-    else
-      html
+    @trigger 'ready'
+
+_.extend View::, Backbone.Events, TentStatus.Accessors
 

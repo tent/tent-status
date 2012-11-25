@@ -21,14 +21,28 @@ TentStatus.Model = class Model
   @fetch: (params, callback) ->
     console.warn("You need to define #{@name}::fetch(params, callback)!")
 
-  constructor: (attributes, @options) ->
+  # delete reference
+  @detach: (cid) ->
+    delete @instances.all[cid]
+
+    if index = @constructor.instances[@constructor.model_name]?.indexOf(cid)
+      instances = @constructor.instances[@constructor.model_name]
+      instances = instances.slice(0, index).concat(instances.slice(index+1, instances.length))
+      @constructor.instances[@constructor.model_name] = instances
+
+    for _id, _cid of @constructor.id_mapping
+      if _cid == cid
+        delete @constructor.id_mapping[_id]
+        break
+
+  detach: =>
+    @constructor.detach(@cid)
+
+  constructor: (attributes, @options = {}) ->
     @generateCid()
+    @trackInstance()
     @on 'change:id', @updateIdMapping
     @parseAttribtues(attributes)
-    @trackInstance()
-
-  parseAttribtues: (attributes) =>
-    @set(k, v) for k,v of attributes
 
   generateCid: =>
     @cid = "#{@constructor.model_name}_#{@constructor._id_counter++}"
@@ -38,6 +52,9 @@ TentStatus.Model = class Model
     @constructor.instances[@constructor.model_name] ?= []
     @constructor.instances[@constructor.model_name].push @cid
 
+  parseAttribtues: (attributes) =>
+    @set(k, v) for k,v of attributes
+
   updateIdMapping: (new_id, old_id) =>
     @constructor.id_mapping[@constructor.model_name] ?= {}
     delete @constructor.id_mapping[@constructor.model_name][old_id]
@@ -46,12 +63,17 @@ TentStatus.Model = class Model
   set: (k, v) =>
     @fields ?= []
     @fields.push(k) if @fields.indexOf(k) == -1
-    old_v = @[k]
-    @[k] = v
-    @trigger("change:#{k}", v, old_v) unless v == old_v
-    v
+    super
 
   get: (k) =>
-    @[k] if @fields.indexOf(k) != -1
+    return if @fields.indexOf(k) == -1
+    super
 
-_.extend Model::, Backbone.Events
+  toJSON: =>
+    attrs = {}
+    for k in (@fields || [])
+      attrs[k] = @[k]
+    attrs
+
+_.extend Model, TentStatus.Events
+_.extend Model::, TentStatus.Events, TentStatus.Accessors
