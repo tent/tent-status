@@ -17,7 +17,7 @@ namespace :assets do
     t.environment.js_compressor = Uglifier.new
     t.environment.css_compressor = YUI::CssCompressor.new
     t.output      = "./public/assets"
-    t.assets      = %w( application.js iframe-cache.js notifier.js application.css chosen-sprite.png stream_sprites.png topbar_sprites.png stream_sprites@2x.png topbar_sprites@2x.png texture.png bodytexture.png )
+    t.assets      = %w( application.js iframe-cache.js notifier.js application.css gears.png mentions.png profile.png search.png site_feed.png timeline.png )
 
     t.environment.context_class.class_eval do
       include SprocketsHelpers

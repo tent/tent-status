@@ -1,86 +1,27 @@
-<div class='brand'>
+<ul class='unstyled'>
   <% if current_user || guest_user %>
-    <div id='user-menu' class='dropdown' href='<%= full_url('/profile') %>'>
-      <img src='' class='avatar' />
-      <i class='caret'></i>
-
-      <ul class='menu'>
-        <% if tent_host_domain %>
-          <li class='<%= nav_selected_class('/global') %> mobile-hide-landscape'>
-            <a href="https://app.<%= tent_host_domain %>/global">Site Feed</a>
-          </li>
-        <% end %>
-        <li class="<%= nav_selected_class('/profile') %>">
-          <a href="<%= full_url('/profile') %>">Profile</a>
-        </li>
-        <li class="<%= nav_selected_class('/followers') %>">
-          <a href="<%= full_url('/followers') %>"><span id='num_followers'></span> Followers</a>
-        </li>
-        <li class="<%= nav_selected_class('/followings') %>">
-          <a href="<%= full_url('/followings') %>"><span id='num_followings'></span> Following</a>
-        </li>
-        <% if tent_host_domain %>
-          <li>
-            <a href="<%= full_url('/admin') %>">Account</a>
-          </li>
-          <li>
-            <a href='https://<%= tent_host_domain %>'>About</a>
-          </li>
-        <% else %>
-          <li>
-            <a href='https://tent.io'>About</a>
-          </li>
-        <% end %>
-        <li>
-          <a href="<%= full_url('/signout') %>">Signout</a>
-        </li>
-      </ul>
-    </div>
-  <% else %>
-    <a class='title' href="https://<%= tent_host_domain %>"><%= app_title %></a>
-  <% end %>
-</div>
-
-<ul class='nav main'>
-  <% if current_user || guest_user %>
-    <li class='<%= nav_selected_class('/') %>'>
+    <li class='<%= nav_selected_class('/') %> timeline'>
       <% if tent_host_domain %>
-        <a href="<%= username_entity %>">My Feed</a>
+        <a href="<%= username_entity %>"><div class='icon'>&nbsp;</div>Timeline</a>
       <% else %>
-        <a href="<%= full_path('/') %>">My Feed</a>
+        <a href="<%= full_path('/') %>"><div class='icon'>&nbsp;</div>Timeline</a>
       <% end %>
     </li>
-    <li class="<%= nav_selected_class('/mentions') %>">
-      <a href="<%= full_url('/mentions') %>">Mentions&nbsp;<span id='mentions_count' class='hide badge badge-important'></span></a>
+    <li class="<%= nav_selected_class('/mentions') %> mentions">
+      <a href="<%= full_url('/mentions') %>"><div class='icon'>&nbsp;</div>Mentions</a>
     </li>
-  <% else %>
-    <% if tent_host_domain %>
-      <li>
-        <a href="https://<%= tent_host_domain %>/login">Signin</a>
-      </li>
-    <% else %>
-      <li>
-        <a href="<%= full_url('/login') %>">Signin</a>
-      </li>
-    <% end %>
-  <% end %>
-  <% if tent_host_domain %>
-    <li class='<%= nav_selected_class('/global') %> mobile-hide-portrait'>
-      <a href="https://app.<%= tent_host_domain %>/global">Site Feed</a>
+    <li class="<%= nav_selected_class('/profile') %> profile">
+      <a href="<%= full_url('/profile') %>"><div class='icon'>&nbsp;</div>Profile</a>
     </li>
   <% end %>
-</ul>
 
-<% if current_user || guest_user %>
-  <ul class='nav nav-icon pull-right'>
-    <li>
-      <i id='new_post_button' class='ticon-compose'></i>
-      <div id='new_post_popdown' class='popover bottom'>
-        <div class='arrow'>&nbsp;</div>
-        <div class='popover-content'>
-          <div data-view='NewPostForm'></div>
-        </div>
-      </div>
+  <% if tent_host_domain %>
+    <li class='<%= nav_selected_class('/global') %> site_feed'>
+      <a href="https://app.<%= tent_host_domain %>/global"><div class='icon'>&nbsp;</div>Site Feed</a>
     </li>
-  </ul>
-<% end %>
+  <% end %>
+
+  <li class='search'>
+    <a href="https://skate.io"><div class='icon'>&nbsp;</div>Search</a>
+  </li>
+</ul>

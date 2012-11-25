@@ -3,493 +3,119 @@
 //= require metro-buttons
 //= require metro-buttons-overrides
 //= require_self
-//= require responsive
 //= require permissions
 
 @import './mixins.css.scss';
+
+$black: #00091a;
+$white: #fefefe;
+$blue: #00a6ff;
 
 html, body {
   height: 100%;
 }
 
-[class^="sicon-"],
-[class*=" sicon-"] {
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  margin-top: 1px;
-  *margin-right: .3em;
-  line-height: 12px;
-  vertical-align: text-top;
-  background-image: url(<%= asset_path("stream_sprites.png") %>);
-  background-position: 12px 12px;
-  background-repeat: no-repeat;
-
-  &.sicon-reply {
-    background-position: -12px 0px;
-  }
-
-  &.sicon-repost {
-    background-position: 0px 0px;
-  }
-}
-
-[class^="ticon-"],
-[class*=" ticon-"] {
-  display: inline-block;
-  width: 26px;
-  height: 32px;
-  margin-top: 1px;
-  *margin-right: .3em;
-  line-height:32px;
-  vertical-align: text-top;
-  background-image: url(<%= asset_path("topbar_sprites.png") %>);
-  background-position: 26px 32px;
-  background-repeat: no-repeat;
-
-  &.ticon-menu_close {
-    background-position: -50px 0px;
-  }
-
-  &.ticon-menu_open {
-    background-position: -24px 0px;
-  }
-
-  &.ticon-compose {
-    background-position: 0px 0px;
-  }
-}
-
 body {
-  background-color: #F3f3f3;
-  background-image: url(<%= asset_path('texture.png') %>);
-  background-attachment: fixed;
+  margin-top: 40px;
 }
 
-.solid-container {
-  background-color: #FEFEFE;
-  background-image: url(<%= asset_path('bodytexture.png') %>);
-  @include rounded(3px);
-  margin-right: -20px;
+.navbar {
+  .navbar-inner {
+    background: $black;
+    color: $white;
+    h1 {
+      margin: 0px;
+      display: block;
+      line-height: 40px;
+      text-align: center;
+      text-transform: capitalize;
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .settings {
+      margin-top: 3px;
+      margin-right: 3px;
+      width: 34px;
+      height: 34px;
+      background-image: url(<%= asset_path('gears.png') %>);
+      background-size: 34px 34px;
+    }
+  }
 }
 
 #main-nav {
-  margin-left: 30px;
-  margin-right: 30px;
-  border-left: #C0C0C0;
-  border-right: #C0C0C0;
-  box-shadow: 0px 1px 0px 0px rgba(0,0,0,0.05);
+  background: $black;
+  color: $white;
+  text-align: center;
 
-  ul.nav.scale {
-    display: none;
-  }
-
-  ul.nav.nav-icon {
+  ul {
     li {
-      line-height: 36px;
-    }
-  }
+      padding-top: 4px;
 
-  #new_post_popdown {
-    top: 40px;
-    width: 460px;
-    left: -434px;
-    @include rounded(0px);
+      a {
+        color: $white;
 
-    .arrow {
-      left: 446px;
-    }
-
-    .span8 {
-      width: 448px;
-    }
-
-    .span7 {
-      width: 360px;
-    }
-
-    textarea.span7 {
-      width: 346px;
-    }
-
-    form {
-      margin: 0px;
-    }
-
-    .popover-content {
-      padding: 0px;
-      padding-top: 6px;
-    }
-
-    li.post {
-      border: 0px;
-    }
-
-    .m-btn {
-      margin-top: 6px;
-    }
-
-    .post-header {
-      margin-left: 0px;
-    }
-
-    ul.picker-options {
-      li {
-        line-height: 20px;
-      }
-    }
-
-    .picker-input {
-      line-height: 20px;
-    }
-  }
-
-  .navbar-inner {
-    min-height: 48px;
-    padding-left: 20px;
-    padding-right: 28px;
-    border-bottom: 1px solid #DCDCDC;
-    @include box_shadow(none);
-    @include border-bottom-left-radius(4px);
-    @include border-bottom-right-radius(4px);
-
-    .brand, .nav li a {
-      line-height: 28px;
-      border-right: 1px solid #DCDCDC;
-    }
-
-    .brand {
-      a.title {
-        padding: 6px;
-        line-height: 48px;
-      }
-    }
-
-    .brand {
-      padding: 0px;
-      padding-left: 0px;
-
-      #user-menu {
-        padding-right: 8px;
-        cursor: pointer;
-
-        .avatar {
-          width: 48px;
-          height: 48px;
-          @include border-bottom-left-radius(4px);
-        }
-
-        .caret {
-          margin-top: 26px;
-          margin-left: 0px;
-        }
-
-        .menu {
-          position: absolute;
-          display: block;
-          height: 0px;
-          @include transparent(0);
-          margin-top: -68px;
-          overflow: hidden;
-
-          background-color: #FEFEFE;
-          border: 1px solid #DCDCDC;
-          border-top: 0px;
-          margin-left: 0px;
-          width: 222px;
-
-          li {
-            padding: 0px;
-            border-top: 1px solid #DCDCDC;
-            font-size: 14px;
-            font-weight: 400px;
-
-            &.active {
-              border-left: 2px solid #0099ff;
-            }
-
-            &.scale {
-              display: none;
-            }
-
-            a {
-              text-decoration: none;
-              color: inherit;
-              display: block;
-              padding: 8px;
-            }
-
-            &:hover {
-              color: #333333;
-              background-color: #F3F3F3;
-            }
-          }
-        }
-      }
-    }
-
-    .nav {
-      margin: 0px;
-
-      li.active {
-        border-top: 4px solid #0099ff;
-        a {
-          float: none;
-          padding: 6px 15px 10px;
-          color: #555555;
+        &:hover {
           text-decoration: none;
-          text-shadow: 0 1px 0 #ffffff;
-          background: inherit;
-          @include box_shadow(inherit);
         }
       }
 
-      &.pull-right {
-        li a:last-of-type {
-          border-right: 0px;
+      &.active {
+        background-color: $blue;
+      }
+
+      .icon {
+        margin-left: 14px;
+        margin-right: 0px;
+      }
+
+      &.timeline {
+        .icon {
+          background-image: url(<%= asset_path('timeline.png') %>);
+          background-size: 32px 31px;
+          width: 32px;
+          height: 31px;
+        }
+      }
+
+      &.mentions {
+        .icon {
+          background-image: url(<%= asset_path('mentions.png') %>);
+          background-size: 32px 29px;
+          width: 32px;
+          height: 29px;
+        }
+      }
+
+      &.profile {
+        .icon {
+          background-image: url(<%= asset_path('profile.png') %>);
+          background-size: 32px 28px;
+          width: 32px;
+          height: 28px;
+        }
+      }
+
+      &.site_feed {
+        .icon {
+          background-image: url(<%= asset_path('site_feed.png') %>);
+          background-size: 32px 32px;
+          width: 32px;
+          height: 32px;
+        }
+      }
+
+      &.search {
+        .icon {
+          background-image: url(<%= asset_path('search.png') %>);
+          background-size: 32px 32px;
+          width: 32px;
+          height: 32px;
         }
       }
     }
   }
-}
-
-#main {
-  margin-top: 20px;
-
-  h1 {
-    margin: 0px 0px 10px 0px;
-    border-bottom: 0px;
-  }
-
-  .page-header {
-    margin: 0px;
-    border-bottom: 0px;
-  }
-}
-
-.new-post-form, .reply-post-form {
-  margin-bottom: 0px;
-  .char-limit {
-    margin-top: 6px;
-    margin-right: 12px;
-  }
-}
-
-.well li.post {
-  border: 0px;
-}
-
-ul.posts.no-seps .post-sep {
-  display: none;
-}
-
-ul.posts {
-  margin-bottom: 0px;
-}
-
-
-.primary {
-  li.post {
-    .post-container {
-      background-color: #EEEEEE;
-      background-image: none;
-    }
-
-    .post.repost {
-      .post-container {
-        background-color: #FEFEFE;
-        background-image: url(<%= asset_path('bodytexture.png') %>);
-      }
-    }
-  }
-}
-
-li.post {
-  padding: 0px;
-  padding-bottom: 2px;
-  margin-bottom: 20px;
-
-  .m-btn {
-    margin-top: 0px;
-  }
-
-  .avatar-container {
-    margin-right: 10px;
-    img.avatar {
-      @include rounded(3px);
-    }
-  }
-
-  .low-margin {
-    [class*='span'] {
-      margin-left: 0px;
-      margin-bottom: 0px;
-    }
-  }
-
-  .reply-container {
-    &.repost-reply-container {
-      margin-left: -20px;
-    }
-  }
-
-  .post-container {
-    @include rounded(3px);
-    float: left;
-    width: 540px;
-    padding: 2px 6px 2px 6px;
-    margin-left: 0px;
-    margin-right: -10px;
-    background-color: #FEFEFE;
-    background-image: url(<%= asset_path('bodytexture.png') %>);
-  }
-
-  .actions {
-    line-height: 12px;
-  }
-
-  .post-header {
-    h5 {
-      margin-top: 0px;
-      margin-bottom: 0px;
-    }
-
-    a:hover {
-      text-decoration: none;
-    }
-
-    .post-date {
-      font-weight: normal;
-      float: right;
-    }
-  }
-
-  .actions {
-    .offset1 {
-      margin-left: 82px;
-    }
-  }
-
-  .showOnHover {
-    visibility: hidden;
-
-    &.show {
-      visibility: visible;
-    }
-
-    &.hide {
-      visibility: hidden;
-    }
-  }
-
-  &:hover {
-    .showOnHover {
-      visibility: visible;
-      @include transition(visibility, ease-in-out, 0s, 0.1s);
-    }
-
-    &.hide {
-      visibility: hidden;
-    }
-
-    &.show {
-      visibility: visible;
-    }
-  }
-
-  .post.repost {
-    margin-left: 68px;
-    margin-top: -32px;
-
-    .post-header {
-      .post-date {
-        display: inline-block;
-        float: none;
-      }
-    }
-
-    .avatar-container {
-      width: 46px;
-      margin-right: 0px;
-    }
-
-    .post-container {
-      background-color: #EEEEEE;
-      background-image: none;
-      border: 1px solid #DCDCDC;
-      width: 480px;
-      margin-right: 0px;
-    }
-
-    form {
-      margin-left: 20px;
-    }
-  }
-
-  &.details .post-sep {
-    display: none;
-  }
-
-  &.details {
-    li.post {
-      margin-bottom: 0px;
-      padding-bottom: 0px;
-
-      .post-container {
-        @include rounded(0px);
-        padding-bottom: 8px;
-        border-bottom: 1px solid #DCDCDC;
-      }
-
-      .showOnHover {
-        visibility: visible;
-      }
-    }
-
-    .external {
-      .post-container {
-        background-color: #EEEEEE;
-        background-image: none;
-      }
-
-      .post.repost {
-        .post-container {
-          background-color: #FEFEFE;
-          background-image: url(<%= asset_path('bodytexture.png') %>);
-        }
-      }
-    }
-
-    .showOnHover {
-      visibility: hidden;
-
-      &.show {
-        visibility: hidden;
-      }
-
-      &.hide {
-        visibility: hidden;
-      }
-    }
-
-    &:hover {
-      .showOnHover {
-        visibility: hidden;
-      }
-
-      &.hide {
-        visibility: hidden;
-      }
-
-      &.show {
-        visibility: hidden;
-      }
-    }
-  }
-}
-
-#new_post_button {
-  cursor: pointer;
 }
 
 #loading-indicator {
@@ -510,38 +136,6 @@ li.post {
   }
 }
 
-#main-container {
-  min-height: 100%;
-  margin-top: 48px;
-  margin-right: 30px;
-  margin-left: 30px;
-
-  .well, textarea {
-    @include rounded(0px)
-  }
-
-  .well.span8 {
-    padding: 8px;
-  }
-
-  textarea {
-    margin-bottom: 4px;
-  }
-
-  .followings table, .followers table {
-    td {
-      line-height: 48px;
-      word-wrap: break-word;
-    }
-  }
-
-  .followers table .follow-button {
-    input[type=submit] {
-      margin-top: 8px;
-    }
-  }
-}
-
 textarea {
   resize: none;
   &::-webkit-input-placeholder {
@@ -550,39 +144,9 @@ textarea {
   }
 }
 
-textarea.span8 {
-  padding: 4px 6px;
-}
-
-.profile-stats {
-  .stat {
-    text-align: center;
-    float: left;
-    line-height: 32px;
-    margin-right: 12px;
-
-    .title {
-      font-size: 16px;
-      font-weight: 500;
-    }
-    .value {
-      font-size: 20px;
-      font-weight: 600;
-    }
-  }
-}
-
 .has-overflow {
   word-break: break-word;
   word-wrap: break-word;
-}
-
-.offset60 {
-  margin-left: 60px;
-}
-
-.no-offset {
-  margin-left: 0px;
 }
 
 img.avatar {
