@@ -42,20 +42,25 @@ TentStatus.View = class View
       for name in @constructor.partial_names
         @constructor.partials[name] = @constructor.getTemplate(name)
 
-  bindViews: =>
-    # detach old child views
-    for class_name, cids of (@_child_views || {})
-      for cid in cids
-        @constructor.instances[cid]?.detach()
+  bindViews: (options = {}) =>
+    unless options.keep_existing
+      # detach old child views
+      for class_name, cids of (@_child_views || {})
+        for cid in cids
+          @constructor.instances[cid]?.detach()
 
-    @_child_views = {}
+      @_child_views = {}
+
     _.each DOM.querySelectorAll('[data-view]', (@container?.el || @el)), (el) =>
       view_class_name = DOM.attr(el, 'data-view')
 
       if viewClass = TentStatus.Views[view_class_name]
+        return if el.view_cid && viewClass.instances.all[el.view_cid]
+
         view = new viewClass el: el, parent_view: @
         @_child_views[view_class_name] ?= []
         @_child_views[view_class_name].push view.cid
+        el.view_cid = view.cid
         @trigger "init:#{view_class_name}", view
       else
         console.warn "TentStatus.Views.#{view_class_name} is not defined!"
