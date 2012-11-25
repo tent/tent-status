@@ -33,11 +33,11 @@
       <% end %>
 
       <div class='row'>
-        <div class='span1'>&nbsp;</div>
         <div id='main-nav' class='span1'>
           <%= erb :nav %>
         </div>
 
+        <div class='span2'>&nbsp;</div>
         <div id='main' class='span8'>
           <%= yield if block_given? %>
         </div>
