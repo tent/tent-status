@@ -10,6 +10,7 @@
 $black: #00091a;
 $white: #fefefe;
 $blue: #00a6ff;
+$gray: #DBDEE4;
 
 html, body {
   height: 100%;
@@ -121,6 +122,18 @@ body {
   }
 }
 
+li.post {
+  border-top: 1px solid $gray;
+
+  h5 {
+    margin: 0px;
+  }
+
+  .post-date {
+    float: right;
+  }
+}
+
 #loading-indicator {
   @include rounded(4px);
   @include transparent(0);
@@ -136,6 +149,14 @@ body {
 
   &.pulse {
     @include transparent(100);
+  }
+}
+
+.no-offset {
+  margin-left: 0px;
+
+  &.span7 {
+    width: 560px;
   }
 }
 

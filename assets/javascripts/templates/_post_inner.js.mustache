@@ -5,47 +5,38 @@
     </div>
   </div>
 
-  <div class='post-container'>
-    <div class='low-margin'>
-      {{#has_parent}}
-      <div class="span6 post-header">
-      {{/has_parent}}
-      {{^has_parent}}
-      <div class="span7 post-header">
-      {{/has_parent}}
-        <h5>
-          <div data-view='PostProfileName' data-post_cid='{{cid}}'>
-            <a href="{{profileUrl}}">{{formatted.entity}}</a>
-          </div>
-
-          {{^public}}&nbsp;<span class='label {{#only_me}}label-inverse{{/only_me}}{{^only_me}}label-info{{/only_me}}' title='{{#only_me}}Only Me{{/only_me}}{{formatted.permissible_entities}}'>{{#only_me}}Private{{/only_me}}{{^only_me}}Limited{{/only_me}}</span>{{/public}}
-
-          <div class="post-date">
-            <a class="{{#has_parent}}gray{{/has_parent}}" href="{{url}}" data-view='RelativeTimestamp' data-datetime='{{published_at}}' title="{{formatted.full_published_at}}">{{formatted.published_at}}</a>
-          </div>
-        </h5>
+  <div class='post-container no-offset {{#has_parent}}span6{{/has_parent}}{{^has_parent}}span7{{/has_parent}}'>
+    <h5>
+      <div class="post-date">
+        <a class="{{#has_parent}}gray{{/has_parent}}" href="{{url}}" data-view='RelativeTimestamp' data-datetime='{{published_at}}' title="{{formatted.full_published_at}}">{{formatted.published_at}}</a>
       </div>
 
-      {{#in_reply_to}}
-      {{#authenticated}}
-      <div class="span4 post-sub-header">
-        <a href="{{url}}" class='parent-post'><small>in reply to {{name}}</small></a>
-      </div>
-      {{/authenticated}}
-      {{/in_reply_to}}
-      
-      {{^repost}}
-      <div class="{{#has_parent}}span6{{/has_parent}}{{^has_parent}}span7{{/has_parent}} post-body has-overflow">
-        <p>{{{formatted.content.text}}}</p>
-      </div>
-      {{/repost}}
-      
-      {{#repost}}
-      <div class="span7 repost post">{{> _post_inner}}</div>
-      {{/repost}}
+      <span data-view='PostProfileName' data-post_cid='{{cid}}'>
+        <a href="{{profileUrl}}">{{formatted.entity}}</a>
+      </span>
 
-      {{> _post_inner_actions}}
+      {{^public}}&nbsp;<span class='label {{#only_me}}label-inverse{{/only_me}}{{^only_me}}label-info{{/only_me}}' title='{{#only_me}}Only Me{{/only_me}}{{formatted.permissible_entities}}'>{{#only_me}}Private{{/only_me}}{{^only_me}}Limited{{/only_me}}</span>{{/public}}
+    </h5>
+
+    {{#in_reply_to}}
+    {{#authenticated}}
+    <div class="post-sub-header">
+      <a href="{{url}}" class='parent-post'><small>in reply to {{name}}</small></a>
     </div>
+    {{/authenticated}}
+    {{/in_reply_to}}
+    
+    {{^repost}}
+    <div class="post-body has-overflow">
+      <p>{{{formatted.content.text}}}</p>
+    </div>
+    {{/repost}}
+    
+    {{#repost}}
+    <div class="repost post">{{> _post_inner}}</div>
+    {{/repost}}
+
+    {{> _post_inner_actions}}
 
     {{#authenticated}}
     {{^has_parent}}
