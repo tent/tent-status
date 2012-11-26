@@ -370,7 +370,7 @@ module Tent
       end
 
       def self_url_root
-        url = env['rack.url_scheme'] + "://" + env['HTTP_HOST']
+        url = (env['HTTP_X_FORWARDED_PROTO'] || env['rack.url_scheme']) + "://" + env['HTTP_HOST']
         if (port = self_port) && url !~ /:\d+\Z/
           url += ":#{port}"
         end
