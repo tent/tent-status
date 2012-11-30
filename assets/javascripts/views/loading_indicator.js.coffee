@@ -1,4 +1,6 @@
 TentStatus.Views.LoadingIndicator = class LoadingIndicatorView extends TentStatus.View
+  @view_name: 'loading_indicator'
+
   show: =>
     clearTimeout @_showTimeout
     @_showTimeout = setTimeout (=>

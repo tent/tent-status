@@ -1,4 +1,4 @@
-class Cache extends TentStatus.Events
+class Cache
   constructor: ->
     window.addEventListener("message", @receiveMessage, false)
 
@@ -50,5 +50,6 @@ class Cache extends TentStatus.Events
       key: key
     }
 
+_.extend Cache::, TentStatus.Events
 TentStatus.Cache = new Cache
 

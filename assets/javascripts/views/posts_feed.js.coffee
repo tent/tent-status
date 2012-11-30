@@ -1,6 +1,7 @@
 TentStatus.Views.PostsFeed = class PostsFeedView extends TentStatus.View
   @template_name: 'posts_feed'
   @partial_names: ['_reply_form', '_post', '_post_inner', '_post_inner_actions']
+  @view_name: 'posts_feed'
 
   constructor: (options = {}) ->
     super
@@ -52,7 +53,6 @@ TentStatus.Views.PostsFeed = class PostsFeedView extends TentStatus.View
     for post in posts
       html += @constructor.partials['_post'].render(@postContext(post), @constructor.partials)
 
-    console.log @el
     DOM.appendHTML(@el, html)
     @bindViews(keep_existing: true)
     @pagination_frozen = false

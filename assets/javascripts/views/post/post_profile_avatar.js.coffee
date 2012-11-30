@@ -1,5 +1,6 @@
 TentStatus.Views.PostProfileAvatar = class PostProfileAvatarView extends TentStatus.Views.ProfileView
   @template_name: '_post_profile_avatar'
+  @view_name: 'post_profile_avatar'
 
   constructor: ->
     super

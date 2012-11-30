@@ -1,5 +1,11 @@
 TentStatus.Views.Post = class PostView extends TentStatus.View
   @template_name: '_post'
+  @view_name: 'post'
+
+  constructor: ->
+    super
+
+    @post_cid = DOM.attr(@el, 'data-post_cid')
 
   repostContext: (post, repost) =>
     return false unless post.isRepost()

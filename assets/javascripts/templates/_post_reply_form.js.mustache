@@ -1,13 +1,13 @@
-{{#authenticated}}
+{{#config.authenticated}}
 <form class="form-horizontal reply-post-form" method="POST">
   <input name="mentions_post_id" type="hidden" value="{{id}}" /><input name="mentions_post_entity" type="hidden" value="{{entity}}" />
-  <div class="{{#has_parent}}span6{{/has_parent}}{{^has_parent}}span7{{/has_parent}}">
-    <div class="alert alert-error hide">&nbsp;</div>
-    <div class='mentions-autocomplete' data-view='MentionsAutoCompleteTextarea' data-tempalte='reply_form_autocomplete_textarea'></div>
+  <div class='clearfix'>
+    <div data-errors_container class="alert alert-error hide">&nbsp;</div>
+    <div class='mentions-autocomplete' data-view='MentionsAutoCompleteTextarea'></div>
     <input class="m-btn blue pull-right" type="submit" value="Post" />
     <span class="char-limit pull-right">{{max_chars}}</span>
 
     <div class='permissions' data-view='PermissionsFields'></div>
   </div>
 </form>
-{{/authenticated}}
+{{/config.authenticated}}

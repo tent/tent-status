@@ -2,9 +2,12 @@
 #= require underscore
 #= require backbone
 #= require setImmediate
+#= require string_score
 #= require http
 #= require_tree ./middleware
+#= require ./textarea_cursor_position
 #= require ./events
+#= require ./cache
 #= require ./config
 #= require ./accessors
 #= require ./dom
@@ -46,6 +49,7 @@ _.extend TentStatus, TentStatus.Events, {
     Backbone.history.start(@config.history_options)
 
     DOM.on window, 'scroll', (e) => @trigger 'window:scroll', e
+    DOM.on window, 'resize', (e) => @trigger 'window:resize', e
 
     @ready = true
     @trigger 'ready'

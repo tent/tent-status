@@ -3,6 +3,11 @@
 @DOM = {
   querySelector: (selector, el) -> (el || document).querySelector(selector)
   querySelectorAll: (selector, el) -> (el || document).querySelectorAll(selector)
+
+  match: (el, selector) ->
+    return unless el
+    _.any @querySelectorAll(selector, el.parentNode), (_el) => _el == el
+
   attr: (el, name) ->
     return unless el
     el.attributes?.getNamedItem(name)?.value
@@ -15,6 +20,9 @@
       el.appendChild(child)
 
     el
+
+  removeNode: (el) ->
+    el.parentNode?.removeChild(el)
 
   appendHTML: (el, html) ->
     tmp_el = document.createElement('div')
@@ -33,6 +41,12 @@
     return window.innerWidth if window.innerWidth
     return document.body.offsetWidth if document.body.offsetWidth
     document.documentElement?.offsetWidth
+
+  innerWidth: (el) ->
+    width = parseInt @getStyle(el, 'width')
+    padding = parseInt(@getStyle(el, 'padding-left'))
+    padding += parseInt(@getStyle(el, 'padding-right'))
+    width - padding
 
   addClass: (el, class_name) ->
     return unless el
@@ -72,11 +86,18 @@
 
   getStyle: (el, name) ->
     val = el.style[name]
-    val = DOM.getComputedStyle(el, name) if val.match(TentSearch.Regex.blank)
+    val = DOM.getComputedStyle(el, name) if val.match(/^[\s\r\t\n]*$/)
     val
 
   getComputedStyle: (el, name) ->
     document.defaultView?.getComputedStyle(el)[name]
+
+  setStyle: (el, name, value) ->
+    el.style[name] = value
+
+  setStyles: (el, styles) ->
+    for name, value of styles
+      @setStyle(el, name, value)
 
   parentNodes: (el) ->
     nodes = []
@@ -125,7 +146,7 @@
     else
       el.value
 
-  formParams: (form) ->
+  serializeForm: (form) ->
     params = {}
     for el in DOM.querySelectorAll('[name]', form)
       name = el.name

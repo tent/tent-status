@@ -61,6 +61,9 @@ TentStatus.View = class View
         @_child_views[view_class_name] ?= []
         @_child_views[view_class_name].push view.cid
         el.view_cid = view.cid
+
+        view.bindViews?()
+
         @trigger "init:#{view_class_name}", view
       else
         console.warn "TentStatus.Views.#{view_class_name} is not defined!"
@@ -72,6 +75,10 @@ TentStatus.View = class View
     config: TentStatus.config
 
   renderHTML: (context = @context()) =>
+    unless @constructor.template
+      console.error("template not found: #{@constructor.template_name}")
+      return ""
+
     @constructor.template.render(context, @constructor.partials)
 
   render: (context = @context()) =>

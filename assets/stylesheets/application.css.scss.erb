@@ -132,6 +132,43 @@ li.post {
   .post-date {
     float: right;
   }
+
+  .actions {
+    .action {
+      margin-right: 60px;
+      i {
+        background-size: 14px 14px;
+        width: 14px;
+        height: 14px;
+        display: inline-block;
+        cursor: pointer;
+
+        &.reply {
+          background-image: url(<%= asset_path('reply.png') %>);
+        }
+
+        &.repost {
+          background-image: url(<%= asset_path('repost.png') %>);
+        }
+
+        &.edit {
+          background-image: url(<%= asset_path('edit.png') %>);
+        }
+
+        &.conversation {
+          background-image: url(<%= asset_path('conversation.png') %>);
+        }
+      }
+    }
+  }
+}
+
+.new-post-form, .reply-post-form {
+  margin-bottom: 8px;
+  .char-limit {
+    margin-top: 14px;
+    margin-right: 12px;
+  }
 }
 
 #loading-indicator {

@@ -1,5 +1,6 @@
 TentStatus.Views.PostProfileName = class PostProfileNameView extends TentStatus.Views.ProfileView
   @template_name: '_post_profile_name'
+  @view_name: 'post_profile_name'
 
   constructor: ->
     super

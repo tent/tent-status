@@ -19,11 +19,11 @@
     </h5>
 
     {{#in_reply_to}}
-    {{#authenticated}}
+    {{#config.authenticated}}
     <div class="post-sub-header">
       <a href="{{url}}" class='parent-post'><small>in reply to {{name}}</small></a>
     </div>
-    {{/authenticated}}
+    {{/config.authenticated}}
     {{/in_reply_to}}
     
     {{^repost}}
@@ -33,20 +33,14 @@
     {{/repost}}
     
     {{#repost}}
-    <div class="repost post">{{> _post_inner}}</div>
+    <div class="repost post" data-view='Repost'></div>
     {{/repost}}
 
     {{> _post_inner_actions}}
 
-    {{#authenticated}}
-    {{^has_parent}}
-    <div class="row reply-container clearfix hide" data-sub-view='ReplyPostForm'></div>
-    {{/has_parent}}
-
-    {{#has_parent}}
-    <div class="row reply-container repost-reply-container clearfix hide" data-sub-view='ReplyPostForm'></div>
-    {{/has_parent}}
-    {{/authenticated}}
+    {{#config.authenticated}}
+    <div data-view='PostReplyForm'></div>
+    {{/config.authenticated}}
   </div>
 </div>
 

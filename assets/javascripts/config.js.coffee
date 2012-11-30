@@ -26,7 +26,9 @@ _.extend TentStatus.config, {
   domain_entity: new HTTP.URI(TentStatus._config.domain_entity) if TentStatus._config.domain_entity
   domain_tent_api_root: new HTTP.URI(TentStatus._config.domain_tent_api_root) if TentStatus._config.domain_tent_api_root
   current_entity: new HTTP.URI(TentStatus._config.current_entity) if TentStatus._config.current_entity
-  post_types: ["https://tent.io/types/post/status/v0.1.0", "https://tent.io/types/post/repost/v0.1.0"]
+  POST_TYPES:
+    STATUS: 'https://tent.io/types/post/status/v0.1.0'
+    REPOST: 'https://tent.io/types/post/repost/v0.1.0'
   PER_PAGE: 20
   FETCH_INTERVAL: 3000
   MAX_FETCH_LATENCY: 30000
@@ -38,6 +40,8 @@ _.extend TentStatus.config, {
   TENT_STATUS_PROFILE_TYPE: 'https://tent.io/types/info/tent-status/v0.1.0'
   BASE_TITLE: document.title
 }
+
+TentStatus.config.post_types = [TentStatus.config.POST_TYPES.STATUS, TentStatus.config.POST_TYPES.REPOST]
 
 for k,v of TentStatus._config
   TentStatus.config[k] = v unless TentStatus.config.hasOwnProperty(k)
