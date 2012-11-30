@@ -1,5 +1,4 @@
 require 'sinatra/base'
-require 'data_mapper'
 require 'sprockets'
 require 'uglifier'
 require 'tent-client'
@@ -74,7 +73,7 @@ module Tent
         def guest_user
           return unless defined?(TentD)
           return unless session[:current_user_id]
-          user = @guest_user ||= TentD::Model::User.get(session[:current_user_id])
+          user = @guest_user ||= TentD::Model::User.first(:id => session[:current_user_id])
           current = TentD::Model::User.current
           return unless current
           return if session[:current_user_id] == current.id
@@ -85,9 +84,7 @@ module Tent
           user = current_user || guest_user
           return unless user
 
-          profile_info = TentD::Model::ProfileInfo.send(:with_exclusive_scope, {}) { |q|
-            user.profile_infos.first(:type_base => 'https://tent.io/types/info/tent-status')
-          }
+          profile_info = user.profile_infos_dataset.first(:type_base => 'https://tent.io/types/info/tent-status')
 
           return unless profile_info && profile_info.content.kind_of?(Hash)
 
@@ -102,12 +99,12 @@ module Tent
         end
 
         def domain_entity
-          return self_url_root unless user = TentD::Model::User.get(env['user_id'])
+          return self_url_root unless user = TentD::Model::User.first(:id => env['user_id'])
           user.entity
         end
 
         def domain_tent_api_root
-          return (self_url_root + '/tent') unless user = TentD::Model::User.get(env['user_id'])
+          return (self_url_root + '/tent') unless user = TentD::Model::User.first(:id => env['user_id'])
           user.username_entity + '/tent'
         end
 
@@ -127,9 +124,7 @@ module Tent
               memo
             }
 
-          posts = TentD::Model::Post.send(:with_exclusive_scope, {}) { |q|
-            TentD::Model::Post.all(:public_id => id_mapping.keys, :fields => [:id, :public_id, :entity]).to_a
-          }
+          posts = TentD::Model::Post.select(:id, :public_id, :entity).where(:public_id => id_mapping.keys).all
           id_mapping.each_pair do |public_id, key|
             entity = params["#{key}_entity"]
             params[key] = posts.find { |p|
@@ -139,64 +134,51 @@ module Tent
           end
         end
 
-        def post_conditions(params)
-          conditions = {}
+        def post_dataset(params)
+          dataset = TentD::Model::Post.where(
+            :type_base => %w( https://tent.io/types/post/status ),
+            :original => true,
+          )
 
-          conditions[:id.gt] = params['since_id'] if params['since_id']
-          conditions[:id.lt] = params['before_id'] if params['before_id']
+          dataset = dataset.where(:id => params['post_id']) if params['post_id']
 
-          conditions[:entity] = params['entity'] if params['entity']
+          dataset = dataset.where { id > params['since_id'] } if params['since_id']
+          dataset = dataset.where { id < params['before_id'] } if params['before_id']
+
+          dataset = dataset.where(:entity => params['entity']) if params['entity']
+
+          dataset = dataset.order(:published_at.desc)
 
           if params['mentioned_post'] || params['mentioned_entity']
-            conditions[:mentions] = { :original_post => true }
-            conditions[:mentions][:mentioned_post_id] = params['mentioned_post'] if params['mentioned_post']
-            conditions[:mentions][:entity] = params['mentioned_entity'] if params['mentioned_entity']
+            dataset = dataset.qualify.join(:mentions, :mentions__post_id => :posts__id).where(:mentions__original_post => true)
+            dataset = dataset.where(:mentions__mentioned_post_id => params['mentioned_post_id']) if params['mentioned_post_id']
+            dataset = dataset.where(:mentions__entity => params['mentioned_entity']) if params['mentioned_entity']
           end
 
-          conditions[:type_base] = %w( https://tent.io/types/post/status )
-          conditions[:original] = true
-          conditions[:public] = true
-          conditions[:order] = :published_at.desc
-          conditions[:limit] = [TentD::API::MAX_PER_PAGE, params[:limit].to_i].min if params[:limit]
-          conditions[:limit] ||= TentD::API::PER_PAGE
+          dataset = dataset.limit([TentD::API::MAX_PER_PAGE, (params[:limit] ? params[:limit].to_i : TentD::API::PER_PAGE)].min)
 
-          conditions
-        end
-
-        def with_exclusive_scope(klass, scope={ :deleted_at => nil }, &block)
-          klass.send(:with_exclusive_scope, scope) do |q|
-            block.call
-          end
+          dataset
         end
       end
 
       get '/api/posts' do
         get_real_post_ids!(params)
-        conditions = post_conditions(params)
+        dataset = post_dataset(params)
 
-        posts = with_exclusive_scope(TentD::Model::Post) do
-          TentD::Model::Post.all(conditions)
-        end
+        posts = dataset.all
 
-        with_exclusive_scope(TentD::Model::PostVersion) do
-          json posts
-        end
+        json posts
       end
 
       get '/api/posts/:post_id' do
         get_real_post_ids!(params)
-        conditions = post_conditions(params)
-        conditions[:id] = params['post_id']
+        dataset = post_dataset(params)
 
-        post = with_exclusive_scope(TentD::Model::Post) do
-          TentD::Model::Post.first(conditions)
-        end
+        post = dataset.first
 
         halt 404 unless post
 
-        with_exclusive_scope(TentD::Model::PostVersion) do
-          json post
-        end
+        json post
       end
 
       get '/' do
@@ -283,7 +265,7 @@ module Tent
 
         def current_user
           return unless session['current_user']
-          @current_user ||= User.get(session['current_user'])
+          @current_user ||= User.first(:id => session['current_user'])
         end
 
         def guest_user
