@@ -99,6 +99,10 @@ class TextareaView
       @setPickerPosition()
       @_fetch_timeout = setTimeout (=> @picker_view.fetchResults(@selectionValue())), 60
 
+  focus: =>
+    selection = new DOM.InputSelection @el
+    selection.setSelectionRange(@el.value.length, @el.value.length)
+
   setPickerPosition: =>
     cp = new maxkir.CursorPosition(@el, parseInt(DOM.getStyle(@el, 'padding')))
     coordinates = cp.getPixelCoordinates()
@@ -120,7 +124,6 @@ class TextareaView
       css.left = left
 
     DOM.setStyles(@picker_view.el.parentNode, css)
-
 
   selectionValue: =>
     value = @el.value
