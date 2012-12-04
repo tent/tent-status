@@ -12,6 +12,10 @@ TentStatus.Views.PostsFeed = class PostsFeedView extends TentStatus.View
     @posts_collection = new TentStatus.Collections.Posts
     @fetch()
 
+    TentStatus.Models.Post.on 'create:success', (post, xhr) =>
+      @posts_collection.unshift(post)
+      @prependRender([post])
+
   fetch: (params = {}, options = {}) =>
     @pagination_frozen = true
 
@@ -56,6 +60,14 @@ TentStatus.Views.PostsFeed = class PostsFeedView extends TentStatus.View
     DOM.appendHTML(@el, html)
     @bindViews(keep_existing: true)
     @pagination_frozen = false
+
+  prependRender: (posts) =>
+    html = ""
+    for post in posts
+      html += @constructor.partials['_post'].render(@postContext(post), @constructor.partials)
+
+    DOM.prependHTML(@el, html)
+    @bindViews(keep_existing: true)
 
   render: =>
     @pagination_frozen = false

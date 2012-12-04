@@ -42,7 +42,7 @@ TentStatus.Model = class Model
     @generateCid()
     @trackInstance()
     @on 'change:id', @updateIdMapping
-    @parseAttribtues(attributes)
+    @parseAttributes(attributes)
 
   generateCid: =>
     @cid = "#{@constructor.model_name}_#{@constructor._id_counter++}"
@@ -52,7 +52,7 @@ TentStatus.Model = class Model
     @constructor.instances[@constructor.model_name] ?= []
     @constructor.instances[@constructor.model_name].push @cid
 
-  parseAttribtues: (attributes) =>
+  parseAttributes: (attributes) =>
     @set(k, v) for k,v of attributes
 
   updateIdMapping: (new_id, old_id) =>
@@ -63,11 +63,11 @@ TentStatus.Model = class Model
   set: (k, v) =>
     @fields ?= []
     @fields.push(k) if @fields.indexOf(k) == -1
-    super
+    TentStatus.Accessors.set.apply(@, arguments)
 
   get: (k) =>
     return if @fields.indexOf(k) == -1
-    super
+    TentStatus.Accessors.get.apply(@, arguments)
 
   toJSON: =>
     attrs = {}
@@ -76,4 +76,4 @@ TentStatus.Model = class Model
     attrs
 
 _.extend Model, TentStatus.Events
-_.extend Model::, TentStatus.Events, TentStatus.Accessors
+_.extend Model::, TentStatus.Events

@@ -21,8 +21,21 @@
 
     el
 
+  prependChild: (el, node) ->
+    el.insertBefore(node, el.firstChild)
+
   removeNode: (el) ->
     el.parentNode?.removeChild(el)
+
+  prependHTML: (el, html) ->
+    tmp_el = document.createElement('div')
+    tmp_el.innerHTML = html
+    child_nodes = tmp_el.childNodes
+    for index in [(child_nodes.length-1)..0]
+      node = child_nodes[index]
+      continue unless node
+      DOM.prependChild(el, node)
+    el
 
   appendHTML: (el, html) ->
     tmp_el = document.createElement('div')

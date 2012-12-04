@@ -33,7 +33,7 @@ TentStatus.Views.MentionsAutoCompleteTextarea = class MentionsAutoCompleteTextar
 
   addOption: (option) =>
     @textarea_view.addOption(option)
-    if permissions_fields_view = @parent_view.child_views.PermissionsFields?[0]
+    if permissions_fields_view = TentStatus.View.instances.all[@parent_view._child_views.PermissionsFields?[0]]
       permissions_fields_view.addOption(option)
       permissions_fields_view.show(false)
 
@@ -71,7 +71,7 @@ class TextareaView
         when 8 # backspace
           if @enabled
             pos = (new DOM.InputSelection @el).start
-            @close() if pos <= @selection.start
+            @close() if @selection and pos <= @selection.start
         when 27 # escape
           return unless @enabled
           e.preventDefault()

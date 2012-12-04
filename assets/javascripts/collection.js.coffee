@@ -28,6 +28,16 @@ TentStatus.Collection = class Collection
       @model_ids.push(model.cid)
       model
 
+  unshift: (models...) =>
+    for model in models
+      @model_ids.unshift(model.cid)
+    @model_ids.length
+
+  push: (models...) =>
+    for model in models
+      @model_ids.push(model.cid)
+    @model_ids.length
+
   models: (cids = @model_ids) =>
     models = []
     for cid in cids

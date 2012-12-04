@@ -47,7 +47,7 @@ TentStatus.Models.Profile = class ProfileModel extends TentStatus.Model
       options.success?(profile, xhr)
     , auth_middleware.concat(@middleware.tent)
 
-  parseAttribtues: (attributes) =>
+  parseAttributes: (attributes) =>
     core_profile = attributes[TentStatus.config.CORE_PROFILE_TYPE]
     basic_profile = attributes[TentStatus.config.BASIC_PROFILE_TYPE]
     tent_status_profile = attributes[TentStatus.config.TENT_STATUS_PROFILE_TYPE]

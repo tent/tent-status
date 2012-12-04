@@ -33,7 +33,7 @@ TentStatus.Views.PermissionsFieldsOptions = class PermissionsFieldsOptionsView e
 
   initOptions: =>
     return unless @options
-    option_els = DOM.querySelector('.option', @el)
+    option_els = DOM.querySelectorAll('.option', @el)
     @option_views = for option, index in @options
       new OptionView parent_view: @, option: option, el: option_els[index]
 
@@ -54,7 +54,8 @@ TentStatus.Views.PermissionsFieldsOptions = class PermissionsFieldsOptionsView e
     for item in @options
       continue if item.value == option.value
       options.push item
-    @set 'options', options
+    @options = options
+    @trigger 'change:options'
 
   context: =>
     options: @options
