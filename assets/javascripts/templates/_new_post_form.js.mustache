@@ -1,30 +1,27 @@
-{{#authenticated}}
-<div class="span8">
-  <ul class="unstyled posts">
-    <li class="post clearfix" data-id="eqnjn7">
-      <div class="row">
-        <div class="span1 avatar-container">
-          <a href="{{profileUrl}}"><img class="pull-left avatar" src="{{avatar}}" /></a>
-        </div>
-
-        <div class='post-container'>
-          <div class="span7 post-header">
-            <h5>
-              <a href="{{profileUrl}}">{{name}} <small>{{formatted.entity}}</small></a>
-            </h5>
-          </div>
-
-          <form class="form-horizontal span7 post-body new-post-form" method="POST">
-            <div class="alert alert-error">&nbsp;</div>
-            <div class='mentions-autocomplete' data-view='MentionsAutoCompleteTextarea'></div>
-            <input class="m-btn blue pull-right" type="submit" value="Post" />
-            <span class="char-limit pull-right">{{max_chars}}</span>
-
-            <div class='permissions' data-view='PermissionsFields'></div>
-          </form>
-        </div>
+{{#config.authenticated}}
+<ul class="unstyled posts">
+  <li class="post clearfix">
+    <div class="row">
+      <div class="span1 avatar-container">
+        <a href="{{profileUrl}}"><img class="pull-left avatar" src="{{avatar}}" /></a>
       </div>
-    </li>
-  </ul>
-</div>
-{{/authenticated}}
+
+      <div class='post-container span7 no-offset'>
+        <h5>
+          <span><a href"{{profileUrl}}">{{name}} <small>{{formatted.entity}}</small></a></span>
+        </h5>
+
+        <form class="form-horizontal post-body new-post-form" method="POST">
+          <div data-errors_container class="alert alert-error hide">&nbsp;</div>
+          <div class='mentions-autocomplete' data-view='MentionsAutoCompleteTextarea'></div>
+          <input class="m-btn blue pull-right" type="submit" value="Post" />
+          <span class="char-limit pull-right">{{max_chars}}</span>
+
+          <div class='permissions' data-view='PermissionsFields'></div>
+        </form>
+      </div>
+    </div>
+  </li>
+</ul>
+{{/config.authenticated}}
+
