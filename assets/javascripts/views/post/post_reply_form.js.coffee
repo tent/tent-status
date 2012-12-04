@@ -31,10 +31,12 @@ TentStatus.Views.PostReplyForm = class PostReplyFormView extends TentStatus.View
 
   context: =>
     post = @post()
+    reply_to_entities = (_.map post.postMentions(), (m) => m.entity)
+    reply_to_entities.push(post.entity) unless TentStatus.Helpers.isCurrentUserEntity(post.entity)
     _.extend {}, super,
       max_chars: TentStatus.config.MAX_LENGTH
       id: post.id
       entity: post.entity
       formatted:
-        reply_to_entities: (_.map post.postMentions(), (m) => m.entity)
+        reply_to_entities: reply_to_entities
 
