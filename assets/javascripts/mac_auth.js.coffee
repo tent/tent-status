@@ -7,7 +7,8 @@ class TentStatus.MacAuth
 
   signRequest: =>
     request_string = @buildRequestString()
-    signature = CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA256(request_string, @options.mac_key))
+    hmac = new sjcl.misc.hmac(sjcl.codec.utf8String.toBits(@options.mac_key))
+    signature = sjcl.codec.base64.fromBits(hmac.mac(request_string))
     @options.request.setHeader('Authorization', @buildAuthHeader(signature))
 
   buildRequestString: (body=@options.body) =>

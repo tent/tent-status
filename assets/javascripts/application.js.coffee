@@ -1,4 +1,3 @@
-#= require hmac_sha256
 #= require jquery
 #= require underscore
 #= require string_score
@@ -15,6 +14,7 @@
 #= require chosen.jquery
 #= require_tree ./templates
 #= require_self
+#= require sjcl
 #= require mac_auth
 #= require ./events
 #= require ./cache
