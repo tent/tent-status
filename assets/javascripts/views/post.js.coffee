@@ -135,6 +135,7 @@ class TentStatus.Views.Post extends TentStatus.View
       permissions:
         public: true
       type: 'https://tent.io/types/post/repost/v0.1.0'
+      mentions: [{ entity: post.get('entity'), post: post.get('id') }]
       content:
         entity: post.get('entity')
         id: post.get('id')
