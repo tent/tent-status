@@ -8,13 +8,20 @@ TentStatus.Views.NewPostForm = class NewPostFormView extends TentStatus.View
     @elements = {}
     @text = {}
 
+    post = new TentStatus.Models.Post entity: TentStatus.config.current_entity.toString()
+    @post_cid = post.cid
+
     @on 'ready', => @ready = true
     @on 'ready', @init
 
     @render() unless @is_reply_form
 
+  post: =>
+    TentStatus.Models.Post.instances.all[@post_cid]
+
   context: =>
     _.extend {}, super,
+      post: @post()
       max_chars: TentStatus.config.MAX_LENGTH
 
   init: =>

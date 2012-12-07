@@ -2,13 +2,15 @@
 <ul class="unstyled posts">
   <li class="post clearfix">
     <div class="row">
-      <div class="span1 avatar-container">
+      <div class="span1 avatar-container" data-view='PostProfileAvatar' data-post_cid='{{post.cid}}'>
         <a href="{{profileUrl}}"><img class="pull-left avatar" src="{{avatar}}" /></a>
       </div>
 
       <div class='post-container span7 no-offset'>
         <h5>
-          <span><a href"{{profileUrl}}">{{name}} <small>{{formatted.entity}}</small></a></span>
+          <span data-view='PostProfileName' data-post_cid='{{post.cid}}'>
+            <a href="{{profileUrl}}">{{formatted.entity}}</a>
+          </span>
         </h5>
 
         <form class="form-horizontal post-body new-post-form" method="POST">
