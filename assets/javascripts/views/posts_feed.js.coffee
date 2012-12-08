@@ -58,7 +58,7 @@ TentStatus.Views.PostsFeed = class PostsFeedView extends TentStatus.View
       html += @constructor.partials['_post'].render(@postContext(post), @constructor.partials)
 
     DOM.appendHTML(@el, html)
-    @bindViews(keep_existing: true)
+    @bindViews()
     @pagination_frozen = false
 
   prependRender: (posts) =>
@@ -67,7 +67,7 @@ TentStatus.Views.PostsFeed = class PostsFeedView extends TentStatus.View
       html += @constructor.partials['_post'].render(@postContext(post), @constructor.partials)
 
     DOM.prependHTML(@el, html)
-    @bindViews(keep_existing: true)
+    @bindViews()
 
   render: =>
     @pagination_frozen = false

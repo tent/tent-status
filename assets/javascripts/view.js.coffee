@@ -42,31 +42,32 @@ TentStatus.View = class View
       for name in @constructor.partial_names
         @constructor.partials[name] = @constructor.getTemplate(name)
 
-  bindViews: (options = {}) =>
-    unless options.keep_existing
-      # detach old child views
-      for class_name, cids of (@_child_views || {})
-        for cid in cids
-          @constructor.instances[cid]?.detach()
-
-      @_child_views = {}
-
+  bindViews: =>
+    @_child_views ?= {}
     _.each DOM.querySelectorAll('[data-view]', (@container?.el || @el)), (el) =>
       view_class_name = DOM.attr(el, 'data-view')
 
       if viewClass = TentStatus.Views[view_class_name]
-        return if el.view_cid && viewClass.instances.all[el.view_cid]
-
-        view = new viewClass el: el, parent_view: @
+        _init = false
+        unless el.view_cid && (view = viewClass.instances.all[el.view_cid])
+          view = new viewClass el: el, parent_view: @
+          _init = true
         @_child_views[view_class_name] ?= []
         @_child_views[view_class_name].push view.cid
         el.view_cid = view.cid
 
         view.bindViews?()
 
-        @trigger "init:#{view_class_name}", view
+        @trigger("init:#{view_class_name}", view) if _init
       else
         console.warn "TentStatus.Views.#{view_class_name} is not defined!"
+
+  detachChildViews: =>
+    for class_name, cids of (@_child_views || {})
+      for cid in cids
+        @constructor.instances[cid]?.detach()
+
+    @_child_views = {}
 
   childViews: (view_class_name) =>
     _.map @_child_views[view_class_name], (cid) => @constructor.find(cid)
@@ -90,6 +91,8 @@ TentStatus.View = class View
       DOM.replaceChildren(@container.el, @el)
     else
       @el.innerHTML = html
+
+    @detachChildViews()
 
     @trigger 'ready'
 
