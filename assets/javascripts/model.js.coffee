@@ -60,13 +60,21 @@ TentStatus.Model = class Model
     delete @constructor.id_mapping[@constructor.model_name][old_id]
     @constructor.id_mapping[@constructor.model_name][new_id] = @cid
 
-  set: (k, v) =>
+  set: (keypath, v) =>
+    return unless keypath && keypath.length
+    keys = keypath.split('.')
+
     @fields ?= []
-    @fields.push(k) if @fields.indexOf(k) == -1
+    @fields.push(keys[0]) if @fields.indexOf(keys[0]) == -1
+
     TentStatus.Accessors.set.apply(@, arguments)
 
-  get: (k) =>
-    return if @fields.indexOf(k) == -1
+  get: (keypath) =>
+    return unless keypath && keypath.length
+    keys = keypath.split('.')
+
+    return if @fields.indexOf(keys[0]) == -1
+
     TentStatus.Accessors.get.apply(@, arguments)
 
   toJSON: =>
