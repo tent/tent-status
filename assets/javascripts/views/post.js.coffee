@@ -25,19 +25,6 @@ TentStatus.Views.Post = class PostView extends TentStatus.View
       url: TentStatus.Helpers.entityPostUrl(mention.entity, mention.post)
     }
 
-  getReplyToEntities: (post, should_trim=true) =>
-    _entities = []
-    for m in [{ entity: post.get('entity') }, post.postMentions()[0]].concat(TentStatus.Helpers.extractMentionsWithIndices(post.get('content')?.text || ''))
-      continue unless m
-      continue unless m.entity
-      continue if TentStatus.Helpers.isCurrentUserEntity(m.entity)
-      if should_trim
-        _entity =  TentStatus.Helpers.minimalEntity(m.entity)
-      else
-        _entity = m.entity
-      _entities.push(_entity) if _entities.indexOf(_entity) == -1
-    _entities
-
   getPermissibleEntities: (post, should_trim=true) =>
     _entities = []
     for entity, can_see of (post.get('permissions').entities || {})

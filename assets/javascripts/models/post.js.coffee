@@ -40,3 +40,13 @@ TentStatus.Models.Post = class PostModel extends TentStatus.Model
   postMentions: =>
     @post_mentions ?= _.select @get('mentions') || [], (m) => m.entity && m.post
 
+  replyToEntities: (options = {}) =>
+    _entities = []
+    for m in [{ entity: @get('entity') }].concat(@get('mentions'))
+      continue unless m && m.entity
+      continue if TentStatus.Helpers.isCurrentUserEntity(m.entity)
+      _entity = m.entity
+      _entity = TentStatus.Helpers.minimalEntity(_entity) if options.trim
+      _entities.push(_entity) if _entities.indexOf(_entity) == -1
+    _entities
+

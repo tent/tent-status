@@ -7,7 +7,7 @@ TentStatus.Views.PermissionsFieldsOptions = class PermissionsFieldsOptionsView e
 
     @on 'ready', @initOptions
 
-    post = @parent_view.parent_view.parent_view.post
+    post = @parent_view.parent_view.parent_view.post?()
     if !post || post.isPublic()
       @set 'options', [
         {

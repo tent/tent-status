@@ -6,7 +6,7 @@ TentStatus.Views.MentionsAutoCompleteTextarea = class MentionsAutoCompleteTextar
     super
 
     @parent_view.on 'init:PermissionsFields', (view) =>
-      for entity in @getReplyToEntities()
+      for entity in @replyToEntities()
         view.addOption(
           text: TentStatus.Helpers.minimalEntity(entity)
           value: entity
@@ -37,16 +37,13 @@ TentStatus.Views.MentionsAutoCompleteTextarea = class MentionsAutoCompleteTextar
       permissions_fields_view.addOption(option)
       permissions_fields_view.show(false)
 
-  getReplyToEntities: =>
+  replyToEntities: =>
     return [] unless @parent_view.is_reply_form
 
-    post = @parent_view.parent_view.post
+    post = @parent_view.post()
     return [] unless post
 
-    post = post.get('repost') if @parent_view.is_repost
-    return [] unless post
-
-    TentStatus.Views.Post::getReplyToEntities(post, false)
+    post.replyToEntities()
 
   context: =>
     return {} unless @parent_view.is_reply_form
