@@ -6,19 +6,22 @@ TentStatus.Model = class Model
   @_id_counter: 0
   @model_name: '_default'
 
-  @find: (params, callback) ->
+  @find: (params, options = {}) ->
     if params.id && (cid = @id_mapping[@model_name]?[params.id])
       params.cid = cid
 
     if params.cid
       instance = @instances.all[params.cid]
-      callback?(instance)
-      return instance
+      if !params.hasOwnProperty('entity') || instance.get('entity') == params.entity
+        options.success?(instance)
+        return instance
+      else
+        delete params.cid
 
     if params.id
-      @fetch(params, callback)
+      @fetch(params, options)
 
-  @fetch: (params, callback) ->
+  @fetch: (params, options) ->
     console.warn("You need to define #{@name}::fetch(params, callback)!")
 
   # delete reference
