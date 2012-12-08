@@ -18,6 +18,7 @@
       {{^public}}&nbsp;<span class='label {{#only_me}}label-inverse{{/only_me}}{{^only_me}}label-info{{/only_me}}' title='{{#only_me}}Only Me{{/only_me}}{{formatted.permissible_entities}}'>{{#only_me}}Private{{/only_me}}{{^only_me}}Limited{{/only_me}}</span>{{/public}}
     </h5>
 
+    {{^is_repost}}
     {{#in_reply_to}}
     {{#config.authenticated}}
     <div class="post-sub-header">
@@ -25,16 +26,17 @@
     </div>
     {{/config.authenticated}}
     {{/in_reply_to}}
+    {{/is_repost}}
     
-    {{^repost}}
+    {{^is_repost}}
     <div class="post-body has-overflow">
       <p>{{{formatted.content.text}}}</p>
     </div>
-    {{/repost}}
+    {{/is_repost}}
     
-    {{#repost}}
+    {{#is_repost}}
     <div class="repost post" data-view='Repost'></div>
-    {{/repost}}
+    {{/is_repost}}
 
     {{> _post_inner_actions}}
 
