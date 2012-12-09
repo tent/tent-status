@@ -19,6 +19,7 @@ TentStatus.Views.Repost = class RepostView extends TentStatus.Views.Post
         @render(@context(post))
 
       error: (res, xhr) =>
+        @parent_view.hide()
         console.log 'Repost:fetch:failed', res
     }
 

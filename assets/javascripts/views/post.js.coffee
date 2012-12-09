@@ -8,6 +8,9 @@ TentStatus.Views.Post = class PostView extends TentStatus.View
 
     @post_cid = DOM.attr(@el, 'data-post_cid')
 
+  hide: =>
+    DOM.hide(@el)
+
   inReplyToJSON: (mention) =>
     return unless mention && mention.entity && mention.post
     {
