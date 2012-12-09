@@ -2,15 +2,15 @@
 <div class='actions'>
   <span class='action' data-view='PostActionReply'><i class='reply' title='Reply'></i></span>
 
-  {{^currentUserOwnsPost}}
+  {{^current_user_owns_post}}
   <span class='action' data-view='PostActionRepost' data-confirm="Repost?"><i class='repost' title='Repost'></i></span>
-  {{/currentUserOwnsPost}}
+  {{/current_user_owns_post}}
 
   <span class='action' data-view='PostActionConversation'><i class='conversation' title='Conversation'></i></span>
 
-  {{#currentUserOwnsPost}}
+  {{#current_user_owns_post}}
   <span class='action' data-view='PostActionEdit'><i class='edit' title='Edit'></i></span>
-  {{/currentUserOwnsPost}}
+  {{/current_user_owns_post}}
 </div>
 {{/config.authenticated}}
 

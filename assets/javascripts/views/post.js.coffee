@@ -36,6 +36,7 @@ TentStatus.Views.Post = class PostView extends TentStatus.View
       profileUrl: TentStatus.Helpers.entityProfileUrl(post.get 'entity')
       public: post.get('permissions')['public']
       only_me: !post.get('permissions')['public'] && !permissible_entities.length && TentStatus.Helpers.isCurrentUserEntity(post.get('entity'))
+      current_user_owns_post: TentStatus.Helpers.isCurrentEntity(post.get('entity'))
       formatted:
         permissible_entities: permissible_entities.join(', ')
         content:
