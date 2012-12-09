@@ -4,7 +4,8 @@
 #= require setImmediate
 #= require string_score
 #= require http
-#= require_tree ./middleware
+#= require http/middleware
+#= require http/client
 #= require ./textarea_cursor_position
 #= require ./events
 #= require ./cache
@@ -12,6 +13,7 @@
 #= require ./accessors
 #= require ./dom
 #= require_self
+#= require http/tent_client
 #= require ./model
 #= require_tree ./models
 #= require ./collection
