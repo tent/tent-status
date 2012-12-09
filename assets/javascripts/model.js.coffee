@@ -18,8 +18,10 @@ TentStatus.Model = class Model
       else
         delete params.cid
 
-    if params.id
+    if params.id && (!params.hasOwnProperty('fetch') || params.fetch)
       @fetch(params, options)
+
+    null
 
   @fetch: (params, options) ->
     console.warn("You need to define #{@name}::fetch(params, callback)!")
