@@ -1,17 +1,11 @@
 TentStatus.Models.Post = class PostModel extends TentStatus.Model
   @model_name: 'post'
 
-  @middleware: [
-    new HTTP.Middleware.MacAuth(TentStatus.config.current_user.auth_details),
-    new HTTP.Middleware.SerializeJSON
-    new HTTP.Middleware.TentJSONHeader
-  ]
-  @url: TentStatus.config.tent_api_root + '/posts'
   @create: (data, options = {}) ->
-    options.url ?= @url
     options.middleware ?= @middleware
 
-    new HTTP 'POST', options.url.toString(), data, (res, xhr) =>
+    client = HTTP.TentClient.currentEntityClient()
+    client.post '/posts', data, (res, xhr) =>
       unless xhr.status == 200
         @trigger('create:failed', res, xhr)
         options.error?(res, xhr)
@@ -20,7 +14,6 @@ TentStatus.Models.Post = class PostModel extends TentStatus.Model
       post = new @(res)
       @trigger('create:success', post, xhr)
       options.success?(post, xhr)
-    , options.middleware
 
   @fetch: (params, options = {}) ->
     unless options.client
