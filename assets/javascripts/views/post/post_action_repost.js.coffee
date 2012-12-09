@@ -22,6 +22,8 @@ TentStatus.Views.PostActionRepost = class PostActionRepostView extends TentStatu
     )
 
   enable: =>
+    @disabled = false
 
   disable: =>
+    @disabled = true
 

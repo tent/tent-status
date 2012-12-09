@@ -11,6 +11,7 @@ TentStatus.Views.PostAction = class PostActionView extends TentStatus.View
     DOM.on(@el, 'click', @confirmAction)
 
   confirmAction: =>
+    return if @disabled
     return @performAction() unless @text.confirm
     @performAction() if confirm(@text.confirm)
 
