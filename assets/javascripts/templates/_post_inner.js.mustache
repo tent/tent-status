@@ -1,14 +1,14 @@
 <div class="{{^has_parent}}row{{/has_parent}}">
-  <div class="span1 avatar-container">
+  <div class="span1 avatar-container {{#has_parent}}no-offset{{/has_parent}}">
     <div data-view='PostProfileAvatar' data-post_cid='{{cid}}'>
       <a href="{{profileUrl}}"><img class="pull-left avatar" src="{{avatar}}" /></a>
     </div>
   </div>
 
-  <div class='post-container no-offset {{#has_parent}}span6{{/has_parent}}{{^has_parent}}span7{{/has_parent}}'>
+  <div class='post-container no-offset {{#has_parent}}pull-left{{/has_parent}}{{^has_parent}}span7{{/has_parent}}'>
     <h5>
       <div class="post-date">
-        <a class="{{#has_parent}}gray{{/has_parent}}" href="{{url}}" data-view='RelativeTimestamp' data-datetime='{{published_at}}' title="{{formatted.full_published_at}}">{{formatted.published_at}}</a>
+        <a href="{{url}}" data-view='RelativeTimestamp' data-datetime='{{published_at}}' title="{{formatted.full_published_at}}">{{formatted.published_at}}</a>
       </div>
 
       <span data-view='PostProfileName' data-post_cid='{{cid}}'>
@@ -38,7 +38,9 @@
     <div class="repost post" data-view='Repost'></div>
     {{/is_repost}}
 
+    {{^is_repost}}
     {{> _post_inner_actions}}
+    {{/is_repost}}
 
     {{#config.authenticated}}
     <div data-view='PostReplyForm'></div>
