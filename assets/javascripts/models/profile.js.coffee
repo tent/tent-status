@@ -15,37 +15,31 @@ TentStatus.Models.Profile = class ProfileModel extends TentStatus.Model
   @fetch: (params = {}, options = {}) ->
     return unless (entity = params.entity)
 
-    # TODO: Add caching (just name and avatar)
+    # TODO: Add caching
 
     if (cid = @entity_mapping[entity])
       profile = @find(cid: cid)
       options.success?(profile)
       return
 
-    auth_middleware = []
-    if TentStatus.Helpers.isDomainEntity(entity)
-      api_root = TentStatus.config.tent_api_root
-      auth_middleware = @middleware.auth
-    else if TentStatus.Helpers.isEntityOnTentHostDomain(entity)
-      api_root = entity + TentStatus.config.tent_host_domain_tent_api_path
-    else
-      api_root = "#{TentStatus.config.tent_proxy_root}/#{encodeURIComponent entity}"
+    unless options.client
+      return HTTP.TentClient.find entity: entity, (client) =>
+        @fetch(params, _.extend(options, {client: client}))
 
-    new HTTP 'GET', api_root + '/profile', null, (res, xhr) =>
+    options.client.get '/profile', null, (res, xhr) =>
       if xhr.status != 200 || !res
         @trigger('fetch:failed', entity, res, xhr)
         options.error?(res, xhr)
         return
 
       if (cid = @entity_mapping[entity])
-        profile = @find(cid: cid)
+        profile = @find(cid: cid, fetch: false)
       else
         profile = new @(res)
         @entity_mapping[entity] = profile.cid
 
       @trigger('fetch:success', entity, profile, xhr)
       options.success?(profile, xhr)
-    , auth_middleware.concat(@middleware.tent)
 
   parseAttributes: (attributes) =>
     core_profile = attributes[TentStatus.config.CORE_PROFILE_TYPE]
