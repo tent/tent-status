@@ -70,7 +70,7 @@ HTTP.TentClient = class HTTPTentClient
       @entity_mapping[entity] = client
       return callback(client)
 
-    if (cid = TentStatus.Profile.entity_mapping[entity]) && (profile = TentStatus.Profile.find(cid: cid, fetch: false))
+    if (cid = TentStatus.Models.Profile.entity_mapping[entity]) && (profile = TentStatus.Models.Profile.find(cid: cid, fetch: false))
       if profile.get('servers').length
         client = new HTTP.Client {
           hosts: profile.get('servers')
