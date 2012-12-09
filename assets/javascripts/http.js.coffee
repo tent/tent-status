@@ -86,11 +86,9 @@ class @HTTP
 
       @isURI = true
 
-    toString: =>
-      (@scheme + @hostname + ':' + @port + @path).replace(/\/$/, '')
-
+    toString: => @toStringWithoutSchemePort()
     toStringWithoutSchemePort: =>
-      if [443, 80].indexOf(@port) != -1
+      if @port in [443, 80]
         port_string = ''
       else
         port_string = ':' + @port
