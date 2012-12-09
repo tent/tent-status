@@ -4,7 +4,15 @@ TentStatus.Views.PostAction = class PostActionView extends TentStatus.View
   constructor: ->
     super
 
-    DOM.on(@el, 'click', @performAction)
+    @text = {
+      confirm: DOM.attr(@el, 'data-confirm')
+    }
+
+    DOM.on(@el, 'click', @confirmAction)
+
+  confirmAction: =>
+    return @performAction() unless @text.confirm
+    @performAction() if confirm(@text.confirm)
 
   performAction: =>
     console.warn "#{@constructor.name}::performAction needs to be defined"
