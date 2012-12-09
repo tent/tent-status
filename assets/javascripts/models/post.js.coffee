@@ -22,6 +22,31 @@ TentStatus.Models.Post = class PostModel extends TentStatus.Model
       options.success?(post, xhr)
     , options.middleware
 
+  @fetch: (params, options = {}) ->
+    unless options.client
+      return HTTP.TentClient.find entity: (params.entity || TentClient.config.current_entity), (client) =>
+        @fetch(params, _.extend(options, {client: client}))
+
+    path = if params.entity
+      "/posts/#{encodeURIComponent params.entity}/#{params.id}"
+    else
+      "/posts/#{params.id}"
+
+    _params = _.clone(params)
+    delete _params.id
+    delete _params.entity
+    options.client.get path, _params, (res, xhr) =>
+      if xhr.status != 200
+        @trigger("fetch:failed", params, res, xhr)
+        options.error?(res, xhr)
+        return
+
+      return if @find(params, _.extend(options, {fetch:false}))
+      post = new @(res)
+
+      @trigger("fetch:success", params, post, xhr)
+      options.success?(post, xhr)
+
   @validate: (attrs, options = {}) ->
     errors = []
 
