@@ -422,31 +422,24 @@ module Tent
 
     get '/tent-proxy/:proxy_entity/*' do
       entity = params.delete('proxy_entity')
-      unless server_url = session["#{entity}-server_url"]
-        server_url = discover(entity).last
-        halt 404 unless server_url
-        session["#{entity}-server_url"] = server_url
+
+      if entity == current_entity
+        server_url = tent_api_root
+        client = ::TentClient.new(server_url, auth_details)
+      else
+        unless server_url = session["#{entity}-server_url"]
+          server_url = discover(entity).last
+          halt 404 unless server_url
+          session["#{entity}-server_url"] = server_url
+        end
+        client = ::TentClient.new(server_url)
       end
 
-      client = ::TentClient.new(server_url)
       begin
-        res = case params.delete('splat').to_a.first
-        when %r{\Aposts/([^/]+)/?\Z}
-          post_id = $1
-          client.post.get(post_id)
-        when 'posts'
-          client.post.list(params)
-        when 'posts/count'
-          client.post.count(params)
-        when 'followers'
-          client.follower.list(params)
-        when 'followers/count'
-          client.follower.count(params)
-        when 'followings'
-          client.following.list(params)
-        when 'followings/count'
-          client.following.count(params)
-        end
+        path = env['PATH_INFO'].sub(%r{\A/tent-proxy/[^/]+/}, '')
+        query_string = env['QUERY_STRING']
+        path << "?#{query_string}" unless query_string.to_s == ""
+        res = client.http.get(path)
       rescue Faraday::Error::ConnectionFailed
         halt 404
       end
