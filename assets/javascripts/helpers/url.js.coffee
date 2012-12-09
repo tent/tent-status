@@ -47,8 +47,11 @@ _.extend TentStatus.Helpers,
   currentHostWithoutSubdomain: ->
     window.location.hostname.replace(/^.*?([^.]*\.[^.]+)$/, '$1')
 
+  isCurrentEntity: (entity) ->
+    TentStatus.config.current_entity?.assertEqual(entity)
+
   isDomainEntity: (entity) ->
-    TentStatus.config.domain_entity && TentStatus.config.domain_entity.assertEqual(entity)
+    TentStatus.config.domain_entity?.assertEqual(entity)
 
   isEntityOnTentHostDomain: (entity) ->
     TentStatus.config.tent_host_domain && entity.toString().match(
