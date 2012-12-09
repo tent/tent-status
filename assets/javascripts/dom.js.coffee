@@ -99,7 +99,7 @@
 
   getStyle: (el, name) ->
     val = el.style[name]
-    val = DOM.getComputedStyle(el, name) if val.match(/^[\s\r\t\n]*$/)
+    val = DOM.getComputedStyle(el, name) if !val || val.match(/^[\s\r\t\n]*$/)
     val
 
   getComputedStyle: (el, name) ->
