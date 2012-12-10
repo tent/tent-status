@@ -138,6 +138,7 @@ module Tent
           dataset = TentD::Model::Post.where(
             :type_base => %w( https://tent.io/types/post/status ),
             :original => true,
+            :public => true
           )
 
           dataset = dataset.where(:id => params['post_id']) if params['post_id']
