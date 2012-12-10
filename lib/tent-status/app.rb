@@ -117,12 +117,11 @@ module Tent
         end
 
         def get_real_post_ids!(params)
-          id_mapping = %w( post_id since_id before_id ).
-            select { |key| params.has_key?(key) }.inject({}) { |memo, key|
-              memo[params[key]] = key
-              params[key] = nil
-              memo
-            }
+          id_mapping = %w( post_id since_id before_id ).select { |key| params.has_key?(key) }.inject({}) { |memo, key|
+            memo[params[key]] = key
+            params[key] = nil
+            memo
+          }
 
           posts = TentD::Model::Post.select(:id, :public_id, :entity).where(:public_id => id_mapping.keys).all
           id_mapping.each_pair do |public_id, key|
