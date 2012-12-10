@@ -34,7 +34,7 @@ class TentStatus.Paginator
     TentStatus.trigger 'loading:start' unless @options.is_background_operation
 
     loadedCount = @collection.length
-    expectedCount = loadedCount + limit
+    expectedCount = limit
 
     params = @paramsForOffsetAndLimit(since_id_entity, sinceId, limit)
     new HTTP 'GET', @url, params, (items, xhr) =>
@@ -45,6 +45,7 @@ class TentStatus.Paginator
         @onLastPage = true unless options.n_pages == 'infinite'
         return
 
+      fetchedCount = items.length
       items = @filterNewItems(items)
       for i in items
         i = new @collection.model i
@@ -53,7 +54,7 @@ class TentStatus.Paginator
         @collection[options.push_method](i)
 
       unless options.n_pages == 'infinite'
-        if loadedCount == @collection.length or (@collection.length < expectedCount)
+        if !fetchedCount or (fetchedCount < expectedCount)
           @onLastPage = true
 
       @prevSinceId = sinceId
