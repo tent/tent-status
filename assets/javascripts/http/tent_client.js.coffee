@@ -59,6 +59,8 @@ HTTP.TentClient = class HTTPTentClient
       @entity_mapping[entity] = client
       return callback(client)
 
+    # Following proxy broken atm
+    options.skip_following_check = true
     unless options.skip_following_check
       return @currentEntityClient().get "/followings/#{encodeURIComponent entity}", null, (res, xhr) =>
         return if @find(params, callback, _.extend({fetch: false}, options))
