@@ -151,7 +151,7 @@ module Tent
 
           if params['mentioned_post'] || params['mentioned_entity']
             dataset = dataset.qualify.join(:mentions, :mentions__post_id => :posts__id).where(:mentions__original_post => true)
-            dataset = dataset.where(:mentions__mentioned_post_id => params['mentioned_post_id']) if params['mentioned_post_id']
+            dataset = dataset.where(:mentions__mentioned_post_id => params['mentioned_post']) if params['mentioned_post']
             dataset = dataset.where(:mentions__entity => params['mentioned_entity']) if params['mentioned_entity']
           end
 
