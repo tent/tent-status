@@ -3,7 +3,8 @@ TentStatus.Views.ConversationComponent = class ConversationComponentView extends
     @parent_view.parent_view
 
   postContext: =>
-    TentStatus.Views.Post::context(arguments...)
+    _.extend TentStatus.Views.Post::context(arguments...),
+      is_conversation_view: true
 
   prependRender: =>
     TentStatus.Views.PostsFeed::prependRender.apply(@, arguments)
