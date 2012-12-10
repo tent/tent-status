@@ -123,7 +123,11 @@ module Tent
             memo
           }
 
-          posts = TentD::Model::Post.select(:id, :public_id, :entity).where(:public_id => id_mapping.keys).all
+          posts = if id_mapping.keys.any?
+                    TentD::Model::Post.select(:id, :public_id, :entity).where(:public_id => id_mapping.keys).all
+                  else
+                    []
+                  end
           id_mapping.each_pair do |public_id, key|
             entity = params["#{key}_entity"]
             params[key] = posts.find { |p|
