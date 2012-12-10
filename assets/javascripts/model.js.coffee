@@ -18,7 +18,7 @@ TentStatus.Model = class Model
       else
         delete params.cid
 
-    if params.id && (!params.hasOwnProperty('fetch') || params.fetch)
+    if params.id && (!options.hasOwnProperty('fetch') || options.fetch) && (!params.hasOwnProperty('fetch') || params.fetch)
       @fetch(params, options)
 
     null
