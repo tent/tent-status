@@ -8,6 +8,9 @@ TentStatus.Views.Post = class PostView extends TentStatus.View
 
     @post_cid = DOM.attr(@el, 'data-post_cid')
 
+  post: =>
+    TentStatus.Models.Post.find(cid: @post_cid, fetch: false)
+
   hide: =>
     DOM.hide(@el)
 

@@ -1,10 +1,10 @@
-<div class="row">
-  <div class="span2">&nbsp;</div>
-  <div class="span8">
-    <ul class="unstyled posts primary">
-      {{#post}}
-      <li class="post clearfix" data-id="{{id}}">{{> _post_inner}}</li>
-      {{/post}}
-    </ul>
-  </div>
-</div>
+<li class='post clearfix conversation'>
+  <ul class="unstyled posts" data-view='ConversationParents'>
+  </ul>
+
+  <ul class="unstyled posts" data-view='ConversationReference'>
+  </ul>
+
+  <ul class="unstyled posts" data-view='ConversationChildren'>
+  </ul>
+</li>

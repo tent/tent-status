@@ -30,6 +30,7 @@ _.extend TentStatus.config, {
     STATUS: 'https://tent.io/types/post/status/v0.1.0'
     REPOST: 'https://tent.io/types/post/repost/v0.1.0'
   PER_PAGE: 20
+  PER_CONVERSATION_PAGE: 10
   FETCH_INTERVAL: 3000
   MAX_FETCH_LATENCY: 30000
   URL_TRIM_LENGTH: 30

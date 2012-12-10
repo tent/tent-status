@@ -21,6 +21,17 @@
 
     el
 
+  replaceWithHTML: (el, html) ->
+    tmp_el = document.createElement('div')
+    tmp_el.innerHTML = html
+    new_el = tmp_el.firstChild
+    DOM.replaceWith(el, new_el)
+    new_el
+
+  replaceWith: (el, new_el) ->
+    el.parentNode.replaceChild(new_el, el)
+    new_el
+
   prependChild: (el, node) ->
     el.insertBefore(node, el.firstChild)
 
@@ -44,6 +55,9 @@
       continue unless node
       el.appendChild(node)
     el
+
+  insertBefore: (el, reference_el) ->
+    reference_el.parentNode?.insertBefore(el, reference_el)
 
   windowHeight: ->
     return window.innerHeight if window.innerHeight

@@ -12,7 +12,12 @@ TentStatus.View = class View
     HoganTemplates[template_path]
 
   @detach: (cid) ->
-    delete @instances[cid]
+    delete @instances.all[cid]
+    instance_cids = @instances[@view_name]
+    index = instance_cids.indexOf(cid)
+    return if index == -1
+    instance_cids = instance_cids.slice(0, index).concat(instance_cids.slice(index + 1, instance_cids.length))
+    @instances[@view_name] = instance_cids
 
   detach: =>
     @constructor.detach(@cid)
@@ -22,7 +27,7 @@ TentStatus.View = class View
     @trackInstance()
     @initTemplates()
 
-    for k in ['el', 'parent_view', 'container']
+    for k in ['el', 'parent_view', 'container', 'render_method']
       @set(k, options[k]) if options[k]
 
     @on 'ready', @bindViews
@@ -65,7 +70,7 @@ TentStatus.View = class View
   detachChildViews: =>
     for class_name, cids of (@_child_views || {})
       for cid in cids
-        @constructor.instances[cid]?.detach()
+        @constructor.instances.all[cid]?.detach()
 
     @_child_views = {}
 
@@ -90,7 +95,12 @@ TentStatus.View = class View
       @el.innerHTML = html
       DOM.replaceChildren(@container.el, @el)
     else
-      @el.innerHTML = html
+      if @render_method == 'replace'
+        @el = DOM.replaceWithHTML(@el, html)
+      else
+        @el.innerHTML = html
+
+    @el.view_cid = @cid
 
     @detachChildViews()
 

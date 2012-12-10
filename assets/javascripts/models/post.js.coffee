@@ -68,3 +68,50 @@ TentStatus.Models.Post = class PostModel extends TentStatus.Model
       _entities.push(_entity) if _entities.indexOf(_entity) == -1
     _entities
 
+  fetchMentions: (options = {}) =>
+    unless options.client
+      return HTTP.TentClient.find {entity: @get('entity')}, (client) =>
+        @fetchMentions(_.extend(options, {client: client}))
+
+    params = _.extend({
+      limit: TentStatus.config.PER_CONVERSATION_PAGE
+      post_types: TentStatus.config.post_types
+    }, options.params || {})
+
+    options.client.get "/posts/#{@get('id')}/mentions", params, {
+      success: options.success
+      error: options.error
+      complete: options.complete
+    }
+
+    null
+
+  fetchChildren: (options = {}) =>
+    params = _.extend {
+      limit: TentStatus.config.PER_CONVERSATION_PAGE
+      mentioned_post: @get('id')
+      mentioned_entity: @get('entity')
+      post_types: TentStatus.config.post_types
+    }, params
+
+    fetch_success = (res, xhr) =>
+      posts = _.map res, (i) =>
+        unless post = @constructor.find({id: i.id, entity: i.entity, fetch: false})
+          post = new @constructor(i)
+        post
+      options.success?(posts)
+
+    fetch = =>
+      HTTP.TentClient.find {entity: @get('entity')}, (client) =>
+        client.get '/posts', params, {
+          success: fetch_success
+          error: options.error
+          complete: options.complete
+        }
+
+    if client = HTTP.TentClient.hostClient()
+      client.get '/posts', params, {
+        success: fetch_success
+        error: fetch
+      }
+

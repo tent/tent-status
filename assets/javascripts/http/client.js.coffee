@@ -20,13 +20,16 @@ HTTP.Client = class HTTPClient
     hosts ?= _.clone(@options.hosts)
     new HTTP method, @constructor.buildUrl(path || '', hosts), _.extend({}, @options.params, params), (res, xhr) =>
       if xhr.status in [200...400]
+        callback?.success?(res, xhr)
         @options.success?(res, xhr)
       else
         if hosts.length && @options.cycle
           return @request(method, path, params, callback, hosts)
+        callback?.error?(res, xhr)
         @options.error?(res, xhr)
 
       callback?(res, xhr)
+      callback?.complete?(res, xhr)
       @options.complete?(res, xhr)
     , @options.middleware
 
