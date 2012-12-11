@@ -10,10 +10,8 @@ TentStatus.Views.ConversationParents = class ConversationParentsView extends Ten
 
   fetchPosts: =>
     reference_post = @postView().post()
-    reference_post.fetchMentions
-      success: (mentions) =>
-        for m in mentions
-          do (m) =>
-            @fetchPost {entity: m.entity, id: m.post}, (post) =>
-              @prependRender([post])
+    for m in reference_post.postMentions()
+      do (m) =>
+        @fetchPost {entity: m.entity, id: m.post}, (post) =>
+          @prependRender([post])
 

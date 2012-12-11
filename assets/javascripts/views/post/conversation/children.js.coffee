@@ -10,7 +10,10 @@ TentStatus.Views.ConversationChildren = class ConversationChildrenView extends T
 
   fetchPosts: =>
     reference_post = @postView().post()
-    reference_post.fetchChildren
-      success: (posts) =>
-        @appendRender(posts)
+    reference_post.fetchChildMentions
+      success: (mentions) =>
+        for m in mentions
+          do (m) =>
+            @fetchPost {entity: m.entity, id: m.post}, (post) =>
+              @appendRender([post])
 
