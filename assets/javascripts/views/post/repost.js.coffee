@@ -11,11 +11,7 @@ TentStatus.Views.Repost = class RepostView extends TentStatus.Views.Post
   parentPost: =>
     TentStatus.Models.Post.instances.all[@parent_view.post_cid]
 
-  conversationView: =>
-    view = @
-    while view && view.constructor.view_name != 'conversation'
-      view = view.parent_view
-    view
+  conversationView: => @findParentView('conversation')
 
   fetchPost: (parent_post = @parentPost()) =>
     TentStatus.Models.Post.find { id: parent_post.get('content.id'), entity: parent_post.get('content.entity') }, {

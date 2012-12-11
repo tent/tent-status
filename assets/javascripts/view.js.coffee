@@ -77,6 +77,16 @@ TentStatus.View = class View
   childViews: (view_class_name) =>
     _.map @_child_views[view_class_name], (cid) => @constructor.find(cid)
 
+  findParentView: (view_name) =>
+    key = "_parent_#{view_name}_cid"
+    return view if @[key] && (view = TentStatus.View.find(@[key]))
+
+    view = @
+    while view && view.constructor.view_name != view_name
+      view = view.parent_view
+    @[key] = view.cid if view
+    view
+
   context: =>
     config: TentStatus.config
 

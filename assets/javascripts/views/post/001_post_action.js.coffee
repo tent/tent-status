@@ -19,3 +19,5 @@ TentStatus.Views.PostAction = class PostActionView extends TentStatus.View
     console.warn "#{@constructor.name}::performAction needs to be defined"
     console.log @el
 
+  postView: => @findParentView('post')
+

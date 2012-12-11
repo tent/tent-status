@@ -7,14 +7,6 @@ TentStatus.Views.PostActionConversation = class PostActionConversationView exten
     else
       @show()
 
-  postView: =>
-    return view if @post_view_cid && (view = TentStatus.Views.Post.find(@post_view_cid))
-    view = @
-    while view.parent_view && view.constructor.view_name != 'post'
-      view = view.parent_view
-    @post_view_cid = view.cid
-    view
-
   conversationView: =>
     return view if @conversation_view_cid && (view = TentStatus.Views.Conversation.find(@conversation_view_cid))
     post_view = @postView()
