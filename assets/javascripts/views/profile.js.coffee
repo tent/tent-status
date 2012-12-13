@@ -43,8 +43,10 @@ class TentStatus.Views.Profile extends TentStatus.View
         avatar: @profile.avatar()
         hasName: @profile.hasName()
         entity: @profile.entity()
+        website_url: @profile.get('website_url')
         encoded:
           entity: encodeURIComponent(@profile.entity())
         formatted:
           entity: TentStatus.Helpers.formatUrl @profile.entity()
+          website_url: TentStatus.Helpers.formatUrl @profile.get('website_url')
 

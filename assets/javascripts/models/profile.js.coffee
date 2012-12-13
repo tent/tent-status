@@ -12,6 +12,7 @@ class Profile extends Backbone.Model
       servers: core_profile?.servers
       name: basic_profile?.name
       avatar: basic_profile?.avatar_url
+      website_url: basic_profile?.website_url
       bio: basic_profile?.bio
     }
     data[TentStatus.config.TENT_STATUS_PROFILE_TYPE] = tent_status_profile if tent_status_profile
