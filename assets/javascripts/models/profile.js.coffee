@@ -1,15 +1,6 @@
 TentStatus.Models.Profile = class ProfileModel extends TentStatus.Model
   @model_name: 'profile'
 
-  @middleware:
-    auth: [
-      new HTTP.Middleware.MacAuth(TentStatus.config.current_user.auth_details),
-    ]
-    tent: [
-      new HTTP.Middleware.SerializeJSON
-      new HTTP.Middleware.TentJSONHeader
-    ]
-
   @entity_mapping: {}
 
   @fetch: (params = {}, options = {}) ->
