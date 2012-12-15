@@ -1,7 +1,10 @@
 TentStatus.Accessors = {
-  set: (keypath, v) ->
+  set: (keypath, v, options={}) ->
     return unless keypath && keypath.length
-    keys = keypath.split('.')
+    if !options.hasOwnProperty('keypath') || options.keypath
+      keys = keypath.split('.')
+    else
+      keys = [keypath]
     last_key = keys.pop()
 
     obj = @
@@ -14,9 +17,12 @@ TentStatus.Accessors = {
     @trigger("change:#{keypath}", v, old_v) unless v == old_v
     v
 
-  get: (keypath) ->
+  get: (keypath, options={}) ->
     return unless keypath && keypath.length
-    keys = keypath.split('.')
+    if !options.hasOwnProperty('keypath') || options.keypath
+      keys = keypath.split('.')
+    else
+      keys = [keypath]
     last_key = keys.pop()
 
     obj = @

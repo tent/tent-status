@@ -58,25 +58,31 @@ TentStatus.Model = class Model
     @constructor.instances[@constructor.model_name].push @cid
 
   parseAttributes: (attributes) =>
-    @set(k, v) for k,v of attributes
+    @set(k, v, {keypath:false}) for k,v of attributes
 
   updateIdMapping: (new_id, old_id) =>
     @constructor.id_mapping[@constructor.model_name] ?= {}
     delete @constructor.id_mapping[@constructor.model_name][old_id]
     @constructor.id_mapping[@constructor.model_name][new_id] = @cid
 
-  set: (keypath, v) =>
+  set: (keypath, v, options={}) =>
     return unless keypath && keypath.length
-    keys = keypath.split('.')
+    if !options.hasOwnProperty('keypath') || options.keypath
+      keys = keypath.split('.')
+    else
+      keys = [keypath]
 
     @fields ?= []
     @fields.push(keys[0]) if @fields.indexOf(keys[0]) == -1
 
     TentStatus.Accessors.set.apply(@, arguments)
 
-  get: (keypath) =>
+  get: (keypath, options={}) =>
     return unless keypath && keypath.length
-    keys = keypath.split('.')
+    if !options.hasOwnProperty('keypath') || options.keypath
+      keys = keypath.split('.')
+    else
+      keys = [keypath]
 
     return if @fields.indexOf(keys[0]) == -1
 
