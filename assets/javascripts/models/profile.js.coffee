@@ -43,6 +43,7 @@ TentStatus.Models.Profile = class ProfileModel extends TentStatus.Model
       name: basic_profile?.name
       avatar: basic_profile?.avatar_url
       bio: basic_profile?.bio
+      website_url: basic_profile?.website_url
     }
     attributes[TentStatus.config.TENT_STATUS_PROFILE_TYPE] = tent_status_profile if tent_status_profile
 
