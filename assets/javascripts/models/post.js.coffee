@@ -15,6 +15,34 @@ TentStatus.Models.Post = class PostModel extends TentStatus.Model
       @trigger('create:success', post, xhr)
       options.success?(post, xhr)
 
+  @update: (post, data, options = {}) ->
+    options.middleware ?= @middleware
+
+    client = HTTP.TentClient.currentEntityClient()
+    client.put "/posts/#{post.get('id')}", data, (res, xhr) =>
+      unless xhr.status == 200
+        post.trigger('update:failed', res, xhr)
+        options.error?(res, xhr)
+        return
+
+      post.parseAttributes(res)
+      post.trigger('update:success', post, xhr)
+      options.success?(post, xhr)
+
+  @delete: (post, options = {}) ->
+    options.middleware ?= @middleware
+
+    client = HTTP.TentClient.currentEntityClient()
+    client.delete "/posts/#{post.get('id')}", null, (res, xhr) =>
+      unless xhr.status == 200
+        post.trigger('delete:failed', res, xhr)
+        options.error?(res, xhr)
+        return
+
+      post.detach()
+      post.trigger('delete:success', post, xhr)
+      options.success?(post, xhr)
+
   @fetch: (params, options = {}) ->
     unless options.client
       return HTTP.TentClient.find entity: (params.entity || TentClient.config.current_entity), (client) =>
@@ -51,6 +79,12 @@ TentStatus.Models.Post = class PostModel extends TentStatus.Model
 
     return errors if errors.length
     null
+
+  update: (data, options = {}) =>
+    @constructor.update(@, data, options)
+
+  delete: (options = {}) =>
+    @constructor.delete(@, options)
 
   isRepost: =>
     !!(@get('type') || '').match(/repost/)

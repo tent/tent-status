@@ -3,8 +3,8 @@ TentStatus.Views.Post = class PostView extends TentStatus.View
   @partial_names: ['_post_inner', '_post_inner_actions']
   @view_name: 'post'
 
-  constructor: ->
-    super
+  constructor: (options = {}) ->
+    super(_.extend(options, {render_method: 'replace'}))
 
     @post_cid = DOM.attr(@el, 'data-post_cid')
 
@@ -29,7 +29,7 @@ TentStatus.Views.Post = class PostView extends TentStatus.View
       _entities.push(entity)
     _entities
 
-  context: (post) =>
+  context: (post = @post()) =>
     permissible_entities = @getPermissibleEntities(post)
     context = _.extend super, post.toJSON(), {
       cid: post.cid

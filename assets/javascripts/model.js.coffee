@@ -30,14 +30,14 @@ TentStatus.Model = class Model
   @detach: (cid) ->
     delete @instances.all[cid]
 
-    if index = @constructor.instances[@constructor.model_name]?.indexOf(cid)
-      instances = @constructor.instances[@constructor.model_name]
+    if index = @instances[@model_name]?.indexOf(cid)
+      instances = @instances[@model_name]
       instances = instances.slice(0, index).concat(instances.slice(index+1, instances.length))
-      @constructor.instances[@constructor.model_name] = instances
+      @instances[@model_name] = instances
 
-    for _id, _cid of @constructor.id_mapping
+    for _id, _cid of @id_mapping
       if _cid == cid
-        delete @constructor.id_mapping[_id]
+        delete @id_mapping[_id]
         break
 
   detach: =>
