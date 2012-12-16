@@ -1,12 +1,12 @@
 TentStatus.Collection = class Collection
-  @middleware: []
   @model: TentStatus.Model
 
   fetch: (params = {}, options = {}) =>
-    new HTTP 'GET', (options.url || @url || @constructor.url).toString(), _.extend({}, (@params || @constructor.params), params), (res, xhr) =>
+    options.client ?= HTTP.TentClient.currentEntityClient()
+    options.client.get @constructor.model.resource_path, _.extend({}, (@params || @constructor.params), params), (res, xhr) =>
       unless xhr.status == 200
-        @trigger('fetch:failed', res, xhr)
         options.error?(res, xhr)
+        @trigger('fetch:failed', res, xhr)
         return
 
       if options.append
@@ -14,9 +14,8 @@ TentStatus.Collection = class Collection
       else
         models = @reset(res)
 
-      @trigger('fetch:success', @)
       options.success?(models, xhr, @)
-    , (options.middleware || @middleware || @constructor.middleware)
+      @trigger('fetch:success', @)
 
   reset: (resources_attribtues = []) =>
     @model_ids = []
