@@ -32,7 +32,7 @@ TentStatus.Model = class Model
       return HTTP.TentClient.find entity: (params.entity), (client) =>
         @fetchCount(params, _.extend(options, {client: client}))
 
-    options.client.get @resource_path + '/count', null, (res, xhr) =>
+    options.client.get @resource_path + '/count', params.fetch_params, (res, xhr) =>
       unless xhr.status == 200
         options.error?(res, xhr)
         return

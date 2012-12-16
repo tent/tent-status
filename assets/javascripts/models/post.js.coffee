@@ -38,6 +38,10 @@ TentStatus.Models.Post = class PostModel extends TentStatus.Model
       post.trigger('delete:success', post, xhr)
       options.success?(post, xhr)
 
+  @fetchCount: (params, options = {}) ->
+    params.fetch_params ?= { post_types: TentStatus.config.post_types }
+    super(params, options)
+
   @fetch: (params, options = {}) ->
     unless options.client
       return HTTP.TentClient.find entity: (params.entity || TentStatus.config.current_entity), (client) =>
