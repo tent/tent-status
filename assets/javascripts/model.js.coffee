@@ -26,6 +26,20 @@ TentStatus.Model = class Model
   @fetch: (params, options) ->
     console.warn("You need to define #{@name}::fetch(params, callback)!")
 
+  @fetchCount: (params, options = {}) ->
+    return unless params.entity && @resource_path
+    unless options.client
+      return HTTP.TentClient.find entity: (params.entity), (client) =>
+        @fetchCount(params, _.extend(options, {client: client}))
+
+    options.client.get @resource_path + '/count', null, (res, xhr) =>
+      unless xhr.status == 200
+        options.error?(res, xhr)
+        return
+
+      count = parseInt res
+      options.success?(count, xhr)
+
   # delete reference
   @detach: (cid) ->
     delete @instances.all[cid]

@@ -8,6 +8,8 @@ TentStatus.Views.Post = class PostView extends TentStatus.View
 
     @post_cid = DOM.attr(@el, 'data-post_cid')
 
+    DOM.on @el, 'click', (e) => @constructor.trigger('click', @, e)
+
   post: =>
     TentStatus.Models.Post.find(cid: @post_cid, fetch: false)
 

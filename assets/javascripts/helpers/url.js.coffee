@@ -30,19 +30,12 @@ _.extend TentStatus.Helpers,
     else
       "/#{encodeURIComponent entity}/profile"
 
-  followingsUrl: (entity) ->
-    return unless entity
+  entityResourceUrl: (entity, path) ->
+    return unless entity && path
     if TentStatus.Helpers.isDomainEntity(entity)
-      "/followings"
+      path.replace(/^\/?/, '/')
     else
-      "/#{encodeURIComponent entity}/followings"
-
-  followersUrl: (entity) ->
-    return unless entity
-    if TentStatus.Helpers.isDomainEntity(entity)
-      "/followers"
-    else
-      "/#{encodeURIComponent entity}/followers"
+      "/#{encodeURIComponent entity}/#{path.replace(/^\//, '')}"
 
   currentHostWithoutSubdomain: ->
     window.location.hostname.replace(/^.*?([^.]*\.[^.]+)$/, '$1')

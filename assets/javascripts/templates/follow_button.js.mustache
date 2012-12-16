@@ -1,0 +1,4 @@
+<form method="POST" style="display:inline">
+  <input name="entity" type="hidden" value="{{entity}}" />
+  <input class="m-btn {{#is_self}}green{{/is_self}}{{#is_following}}red{{/is_following}}{{^is_following}}{{^is_self}}blue{{/is_self}}{{/is_following}}" {{#is_self}}disabled{{/is_self}} type="submit" value="{{#is_self}}You{{/is_self}}{{#is_following}}Unfollow{{/is_following}}{{^is_following}}{{^is_self}}Follow{{/is_self}}{{/is_following}}" {{#is_following}}data-confirm="Unfollow {{entity}}?"{{/is_following}} />
+</form>

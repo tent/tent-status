@@ -116,5 +116,6 @@ TentStatus.View = class View
 
     @trigger 'ready'
 
-_.extend View::, Backbone.Events, TentStatus.Accessors
+_.extend View, TentStatus.Events
+_.extend View::, TentStatus.Events, TentStatus.Accessors
 

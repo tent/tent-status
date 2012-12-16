@@ -3,6 +3,7 @@
 #= require backbone
 #= require setImmediate
 #= require string_score
+#= require pluralize
 #= require http
 #= require http/middleware
 #= require http/client
@@ -53,10 +54,10 @@ _.extend TentStatus, TentStatus.Events, {
     DOM.on window, 'scroll', (e) => @trigger 'window:scroll', e
     DOM.on window, 'resize', (e) => @trigger 'window:resize', e
 
+    new @Views.AuthorInfo el: document.getElementById('author-info')
+
     @ready = true
     @trigger 'ready'
-
-    DOM.on(window, 'scroll', (e) => @trigger('window.scroll', e))
 
   showLoadingIndicator: ->
     @_num_running_requests ?= 0
