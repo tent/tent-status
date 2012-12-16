@@ -75,6 +75,7 @@ TentStatus.Views.NewPostForm = class NewPostFormView extends TentStatus.View
         @showErrors([{ text: "Error: #{JSON.parse(xhr.responseText)?.error}" }])
 
       success: (post, xhr) =>
+        @enable()
         @render()
         @hide?()
     )
