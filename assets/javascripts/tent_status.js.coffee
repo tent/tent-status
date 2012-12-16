@@ -54,8 +54,6 @@ _.extend TentStatus, TentStatus.Events, {
     DOM.on window, 'scroll', (e) => @trigger 'window:scroll', e
     DOM.on window, 'resize', (e) => @trigger 'window:resize', e
 
-    new @Views.AuthorInfo el: document.getElementById('author-info')
-
     @ready = true
     @trigger 'ready'
 

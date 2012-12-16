@@ -1,54 +1,51 @@
-<div class="row solid-container">
-  <div class="span2">&nbsp;</div>
-  <div class="span8">
-    {{#profile}}
+<div class="row">
+  <div class="span8 no-offset">
     <div class="page-header">
       <div class="row">
         <div class="span2">
           <img class="avatar-large" src="{{avatar}}" />
+
+          <div class='clearfix profile-stats'>
+            <div data-view='AuthorInfoFollowersCount'></div>
+            <div data-view='AuthorInfoFollowingCount'></div>
+            <div data-view='AuthorInfoPostsCount'></div>
+          </div>
         </div>
         <div class="span6 no-offset">
           <h2 class="condensed">
-            {{^hasName}}
+            {{^has_name}}
             <a href="{{{entity}}}">{{name}}</a>
-            {{/hasName}}
+            {{/has_name}}
             
-            {{#hasName}}{{name}}{{/hasName}}
+            {{#has_name}}{{name}}{{/has_name}}
             
             {{#guest_authenticated}}
-            <form class="pull-rght" data-view="ProfileFollowButton" method="POST" style="display:inline">
-              <input name="entity" type="hidden" value="{{entity}}" />
-              <input class="m-btn blue pull-right" type="submit" value="Follow" />
-            </form>
+            <div data-view='FollowButton'></div>
             {{/guest_authenticated}}
             
-            {{#hasName}}
+            {{#has_name}}
             <br />
             <a href="{{{entity}}}"><small>{{formatted.entity}}</small></a>
-            {{/hasName}}
+            {{/has_name}}
           </h2>
-          {{#bio}}
-          <div class="span6 no-offset has-overflow">
-            <p>{{bio}}</p>
-          </div>
-          {{/bio}}
-        </div>
-      </div>
 
-      <div class="row">
-        <div class="profile-stats">
-          <div class="span2">&nbsp;</div>
-          <div class="span6 no-offset" data-view="ProfileStats"></div>
+          <div class="span6 no-offset has-overflow">
+            <p>{{formatted.bio}}</p>
+          </div>
+
+          <a href='{{website_url}}'>{{formatted.website_url}}</a>
         </div>
       </div>
     </div>
-    {{/profile}}
   </div>
 </div>
 
+{{#config.authenticated}}
+<div class="row new-post-container">
+  <div data-view="NewPostForm"></div>
+</div>
+{{/config.authenticated}}
+
 <div class="row">
-  <div class="span2">&nbsp;</div>
-  <div class="span8">
-    <ul class="unstyled posts" data-view="DomainPostsFeed">{{#posts}}{{> _post}}{{/posts}}</ul>
-  </div>
+  <ul class="unstyled posts span8" data-view="ProfilePostsFeed"></ul>
 </div>

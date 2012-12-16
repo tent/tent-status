@@ -10,6 +10,9 @@ TentStatus.Routers.posts = new class PostsRouter extends TentStatus.Router
     'siteFeed': 'Site Feed'
   }
 
+  _initAuthorInfoView: =>
+    new TentStatus.Views.AuthorInfo el: document.getElementById('author-info')
+
   index: (params) =>
     if TentStatus.config.guest
       return console.log 'guest'
@@ -25,6 +28,7 @@ TentStatus.Routers.posts = new class PostsRouter extends TentStatus.Router
   feed: (params) =>
     TentStatus.setPageTitle @actions_titles.feed
     new TentStatus.Views.Feed
+    @_initAuthorInfoView()
 
   siteFeed: (params) =>
     unless TentStatus.Helpers.isAppSubdomain()
