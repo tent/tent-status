@@ -4,7 +4,7 @@ ruby '1.9.3'
 gemspec
 
 gem 'tent-client', :git => 'git://github.com/tent/tent-client-ruby.git', :branch => 'master'
-gem 'omniauth-tent'
+gem 'omniauth-tent', :git => 'git://github.com/tent/omniauth-tent.git', :branch => 'master'
 gem 'puma'
 
 group :development, :assets do
