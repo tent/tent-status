@@ -15,7 +15,7 @@ TentStatus.Routers.posts = new class PostsRouter extends TentStatus.Router
 
   index: (params) =>
     if TentStatus.config.guest
-      return console.log 'guest'
+      return @navigate('/profile', {trigger:true, replace: true})
 
     if TentStatus.config.app_domain
       return TentStatus.redirectToGlobalFeed()
