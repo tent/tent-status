@@ -1,0 +1,12 @@
+{{#config.authenticated}}
+<div class="row new-post-container">
+  <div data-view="NewPostForm"></div>
+</div>
+{{/config.authenticated}}
+
+<div class="row">
+  <div class="span8 fetch-pool hide" data-view="FetchPostsPool"></div>
+</div>
+<div class="row">
+  <ul class="unstyled posts span8" data-view="SitePostsFeed"></ul>
+</div>

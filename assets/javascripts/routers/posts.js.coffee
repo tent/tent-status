@@ -2,10 +2,12 @@ TentStatus.Routers.posts = new class PostsRouter extends TentStatus.Router
   routes: {
     "" : "root"
     "posts" : "index"
+    "global": "siteFeed"
   }
 
   actions_titles: {
     'feed' : 'My Feed'
+    'siteFeed': 'Site Feed'
   }
 
   index: (params) =>
@@ -22,5 +24,11 @@ TentStatus.Routers.posts = new class PostsRouter extends TentStatus.Router
 
   feed: (params) =>
     TentStatus.setPageTitle @actions_titles.feed
-    view = new TentStatus.Views.Feed
+    new TentStatus.Views.Feed
+
+  siteFeed: (params) =>
+    unless TentStatus.Helpers.isAppSubdomain()
+      return @navigate('/', {trigger: true})
+    TentStatus.setPageTitle @actions_titles.siteFeed
+    new TentStatus.Views.SiteFeed
 

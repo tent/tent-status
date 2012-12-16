@@ -2,7 +2,7 @@ TentStatus.Collection = class Collection
   @model: TentStatus.Model
 
   fetch: (params = {}, options = {}) =>
-    options.client ?= HTTP.TentClient.currentEntityClient()
+    options.client ?= @client || HTTP.TentClient.currentEntityClient()
     options.client.get @constructor.model.resource_path, _.extend({}, (@params || @constructor.params), params), (res, xhr) =>
       unless xhr.status == 200
         options.error?(res, xhr)
@@ -39,7 +39,7 @@ TentStatus.Collection = class Collection
 
   models: (cids = @model_ids) =>
     models = []
-    for cid in cids
+    for cid in (cids || [])
       model = @constructor.model.find({ cid: cid })
       models.push(model) if model
     models

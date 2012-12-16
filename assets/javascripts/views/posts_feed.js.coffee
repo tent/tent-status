@@ -5,7 +5,9 @@ TentStatus.Views.PostsFeed = class PostsFeedView extends TentStatus.View
 
   constructor: (options = {}) ->
     super
+    @init()
 
+  init: =>
     @on 'ready', @initPostViews
     @on 'ready', @initAutoPaginate
 

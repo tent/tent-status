@@ -51,6 +51,9 @@ _.extend TentStatus.Helpers,
       new RegExp(TentStatus.Helpers.escapeRegExChars(TentStatus.config.tent_host_domain))
     )
 
+  isAppSubdomain: =>
+    TentStatus.config.tent_host_domain and window.location.hostname == "app.#{TentStatus.config.tent_host_domain}"
+
   isURLExternal: (url) ->
     !url.match(
       new RegExp(TentStatus.Helpers.escapeRegExChars(
