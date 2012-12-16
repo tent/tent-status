@@ -1,10 +1,12 @@
 <h3><a href='{{profile_url}}' title='{{name}}'>{{formatted.name}}</a></h3>
 
-<a href='{{profile_url}}' class='pull-left'><img src='{{avatar}}' class='avatar-medium' /></a>
+<div class='clearfix'>
+  <a href='{{profile_url}}' class='pull-left'><img src='{{avatar}}' class='avatar-medium' /></a>
 
-<div data-view='AuthorInfoFollowersCount'></div>
-<div data-view='AuthorInfoFollowingCount'></div>
-<div data-view='AuthorInfoPostsCount'></div>
+  <div data-view='AuthorInfoFollowersCount'></div>
+  <div data-view='AuthorInfoFollowingCount'></div>
+  <div data-view='AuthorInfoPostsCount'></div>
+</div>
 
 <p>{{formatted.bio}}</p>
 
