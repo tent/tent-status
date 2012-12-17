@@ -39,7 +39,7 @@
     el.parentNode?.removeChild(el)
 
   prependHTML: (el, html) ->
-    tmp_el = document.createElement('div')
+    tmp_el = document.createElement('tbody')
     tmp_el.innerHTML = html
     child_nodes = tmp_el.childNodes
     for index in [(child_nodes.length-1)..0]
@@ -49,7 +49,7 @@
     el
 
   appendHTML: (el, html) ->
-    tmp_el = document.createElement('div')
+    tmp_el = document.createElement('tbody')
     tmp_el.innerHTML = html
     for node in tmp_el.childNodes
       continue unless node
