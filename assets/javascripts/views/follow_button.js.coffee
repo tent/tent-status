@@ -29,13 +29,11 @@ class TentStatus.Views.FollowButton extends TentStatus.View
         @is_following = true
         @render()
 
-        @render()
-
   init: =>
     @elements.form = DOM.querySelector('form', @el)
     @elements.submit = DOM.querySelector('input[type=submit]', @el)
 
-    @text.confirm = DOM.attr('data-confirm', @elements.submit)
+    @text.confirm = DOM.attr(@elements.submit, 'data-confirm')
 
     DOM.on(@elements.form, 'submit', @confirmSubmit)
 
