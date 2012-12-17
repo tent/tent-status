@@ -1,10 +1,10 @@
 TentStatus.Views.ProfileView = class ProfileView extends TentStatus.View
   fetch: (params = {}, options = {}) =>
-    post = TentStatus.Models.Post.find(cid: @post_cid)
+    instance = TentStatus.Model.find(cid: @model_cid)
 
     TentStatus.trigger('loading:start')
     TentStatus.Models.Profile.fetch _.extend(
-      entity: post.get('entity')
+      entity: instance.get('entity')
     , params), _.extend(
       success: (profile, xhr) =>
         TentStatus.trigger('loading:stop')

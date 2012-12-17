@@ -12,6 +12,7 @@ HTTP.TentClient = class HTTPTentClient
     new HTTP.Client _.extend(
       hosts: [TentStatus.config.tent_api_root]
       middleware: [].concat(@middleware.auth, @middleware.tent)
+      current_entity_host: true
     , options.client_options || {})
 
   @currentEntityFollowingProxyClient: (following_id, options = {}) ->
@@ -19,12 +20,14 @@ HTTP.TentClient = class HTTPTentClient
       client_options: {
         hosts: [TentStatus.config.tent_api_root + "/followings/#{following_id}"]
       }
+      current_entity_host: false
     , options.client_options || {})
 
   @appProxyClient: (entity, options = {}) ->
     new HTTP.Client _.extend(
       hosts: [TentStatus.config.tent_proxy_root + "/#{encodeURIComponent entity}"]
       middleware: [].concat(@middleware.tent)
+      current_entity_host: false
     , options.client_options || {})
 
   @hostClient: (options = {}) ->
@@ -32,6 +35,7 @@ HTTP.TentClient = class HTTPTentClient
     new HTTP.Client _.extend(
       hosts: [TentStatus.config.tent_host_api_root]
       middleware: [].concat(@middleware.tent)
+      current_entity_host: false
     , options.client_options || {})
 
   @entity_mapping: {}

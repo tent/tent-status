@@ -318,6 +318,11 @@ module Tent
         ENV['TENT_HOST_DOMAIN']
       end
 
+      def tent_host_scheme
+        return unless tent_host_domain
+        (ENV['TENT_HOST_SCHEME'] || 'https').sub(/(:\/\/)?\Z/, '://')
+      end
+
       def tent_proxy_root
         self_url_root + '/tent-proxy'
       end

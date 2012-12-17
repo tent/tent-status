@@ -20,6 +20,7 @@ HTTP.Client = class HTTPClient
     hosts ?= _.clone(@options.hosts)
     new HTTP method, @constructor.buildUrl(path || '', hosts), _.extend({}, @options.params, params), (res, xhr) =>
       if xhr.status in [200...400]
+        @signResponse(res)
         callback?.success?(res, xhr)
         @options.success?(res, xhr)
       else
@@ -32,6 +33,13 @@ HTTP.Client = class HTTPClient
       callback?.complete?(res, xhr)
       @options.complete?(res, xhr)
     , @options.middleware
+
+  signResponse: (res) =>
+    if _.isArray(res)
+      for i in res
+        i.current_entity_host = @options.current_entity_host
+    else
+      res?.current_entity_host = @options.current_entity_host
 
 for method in ['HEAD', 'GET', 'POST', 'PUT', 'DELETE']
   do (method) ->

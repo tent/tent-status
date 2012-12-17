@@ -1,3 +1,4 @@
+#= require_tree ./core_ext
 #= require moment
 #= require underscore
 #= require backbone
@@ -15,6 +16,7 @@
 #= require ./dom
 #= require_self
 #= require http/tent_client
+#= require object
 #= require ./model
 #= require_tree ./models
 #= require ./collection

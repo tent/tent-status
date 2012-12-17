@@ -21,6 +21,17 @@ TentStatus.Collection = class Collection
     @model_ids = []
     @append(resources_attribtues)
 
+  includes: (model) =>
+    return @model_ids.indexOf(model.cid) != -1
+
+  remove: (models...) =>
+    for model in models
+      cid = model.cid
+      index = @model_ids.indexOf(cid)
+      continue if index == -1
+      @model_ids = @model_ids.slice(0, index).concat(@model_ids.slice(index+1, @model_ids.length))
+    @model_ids.length
+
   append: (resources_attribtues = {}) =>
     for attrs in resources_attribtues
       model = new @constructor.model(attrs)

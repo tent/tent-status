@@ -61,6 +61,15 @@ TentStatus.Models.Following = class FollowingModel extends TentStatus.Model
       options.success?(following, xhr)
       @trigger('delete:success', following, xhr)
 
+  @validate: (attrs, options = {}) ->
+    errors = []
+
+    if !attrs.entity || !attrs.entity.match(/^https?:\/\/.+$/)
+      errors.push { entity: 'Must be valid entity URI' }
+
+    return errors if errors.length
+    null
+
   @detach: (cid) ->
     for entity, _cid of @entity_mapping
       if _cid == cid
@@ -74,5 +83,5 @@ TentStatus.Models.Following = class FollowingModel extends TentStatus.Model
 
   constructor: ->
     super
-    @constructor.entity_mapping[@get('entity')] = @cid
+    @constructor.entity_mapping[@get('entity')] = @cid if @get('current_entity_host') == true
 

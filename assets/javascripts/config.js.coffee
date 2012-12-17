@@ -21,6 +21,7 @@ _.extend TentStatus.config, {
   tent_api_root: new HTTP.URI(TentStatus._config.tent_api_root) if TentStatus._config.tent_api_root
   current_tent_api_root: new HTTP.URI(TentStatus._config.domain_tent_api_root) if TentStatus._config.domain_tent_api_root
   tent_host_domain: TentStatus._config.tent_host_domain
+  tent_host_scheme: TentStatus._config.tent_host_scheme
   tent_host_domain_tent_api_path: '/tent'
   tent_proxy_root: new HTTP.URI(TentStatus._config.tent_proxy_root)
   domain_entity: new HTTP.URI(TentStatus._config.domain_entity) if TentStatus._config.domain_entity

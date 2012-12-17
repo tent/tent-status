@@ -56,8 +56,26 @@
       el.appendChild(node)
     el
 
+  insertHTMLAfter: (html, reference_el) ->
+    tmp_el = document.createElement('tbody')
+    tmp_el.innerHTML = html
+    if tmp_el.childNodes.length == 1
+      el = tmp_el.childNodes[0]
+      return DOM.insertAfter(el, reference_el)
+    else
+      els = []
+      for i in [(tmp_el.childNodes.length-1)..0]
+        continue unless (node = tmp_el.childNodes[i])
+        els.unshift(DOM.insertAfter(node, reference_el))
+      els
+
   insertBefore: (el, reference_el) ->
     reference_el.parentNode?.insertBefore(el, reference_el)
+
+  insertAfter: (el, reference_el) ->
+    DOM.insertBefore(el, reference_el)
+    DOM.insertBefore(reference_el, el)
+    el
 
   windowHeight: ->
     return window.innerHeight if window.innerHeight

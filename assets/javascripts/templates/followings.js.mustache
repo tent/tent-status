@@ -1,27 +1,21 @@
-<div class="row solid-container">
+<div class="row solid-container followings">
   <div class="span8">
-    {{#authenticated}}
-    {{^guest_authenticated}}
-    <h1 class="page-header">You are following</h1>
-    <form data-view="NewFollowingForm" method="POST">
-      <input class="span6" name="entity" placeholder="Entity URI" type="text" /><input class="m-btn blue pull-right" type="submit" value="Follow" />
-      <div class="error alert alert-error hide"></div>
-    </form>
-    {{/guest_authenticated}}
-    {{/authenticated}}
-    
-    {{#guest_authenticated}}
-    <h1 class="page-header">
-      <small><a href='{{profileUrl}}'>{{formatted.domain_entity}}</a></small> is Following
-    </h1>
-    {{/guest_authenticated}}
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#config.authenticated}}
+        {{^config.guest_authenticated}}
+        <tr data-view='NewFollowingForm'></tr>
+        {{/config.guest_authenticated}}
+        {{/config.authenticated}}
 
-    {{^authenticated}}
-    <h1 class="page-header">
-      <small><a href='{{profileUrl}}'>{{formatted.domain_entity}}</a></small> is Following
-    </h1>
-    {{/authenticated}}
-    
-    <div class="followings" data-view="FollowingsList"></div>
+        {{#followings}}{{> _following}}{{/followings}}
+      </tbody>
+    </table>
   </div>
 </div>
