@@ -6,5 +6,8 @@ class HTTP.Middleware.SerializeJSON
     http.data = data
 
   processResponse: (http, xhr) =>
-    data = if xhr.status == 200 and xhr.response then JSON.parse(xhr.response) else null
+    if xhr.response && ((xhr.status in [200...400]) || (xhr.response?[0] == '{'))
+      data = JSON.parse(xhr.response)
+    else
+      data = null
     http.response_data = data
