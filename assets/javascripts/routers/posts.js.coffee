@@ -35,6 +35,7 @@ TentStatus.Routers.posts = new class PostsRouter extends TentStatus.Router
 
   siteFeed: (params) =>
     unless TentStatus.Helpers.isAppSubdomain()
+      return @navigate('/', {trigger: true, replace: true})
     TentStatus.setPageTitle @actions_titles.siteFeed
     new TentStatus.Views.SiteFeed
 

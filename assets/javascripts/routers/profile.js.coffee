@@ -10,12 +10,12 @@ TentStatus.Routers.profile = new class ProfileRouter extends TentStatus.Router
 
   currentProfile: (params) =>
     if TentStatus.Helpers.isAppSubdomain()
-      return @navigate('/global', {trigger:true})
+      return @navigate('/global', {trigger:true, replace: true})
 
     new TentStatus.Views.Profile entity: TentStatus.config.domain_entity.toString()
 
   profile: (params) =>
     if TentStatus.Helpers.isAppSubdomain()
-      return @navigate('/global', {trigger:true})
+      return @navigate('/global', {trigger:true, replace: true})
 
     new TentStatus.Views.Profile entity: params.entity
