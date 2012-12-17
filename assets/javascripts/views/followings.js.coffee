@@ -7,9 +7,15 @@ TentStatus.Views.Followings = class FollowingsView extends TentStatus.View
     @container = TentStatus.Views.container
     super
 
+    @elements = {}
+
+    @on 'ready', @init
     @on 'ready', @initAutoPaginate
 
     @initFollowingsCollection(entity: options.entity)
+
+  init: =>
+    @elements.tbody = DOM.querySelector('tbody', @el)
 
   initFollowingsCollection: (options = {}) =>
     unless options.client
@@ -55,7 +61,7 @@ TentStatus.Views.Followings = class FollowingsView extends TentStatus.View
 
   nextPage: =>
     @fetch {
-      before_id: @followings_collection.before-id
+      before_id: @followings_collection.before_id
     }, {
       append: true
     }
@@ -72,7 +78,7 @@ TentStatus.Views.Followings = class FollowingsView extends TentStatus.View
     for following in followings
       html += @constructor.partials['_following'].render(@followingContext(following), @constructor.partials)
 
-    DOM.appendHTML(@el, html)
+    DOM.appendHTML(@elements.tbody, html)
     @bindViews()
     @pagination_frozen = false
 
@@ -84,8 +90,9 @@ TentStatus.Views.Followings = class FollowingsView extends TentStatus.View
     if new_following_form = DOM.querySelector('tr[data-view=NewFollowingForm]', @el)
       DOM.insertHTMLAfter(html, new_following_form)
     else
-      DOM.prependHTML(@el, html)
+      DOM.prependHTML(@elements.tbody, html)
     @bindViews()
+    @pagination_frozen = false
 
   render: =>
     @pagination_frozen = false
@@ -97,7 +104,7 @@ TentStatus.Views.Followings = class FollowingsView extends TentStatus.View
 
   windowScrolled: =>
     return if @pagination_frozen || @last_page
-    last_following = DOM.querySelector('li.following:last-of-type', @el)
+    last_following = DOM.querySelector('tr.following:last-of-type', @el)
     return unless last_following
     last_following_offset_top = last_following.offsetTop || 0
     last_following_offset_top += last_following.offsetHeight || 0
