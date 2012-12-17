@@ -19,14 +19,14 @@
             
             {{#has_name}}{{name}}{{/has_name}}
             
-            {{#guest_authenticated}}
-            <div data-view='FollowButton'></div>
-            {{/guest_authenticated}}
-            
             {{#has_name}}
             <br />
             <a href="{{{entity}}}"><small>{{formatted.entity}}</small></a>
             {{/has_name}}
+
+            {{#config.guest_authenticated}}
+            <div data-view='FollowButton' class='pull-right'></div>
+            {{/config.guest_authenticated}}
           </h2>
 
           <div class="span6 no-offset has-overflow">
