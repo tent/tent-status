@@ -106,7 +106,7 @@ TentStatus.Views.NewPostForm = class NewPostFormView extends TentStatus.View
     !errors
 
   clearErrors: =>
-    for el in DOM.querySelectorAll('.error')
+    for el in DOM.querySelectorAll('.error', @el)
       DOM.removeClass(el, 'error')
     DOM.hide(@elements.errors)
 
