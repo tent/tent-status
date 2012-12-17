@@ -8,11 +8,9 @@
         </tr>
       </thead>
       <tbody>
-        {{#config.authenticated}}
-        {{^config.guest_authenticated}}
+        {{#entity_authenticated}}
         <tr data-view='NewFollowingForm'></tr>
-        {{/config.guest_authenticated}}
-        {{/config.authenticated}}
+        {{/entity_authenticated}}
 
         {{#followings}}{{> _following}}{{/followings}}
       </tbody>

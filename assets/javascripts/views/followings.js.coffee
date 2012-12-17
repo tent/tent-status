@@ -12,6 +12,7 @@ TentStatus.Views.Followings = class FollowingsView extends TentStatus.View
     @on 'ready', @init
     @on 'ready', @initAutoPaginate
 
+    @entity = options.entity
     @initFollowingsCollection(entity: options.entity)
 
   init: =>
@@ -72,6 +73,7 @@ TentStatus.Views.Followings = class FollowingsView extends TentStatus.View
   context: (followings = @followings_collection.models()) =>
     _.extend super,
       followings: _.map(followings, (following) => @followingContext(following))
+      entity_authenticated: TentStatus.config.authenticated && TentStatus.config.current_entity.assertEqual(@entity)
 
   appendRender: (followings) =>
     html = ""
