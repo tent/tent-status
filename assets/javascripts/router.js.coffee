@@ -20,7 +20,7 @@ class TentStatus.Router extends Backbone.Router
       @
 
   _routeParamNames: (route) =>
-    _.map @constructor.regex.named_param.exec(route), (name) => name.slice(1)
+    _.map route.match(@constructor.regex.named_param), (name) => name.slice(1)
 
   _extractNamedParameters: (route, fragment, param_names) =>
     values = _.map @_extractParameters(route, fragment), ((val) -> decodeURIComponent(val))
