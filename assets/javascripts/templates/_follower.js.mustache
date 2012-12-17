@@ -1,32 +1,9 @@
-<tr class="follower" data-id="{{id}}">
+<tr class="follower" data-view='Follower' data-cid='{{cid}}'>
   <td>
-    {{#avatar}}
-    <a href="{{profileUrl}}"><img class="avatar" src="{{avatar}}" /></a>
-    {{/avatar}}
-    <a href="{{profileUrl}}">{{name}}</a>{{#hasName}} – <a href="{{profileUrl}}">{{entity}}</a>{{/hasName}}
+    <div data-view='ProfileAvatar' data-model_cid='{{cid}}'></div>
+    <div data-view='ProfileName' data-model_cid='{{cid}}'></div>
   </td>
   <td>
-    {{#authenticated}}
-    {{^guest_authenticated}}
-    <div class="m-btn red remove-follower" data-confirm="Block {{name}}?">Block</div>
-    {{/guest_authenticated}}
-    {{/authenticated}}
-  </td>
-  <td>
-    {{#guest_authenticated}}
-    <form class="span2 pull-rght follow-button" data-view="ProfileFollowButton" method="POST">
-      <input name="entity" type="hidden" value="{{entity}}" />
-      <input class="m-btn blue pull-right" type="submit" value="Follow" />
-    </form>
-    {{/guest_authenticated}}
-    
-    {{#authenticated}}
-    {{^guest_authenticated}}
-    <form class="span2" data-view="ProfileFollowButton" method="POST">
-      <input name="entity" type="hidden" value="{{entity}}" />
-      <input class="m-btn blue" type="submit" value="Follow" />
-    </form>
-    {{/guest_authenticated}}
-    {{/authenticated}}
+    <div data-view='FollowButton'></div>
   </td>
 </tr>

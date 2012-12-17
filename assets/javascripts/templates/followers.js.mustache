@@ -1,58 +1,15 @@
-<div class="row solid-container">
-  <div class="span8 followers">
-    {{#followers.length}}
-
-    {{#guest_authenticated}}
-    <h1 class="page-header">
-      Followers of <small><a href='{{profileUrl}}'>{{formatted.domain_entity}}</a></small>
-    </h1>
-    {{/guest_authenticated}}
-    
-    {{^authenticated}}
-    <h1 class="page-header">
-      Followers of <small><a href='{{profileUrl}}'>{{formatted.domain_entity}}</a></small>
-    </h1>
-    {{/authenticated}}
-    
-    {{#authenticated}}
-    {{^guest_authenticated}}
-    <h1 class="page-header">Your Followers</h1>
-    {{/guest_authenticated}}
-    {{/authenticated}}
-    
+<div class="row solid-container followers">
+  <div class="span8">
     <table class="table table-striped">
       <thead>
         <tr>
           <th>Name</th>
           <th></th>
-          <th></th>
         </tr>
       </thead>
-      <tbody>{{#followers}}{{> _follower}}{{/followers}}</tbody>
+      <tbody>
+        {{#followers}}{{> _follower}}{{/followers}}
+      </tbody>
     </table>
-
-    {{/followers.length}}
-    
-    {{^followers.length}}
-
-    {{#guest_authenticated}}
-    <h1 class="page-header">
-      <small><a href='{{profileUrl}}'>{{formatted.domain_entity}}</a></small> doesn't have any followers yet
-    </h1>
-    {{/guest_authenticated}}
-    
-    {{#authenticated}}
-    {{^guest_authenticated}}
-    <h1 class="page-header">You don't have any Followers yet</h1>
-    {{/guest_authenticated}}
-    {{/authenticated}}
-
-    {{^authenticated}}
-    <h1 class="page-header">
-      <small><a href='{{profileUrl}}'>{{formatted.domain_entity}}</a></small> doesn't have any followers yet
-    </h1>
-    {{/authenticated}}
-    
-    {{/followers.length}}
   </div>
 </div>
