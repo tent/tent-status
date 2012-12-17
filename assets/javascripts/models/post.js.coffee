@@ -88,6 +88,9 @@ TentStatus.Models.Post = class PostModel extends TentStatus.Model
   isRepost: =>
     !!(@get('type') || '').match(/repost/)
 
+  entityMentioned: (entity) =>
+    _.any @get('mentions'), (m) => m.entity == entity
+
   postMentions: =>
     @post_mentions ?= _.select @get('mentions') || [], (m) => m.entity && m.post
 

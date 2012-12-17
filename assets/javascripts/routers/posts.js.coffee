@@ -3,6 +3,8 @@ TentStatus.Routers.posts = new class PostsRouter extends TentStatus.Router
     "" : "root"
     "posts" : "index"
     "global": "siteFeed"
+    "mentions" : "mentions"
+    ":entity/mentions" : "mentions"
     "posts/:id" : "post"
     "posts/:entity/:id" : "post"
   }
@@ -11,6 +13,7 @@ TentStatus.Routers.posts = new class PostsRouter extends TentStatus.Router
     'feed' : 'My Feed'
     'siteFeed': 'Site Feed'
     'post' : 'Conversation'
+    'mentions' : 'Mentions'
   }
 
   _initAuthorInfoView: =>
@@ -44,4 +47,10 @@ TentStatus.Routers.posts = new class PostsRouter extends TentStatus.Router
       return @navigate('/', {trigger: true, replace: true})
     TentStatus.setPageTitle @actions_titles.post
     new TentStatus.Views.SinglePost entity: (params.entity || TentStatus.config.domain_entity.toString()), id: params.id
+
+  mentions: (params) =>
+    if TentStatus.Helpers.isAppSubdomain()
+      return @navigate('/', {trigger: true, replace: true})
+    TentStatus.setPageTitle @actions_titles.mentions
+    new TentStatus.Views.Mentions entity: (params.entity || TentStatus.config.domain_entity.toString())
 
