@@ -24,9 +24,9 @@
             <a href="{{{entity}}}"><small>{{formatted.entity}}</small></a>
             {{/has_name}}
 
-            {{#config.guest_authenticated}}
+            {{^entity_authenticated}}
             <div data-view='FollowButton' class='pull-right'></div>
-            {{/config.guest_authenticated}}
+            {{/entity_authenticated}}
           </h2>
 
           <div class="span6 no-offset has-overflow">

@@ -21,6 +21,7 @@ TentStatus.Views.Profile = class ProfileView extends TentStatus.View
 
   context: (profile = @profile()) =>
     _.extend TentStatus.Views.AuthorInfo::context.apply(@, arguments),
+      entity_authenticated: TentStatus.config.authenticated && TentStatus.config.current_entity.assertEqual(@profile().get('entity'))
       has_name: !!profile.get('name')
       formatted:
         name: profile.get('name') || TentStatus.Helpers.formatUrlWithPath(profile.get('entity'))
