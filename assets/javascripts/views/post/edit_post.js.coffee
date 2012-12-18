@@ -16,7 +16,7 @@ TentStatus.Views.EditPost = class EditPostView extends TentStatus.View
       @constructor.instances.all[@_child_views.EditPostMentionsAutoCompleteTextarea?[0]]?.textarea_view?.focus()
 
     # inherit specific methods from NewPostForm
-    for method in ['submitWithValidation', 'initCharCounter', 'updateCharCounter', 'initValidation', 'validate', 'showErrors', 'clearErrors', 'buildPostAttributes', 'buildPostMentionsAttributes', 'buildPostPermissionsAttributes']
+    for method in ['initHotkeys', 'submitWithValidation', 'initCharCounter', 'updateCharCounter', 'initValidation', 'validate', 'showErrors', 'clearErrors', 'buildPostAttributes', 'buildPostMentionsAttributes', 'buildPostPermissionsAttributes']
       do (method) =>
         @[method] = => TentStatus.Views.NewPostForm::[method].apply(@, arguments)
 
@@ -43,6 +43,7 @@ TentStatus.Views.EditPost = class EditPostView extends TentStatus.View
 
     @initCharCounter()
     @initValidation()
+    @initHotkeys()
 
     DOM.on(@elements.form, 'submit', @submitWithValidation)
     DOM.on(@elements.delete, 'click', @confirmDelete)

@@ -34,8 +34,19 @@ TentStatus.Views.NewPostForm = class NewPostFormView extends TentStatus.View
 
     @initCharCounter()
     @initValidation()
+    @initHotkeys()
 
     DOM.on(@elements.form, 'submit', @submitWithValidation)
+
+  initHotkeys: =>
+    ## cmd/ctr enter to submit
+    DOM.on @elements.textarea, 'keydown', (e) =>
+      if (e.metaKey || e.ctrlKey) && e.keyCode == 13
+        e.preventDefault()
+        @submitWithValidation()
+        false
+      else
+        true
 
   initCharCounter: =>
     @elements.char_counter = DOM.querySelector('.char-limit', @el)
