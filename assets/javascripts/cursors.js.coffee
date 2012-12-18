@@ -9,6 +9,9 @@ TentStatus.Cursors = _.extend {}, Backbone.Events, {
         post_entity: post_entity
         post_id: post_id
       }
+      data.permissions = {
+        public: false
+      }
       new HTTP 'PUT', "#{TentStatus.config.tent_api_root}/profile/#{encodeURIComponent type}", data, (res, xhr) =>
         return callback?(data.cursors[name], xhr) unless xhr.status == 200
         cursor = res[type]?.cursors?[name]
