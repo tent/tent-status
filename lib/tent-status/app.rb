@@ -203,9 +203,9 @@ module Tent
           :get_app => lambda { |entity| User.get_app_from_entity(entity) },
           :on_app_created => lambda { |app, entity| User.app_created_for_entity(app, entity) },
           :app => {
-            :name => Tent::Status.settings.app_name || '',
+            :name => Tent::Status.settings.app_name || 'TentStatus Standalone',
             :icon => Tent::Status.settings.app_icon || '',
-            :url =>  Tent::Status.settings.app_url || 'http://localhost:9292',
+            :url =>  Tent::Status.settings.app_url || 'https://apps.tent.is/status',
             :description => Tent::Status.settings.app_description || 'Manage status posts, followers, and followings',
             :scopes => {
               "read_posts" => "See status posts",
