@@ -5,7 +5,7 @@
 //= require_self
 //= require permissions
 
-@import './mixins.css.scss';
+@import './common.css.scss';
 
 @font-face {
   font-family: 'source_sans_proregular';
@@ -17,11 +17,6 @@
   font-weight: normal;
   font-style: normal;
 }
-
-$black: #00091a;
-$white: #fefefe;
-$blue: #00a6ff;
-$gray: #DBDEE4;
 
 html, body {
   height: 100%;
@@ -57,7 +52,12 @@ body {
   }
 }
 
+.fetch-pool {
+  width: $content_width;
+}
+
 #main {
+  width: $content_width;
   margin-left: -20px;
   padding-left: 40px;
   @include box_shadow(0px 0px 20px rgba(50, 50, 50, 0.75));
@@ -167,6 +167,10 @@ body {
   }
 }
 
+ul.posts {
+  width: $content_width;
+}
+
 li.post {
   &.conversation {
     border-top: 3px solid $gray;
@@ -179,6 +183,14 @@ li.post {
       li.post {
         background-color: $gray;
       }
+    }
+  }
+
+  .post-container {
+    width: $post_body_width;
+
+    .post-container {
+      width: $repost_width;
     }
   }
 

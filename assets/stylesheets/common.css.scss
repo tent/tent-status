@@ -1,0 +1,25 @@
+@import './mixins.css.scss';
+
+$black: #00091a;
+$gray: #DBDEE4;
+$blue: #00a6ff;
+$green: #35aa47;
+$white: #fefefe;
+
+$span1: 60px;
+$span2: $span1 + 80px;
+$span3: $span2 + 80px;
+$span4: $span3 + 80px;
+$span5: $span4 + 80px;
+$span6: $span5 + 80px;
+$span7: $span6 + 80px;
+$span8: $span7 + 80px;
+$span9: $span8 + 80px;
+$span10: $span9 + 80px;
+$span11: $span10 + 80px;
+$span12: $span11 + 80px;
+
+$content_width: $span6;
+$post_body_width: $span5;
+$repost_width: $post_body_width - 60px;
+
