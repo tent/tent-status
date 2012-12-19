@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="span8 no-offset">
+  <div class="span6 no-offset">
     <div class="page-header">
       <div class="row">
         <div class="span2">
@@ -11,7 +11,7 @@
             <div data-view='AuthorInfoPostsCount'></div>
           </div>
         </div>
-        <div class="span6 no-offset">
+        <div class="span4 no-offset">
           <h2 class="condensed">
             {{^has_name}}
             <a href="{{{entity}}}">{{name}}</a>
@@ -29,7 +29,7 @@
             {{/entity_authenticated}}
           </h2>
 
-          <div class="span6 no-offset has-overflow">
+          <div class="span4 no-offset has-overflow">
             <p>{{formatted.bio}}</p>
           </div>
 
@@ -47,5 +47,5 @@
 {{/config.authenticated}}
 
 <div class="row">
-  <ul class="unstyled posts span8" data-view="ProfilePostsFeed"></ul>
+  <ul class="unstyled posts span6" data-view="ProfilePostsFeed"></ul>
 </div>
