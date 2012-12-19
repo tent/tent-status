@@ -156,8 +156,6 @@ body {
 }
 
 li.post {
-  border-top: 1px solid $gray;
-
   &.conversation {
     border-top: 3px solid $gray;
     border-bottom: 4px solid $gray;
@@ -190,6 +188,7 @@ li.post {
 
   .actions {
     .action {
+      visibility: hidden;
       margin-right: 60px;
       i {
         background-size: 14px 14px;
@@ -213,6 +212,14 @@ li.post {
         &.conversation {
           background-image: url(<%= asset_path('conversation.png') %>);
         }
+      }
+    }
+  }
+
+  &:hover {
+    > .row > .post-container > .actions {
+      .action {
+        visibility: visible;
       }
     }
   }
