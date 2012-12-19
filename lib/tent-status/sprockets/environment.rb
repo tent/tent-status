@@ -13,7 +13,7 @@ module Tent
           end
         end
 
-        paths = %w{ javascripts stylesheets images }
+        paths = %w{ javascripts stylesheets images fonts }
         paths.each do |path|
           @assets.append_path(File.join(File.expand_path('../../../../', __FILE__), "assets/#{path}"))
         end
