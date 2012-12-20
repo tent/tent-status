@@ -56,6 +56,14 @@ body {
   width: $content_width;
 }
 
+.content-width {
+  width: $content_width;
+}
+
+.profile-left {
+  width: $post_body_width - 80px;
+}
+
 #main {
   width: $content_width;
   margin-left: -20px;
@@ -66,7 +74,7 @@ body {
 #author-info {
   position: absolute;
   top: 39px;
-  left: 640px;
+  left: $content_width + 180px;
   width: 170px;
   padding: 6px;
   padding-top: 0px;
