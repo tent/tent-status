@@ -13,6 +13,16 @@
   {{#current_user_owns_post}}
   <span class='action' data-view='PostActionEdit'><i class='edit' title='Edit'></i></span>
   {{/current_user_owns_post}}
+
+  {{^is_repost}}
+  {{#in_reply_to}}
+  {{#config.authenticated}}
+  <div class="post-sub-header action">
+    <a href="{{url}}" data-view='ParentPostLink'><small>in reply to {{name}}</small></a>
+  </div>
+  {{/config.authenticated}}
+  {{/in_reply_to}}
+  {{/is_repost}}
 </div>
 {{/config.authenticated}}
 
