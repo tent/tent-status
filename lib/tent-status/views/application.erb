@@ -36,6 +36,10 @@
       </div>
     </div>
 
+    <div id='main-nav'>
+      <%= erb :nav %>
+    </div>
+
     <div class='h-navbar-fixed-top'>
       <div class='h-navbar-inner'>
       </div>
@@ -47,10 +51,6 @@
       <% end %>
 
       <div class='row'>
-        <div id='main-nav'>
-          <%= erb :nav %>
-        </div>
-
         <div id='main' class='pull-left'>
           <%= yield if block_given? %>
         </div>
