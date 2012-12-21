@@ -1,27 +1,27 @@
 <ul class='unstyled'>
+  <li class='brand'>
+    <h1>TentStatus</h1>
+  </li>
+
   <% if current_user || guest_user %>
     <li class='<%= nav_selected_class('/') %> timeline'>
       <% if tent_host_domain %>
-        <a href="<%= username_entity %>"><div class='icon'>&nbsp;</div>Timeline</a>
+        <a href="<%= username_entity %>">Timeline</a>
       <% else %>
-        <a href="<%= full_path('/') %>"><div class='icon'>&nbsp;</div>Timeline</a>
+        <a href="<%= full_path('/') %>">Timeline</a>
       <% end %>
     </li>
     <li class="<%= nav_selected_class('/mentions') %> mentions">
-      <a href="<%= full_url('/mentions') %>"><div class='icon'>&nbsp;</div>Mentions</a>
+      <a href="<%= full_url('/mentions') %>">Mentions</a>
     </li>
     <li class="<%= nav_selected_class('/profile') %> profile">
-      <a href="<%= full_url('/profile') %>"><div class='icon'>&nbsp;</div>Profile</a>
+      <a href="<%= full_url('/profile') %>">Profile</a>
     </li>
   <% end %>
 
   <% if tent_host_domain %>
     <li class='<%= nav_selected_class('/global') %> site_feed'>
-      <a href="https://app.<%= tent_host_domain %>/global"><div class='icon'>&nbsp;</div>Site Feed</a>
+      <a href="https://app.<%= tent_host_domain %>/global">Site Feed</a>
     </li>
   <% end %>
-
-  <li class='search'>
-    <a href="https://skate.io"><div class='icon'>&nbsp;</div>Search</a>
-  </li>
 </ul>

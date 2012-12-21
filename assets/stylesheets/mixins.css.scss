@@ -4,6 +4,12 @@
   border-radius: $amount;
 }
 
+@mixin rotate($amount) {
+  -webkit-transform:rotate($amount);
+  -moz-transform:rotate($amount);
+  -o-transform: rotate($amount);
+}
+
 @mixin border-bottom-left-radius($amount) {
   -webkit-border-bottom-left-radius: $amount;
   -moz-border-bottom-left-radius: $amount;

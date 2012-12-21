@@ -18,12 +18,26 @@
   </head>
 
   <body>
-    <div class='navbar navbar-fixed-top'>
-      <div class='navbar-inner'>
-        <h1>
-          <a href='https://tent.is' class='pull-left'><div class='icon'>&nbsp;</div></a>
-          <a href='<%= full_path('/admin') %>' class='pull-right'><div class='settings'>&nbsp;</div></a>
-        </h1>
+    <div class='v-navbar-fixed-left'>
+      <div class='v-navbar-inner'>
+        <ul class='unstyled'>
+          <li>
+            <a href='https://tent.is'><div class='icon'>&nbsp;</div></a>
+          </li>
+
+          <li class='search'>
+            <a href="https://skate.io"><div class='icon'>&nbsp;</div></a>
+          </li>
+
+          <li>
+            <a href='<%= full_path('/admin') %>'><div class='settings'>&nbsp;</div></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class='h-navbar-fixed-top'>
+      <div class='h-navbar-inner'>
       </div>
     </div>
 
@@ -33,11 +47,10 @@
       <% end %>
 
       <div class='row'>
-        <div id='main-nav' class='span1'>
+        <div id='main-nav'>
           <%= erb :nav %>
         </div>
 
-        <div class='span2'>&nbsp;</div>
         <div id='main' class='pull-left'>
           <%= yield if block_given? %>
         </div>
