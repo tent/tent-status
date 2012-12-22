@@ -455,7 +455,7 @@ module Tent
 
       if res
         if res.success?
-          json res.body
+          [res.status, res.headers, res.body.to_json]
         else
           status res.status
         end
