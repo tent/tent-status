@@ -386,6 +386,17 @@ module Tent
       [200, { 'Content-Type' => 'application/json' }, [data.to_json]]
     end
 
+    def self.match(route, &block)
+      options(route, &block)
+      head(route, &block)
+      get(route, &block)
+      post(route, &block)
+      put(route, &block)
+      patch(route, &block)
+      post(route, &block)
+      delete(route, &block)
+    end
+
     if ENV['RACK_ENV'] != 'production' || !ENV['STATUS_CDN_URL']
       get '/assets/*' do
         asset = params[:splat].first
@@ -429,7 +440,7 @@ module Tent
       end
     end
 
-    get '/tent-proxy/:proxy_entity/*' do
+    match '/tent-proxy/:proxy_entity/*' do
       entity = params.delete('proxy_entity')
 
       if entity == current_entity
@@ -445,10 +456,11 @@ module Tent
       end
 
       begin
+        method = env['REQUEST_METHOD'] || 'GET'
         path = env['PATH_INFO'].sub(%r{\A/tent-proxy/[^/]+/}, '')
         query_string = env['QUERY_STRING']
         path << "?#{query_string}" unless query_string.to_s == ""
-        res = client.http.get(path)
+        res = client.http.send(method.downcase, path)
       rescue Faraday::Error::ConnectionFailed
         halt 404
       end
