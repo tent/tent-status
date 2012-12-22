@@ -9,6 +9,8 @@ TentStatus.Collection = class Collection
         @trigger('fetch:failed', res, xhr)
         return
 
+      @parseLinkHeader(xhr.getResponseHeader('Link'))
+
       if options.append
         models = @append(res)
       else
@@ -16,6 +18,29 @@ TentStatus.Collection = class Collection
 
       options.success?(models, xhr, @)
       @trigger('fetch:success', @)
+
+  fetchPrev: (options = {}) =>
+    unless @pagination_params.prev
+      options.error?([], {})
+      return []
+    @fetch(@pagination_params.prev, options)
+
+  fetchNext: (options = {}) =>
+    unless @pagination_params.next
+      options.error?([], {})
+      return []
+    @fetch(@pagination_params.next, options)
+
+  parseLinkHeader: (link_header="") =>
+    @pagination_params = {}
+    parts = link_header.split(/,\s*/)
+    for part in parts
+      continue unless part.match(/<([^>]+)>;\s*rel=['"]([^'"]+)['"]/)
+      continue unless RegExp.$2 in ['next', 'prev']
+      path = RegExp.$1
+      params = TentStatus.History::deserializeParams(path.split('?')[1])
+      @pagination_params[RegExp.$2] = params
+    @pagination_params
 
   reset: (resources_attribtues = []) =>
     @model_ids = []
