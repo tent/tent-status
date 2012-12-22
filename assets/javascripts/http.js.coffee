@@ -24,7 +24,7 @@ class @HTTP
     if @method in ['GET', 'HEAD']
       params = for k,v of @data
         v = if v and typeof v == 'object' and v.length
-          _.map(v, (_i) -> encodeURIComponent(_i)).join(',')
+          encodeURIComponent(v.join(','))
         else
           encodeURIComponent(v)
         "#{encodeURIComponent(k)}=#{v}"
