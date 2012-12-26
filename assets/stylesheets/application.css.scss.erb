@@ -216,13 +216,6 @@ li.post {
     font-size: 0.875rem; /* 14/16 */
   }
 
-  .post.repost {
-    margin-left: -50px;
-    .post-container {
-      width: 550px;
-    }
-  }
-
   .actions {
     .action {
       visibility: hidden;
@@ -255,7 +248,7 @@ li.post {
   }
 
   &:hover {
-    > .row > .post-container > .actions {
+    > .row > .post-container .actions {
       .action {
         visibility: visible;
       }
