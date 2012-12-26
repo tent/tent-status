@@ -56,6 +56,7 @@ TentStatus.Model = class Model
 
   detach: =>
     @constructor.detach(@cid)
+    @trigger 'detach', @
 
   constructor: (attributes, @options = {}) ->
     @generateCid()

@@ -21,6 +21,7 @@ TentStatus.View = class View
 
   detach: =>
     @constructor.detach(@cid)
+    @trigger 'detach', @
 
   constructor: (options = {}) ->
     @generateCid()

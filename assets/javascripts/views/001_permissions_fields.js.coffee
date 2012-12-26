@@ -22,7 +22,7 @@ TentStatus.Views.PermissionsFields = class PermissionsFieldsView extends TentSta
     @picker_view.input.focusAtEnd() unless DOM.match(@parent_view.textarea, ':focus')
 
   initOptions: (@options_view) =>
-    @options_view.on 'ready', => @initInput()
+    @options_view.on 'ready', (=> @initInput()), @
 
     @bindEvents()
     @hide()

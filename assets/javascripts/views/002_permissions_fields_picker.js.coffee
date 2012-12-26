@@ -8,7 +8,7 @@ TentStatus.Views.PermissionsFieldsPicker = class PermissionsFieldsPickerView ext
     @option_views = []
     @on 'ready', @initOptions
 
-    @parent_view.on 'change:picker_options', => @render(); @show()
+    @parent_view.on 'change:picker_options', (=> @render(); @show()), @
     @hide()
     @render()
 

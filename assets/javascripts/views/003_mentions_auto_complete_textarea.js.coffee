@@ -12,6 +12,7 @@ TentStatus.Views.MentionsAutoCompleteTextarea = class MentionsAutoCompleteTextar
           value: entity
           group: false
         )
+    , @
 
     @on 'init:PermissionsFieldsPicker', @initPickerView
     @on 'ready', @initAutoComplete
