@@ -375,6 +375,19 @@ module Tent
       rescue Faraday::Error::ConnectionFailed
         []
       end
+
+      def cache_entity_server_url(entity, server_url)
+        session["#{entity}-server_url"] = server_url
+        session["#{entity}-server_url_expires"] = Time.now.to_i + 600 # expire after 10 minutes
+      end
+
+      def entity_server_url(entity)
+        unless (server_url = session["#{entity}-server_url"]) && (expires_at = session["#{entity}-server_url_expires"]) && (expires_at.to_i > Time.now.to_i)
+          server_url = discover(entity).last
+          cache_entity_server_url(entity, server_url)
+        end
+        server_url
+      end
     end
 
     def json(data)
@@ -412,9 +425,10 @@ module Tent
     end
 
     get '/tent-proxy/:proxy_entity/profile' do
-      profile, server_url = discover(params[:proxy_entity])
+      entity = params.delete('proxy_entity')
+      profile, server_url = discover(entity)
       if server_url
-        session["#{params[:proxy_entity]}-server_url"] = server_url
+        cache_entity_server_url(entity, server_url)
       end
 
       if profile
@@ -426,11 +440,8 @@ module Tent
 
     get '/tent-proxy/:proxy_entity/*' do
       entity = params.delete('proxy_entity')
-      unless server_url = session["#{entity}-server_url"]
-        server_url = discover(entity).last
-        halt 404 unless server_url
-        session["#{entity}-server_url"] = server_url
-      end
+      server_url = entity_server_url(entity)
+      halt 404 unless server_url
 
       client = ::TentClient.new(server_url)
       begin
