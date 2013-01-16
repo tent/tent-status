@@ -314,19 +314,15 @@ module Tent
 
     helpers do
       def host_scheme
-        ENV['RACK_ENV'] == 'production' ? 'https://' : 'http://'
+        (env['HTTP_X_FORWARDED_PROTO'] || env['rack.url_scheme']).sub(%r{(://)?\Z}, '://')
       end
 
       def host_domain
-        url = env['HTTP_HOST']
-        if (port = self_port) && url !~ /:\d+\Z/
-          url += ":#{port}"
-        end
-        url
+        env['HTTP_HOST']
       end
 
       def safe_origin?
-        regex = %r{\A#{Regexp.escape(host_scheme)}([^/]*)#{Regexp.escape(tent_host_domain || host_domain)}}
+        regex = %r{\A#{Regexp.escape(host_scheme)}([^/]*)#{Regexp.escape(host_domain)}}
         !!((!env['HTTP_ORIGIN'] || env['HTTP_ORIGIN'] =~ regex) &&
           env['HTTP_REFERER'] && env['HTTP_REFERER'] =~ regex)
       end
