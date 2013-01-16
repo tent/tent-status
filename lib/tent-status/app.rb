@@ -314,7 +314,7 @@ module Tent
 
     helpers do
       def host_scheme
-        (env['HTTP_X_FORWARDED_PROTO'] || env['rack.url_scheme']).sub(%r{(://)?\Z}, '://')
+        ENV['RACK_ENV'] == 'production' ? 'https://' : 'http://'
       end
 
       def host_domain
