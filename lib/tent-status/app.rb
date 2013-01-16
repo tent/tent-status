@@ -166,6 +166,8 @@ module Tent
       end
 
       get '/api/posts' do
+        halt 403 unless safe_origin?
+
         get_real_post_ids!(params)
         dataset = post_dataset(params)
 
@@ -175,6 +177,8 @@ module Tent
       end
 
       get '/api/posts/:post_id' do
+        halt 403 unless safe_origin?
+
         get_real_post_ids!(params)
         dataset = post_dataset(params)
 
@@ -309,6 +313,24 @@ module Tent
     end
 
     helpers do
+      def host_scheme
+        (env['HTTP_X_FORWARDED_PROTO'] || env['rack.url_scheme']).sub(%r{(://)?\Z}, '://')
+      end
+
+      def host_domain
+        url = env['HTTP_HOST']
+        if (port = self_port) && url !~ /:\d+\Z/
+          url += ":#{port}"
+        end
+        url
+      end
+
+      def safe_origin?
+        regex = %r{\A#{Regexp.escape(host_scheme)}(:?[^/]*)#{Regexp.escape(host_domain)}}
+        !!((!env['HTTP_ORIGIN'] || env['HTTP_ORIGIN'] =~ regex) &&
+          env['HTTP_REFERER'] && env['HTTP_REFERER'] =~ regex)
+      end
+
       def user_brand
         return unless current_entity
         current_entity.to_s.sub(%r{\Ahttps?://([^/]+).*?\z}) { |m| $1 }
