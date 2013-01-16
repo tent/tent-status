@@ -326,7 +326,7 @@ module Tent
       end
 
       def safe_origin?
-        regex = %r{\A#{Regexp.escape(host_scheme)}(:?[^/]*)#{Regexp.escape(host_domain)}}
+        regex = %r{\A#{Regexp.escape(host_scheme)}([^/]*)#{Regexp.escape(tent_host_domain || host_domain)}}
         !!((!env['HTTP_ORIGIN'] || env['HTTP_ORIGIN'] =~ regex) &&
           env['HTTP_REFERER'] && env['HTTP_REFERER'] =~ regex)
       end
