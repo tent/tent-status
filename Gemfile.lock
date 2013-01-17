@@ -110,6 +110,7 @@ GEM
       rack
     rack_csrf (2.4.0)
       rack (>= 0.9)
+    rake (10.0.3)
     ruby-hmac (0.4.0)
     sass (3.2.3)
     sequel (3.41.0)
@@ -144,6 +145,7 @@ DEPENDENCIES
   mime-types
   omniauth-tent
   puma
+  rake
   tent-client!
   tent-status!
   yui-compressor

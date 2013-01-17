@@ -12,4 +12,5 @@ group :development, :assets do
   gem 'asset_sync', :git => 'git://github.com/titanous/asset_sync.git', :branch => 'fix-mime'
   gem 'mime-types'
   gem 'yui-compressor'
+  gem 'rake'
 end
