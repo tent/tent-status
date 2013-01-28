@@ -50,9 +50,10 @@ Use [Homebrew](http://mxcl.github.com/homebrew/) or [Postgres.app](http://postgr
 
 ```shell
 brew install postgresql
+initdb /usr/local/var/postgres
+postgres -D /usr/local/var/postgres
 createdb tent_status
 ```
-
 
 ### Bundler
 
