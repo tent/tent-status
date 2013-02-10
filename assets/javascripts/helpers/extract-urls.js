@@ -50,11 +50,6 @@
   }
 
   var fromCode = String.fromCharCode;
-  var INVALID_CHARS = [
-    fromCode(0xFFFE),
-    fromCode(0xFEFF), // BOM
-    fromCode(0xFFFF) // Special
-  ];
 
   var INVALID_CHARS = [
     fromCode(0xFFFE),
