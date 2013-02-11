@@ -85,6 +85,7 @@ GEM
       sprockets (>= 2.0.3)
       tilt (>= 1.3.3)
     i18n (0.6.1)
+    json (1.7.7)
     kicker (2.6.1)
       listen
     listen (0.5.0)
@@ -141,6 +142,7 @@ PLATFORMS
 DEPENDENCIES
   addressable
   asset_sync!
+  json
   kicker
   mime-types
   omniauth-tent
