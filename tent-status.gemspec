@@ -4,8 +4,8 @@ Gem::Specification.new do |gem|
   gem.version       = '0.0.1'
   gem.authors       = ["Jesse Stuart"]
   gem.email         = ["jessestuart@gmail.com"]
-  gem.description   = %q{Tent app for 140 character posts. Uses Sinatra/Sprockets + CoffeeScript}
-  gem.summary       = %q{Tent app for 140 character posts}
+  gem.description   = %q{Tent app for 256 character posts. Uses Sinatra/Sprockets + CoffeeScript}
+  gem.summary       = %q{Tent app for 256 character posts}
   gem.homepage      = ""
 
   gem.files         = `git ls-files`.split($/)
