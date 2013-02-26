@@ -481,6 +481,10 @@ module Tent
       erb :iframe_cache
     end
 
+    post '/webhooks' do
+      status 200
+    end
+
     get '*' do
       erb :application
     end
