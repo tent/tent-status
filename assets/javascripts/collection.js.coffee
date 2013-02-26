@@ -3,7 +3,8 @@ TentStatus.Collection = class Collection
 
   fetch: (params = {}, options = {}) =>
     options.client ?= @client || HTTP.TentClient.currentEntityClient()
-    options.client.get @constructor.model.resource_path, _.extend({}, (@params || @constructor.params), params), (res, xhr) =>
+    params = _.extend({}, (@params || @constructor.params), params)
+    options.client.get @constructor.model.resource_path, params, (res, xhr) =>
       unless xhr.status == 200
         options.error?(res, xhr)
         @trigger('fetch:failed', res, xhr)
@@ -20,14 +21,14 @@ TentStatus.Collection = class Collection
       @trigger('fetch:success', @)
 
   fetchPrev: (options = {}) =>
-    unless @pagination_params.prev
-      options.error?([], {})
+    unless @pagination_params?.prev
+      options.error?([])
       return []
     @fetch(@pagination_params.prev, options)
 
   fetchNext: (options = {}) =>
-    unless @pagination_params.next
-      options.error?([], {})
+    unless @pagination_params?.next
+      options.error?([])
       return []
     @fetch(@pagination_params.next, options)
 

@@ -8,7 +8,7 @@ event_splitter = /\s+/
 
 TentStatus.Events = {
   on: (events, callback, context) ->
-    events = events.split(event_splitter)
+    events = events?.split(event_splitter) unless _.isArray(events)
     @_events ?= {}
     for name in events
       do (name) =>
@@ -22,7 +22,7 @@ TentStatus.Events = {
     @ # chainable
 
   once: (events, callback, context) ->
-    events = events.split(event_splitter)
+    events = events?.split(event_splitter) unless _.isArray(events)
 
     for name in events
       do (name) =>
@@ -34,7 +34,7 @@ TentStatus.Events = {
     @ # chainable
 
   off: (events, callback, context) ->
-    events = events?.split(event_splitter)
+    events = events?.split(event_splitter) unless _.isArray(events)
 
     if !events
       return @_events = {}
@@ -54,7 +54,7 @@ TentStatus.Events = {
     @ # chainable
 
   trigger: (events, args...) ->
-    events = events?.split(event_splitter)
+    events = events?.split(event_splitter) unless _.isArray(events)
 
     for name in events
       continue unless bindings = @_events?[name]
