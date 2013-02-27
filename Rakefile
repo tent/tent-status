@@ -6,6 +6,7 @@ require 'slim'
 require 'hogan_assets'
 require 'uglifier'
 require 'yui/compressor'
+require 'marbles-js'
 
 namespace :assets do
   Rake::SprocketsTask.new do |t|
@@ -14,6 +15,7 @@ namespace :assets do
     %w{ javascripts stylesheets images fonts }.each do |path|
       t.environment.append_path("assets/#{path}")
     end
+    MarblesJS.sprockets_setup(t.environment)
     t.environment.js_compressor = Uglifier.new
     t.environment.css_compressor = YUI::CssCompressor.new
     t.output      = "./public/assets"
@@ -23,7 +25,6 @@ namespace :assets do
     t.environment.context_class.class_eval do
       include SprocketsHelpers
     end
-    MarblesJS.sprockets_setup(t.environment)
   end
 
   task :gzip_assets => :assets do
