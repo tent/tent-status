@@ -39,7 +39,7 @@ Marbles.Views.PostsFeed = class PostsFeedView extends TentStatus.View
     )
 
   nextPage: =>
-    @fetch(@posts_collection.pagination_params.next, append: true)
+    @posts_collection.fetchNext(append: true)
 
   postContext: (post) =>
     Marbles.Views.Post::context(post)
