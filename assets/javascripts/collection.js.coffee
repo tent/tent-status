@@ -15,7 +15,7 @@ TentStatus.Collection = class Collection extends Marbles.Collection
       else
         models = @reset(res)
 
-      options.success?(models, xhr, @)
+      options.success?(models, xhr, params, options, @)
       @trigger('fetch:success', @)
 
   fetchPrev: (options = {}) =>

@@ -23,23 +23,26 @@ Marbles.Views.PostsFeed = class PostsFeedView extends TentStatus.View
 
     TentStatus.trigger 'loading:start'
     @posts_collection.fetch params, _.extend(options,
-      success: (posts) =>
-        TentStatus.trigger 'loading:stop'
-
-        unless posts.length
-          @last_page = true
-
-        if options.append
-          @appendRender(posts)
-        else
-          @render()
-
-      error: (res, xhr) =>
-        TentStatus.trigger 'loading:stop'
+      success: @fetchSuccess
+      error: @fetchError
     )
 
+  fetchSuccess: (posts, xhr, params, options) =>
+    TentStatus.trigger 'loading:stop'
+
+    unless posts.length
+      @last_page = true
+
+    if options.append
+      @appendRender(posts)
+    else
+      @render()
+
+  fetchError: (res, xhr) =>
+    TentStatus.trigger 'loading:stop'
+
   nextPage: =>
-    @posts_collection.fetchNext(append: true)
+    @posts_collection.fetchNext(append: true, success: @fetchSuccess, error: @fetchError)
 
   postContext: (post) =>
     Marbles.Views.Post::context(post)
