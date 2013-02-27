@@ -23,6 +23,7 @@ namespace :assets do
     t.environment.context_class.class_eval do
       include SprocketsHelpers
     end
+    MarblesJS.sprockets_setup(t.environment)
   end
 
   task :gzip_assets => :assets do
