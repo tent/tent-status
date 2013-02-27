@@ -105,7 +105,7 @@ GEM
       listen
     listen (0.5.0)
     mime-types (1.19)
-    multi_json (1.3.6)
+    multi_json (1.6.1)
     multipart-post (1.1.5)
     net-scp (1.0.4)
       net-ssh (>= 1.99.1)
@@ -118,7 +118,7 @@ GEM
     pg (0.14.1)
     puma (1.6.3)
       rack (~> 1.2)
-    rack (1.4.1)
+    rack (1.5.2)
     rack-protection (1.2.0)
       rack
     rack_csrf (2.4.0)
@@ -134,7 +134,7 @@ GEM
     slim (1.3.4)
       temple (~> 0.5.5)
       tilt (~> 1.3.3)
-    sprockets (2.8.1)
+    sprockets (2.9.0)
       hike (~> 1.2)
       multi_json (~> 1.0)
       rack (~> 1.0)
