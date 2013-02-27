@@ -1,1 +1,1 @@
-TentStatus.Helpers.InputSelection = DOM.InputSelection
+TentStatus.Helpers.InputSelection = Marbles.DOM.InputSelection

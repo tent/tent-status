@@ -1,6 +1,6 @@
-TentStatus.Views.PostsFeed = class PostsFeedView extends TentStatus.View
+Marbles.Views.PostsFeed = class PostsFeedView extends TentStatus.View
   @template_name: 'posts_feed'
-  @partial_names: ['_reply_form', '_post', '_post_inner', '_post_inner_actions']
+  @partial_names: ['_post_reply_form', '_post', '_post_inner', '_post_inner_actions']
   @view_name: 'posts_feed'
 
   constructor: (options = {}) ->
@@ -42,7 +42,7 @@ TentStatus.Views.PostsFeed = class PostsFeedView extends TentStatus.View
     @fetch(@posts_collection.pagination_params.next, append: true)
 
   postContext: (post) =>
-    TentStatus.Views.Post::context(post)
+    Marbles.Views.Post::context(post)
 
   context: (posts = @posts_collection.models()) =>
     posts: _.map(posts, (post) => @postContext(post))
@@ -52,7 +52,7 @@ TentStatus.Views.PostsFeed = class PostsFeedView extends TentStatus.View
     for post in posts
       html += @constructor.partials['_post'].render(@postContext(post), @constructor.partials)
 
-    DOM.appendHTML(@el, html)
+    Marbles.DOM.appendHTML(@el, html)
     @bindViews()
     @pagination_frozen = false
 
@@ -61,7 +61,7 @@ TentStatus.Views.PostsFeed = class PostsFeedView extends TentStatus.View
     for post in posts
       html += @constructor.partials['_post'].render(@postContext(post), @constructor.partials)
 
-    DOM.prependHTML(@el, html)
+    Marbles.DOM.prependHTML(@el, html)
     @bindViews()
 
   render: =>
@@ -76,11 +76,11 @@ TentStatus.Views.PostsFeed = class PostsFeedView extends TentStatus.View
 
   windowScrolled: =>
     return if @pagination_frozen || @last_page
-    last_post = DOM.querySelector('li.post:last-of-type', @el)
+    last_post = Marbles.DOM.querySelector('li.post:last-of-type', @el)
     return unless last_post
     last_post_offset_top = last_post.offsetTop || 0
     last_post_offset_top += last_post.offsetHeight || 0
-    bottom_position = window.scrollY + DOM.windowHeight()
+    bottom_position = window.scrollY + Marbles.DOM.windowHeight()
 
     if last_post_offset_top <= bottom_position
       clearTimeout @_auto_paginate_timeout

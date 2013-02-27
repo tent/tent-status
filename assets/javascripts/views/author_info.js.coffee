@@ -1,4 +1,4 @@
-TentStatus.Views.AuthorInfo = class AuthorInfoView extends TentStatus.View
+Marbles.Views.AuthorInfo = class AuthorInfoView extends TentStatus.View
   @template_name: 'author_info'
   @partial_names: []
   @view_name: 'author_info'
@@ -8,8 +8,8 @@ TentStatus.Views.AuthorInfo = class AuthorInfoView extends TentStatus.View
 
     @fetchProfile()
 
-    TentStatus.Views.Post.on 'click', (view, e) =>
-      DOM.setStyle(@el, 'top', "#{view.el.offsetTop}px")
+    Marbles.Views.Post.on 'click', (view, e) =>
+      Marbles.DOM.setStyle(@el, 'top', "#{view.el.offsetTop}px")
       @fetchProfile(view.post().get('entity'))
 
   fetchProfile: (entity = TentStatus.config.current_entity.toString()) =>

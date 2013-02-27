@@ -1,4 +1,4 @@
-TentStatus.Views.Repost = class RepostView extends TentStatus.Views.Post
+Marbles.Views.Repost = class RepostView extends Marbles.Views.Post
   @template_name: '_repost'
   @partial_names: ['_post_inner', '_post_inner_actions']
   @view_name: 'repost'

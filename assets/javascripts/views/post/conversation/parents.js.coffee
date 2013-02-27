@@ -1,6 +1,6 @@
-TentStatus.Views.ConversationParents = class ConversationParentsView extends TentStatus.Views.ConversationComponent
+Marbles.Views.ConversationParents = class ConversationParentsView extends Marbles.Views.ConversationComponent
   @template_name: '_conversation_parents'
-  @partial_names: ['_post'].concat(TentStatus.Views.Post.partial_names)
+  @partial_names: ['_post'].concat(Marbles.Views.Post.partial_names)
   @view_name: 'conversation_parents'
 
   constructor: (options = {}) ->

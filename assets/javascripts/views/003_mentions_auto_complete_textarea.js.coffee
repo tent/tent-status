@@ -1,4 +1,4 @@
-TentStatus.Views.MentionsAutoCompleteTextarea = class MentionsAutoCompleteTextareaView extends TentStatus.View
+Marbles.Views.MentionsAutoCompleteTextarea = class MentionsAutoCompleteTextareaView extends TentStatus.View
   @template_name: 'mentions_autocomplete_textarea'
   @view_name: 'mentions_autocomplete_textarea'
 
@@ -26,7 +26,7 @@ TentStatus.Views.MentionsAutoCompleteTextarea = class MentionsAutoCompleteTextar
   initPickerView: (@picker_view) =>
     @textarea_view = @picker_view.input = new TextareaView(
       parent_view: @
-      el: @textarea = DOM.querySelector('textarea', @el)
+      el: @textarea = Marbles.DOM.querySelector('textarea', @el)
       picker_view: @picker_view
     )
 
@@ -55,11 +55,11 @@ class TextareaView
     @[k] = v for k,v of params
 
     @elements = {
-      loading: DOM.querySelector('.loading', @parent_view.el)
+      loading: Marbles.DOM.querySelector('.loading', @parent_view.el)
     }
-    @loading_view = new TentStatus.Views.LoadingIndicator el: @elements.loading
+    @loading_view = new Marbles.Views.LoadingIndicator el: @elements.loading
 
-    DOM.on @el, 'keydown', (e) =>
+    Marbles.DOM.on @el, 'keydown', (e) =>
       switch e.keyCode
         when 13 # enter/return
           return unless @enabled
@@ -68,7 +68,7 @@ class TextareaView
           false
         when 8 # backspace
           if @enabled
-            pos = (new DOM.InputSelection @el).start
+            pos = (new Marbles.DOM.InputSelection @el).start
             @close() if @selection and pos <= @selection.start
         when 27 # escape
           return unless @enabled
@@ -88,7 +88,7 @@ class TextareaView
         when 32 # space
           @close()
 
-    DOM.on @el, 'keyup', (e) =>
+    Marbles.DOM.on @el, 'keyup', (e) =>
       clearTimeout @_fetch_timeout
       if e.shiftKey && e.keyCode == 54 # carret (^)
         return @open()
@@ -98,18 +98,18 @@ class TextareaView
       @_fetch_timeout = setTimeout (=> @picker_view.fetchResults(@selectionValue())), 60
 
   focus: =>
-    selection = new DOM.InputSelection @el
+    selection = new Marbles.DOM.InputSelection @el
     selection.setSelectionRange(@el.value.length, @el.value.length)
 
   setPickerPosition: =>
-    cp = new maxkir.CursorPosition(@el, parseInt(DOM.getStyle(@el, 'padding')))
+    cp = new maxkir.CursorPosition(@el, parseInt(Marbles.DOM.getStyle(@el, 'padding')))
     coordinates = cp.getPixelCoordinates()
-    start_coordinates = maxkir.CursorPosition.getTextMetrics(@el, @selectionValue(), parseInt(DOM.getStyle(@el, 'padding')))
+    start_coordinates = maxkir.CursorPosition.getTextMetrics(@el, @selectionValue(), parseInt(Marbles.DOM.getStyle(@el, 'padding')))
 
     [left, top] = coordinates
     left -= start_coordinates[0]
     picker_width = @picker_view.el.parentNode.offsetWidth
-    right_bound = parseInt DOM.getStyle(@el, 'width')
+    right_bound = parseInt Marbles.DOM.getStyle(@el, 'width')
 
     css = {
       position: 'absolute'
@@ -121,14 +121,14 @@ class TextareaView
     else
       css.left = left
 
-    DOM.setStyles(@picker_view.el.parentNode, css)
+    Marbles.DOM.setStyles(@picker_view.el.parentNode, css)
 
   selectionValue: =>
     value = @el.value
     value.substr(@selection.start, value.length).match(/^([^\s\r\t\n]+)/)?[1] || ''
 
   addOption: (option) =>
-    end_selection = new DOM.InputSelection @el
+    end_selection = new Marbles.DOM.InputSelection @el
     entity = option.value + ' '
     value = @el.value
     @el.value = TentStatus.Helpers.replaceIndexRange(@selection.start, end_selection.end, value, entity)
@@ -140,7 +140,7 @@ class TextareaView
   open: =>
     @enabled = true
     @picker_view.show()
-    @selection = new DOM.InputSelection @el
+    @selection = new Marbles.DOM.InputSelection @el
 
   close: =>
     @enabled = false

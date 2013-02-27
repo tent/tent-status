@@ -1,4 +1,11 @@
 GIT
+  remote: git://github.com/jvatic/marbles-js.git
+  revision: df87c320ea8f5621c7e16a5bec94d31fe28c25d9
+  branch: master
+  specs:
+    marbles-js (0.0.1)
+
+GIT
   remote: git://github.com/tent/omniauth-tent.git
   revision: 0145df035d47288f89d6ebc82622cc46c9161b9e
   branch: master
@@ -9,7 +16,7 @@ GIT
 
 GIT
   remote: git://github.com/tent/tent-client-ruby.git
-  revision: c9010671b3b3eb3d5dd47681a0248c9c0a746211
+  revision: cee0c212a3e435b79719914cb0e3fae6e9a574ae
   branch: master
   specs:
     tent-client (0.0.1)
@@ -60,6 +67,7 @@ GEM
     activesupport (3.2.8)
       i18n (~> 0.6)
       multi_json (~> 1.0)
+    addressable (2.3.2)
     builder (3.0.3)
     coffee-script (2.2.0)
       coffee-script-source
@@ -143,8 +151,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  addressable
   asset_sync!
   kicker
+  marbles-js!
   mime-types
   omniauth-tent!
   puma

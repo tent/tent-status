@@ -1,4 +1,4 @@
-TentStatus.Views.EditPost = class EditPostView extends TentStatus.View
+Marbles.Views.EditPost = class EditPostView extends TentStatus.View
   @template_name: '_edit_post'
   @view_name: 'edit_post'
 
@@ -7,7 +7,7 @@ TentStatus.Views.EditPost = class EditPostView extends TentStatus.View
   constructor: (options = {}) ->
     super(_.extend(options, {render_method: 'replace'}))
     @el = document.createElement('li')
-    DOM.insertBefore(@el, @parent_view.el)
+    Marbles.DOM.insertBefore(@el, @parent_view.el)
 
     @elements = {}
     @text = {}
@@ -18,36 +18,36 @@ TentStatus.Views.EditPost = class EditPostView extends TentStatus.View
     # inherit specific methods from NewPostForm
     for method in ['initHotkeys', 'submitWithValidation', 'initCharCounter', 'updateCharCounter', 'initValidation', 'validate', 'showErrors', 'clearErrors', 'buildPostAttributes', 'buildPostMentionsAttributes', 'buildPostPermissionsAttributes']
       do (method) =>
-        @[method] = => TentStatus.Views.NewPostForm::[method].apply(@, arguments)
+        @[method] = => Marbles.Views.NewPostForm::[method].apply(@, arguments)
 
-    @on 'ready', => DOM.hide(@parent_view.el)
+    @on 'ready', => Marbles.DOM.hide(@parent_view.el)
     @on 'ready', @init
 
     @render()
 
   init: =>
-    @elements.form = DOM.querySelector('form', @el)
-    @elements.submit = DOM.querySelector('input[type=submit]', @el)
-    @elements.delete = DOM.querySelector('input[type=button][data-action=delete]', @el)
-    @elements.cancel = DOM.querySelector('input[type=button][data-action=cancel]', @el)
-    @elements.errors = DOM.querySelector('[data-errors_container]', @el)
-    @elements.textarea = DOM.querySelector('textarea', @el)
+    @elements.form = Marbles.DOM.querySelector('form', @el)
+    @elements.submit = Marbles.DOM.querySelector('input[type=submit]', @el)
+    @elements.delete = Marbles.DOM.querySelector('input[type=button][data-action=delete]', @el)
+    @elements.cancel = Marbles.DOM.querySelector('input[type=button][data-action=cancel]', @el)
+    @elements.errors = Marbles.DOM.querySelector('[data-errors_container]', @el)
+    @elements.textarea = Marbles.DOM.querySelector('textarea', @el)
 
     @text.submit = {
-      disable_with: DOM.attr(@elements.submit, 'data-disable_with')
+      disable_with: Marbles.DOM.attr(@elements.submit, 'data-disable_with')
     }
     @text.delete = {
-      disable_with: DOM.attr(@elements.delete, 'data-disable_with')
-      confirm: DOM.attr(@elements.delete, 'data-confirm')
+      disable_with: Marbles.DOM.attr(@elements.delete, 'data-disable_with')
+      confirm: Marbles.DOM.attr(@elements.delete, 'data-confirm')
     }
 
     @initCharCounter()
     @initValidation()
     @initHotkeys()
 
-    DOM.on(@elements.form, 'submit', @submitWithValidation)
-    DOM.on(@elements.delete, 'click', @confirmDelete)
-    DOM.on(@elements.cancel, 'click', @cancel)
+    Marbles.DOM.on(@elements.form, 'submit', @submitWithValidation)
+    Marbles.DOM.on(@elements.delete, 'click', @confirmDelete)
+    Marbles.DOM.on(@elements.cancel, 'click', @cancel)
 
   post: => @parent_view.post()
 
@@ -102,18 +102,18 @@ TentStatus.Views.EditPost = class EditPostView extends TentStatus.View
     )
 
   cancel: =>
-    DOM.removeNode(@el)
+    Marbles.DOM.removeNode(@el)
     @detach()
-    DOM.show(@parent_view.el)
+    Marbles.DOM.show(@parent_view.el)
 
   renderPost: =>
     @cancel()
     @parent_view.render()
 
   detachPost: =>
-    DOM.removeNode(@el)
+    Marbles.DOM.removeNode(@el)
     @detach()
-    DOM.removeNode(@parent_view.el)
+    Marbles.DOM.removeNode(@parent_view.el)
     @parent_view.detach()
 
   context: (post = @post()) =>

@@ -1,10 +1,10 @@
-TentStatus.Views.ParentPostLink = class ParentPostLinkView extends TentStatus.View
+Marbles.Views.ParentPostLink = class ParentPostLinkView extends TentStatus.View
   @view_name: 'parent_post_link'
 
   constructor: (options = {}) ->
     super
 
-    DOM.on @el, 'click', (e) =>
+    Marbles.DOM.on @el, 'click', (e) =>
       return true unless @conversationParentsView()
       e.preventDefault()
       @loadParentPost()

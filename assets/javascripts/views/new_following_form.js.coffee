@@ -1,4 +1,4 @@
-TentStatus.Views.NewFollowingForm = class NewFollowingFormView extends TentStatus.View
+Marbles.Views.NewFollowingForm = class NewFollowingFormView extends TentStatus.View
   @template_name: '_new_following_form'
   @view_name: 'new_following_form'
 
@@ -12,13 +12,13 @@ TentStatus.Views.NewFollowingForm = class NewFollowingFormView extends TentStatu
     @render()
 
   init: =>
-    @elements.form = DOM.querySelector('form', @el)
-    @elements.input = DOM.querySelector('input[name=entity]', @el)
-    @elements.submit = DOM.querySelector('input[type=submit]', @el)
-    @elements.errors = DOM.querySelector('.alert-error', @el)
+    @elements.form = Marbles.DOM.querySelector('form', @el)
+    @elements.input = Marbles.DOM.querySelector('input[name=entity]', @el)
+    @elements.submit = Marbles.DOM.querySelector('input[type=submit]', @el)
+    @elements.errors = Marbles.DOM.querySelector('.alert-error', @el)
 
-    DOM.on(@elements.form, 'submit', @submit)
-    DOM.on(@elements.submit, 'click', @submit)
+    Marbles.DOM.on(@elements.form, 'submit', @submit)
+    Marbles.DOM.on(@elements.submit, 'click', @submit)
 
   submit: (e) =>
     e?.preventDefault()
@@ -62,19 +62,19 @@ TentStatus.Views.NewFollowingForm = class NewFollowingFormView extends TentStatu
     !errors
 
   clearErrors: =>
-    for el in DOM.querySelectorAll('.error', @el)
-      DOM.removeClass(el, 'error')
-    DOM.hide(@elements.errors)
+    for el in Marbles.DOM.querySelectorAll('.error', @el)
+      Marbles.DOM.removeClass(el, 'error')
+    Marbles.DOM.hide(@elements.errors)
 
   showErrors: (errors) =>
     error_messages = []
     for error in errors
       for name, msg of error
-        input = DOM.querySelector("[name=#{name}]", @el)
-        DOM.addClass(input, 'error')
+        input = Marbles.DOM.querySelector("[name=#{name}]", @el)
+        Marbles.DOM.addClass(input, 'error')
         error_messages.push(msg)
     @elements.errors.innerHTML = error_messages.join("<br/>")
-    DOM.show(@elements.errors)
+    Marbles.DOM.show(@elements.errors)
 
   buildEntity: (entity) =>
     return unless (m = entity.match(/^(https?:\/\/)?([^\/]+)(.*?)$/))

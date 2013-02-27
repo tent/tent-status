@@ -1,10 +1,10 @@
-TentStatus.Views.Followers = class FollowersView extends TentStatus.View
+Marbles.Views.Followers = class FollowersView extends TentStatus.View
   @template_name: 'followers'
   @partial_names: ['_follower']
   @view_name: 'followers'
 
   constructor: (options = {}) ->
-    @container = TentStatus.Views.container
+    @container = Marbles.Views.container
     super
 
     @elements = {}
@@ -16,7 +16,7 @@ TentStatus.Views.Followers = class FollowersView extends TentStatus.View
     @initFollowersCollection(entity: options.entity)
 
   init: =>
-    @elements.tbody = DOM.querySelector('tbody', @el)
+    @elements.tbody = Marbles.DOM.querySelector('tbody', @el)
 
   initFollowersCollection: (options = {}) =>
     unless options.client
@@ -28,8 +28,8 @@ TentStatus.Views.Followers = class FollowersView extends TentStatus.View
 
     TentStatus.Models.Follower.on 'delete:success', (follower) =>
       @followers_collection.remove(follower)
-      for el in DOM.querySelectorAll("[data-cid=#{follower.cid}]", @el)
-        DOM.removeNode(el)
+      for el in Marbles.DOM.querySelectorAll("[data-cid=#{follower.cid}]", @el)
+        Marbles.DOM.removeNode(el)
 
     @fetch()
 
@@ -62,7 +62,7 @@ TentStatus.Views.Followers = class FollowersView extends TentStatus.View
     }
 
   followerContext: (follower) =>
-    TentStatus.Views.Follower::context(follower)
+    Marbles.Views.Follower::context(follower)
 
   context: (followers = @followers_collection.models()) =>
     _.extend super,
@@ -74,7 +74,7 @@ TentStatus.Views.Followers = class FollowersView extends TentStatus.View
     for follower in followers
       html += @constructor.partials['_follower'].render(@followerContext(follower), @constructor.partials)
 
-    DOM.appendHTML(@elements.tbody, html)
+    Marbles.DOM.appendHTML(@elements.tbody, html)
     @bindViews()
     @pagination_frozen = false
 
@@ -83,7 +83,7 @@ TentStatus.Views.Followers = class FollowersView extends TentStatus.View
     for follower in followers
       html += @constructor.partials['_follower'].render(@followerContext(follower), @constructor.partials)
 
-    DOM.prependHTML(@elements.tbody, html)
+    Marbles.DOM.prependHTML(@elements.tbody, html)
     @bindViews()
     @pagination_frozen = false
 
@@ -97,11 +97,11 @@ TentStatus.Views.Followers = class FollowersView extends TentStatus.View
 
   windowScrolled: =>
     return if @pagination_frozen || @last_page
-    last_follower = DOM.querySelector('tr.follower:last-of-type', @el)
+    last_follower = Marbles.DOM.querySelector('tr.follower:last-of-type', @el)
     return unless last_follower
     last_follower_offset_top = last_follower.offsetTop || 0
     last_follower_offset_top += last_follower.offsetHeight || 0
-    bottom_position = window.scrollY + DOM.windowHeight()
+    bottom_position = window.scrollY + Marbles.DOM.windowHeight()
 
     if last_follower_offset_top <= bottom_position
       clearTimeout @_auto_paginate_timeout

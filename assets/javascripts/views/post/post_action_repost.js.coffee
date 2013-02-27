@@ -1,4 +1,4 @@
-TentStatus.Views.PostActionRepost = class PostActionRepostView extends TentStatus.Views.PostAction
+Marbles.Views.PostActionRepost = class PostActionRepostView extends Marbles.Views.PostAction
   @view_name: 'post_action_repost'
 
   performAction: =>

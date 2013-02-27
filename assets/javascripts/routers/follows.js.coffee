@@ -1,4 +1,4 @@
-TentStatus.Routers.follows = new class FollowsRouter extends TentStatus.Router
+TentStatus.Routers.follows = new class FollowsRouter extends Marbles.Router
   routes: {
     "followings" : "followings"
     ":entity/followings" : "followings"
@@ -15,11 +15,11 @@ TentStatus.Routers.follows = new class FollowsRouter extends TentStatus.Router
     if TentStatus.Helpers.isAppSubdomain()
       return @navigate('/', {trigger: true, replace: true})
     TentStatus.setPageTitle @actions_titles.followings
-    new TentStatus.Views.Followings entity: (params.entity || TentStatus.config.domain_entity.toString())
+    new Marbles.Views.Followings entity: (params.entity || TentStatus.config.domain_entity.toString())
 
   followers: (params) =>
     if TentStatus.Helpers.isAppSubdomain()
       return @navigate('/', {trigger: true, replace: true})
     TentStatus.setPageTitle @actions_titles.followers
-    new TentStatus.Views.Followers entity: (params.entity || TentStatus.config.domain_entity.toString())
+    new Marbles.Views.Followers entity: (params.entity || TentStatus.config.domain_entity.toString())
 

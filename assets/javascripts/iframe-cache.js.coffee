@@ -1,5 +1,5 @@
 #= require moment
-#= require underscore
+#= require lowdash
 #= require uri
 #= require store
 

@@ -1,9 +1,9 @@
-TentStatus.Views.Profile = class ProfileView extends TentStatus.View
+Marbles.Views.Profile = class ProfileView extends TentStatus.View
   @template_name: 'profile'
   @view_name: 'profile'
 
   constructor: (options = {}) ->
-    @container = TentStatus.Views.container
+    @container = Marbles.Views.container
     super
 
     @fetchProfile(options.entity)
@@ -20,7 +20,7 @@ TentStatus.Views.Profile = class ProfileView extends TentStatus.View
     TentStatus.Models.Profile.find(cid: @profile_cid, fetch: false)
 
   context: (profile = @profile()) =>
-    _.extend TentStatus.Views.AuthorInfo::context.apply(@, arguments),
+    _.extend Marbles.Views.AuthorInfo::context.apply(@, arguments),
       entity_authenticated: TentStatus.config.authenticated && TentStatus.config.current_entity.assertEqual(@profile().get('entity'))
       has_name: !!profile.get('name')
       formatted:

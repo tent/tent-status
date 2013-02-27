@@ -1,4 +1,4 @@
-TentStatus.Routers.posts = new class PostsRouter extends TentStatus.Router
+TentStatus.Routers.posts = new class PostsRouter extends Marbles.Router
   routes: {
     "" : "root"
     "posts" : "index"
@@ -17,7 +17,7 @@ TentStatus.Routers.posts = new class PostsRouter extends TentStatus.Router
   }
 
   _initAuthorInfoView: =>
-    new TentStatus.Views.AuthorInfo el: document.getElementById('author-info')
+    new Marbles.Views.AuthorInfo el: document.getElementById('author-info')
 
   index: (params) =>
     if TentStatus.config.guest
@@ -33,24 +33,24 @@ TentStatus.Routers.posts = new class PostsRouter extends TentStatus.Router
 
   feed: (params) =>
     TentStatus.setPageTitle @actions_titles.feed
-    new TentStatus.Views.Feed
+    new Marbles.Views.Feed
     @_initAuthorInfoView()
 
   siteFeed: (params) =>
     unless TentStatus.Helpers.isAppSubdomain()
       return @navigate('/', {trigger: true, replace: true})
     TentStatus.setPageTitle @actions_titles.siteFeed
-    new TentStatus.Views.SiteFeed
+    new Marbles.Views.SiteFeed
 
   post: (params) =>
     if TentStatus.Helpers.isAppSubdomain()
       return @navigate('/', {trigger: true, replace: true})
     TentStatus.setPageTitle @actions_titles.post
-    new TentStatus.Views.SinglePost entity: (params.entity || TentStatus.config.domain_entity.toString()), id: params.id
+    new Marbles.Views.SinglePost entity: (params.entity || TentStatus.config.domain_entity.toString()), id: params.id
 
   mentions: (params) =>
     if TentStatus.Helpers.isAppSubdomain()
       return @navigate('/', {trigger: true, replace: true})
     TentStatus.setPageTitle @actions_titles.mentions
-    new TentStatus.Views.Mentions entity: (params.entity || TentStatus.config.domain_entity.toString())
+    new Marbles.Views.Mentions entity: (params.entity || TentStatus.config.domain_entity.toString())
 

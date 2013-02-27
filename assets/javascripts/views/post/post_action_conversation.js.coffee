@@ -1,4 +1,4 @@
-TentStatus.Views.PostActionConversation = class PostActionConversationView extends TentStatus.Views.PostAction
+Marbles.Views.PostActionConversation = class PostActionConversationView extends Marbles.Views.PostAction
   @view_name: 'post_action_conversation'
 
   performAction: =>
@@ -8,9 +8,9 @@ TentStatus.Views.PostActionConversation = class PostActionConversationView exten
       @show()
 
   conversationView: =>
-    return view if @conversation_view_cid && (view = TentStatus.Views.Conversation.find(@conversation_view_cid))
+    return view if @conversation_view_cid && (view = Marbles.Views.Conversation.find(@conversation_view_cid))
     post_view = @postView()
-    view = new TentStatus.Views.Conversation parent_view: post_view
+    view = new Marbles.Views.Conversation parent_view: post_view
     @conversation_view_cid = view.cid
     view
 

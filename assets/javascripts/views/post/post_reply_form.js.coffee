@@ -1,4 +1,4 @@
-TentStatus.Views.PostReplyForm = class PostReplyFormView extends TentStatus.Views.NewPostForm
+Marbles.Views.PostReplyForm = class PostReplyFormView extends Marbles.Views.NewPostForm
   @template_name: '_post_reply_form'
   @view_name: 'post_reply_form'
 
@@ -15,14 +15,14 @@ TentStatus.Views.PostReplyForm = class PostReplyFormView extends TentStatus.View
 
   hide: =>
     @visible = false
-    DOM.hide(@el)
+    Marbles.DOM.hide(@el)
 
   show: =>
     @visible = true
     setImmediate =>
       @constructor.instances.all[@_child_views.MentionsAutoCompleteTextarea?[0]]?.textarea_view?.focus()
     if @ready
-      DOM.show(@el)
+      Marbles.DOM.show(@el)
     else
       @render()
 

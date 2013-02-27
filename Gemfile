@@ -3,9 +3,12 @@ ruby '1.9.3'
 
 gemspec
 
-gem 'tent-client', :git => 'git://github.com/tent/tent-client-ruby.git', :branch => 'master'
+gem 'addressable', :require => false
+gem 'tent-client', :git => 'git://github.com/tent/tent-client-ruby.git', :branch => 'master', :require => 'tent-client'
 gem 'omniauth-tent', :git => 'git://github.com/tent/omniauth-tent.git', :branch => 'master'
 gem 'puma'
+
+gem 'marbles-js', :git => 'git://github.com/jvatic/marbles-js.git', :branch => 'master'
 
 group :development, :assets do
   gem 'asset_sync', :git => 'git://github.com/titanous/asset_sync.git', :branch => 'fix-mime'

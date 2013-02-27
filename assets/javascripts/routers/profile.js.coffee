@@ -1,4 +1,4 @@
-TentStatus.Routers.profile = new class ProfileRouter extends TentStatus.Router
+TentStatus.Routers.profile = new class ProfileRouter extends Marbles.Router
   routes: {
     "profile" : "currentProfile"
     ":entity/profile" : "profile"
@@ -12,10 +12,10 @@ TentStatus.Routers.profile = new class ProfileRouter extends TentStatus.Router
     if TentStatus.Helpers.isAppSubdomain()
       return @navigate('/global', {trigger:true, replace: true})
 
-    new TentStatus.Views.Profile entity: TentStatus.config.domain_entity.toString()
+    new Marbles.Views.Profile entity: TentStatus.config.domain_entity.toString()
 
   profile: (params) =>
     if TentStatus.Helpers.isAppSubdomain()
       return @navigate('/global', {trigger:true, replace: true})
 
-    new TentStatus.Views.Profile entity: params.entity
+    new Marbles.Views.Profile entity: params.entity

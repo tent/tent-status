@@ -1,4 +1,4 @@
-TentStatus.Views.ProfileView = class ProfileView extends TentStatus.View
+Marbles.Views.ProfileView = class ProfileView extends TentStatus.View
   fetch: (params = {}, options = {}) =>
     instance = TentStatus.Model.find(cid: @model_cid)
 

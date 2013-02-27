@@ -1,10 +1,10 @@
-TentStatus.Views.SinglePost = class SinglePostView extends TentStatus.View
+Marbles.Views.SinglePost = class SinglePostView extends TentStatus.View
   @template_name: 'single_post'
-  @partial_names: ['_post'].concat(TentStatus.Views.Post.partial_names)
+  @partial_names: ['_post'].concat(Marbles.Views.Post.partial_names)
   @view_name: 'single_post'
 
   constructor: (options = {}) ->
-    @container = TentStatus.Views.container
+    @container = Marbles.Views.container
     super
 
     TentStatus.Models.Post.fetch {entity: options.entity, id: options.id},
@@ -17,4 +17,4 @@ TentStatus.Views.SinglePost = class SinglePostView extends TentStatus.View
     TentStatus.Models.Post.find(cid: @post_cid)
 
   context: (post = @post()) =>
-    TentStatus.Views.Post::context(post)
+    Marbles.Views.Post::context(post)

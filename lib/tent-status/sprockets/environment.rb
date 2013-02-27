@@ -17,6 +17,7 @@ module Tent
         paths.each do |path|
           @assets.append_path(File.join(File.expand_path('../../../../', __FILE__), "assets/#{path}"))
         end
+        MarblesJS.sprockets_setup(@assets)
         @assets
       end
     end

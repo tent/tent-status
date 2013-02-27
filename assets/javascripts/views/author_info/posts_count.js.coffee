@@ -1,4 +1,4 @@
-TentStatus.Views.AuthorInfoPostsCount = class PostsCountView extends TentStatus.Views.AuthorInfoResourceCount
+Marbles.Views.AuthorInfoPostsCount = class PostsCountView extends Marbles.Views.AuthorInfoResourceCount
   @view_name: 'author_info_posts_count'
   @model: TentStatus.Models.Post
   @resource_name: {singular: 'post', plural: 'posts'}

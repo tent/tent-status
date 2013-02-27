@@ -1,5 +1,5 @@
-TentStatus.Object = class Object
+TentStatus.Object = class EventedObject
   constructor: (attributes) ->
     @set(k, v) for k,v of attributes
 
-_.extend Object::, TentStatus.Accessors, TentStatus.Events
+_.extend EventedObject::, Marbles.Accessors, Marbles.Events

@@ -1,4 +1,4 @@
-class TentStatus.Views.FollowButton extends TentStatus.View
+class Marbles.Views.FollowButton extends TentStatus.View
   @view_name: 'follow_button'
   @template_name: 'follow_button'
 
@@ -30,12 +30,12 @@ class TentStatus.Views.FollowButton extends TentStatus.View
         @render()
 
   init: =>
-    @elements.form = DOM.querySelector('form', @el)
-    @elements.submit = DOM.querySelector('input[type=submit]', @el)
+    @elements.form = Marbles.DOM.querySelector('form', @el)
+    @elements.submit = Marbles.DOM.querySelector('input[type=submit]', @el)
 
-    @text.confirm = DOM.attr(@elements.submit, 'data-confirm')
+    @text.confirm = Marbles.DOM.attr(@elements.submit, 'data-confirm')
 
-    DOM.on(@elements.form, 'submit', @confirmSubmit)
+    Marbles.DOM.on(@elements.form, 'submit', @confirmSubmit)
 
   profile: => @parent_view.profile()
 

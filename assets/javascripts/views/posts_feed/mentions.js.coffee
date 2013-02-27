@@ -1,4 +1,4 @@
-TentStatus.Views.MentionsPostsFeed = class MentionsPostsFeedView extends TentStatus.Views.PostsFeed
+Marbles.Views.MentionsPostsFeed = class MentionsPostsFeedView extends Marbles.Views.PostsFeed
   @view_name: 'mentions_posts_feed'
 
   init: =>

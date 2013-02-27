@@ -1,11 +1,11 @@
-TentStatus.Views.ProfileAvatar = class ProfileAvatarView extends TentStatus.Views.ProfileView
+Marbles.Views.ProfileAvatar = class ProfileAvatarView extends Marbles.Views.ProfileView
   @template_name: '_profile_avatar'
   @view_name: 'profile_avatar'
 
   constructor: ->
     super
 
-    @model_cid = DOM.attr(@el, 'data-model_cid')
+    @model_cid = Marbles.DOM.attr(@el, 'data-model_cid')
     @fetch({}, {
       error: =>
         TentStatus.trigger('loading:stop')

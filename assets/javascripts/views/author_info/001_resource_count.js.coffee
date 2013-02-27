@@ -1,4 +1,4 @@
-TentStatus.Views.AuthorInfoResourceCount = class FollowersCountView extends TentStatus.View
+Marbles.Views.AuthorInfoResourceCount = class FollowersCountView extends TentStatus.View
   @template_name: '_author_info_resource_count'
 
   constructor: (options = {}) ->

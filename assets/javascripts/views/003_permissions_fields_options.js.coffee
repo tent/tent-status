@@ -1,4 +1,4 @@
-TentStatus.Views.PermissionsFieldsOptions = class PermissionsFieldsOptionsView extends TentStatus.View
+Marbles.Views.PermissionsFieldsOptions = class PermissionsFieldsOptionsView extends TentStatus.View
   @template_name: 'permissions_fields_options'
   @view_name: 'permissions_fields_options'
 
@@ -33,7 +33,7 @@ TentStatus.Views.PermissionsFieldsOptions = class PermissionsFieldsOptionsView e
 
   initOptions: =>
     return unless @options
-    option_els = DOM.querySelectorAll('.option', @el)
+    option_els = Marbles.DOM.querySelectorAll('.option', @el)
     @option_views = for option, index in @options
       new OptionView parent_view: @, option: option, el: option_els[index]
 
@@ -66,18 +66,18 @@ class OptionView
       @[k] = v
 
     @elements = {
-      remove: DOM.querySelector('.remove', @el)
+      remove: Marbles.DOM.querySelector('.remove', @el)
     }
 
-    DOM.on @elements.remove, 'click', @remove
+    Marbles.DOM.on @elements.remove, 'click', @remove
 
   unmarkDelete: =>
     @marked_delete = false
-    DOM.removeClass(@elements.remove, 'active')
+    Marbles.DOM.removeClass(@elements.remove, 'active')
 
   markDelete: =>
     @marked_delete = true
-    DOM.removeClass(@elements.remove, 'active')
+    Marbles.DOM.removeClass(@elements.remove, 'active')
 
   remove: (e) =>
     e?.stopPropagation()

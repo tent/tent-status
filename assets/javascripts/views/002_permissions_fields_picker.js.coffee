@@ -1,4 +1,4 @@
-TentStatus.Views.PermissionsFieldsPicker = class PermissionsFieldsPickerView extends TentStatus.View
+Marbles.Views.PermissionsFieldsPicker = class PermissionsFieldsPickerView extends TentStatus.View
   @template_name: 'permissions_fields_picker'
   @view_name: 'permissions_fields_picker'
 
@@ -12,8 +12,8 @@ TentStatus.Views.PermissionsFieldsPicker = class PermissionsFieldsPickerView ext
     @hide()
     @render()
 
-    DOM.on document, 'click', (e) =>
-      unless (_.any DOM.parentNodes(e.target), (el) => el == @parent_view.el)
+    Marbles.DOM.on document, 'click', (e) =>
+      unless (_.any Marbles.DOM.parentNodes(e.target), (el) => el == @parent_view.el)
         @hide()
 
   initInput: (el) =>
@@ -27,7 +27,7 @@ TentStatus.Views.PermissionsFieldsPicker = class PermissionsFieldsPickerView ext
     active_option_value = @option_views[@active_option]?.getValue()
     @active_option = null
     @option_views = []
-    option_els = DOM.querySelectorAll('li.option', @el)
+    option_els = Marbles.DOM.querySelectorAll('li.option', @el)
     for option, index in (@matches || [])
       el = option_els[index]
       view = new PickerOptionView parent_view: @, el: el, index: index
@@ -187,10 +187,10 @@ TentStatus.Views.PermissionsFieldsPicker = class PermissionsFieldsPickerView ext
     query: @current_query
 
   hide: =>
-    DOM.hide(@el.parentNode)
+    Marbles.DOM.hide(@el.parentNode)
 
   show: =>
-    DOM.show(@el.parentNode)
+    Marbles.DOM.show(@el.parentNode)
 
 class PickerOptionView
   constructor: (params = {}) ->
@@ -201,10 +201,10 @@ class PickerOptionView
     @elements = {}
 
     unless @is_input
-      DOM.on @el, 'click', (e) =>
+      Marbles.DOM.on @el, 'click', (e) =>
         e.stopPropagation()
         @add()
-      DOM.on @el, 'mouseover', (e) =>
+      Marbles.DOM.on @el, 'mouseover', (e) =>
         @parent_view.option_views[@parent_view.active_option]?.unsetActive()
         @setActive(false)
 
@@ -221,7 +221,7 @@ class PickerOptionView
     !!@getOption().group
 
   destroy: =>
-    DOM.removeNode(@el) if @el
+    Marbles.DOM.removeNode(@el) if @el
 
   scrollIntoView: =>
     offset = @el.offsetTop
@@ -229,13 +229,13 @@ class PickerOptionView
 
     if offset < scrollY
       @parent_view.el.scrollTop = offset
-    else if (offset + parseInt(DOM.getStyle(@el, 'height'))) > (scrollY + parseInt(DOM.getStyle(@parent_view.el, 'height')))
-      @parent_view.el.scrollTop = offset - parseInt(DOM.getStyle(@parent_view.el, 'height')) + @el.offsetHeight
+    else if (offset + parseInt(Marbles.DOM.getStyle(@el, 'height'))) > (scrollY + parseInt(Marbles.DOM.getStyle(@parent_view.el, 'height')))
+      @parent_view.el.scrollTop = offset - parseInt(Marbles.DOM.getStyle(@parent_view.el, 'height')) + @el.offsetHeight
 
   setActive: (should_scroll = true) =>
     @active = true
     @parent_view.active_option = @index
-    DOM.addClass(@el, 'active')
+    Marbles.DOM.addClass(@el, 'active')
 
     @scrollIntoView() if should_scroll
 
@@ -243,7 +243,7 @@ class PickerOptionView
     @active = false
     if @parent_view.active_option == @index
       @parent_view.active_option = null
-    DOM.removeClass(@el, 'active')
+    Marbles.DOM.removeClass(@el, 'active')
 
   add: =>
     option = {
@@ -266,16 +266,16 @@ class PickerInputView extends PickerOptionView
   constructor: ->
     @is_input = true
     super
-    @elements.input = DOM.querySelector('input[type=text]', @el)
+    @elements.input = Marbles.DOM.querySelector('input[type=text]', @el)
 
-    @elements.loading = DOM.querySelector('.loading', @el)
-    @loading_view = new TentStatus.Views.LoadingIndicator el: @elements.loading
+    @elements.loading = Marbles.DOM.querySelector('.loading', @el)
+    @loading_view = new Marbles.Views.LoadingIndicator el: @elements.loading
 
     @options_view = @parent_view.parent_view.options_view
 
     @_keydown_value = ''
 
-    DOM.on @elements.input, 'keydown', (e) =>
+    Marbles.DOM.on @elements.input, 'keydown', (e) =>
       @calibrate(e)
       @_keydown_value = @elements.input.value
       switch e.keyCode
@@ -300,7 +300,7 @@ class PickerInputView extends PickerOptionView
           @parent_view.nextOption()
           false
 
-    DOM.on @elements.input, 'keyup', (e) =>
+    Marbles.DOM.on @elements.input, 'keyup', (e) =>
       @calibrate()
       clearTimeout @_fetch_timeout
       @_fetch_timeout = setTimeout (=> @parent_view.fetchResults(@elements.input.value)), 60
@@ -327,11 +327,11 @@ class PickerInputView extends PickerOptionView
         char = char.toLowerCase() unless e.shiftKey
         value += char
 
-    padding = parseInt(DOM.getStyle(@el, 'padding-left')) + parseInt(DOM.getStyle(@el, 'padding-right'))
-    max_width = DOM.innerWidth(@el.parentNode) - padding
+    padding = parseInt(Marbles.DOM.getStyle(@el, 'padding-left')) + parseInt(Marbles.DOM.getStyle(@el, 'padding-right'))
+    max_width = Marbles.DOM.innerWidth(@el.parentNode) - padding
     text_width = maxkir.CursorPosition.getTextMetrics(el, value, padding)[0]
 
-    DOM.setStyles(el,
+    Marbles.DOM.setStyles(el,
       width: Math.max(Math.min(text_width, max_width), 20).toString() + 'px'
     )
 
@@ -361,7 +361,7 @@ class PickerInputView extends PickerOptionView
 
   focusAtEnd: =>
     @calibrate()
-    selection = new DOM.InputSelection @elements.input
+    selection = new Marbles.DOM.InputSelection @elements.input
     end = @elements.input.value.length
     selection.setSelectionRange(end, end)
 

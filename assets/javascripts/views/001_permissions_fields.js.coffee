@@ -1,4 +1,4 @@
-TentStatus.Views.PermissionsFields = class PermissionsFieldsView extends TentStatus.View
+Marbles.Views.PermissionsFields = class PermissionsFieldsView extends TentStatus.View
   @template_name: 'permissions_fields'
   @view_name: 'permissions_fields'
 
@@ -17,9 +17,9 @@ TentStatus.Views.PermissionsFields = class PermissionsFieldsView extends TentSta
 
   initInput: =>
     value = @picker_view.input?.getValue() || ''
-    @picker_view.initInput DOM.querySelector('.picker-input', @el)
+    @picker_view.initInput Marbles.DOM.querySelector('.picker-input', @el)
     @picker_view.input.clear()
-    @picker_view.input.focusAtEnd() unless DOM.match(@parent_view.textarea, ':focus')
+    @picker_view.input.focusAtEnd() unless Marbles.DOM.match(@parent_view.textarea, ':focus')
 
   initOptions: (@options_view) =>
     @options_view.on 'ready', (=> @initInput()), @
@@ -29,24 +29,24 @@ TentStatus.Views.PermissionsFields = class PermissionsFieldsView extends TentSta
 
   bindEvents: =>
     @elements = {
-      input_toggle: DOM.querySelector('.permissions-options-container', @el)
-      visibility_toggle: DOM.querySelector('.show-option-picker', @el)
+      input_toggle: Marbles.DOM.querySelector('.permissions-options-container', @el)
+      visibility_toggle: Marbles.DOM.querySelector('.show-option-picker', @el)
     }
 
     @text = {
       visibility_toggle: {
-        show: DOM.attr(@elements.visibility_toggle, 'data-show-text')
-        hide: DOM.attr(@elements.visibility_toggle, 'data-hide-text')
+        show: Marbles.DOM.attr(@elements.visibility_toggle, 'data-show-text')
+        hide: Marbles.DOM.attr(@elements.visibility_toggle, 'data-hide-text')
       }
     }
 
-    DOM.on(@elements.input_toggle, 'click', @focusInput)
+    Marbles.DOM.on(@elements.input_toggle, 'click', @focusInput)
 
-    DOM.on @el, 'click', (e) =>
-      return unless _.any(DOM.parentNodes(e.target), (el) => el == @el)
+    Marbles.DOM.on @el, 'click', (e) =>
+      return unless _.any(Marbles.DOM.parentNodes(e.target), (el) => el == @el)
       @focusInput()
 
-    DOM.on @elements.visibility_toggle, 'click', (e) =>
+    Marbles.DOM.on @elements.visibility_toggle, 'click', (e) =>
       e.stopPropagation()
       @toggleVisibility()
 
@@ -58,13 +58,13 @@ TentStatus.Views.PermissionsFields = class PermissionsFieldsView extends TentSta
 
   hide: =>
     @visible = false
-    DOM.hide(@options_view.el)
+    Marbles.DOM.hide(@options_view.el)
     @picker_view?.hide()
     @elements.visibility_toggle.innerText = @text.visibility_toggle.show
 
   show: (should_focus = true) =>
     @visible = true
-    DOM.show(@options_view.el)
+    Marbles.DOM.show(@options_view.el)
     @elements.visibility_toggle.innerText = @text.visibility_toggle.hide
     @focusInput() if should_focus
 

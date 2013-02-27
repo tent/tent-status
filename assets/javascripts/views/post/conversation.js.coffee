@@ -1,4 +1,4 @@
-TentStatus.Views.Conversation = class ConversationView extends TentStatus.View
+Marbles.Views.Conversation = class ConversationView extends TentStatus.View
   @template_name: 'conversation'
   @view_name: 'conversation'
 
@@ -6,12 +6,12 @@ TentStatus.Views.Conversation = class ConversationView extends TentStatus.View
     super(_.extend({render_method:'replace'}, options))
 
     @el = document.createElement('div')
-    DOM.insertBefore(@el, @parent_view.el)
+    Marbles.DOM.insertBefore(@el, @parent_view.el)
 
     @render()
 
   destroy: =>
     @detachChildViews()
-    DOM.removeNode(@el)
+    Marbles.DOM.removeNode(@el)
     @detach()
 

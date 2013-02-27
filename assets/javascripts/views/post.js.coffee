@@ -1,4 +1,4 @@
-TentStatus.Views.Post = class PostView extends TentStatus.View
+Marbles.Views.Post = class PostView extends TentStatus.View
   @template_name: '_post'
   @partial_names: ['_post_inner', '_post_inner_actions']
   @view_name: 'post'
@@ -6,15 +6,15 @@ TentStatus.Views.Post = class PostView extends TentStatus.View
   constructor: (options = {}) ->
     super(_.extend(options, {render_method: 'replace'}))
 
-    @post_cid = DOM.attr(@el, 'data-post_cid')
+    @post_cid = Marbles.DOM.attr(@el, 'data-post_cid')
 
-    DOM.on @el, 'click', (e) => @constructor.trigger('click', @, e)
+    Marbles.DOM.on @el, 'click', (e) => @constructor.trigger('click', @, e)
 
   post: =>
     TentStatus.Models.Post.find(cid: @post_cid, fetch: false)
 
   hide: =>
-    DOM.hide(@el)
+    Marbles.DOM.hide(@el)
 
   inReplyToJSON: (mention) =>
     return unless mention && mention.entity && mention.post

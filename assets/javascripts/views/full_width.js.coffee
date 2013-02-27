@@ -1,4 +1,4 @@
-TentStatus.Views.FullWidth = class FullWidthWidth extends TentStatus.View
+Marbles.Views.FullWidth = class FullWidthWidth extends TentStatus.View
   @view_name: 'full_width'
 
   constructor: ->
@@ -8,8 +8,8 @@ TentStatus.Views.FullWidth = class FullWidthWidth extends TentStatus.View
     TentStatus.on 'window:resize', @calibrate
 
   calibrate: =>
-    width = parseInt(DOM.getStyle(@el.parentNode, 'width'))
-    padding = parseInt(DOM.getStyle(@el, 'padding-left')) + parseInt(DOM.getStyle(@el, 'padding-right'))
-    border = parseInt(DOM.getStyle(@el, 'border-left-width')) + parseInt(DOM.getStyle(@el, 'border-right-width'))
-    DOM.setStyle(@el, 'width', "#{width - padding - border}px")
+    width = parseInt(Marbles.DOM.getStyle(@el.parentNode, 'width'))
+    padding = parseInt(Marbles.DOM.getStyle(@el, 'padding-left')) + parseInt(Marbles.DOM.getStyle(@el, 'padding-right'))
+    border = parseInt(Marbles.DOM.getStyle(@el, 'border-left-width')) + parseInt(Marbles.DOM.getStyle(@el, 'border-right-width'))
+    Marbles.DOM.setStyle(@el, 'width', "#{width - padding - border}px")
 

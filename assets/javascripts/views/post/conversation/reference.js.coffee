@@ -1,4 +1,4 @@
-TentStatus.Views.ConversationReference = class ConversationReferenceView extends TentStatus.Views.ConversationComponent
+Marbles.Views.ConversationReference = class ConversationReferenceView extends Marbles.Views.ConversationComponent
   @view_name: 'conversation_reference'
 
   constructor: (options = {}) ->
@@ -7,6 +7,6 @@ TentStatus.Views.ConversationReference = class ConversationReferenceView extends
     @el.appendChild(@postView().el)
 
   detach: =>
-    DOM.insertBefore(@postView().el, @parent_view.el)
+    Marbles.DOM.insertBefore(@postView().el, @parent_view.el)
     super
 

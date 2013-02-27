@@ -50,6 +50,6 @@ class Cache
       key: key
     }
 
-_.extend Cache::, TentStatus.Events
+_.extend Cache::, Marbles.Events
 TentStatus.Cache = new Cache
 

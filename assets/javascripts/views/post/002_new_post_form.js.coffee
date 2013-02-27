@@ -1,4 +1,4 @@
-TentStatus.Views.NewPostForm = class NewPostFormView extends TentStatus.View
+Marbles.Views.NewPostForm = class NewPostFormView extends TentStatus.View
   @template_name: '_new_post_form'
   @view_name: 'new_post_form'
 
@@ -25,22 +25,22 @@ TentStatus.Views.NewPostForm = class NewPostFormView extends TentStatus.View
       max_chars: TentStatus.config.MAX_LENGTH
 
   init: =>
-    @elements.submit = DOM.querySelector('input[type=submit]', @el)
-    @elements.errors = DOM.querySelector('[data-errors_container]', @el)
-    @elements.form = DOM.querySelector('form', @el)
-    @elements.textarea = DOM.querySelector('textarea', @el)
+    @elements.submit = Marbles.DOM.querySelector('input[type=submit]', @el)
+    @elements.errors = Marbles.DOM.querySelector('[data-errors_container]', @el)
+    @elements.form = Marbles.DOM.querySelector('form', @el)
+    @elements.textarea = Marbles.DOM.querySelector('textarea', @el)
 
-    @text.disable_with = DOM.attr(@elements.submit, 'data-disable_with')
+    @text.disable_with = Marbles.DOM.attr(@elements.submit, 'data-disable_with')
 
     @initCharCounter()
     @initValidation()
     @initHotkeys()
 
-    DOM.on(@elements.form, 'submit', @submitWithValidation)
+    Marbles.DOM.on(@elements.form, 'submit', @submitWithValidation)
 
   initHotkeys: =>
     ## cmd/ctr enter to submit
-    DOM.on @elements.textarea, 'keydown', (e) =>
+    Marbles.DOM.on @elements.textarea, 'keydown', (e) =>
       if (e.metaKey || e.ctrlKey) && e.keyCode == 13
         e.preventDefault()
         @submitWithValidation()
@@ -49,17 +49,17 @@ TentStatus.Views.NewPostForm = class NewPostFormView extends TentStatus.View
         true
 
   initCharCounter: =>
-    @elements.char_counter = DOM.querySelector('.char-limit', @el)
+    @elements.char_counter = Marbles.DOM.querySelector('.char-limit', @el)
     @max_chars = TentStatus.config.MAX_LENGTH
 
-    DOM.on @elements.textarea, 'keydown', (e) =>
+    Marbles.DOM.on @elements.textarea, 'keydown', (e) =>
       clearTimeout @_updateCharCounterTimeout
       return true if @frozen
       setTimeout @updateCharCounter, 20
       true
 
   initValidation: =>
-    DOM.on @elements.textarea, 'keyup', (e) =>
+    Marbles.DOM.on @elements.textarea, 'keyup', (e) =>
       clearTimeout @_validateTimeout
       return if @frozen
       setTimeout @validate, 300
@@ -117,19 +117,19 @@ TentStatus.Views.NewPostForm = class NewPostFormView extends TentStatus.View
     !errors
 
   clearErrors: =>
-    for el in DOM.querySelectorAll('.error', @el)
-      DOM.removeClass(el, 'error')
-    DOM.hide(@elements.errors)
+    for el in Marbles.DOM.querySelectorAll('.error', @el)
+      Marbles.DOM.removeClass(el, 'error')
+    Marbles.DOM.hide(@elements.errors)
 
   showErrors: (errors) =>
     error_messages = []
     for err in errors
       for name, msg of err
-        input = DOM.querySelector("[name=#{name}]", @el)
-        DOM.addClass(input, 'error')
+        input = Marbles.DOM.querySelector("[name=#{name}]", @el)
+        Marbles.DOM.addClass(input, 'error')
         error_messages.push(msg)
     @elements.errors.innerHTML = error_messages.join("<br/>")
-    DOM.show(@elements.errors)
+    Marbles.DOM.show(@elements.errors)
 
   updateCharCounter: =>
     return if @frozen
@@ -140,7 +140,7 @@ TentStatus.Views.NewPostForm = class NewPostFormView extends TentStatus.View
 
     if delta < 0
       # limit exceeded
-      DOM.addClass(@elements.char_counter, 'alert-error')
+      Marbles.DOM.addClass(@elements.char_counter, 'alert-error')
       @elements.submit.disabled = true
     else
       if delta == @max_chars
@@ -148,10 +148,10 @@ TentStatus.Views.NewPostForm = class NewPostFormView extends TentStatus.View
         @elements.submit.disabled = true
       else
         @elements.submit.disabled = false
-      DOM.removeClass(@elements.char_counter, 'alert-error')
+      Marbles.DOM.removeClass(@elements.char_counter, 'alert-error')
 
   buildPostAttributes: =>
-    attrs = DOM.serializeForm(@elements.form)
+    attrs = Marbles.DOM.serializeForm(@elements.form)
     @buildPostMentionsAttributes(attrs)
     @buildPostPermissionsAttributes(attrs)
     attrs = _.extend attrs, {

@@ -1,6 +1,6 @@
 # TentStatus
 
-TentStatus is a Sinatra/Backbone app that sends/receives Tent status posts.
+TentStatus is a Sinatra/Marbles-js app that sends/receives Tent status posts.
 
 ## Getting Started
 
