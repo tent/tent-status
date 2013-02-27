@@ -42,6 +42,7 @@ Marbles.Views.PostsFeed = class PostsFeedView extends TentStatus.View
     TentStatus.trigger 'loading:stop'
 
   nextPage: =>
+    @pagination_frozen = true
     @posts_collection.fetchNext(append: true, success: @fetchSuccess, error: @fetchError)
 
   postContext: (post) =>
