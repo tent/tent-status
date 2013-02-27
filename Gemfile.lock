@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/jvatic/marbles-js.git
-  revision: edfa44993e81f599a01aedd621c8d3509fb96189
+  revision: 3e592f27a2179b5500764f94dfb13b2f9720d755
   branch: master
   specs:
     marbles-js (0.0.1)
