@@ -1,3 +1,4 @@
+- [ ] Write JavaScript tests
 - [ ] Fetch Posts Pool
 - [ ] Fix conversation views (threads not loading due to not checking all sources)
 - [ ] Add search using Skate API
