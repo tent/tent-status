@@ -1,0 +1,15 @@
+- [ ] Fetch Posts Pool
+- [ ] Fix conversation views (threads not loading due to not checking all sources)
+- [ ] Add search using Skate API
+- [ ] Marbles optimizations
+- [ ] Pre-fill mention in create post form on 3rd party profile
+- [ ] Fix posts feed on 3rd party profile
+- [ ] Add smart caching of profile stats
+- [ ] Fix post permalink view for 3rd party posts
+- [ ] Show entity in followers list when name not available
+- [ ] Fix CSS on own followings page
+- [ ] Fix 3rd party followers page
+- [ ] Fix 3rd party followings page
+- [ ] Ensure site feed works on hosted version
+- [ ] Ensure everything works on hosted version
+- [ ] Ensure everything works on standalone version
