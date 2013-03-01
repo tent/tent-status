@@ -1,4 +1,6 @@
 TentStatus.Collection = class Collection extends Marbles.Collection
+  ignore_cids: []
+
   fetch: (params = {}, options = {}) =>
     options.client ?= @client || HTTP.TentClient.currentEntityClient()
     params = _.extend({}, (@params || @constructor.params), params)
@@ -45,21 +47,41 @@ TentStatus.Collection = class Collection extends Marbles.Collection
 
   append: (resources_attribtues) =>
     return [] unless resources_attribtues?.length
+    models = []
     for attrs in resources_attribtues
-      model = new @constructor.model(attrs)
+      model = @constructor.model.find(
+        id: attrs.id
+        entity: attrs.entity
+        fetch: false
+      ) || new @constructor.model(attrs)
+      continue if @ignore_cids.indexOf(model.cid) != -1
+      models.push(model)
       @model_ids.push(model.cid)
       model
+    models
 
   prepend: (resources_attribtues) =>
     return [] unless resources_attribtues?.length
+    models = []
     for i in [resources_attribtues.length-1..0]
       attrs = resources_attribtues[i]
-      model = new @constructor.model(attrs)
+      model = @constructor.model.find(
+        id: attrs.id
+        entity: attrs.entity
+        fetch: false
+      ) || new @constructor.model(attrs)
+      continue if @ignore_cids.indexOf(model.cid) != -1
+      models.push(model)
       @model_ids.unshift(model.cid)
       model
+    models
 
   prependModels: (model_ids) =>
     @model_ids = model_ids.concat(@model_ids)
+
+  ignoreCid: (model_cid) =>
+    @ignore_cids.push model_cid
+    @remove(cid: model_cid)
 
   empty: =>
     @model_ids = []

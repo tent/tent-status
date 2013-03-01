@@ -17,6 +17,10 @@ Marbles.Views.FetchPostsPool = class FetchPostsPoolView extends Marbles.View
         }
         @fetch_interval.start()
 
+    TentStatus.Models.Post.on 'create:success', (post, xhr) =>
+      return unless @posts_collection
+      @posts_collection.ignoreCid(post.cid)
+
   fetchPosts: =>
     @posts_collection.fetchPrev success: @fetchSuccess, error: @fetchError, prepend: true
 
