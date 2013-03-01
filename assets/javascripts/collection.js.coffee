@@ -8,10 +8,12 @@ TentStatus.Collection = class Collection extends Marbles.Collection
         @trigger('fetch:failed', res, xhr)
         return
 
-      @parseLinkHeader(xhr.getResponseHeader('Link'))
+      @parseLinkHeader(xhr.getResponseHeader('Link')) if res.length
 
       if options.append
         models = @append(res)
+      else if options.prepend
+        models = @prepend(res)
       else
         models = @reset(res)
 
@@ -41,9 +43,24 @@ TentStatus.Collection = class Collection extends Marbles.Collection
       @pagination_params[RegExp.$2] = params
     @pagination_params
 
-  append: (resources_attribtues = {}) =>
+  append: (resources_attribtues) =>
+    return [] unless resources_attribtues?.length
     for attrs in resources_attribtues
       model = new @constructor.model(attrs)
       @model_ids.push(model.cid)
       model
+
+  prepend: (resources_attribtues) =>
+    return [] unless resources_attribtues?.length
+    for i in [resources_attribtues.length-1..0]
+      attrs = resources_attribtues[i]
+      model = new @constructor.model(attrs)
+      @model_ids.unshift(model.cid)
+      model
+
+  prependModels: (model_ids) =>
+    @model_ids = model_ids.concat(@model_ids)
+
+  empty: =>
+    @model_ids = []
 

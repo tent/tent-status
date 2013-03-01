@@ -13,6 +13,7 @@
 #= require ./cache
 #= require ./config
 #= require_self
+#= require ./fetch_interval
 #= require http/tent_client
 #= require ./model
 #= require_tree ./models

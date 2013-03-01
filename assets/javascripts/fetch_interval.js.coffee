@@ -5,7 +5,8 @@ class TentStatus.FetchInterval
       delay_increment: TentStatus.config.FETCH_INTERVAL
     }, options
 
-    @reset()
+  start: => @reset()
+  stop: => @clear()
 
   resetInterval: =>
     @clear()

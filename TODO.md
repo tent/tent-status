@@ -1,5 +1,4 @@
-- [ ] Write JavaScript tests
-- [ ] Fetch Posts Pool
+- [x] Fetch Posts Pool
 - [ ] Fix conversation views (threads not loading due to not checking all sources)
 - [ ] Add search using Skate API
 - [ ] Marbles optimizations
@@ -14,3 +13,4 @@
 - [ ] Ensure site feed works on hosted version
 - [ ] Ensure everything works on hosted version
 - [ ] Ensure everything works on standalone version
+- [ ] Write JavaScript tests
