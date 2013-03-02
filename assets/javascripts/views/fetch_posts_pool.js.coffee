@@ -58,7 +58,7 @@ Marbles.Views.FetchPostsPool = class FetchPostsPoolView extends Marbles.View
     super(context)
 
     if context.posts_count
-      TentStatus.setPageTitle "(#{context.posts_count})"
+      TentStatus.setPageTitle prefix: "(#{context.posts_count})"
     else
-      TentStatus.setPageTitle()
+      TentStatus.setPageTitle prefix: null
 

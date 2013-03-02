@@ -32,10 +32,21 @@ _.extend TentStatus, Marbles.Events, {
   Routers: {}
   Helpers: {}
 
-  setPageTitle: (title, options={}) ->
-    base_title = @config.BASE_TITLE
-    title = "#{title} #{base_title}" if title
-    title ?= base_title
+  setPageTitle: (options={}) ->
+    @current_title ?= {}
+    options.page += " -" if options.page
+    [prefix, page] = [options.prefix, options.page || @current_title.page]
+
+    prefix = null if page != @current_title.page && @current_title.page
+
+    @current_title.prefix = prefix
+    @current_title.page = page
+
+    title = []
+    for part in [prefix, page, @config.BASE_TITLE]
+      continue unless part
+      title.push part
+    title = title.join(" ")
     document.title = title
 
   run: ->
