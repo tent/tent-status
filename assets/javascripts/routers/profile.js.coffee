@@ -21,4 +21,7 @@ TentStatus.Routers.profile = new class ProfileRouter extends Marbles.Router
       return @navigate('/global', {trigger:true, replace: true})
 
     new Marbles.Views.Profile entity: params.entity
-    TentStatus.setPageTitle page: @actions_titles.profile
+
+    title = @actions_titles.profile
+    title = "#{TentStatus.Helpers.formatUrlWithPath(params.entity)} - #{title}" if params.entity
+    TentStatus.setPageTitle page: title
