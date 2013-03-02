@@ -1,7 +1,7 @@
 - [x] Fetch Posts Pool
 - [x] Update title with num new posts
 - [x] Update title with current page
-- [ ] Fix new post box in FireFox
+- [x] Fix new post box in FireFox
 - [ ] Open external links in new window/tab
 - [ ] Add mentions badge
 - [ ] Fix conversation views (threads not loading due to not checking all sources)
