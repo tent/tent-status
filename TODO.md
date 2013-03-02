@@ -1,5 +1,6 @@
 - [x] Fetch Posts Pool
-- [ ] Update title with num new posts
+- [x] Update title with num new posts
+- [ ] Update title with current page
 - [ ] Open external links in new window/tab
 - [ ] Add mentions badge
 - [ ] Fix conversation views (threads not loading due to not checking all sources)
