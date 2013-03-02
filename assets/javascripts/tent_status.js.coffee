@@ -34,8 +34,9 @@ _.extend TentStatus, Marbles.Events, {
 
   setPageTitle: (title, options={}) ->
     base_title = @config.BASE_TITLE
-    title = title + base_title if title
+    title = "#{title} #{base_title}" if title
     title ?= base_title
+    document.title = title
 
   run: ->
     return if Marbles.history.started

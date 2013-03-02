@@ -52,3 +52,13 @@ Marbles.Views.FetchPostsPool = class FetchPostsPoolView extends Marbles.View
     Marbles.DOM.on link_element, 'click', (e) =>
       e.preventDefault()
       @emptyPool()
+
+  render: =>
+    context = @context()
+    super(context)
+
+    if context.posts_count
+      TentStatus.setPageTitle "(#{context.posts_count})"
+    else
+      TentStatus.setPageTitle()
+
