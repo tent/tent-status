@@ -136,7 +136,7 @@ Marbles.Views.NewPostForm = class NewPostFormView extends TentStatus.View
     char_count = @elements.textarea.value?.length || 0
     delta = @max_chars - char_count
 
-    @elements.char_counter.innerText = delta
+    Marbles.DOM.setInnerText(@elements.char_counter, delta)
 
     if delta < 0
       # limit exceeded
