@@ -445,14 +445,14 @@ module Tent
 
       if entity == current_entity
         server_url = tent_api_root
-        client = ::TentClient.new(server_url, auth_details)
+        client = ::TentClient.new(server_url, auth_details.merge(:skip_serialization => true))
       else
         unless server_url = session["#{entity}-server_url"]
           server_url = discover(entity).last
           halt 404 unless server_url
           session["#{entity}-server_url"] = server_url
         end
-        client = ::TentClient.new(server_url)
+        client = ::TentClient.new(server_url, :skip_serialization => true)
       end
 
       begin
@@ -466,11 +466,9 @@ module Tent
       end
 
       if res
-        if res.success?
-          [res.status, res.headers, res.body.to_json]
-        else
-          status res.status
-        end
+        res.headers.delete('connection')
+        res.headers.delete('transfer-encoding')
+        [res.status, res.headers, res.body]
       else
         status 404
       end
