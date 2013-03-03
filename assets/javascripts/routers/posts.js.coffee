@@ -51,7 +51,7 @@ TentStatus.Routers.posts = new class PostsRouter extends TentStatus.Router
     if !entity.isURI
       entity = new HTTP.URI decodeURIComponent(entity)
 
-    if TentStatus.config.domain_entity.assertEqual(entity)
+    if TentStatus.config.current_entity.assertEqual(entity)
       TentStatus.setPageTitle 'Profile'
     else
       TentStatus.setPageTitle "#{TentStatus.Helpers.formatUrl TentStatus.config.domain_entity.toStringWithoutSchemePort()} - Profile"
