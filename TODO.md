@@ -6,7 +6,7 @@
 - [ ] Fix parsing inline mentions that don't include host (match against out of band mentions instead of guessing host)
 - [ ] Open external links in new window/tab
 - [ ] Add mentions badge
-- [ ] Fix conversation views (threads not loading due to not checking all sources)
+- [ ] Fix conversation views (data being fetched isn't displayed)
 - [ ] Add search using Skate API
 - [ ] Marbles optimizations
 - [ ] Pre-fill mention in create post form on 3rd party profile
