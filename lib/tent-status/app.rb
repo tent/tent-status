@@ -383,6 +383,43 @@ module Tent
       rescue Faraday::Error::ConnectionFailed
         []
       end
+
+      def redis_client
+        return unless ENV['TENTSTATUS_REDIS_URL']
+        @redis_client ||= Redis.new(:url => ENV['TENTSTATUS_REDIS_URL'])
+      end
+
+      def entity_server_urls_cache_key(entity)
+        "tent-status:#{entity}:server_urls"
+      end
+
+      def set_cached_entity_server_urls(entity, server_urls)
+        return server_urls unless redis_client
+
+        cache_key = entity_server_urls_cache_key(entity)
+        redis_client.del(cache_key)
+        redis_client.lpush(cache_key, *server_urls)
+        redis_client.expire(cache_key, 3600) # 1 hour
+
+        server_urls
+      end
+
+      def get_cached_entity_server_urls(entity)
+        return unless redis_client
+        cache_key = entity_server_urls_cache_key(entity)
+        server_urls = redis_client.lrange(cache_key, 0, -1)
+        return if server_urls.empty?
+        server_urls
+      end
+
+      def entity_server_urls(entity)
+        server_urls = get_cached_entity_server_urls(entity)
+        if !server_urls && (server_url = discover(entity).last)
+          server_urls = [server_url]
+          set_cached_entity_server_urls(entity, server_urls)
+        end
+        server_urls
+      end
     end
 
     def json(data)
@@ -431,9 +468,10 @@ module Tent
     end
 
     get '/tent-proxy/:proxy_entity/profile' do
-      profile, server_url = discover(params[:proxy_entity])
+      entity = params.delete('proxy_entity')
+      profile, server_url = discover(entity)
       if server_url
-        session["#{params[:proxy_entity]}-server_url"] = server_url
+        set_cached_entity_server_urls(entity, [server_url])
       end
 
       if profile
@@ -450,12 +488,9 @@ module Tent
         server_url = tent_api_root
         client = ::TentClient.new(server_url, auth_details.merge(:skip_serialization => true))
       else
-        unless server_url = session["#{entity}-server_url"]
-          server_url = discover(entity).last
-          halt 404 unless server_url
-          session["#{entity}-server_url"] = server_url
-        end
-        client = ::TentClient.new(server_url, :skip_serialization => true)
+        server_urls = entity_server_urls(entity)
+        halt 404 unless server_urls
+        client = ::TentClient.new(server_urls, :skip_serialization => true)
       end
 
       begin
