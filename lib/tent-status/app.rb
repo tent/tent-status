@@ -7,6 +7,7 @@ require 'hashie'
 require 'uri'
 require 'sass'
 require 'hogan_assets'
+require 'redis'
 
 module Tent
   class Status < Sinatra::Base
@@ -394,17 +395,41 @@ module Tent
         []
       end
 
-      def cache_entity_server_url(entity, server_url)
-        session["#{entity}-server_url"] = server_url
-        session["#{entity}-server_url_expires"] = Time.now.to_i + 600 # expire after 10 minutes
+      def redis_client
+        return unless ENV['TENTSTATUS_REDIS_URL']
+        @redis_client ||= Redis.new(:url => ENV['TENTSTATUS_REDIS_URL'])
       end
 
-      def entity_server_url(entity)
-        unless (server_url = session["#{entity}-server_url"]) && (expires_at = session["#{entity}-server_url_expires"]) && (expires_at.to_i > Time.now.to_i)
-          server_url = discover(entity).last
-          cache_entity_server_url(entity, server_url)
+      def entity_server_urls_cache_key(entity)
+        "tent-status:#{entity}:server_urls"
+      end
+
+      def set_cached_entity_server_urls(entity, server_urls)
+        return server_urls unless redis_client
+
+        cache_key = entity_server_urls_cache_key(entity)
+        redis_client.del(cache_key)
+        redis_client.lpush(cache_key, *server_urls)
+        redis_client.expire(cache_key, 3600) # 1 hour
+
+        server_urls
+      end
+
+      def get_cached_entity_server_urls(entity)
+        return unless redis_client
+        cache_key = entity_server_urls_cache_key(entity)
+        server_urls = redis_client.lrange(cache_key, 0, -1)
+        return if server_urls.empty?
+        server_urls
+      end
+
+      def entity_server_urls(entity)
+        server_urls = get_cached_entity_server_urls(entity)
+        if !server_urls && (server_url = discover(entity).last)
+          server_urls = [server_url]
+          set_cached_entity_server_urls(entity, server_urls)
         end
-        server_url
+        server_urls
       end
     end
 
@@ -446,7 +471,7 @@ module Tent
       entity = params.delete('proxy_entity')
       profile, server_url = discover(entity)
       if server_url
-        cache_entity_server_url(entity, server_url)
+        set_cached_entity_server_urls(entity, [server_url])
       end
 
       if profile
@@ -458,7 +483,7 @@ module Tent
 
     get '/tent-proxy/:proxy_entity/*' do
       entity = params.delete('proxy_entity')
-      server_url = entity_server_url(entity)
+      server_url = entity_server_urls(entity)
       halt 404 unless server_url
 
       client = ::TentClient.new(server_url)

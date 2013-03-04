@@ -29,6 +29,7 @@ PATH
       hogan_assets
       pg
       rack_csrf
+      redis
       sass
       sequel
       sinatra
@@ -112,6 +113,7 @@ GEM
     rack_csrf (2.4.0)
       rack (>= 0.9)
     rake (10.0.3)
+    redis (3.0.2)
     ruby-hmac (0.4.0)
     sass (3.2.5)
     sequel (3.43.0)
