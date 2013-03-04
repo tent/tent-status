@@ -19,3 +19,7 @@ tmp
 _yardoc
 doc/
 public
+
+# Added by Tommi Kaikkonen
+
+database.yml
