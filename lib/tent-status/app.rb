@@ -437,6 +437,17 @@ module Tent
       [200, { 'Content-Type' => 'application/json' }, [data.to_json]]
     end
 
+    def self.match(route, &block)
+      options(route, &block)
+      head(route, &block)
+      get(route, &block)
+      post(route, &block)
+      put(route, &block)
+      patch(route, &block)
+      post(route, &block)
+      delete(route, &block)
+    end
+
     if ENV['RACK_ENV'] != 'production' || !ENV['STATUS_CDN_URL']
       get '/assets/*' do
         asset = params[:splat].first
@@ -481,40 +492,32 @@ module Tent
       end
     end
 
-    get '/tent-proxy/:proxy_entity/*' do
+    match '/tent-proxy/:proxy_entity/*' do
       entity = params.delete('proxy_entity')
-      server_url = entity_server_urls(entity)
-      halt 404 unless server_url
 
-      client = ::TentClient.new(server_url)
+      if entity == current_entity
+        server_url = tent_api_root
+        client = ::TentClient.new(server_url, auth_details.merge(:skip_serialization => true))
+      else
+        server_urls = entity_server_urls(entity)
+        halt 404 unless server_urls
+        client = ::TentClient.new(server_urls, :skip_serialization => true)
+      end
+
       begin
-        res = case params.delete('splat').to_a.first
-        when %r{\Aposts/([^/]+)/?\Z}
-          post_id = $1
-          client.post.get(post_id)
-        when 'posts'
-          client.post.list(params)
-        when 'posts/count'
-          client.post.count(params)
-        when 'followers'
-          client.follower.list(params)
-        when 'followers/count'
-          client.follower.count(params)
-        when 'followings'
-          client.following.list(params)
-        when 'followings/count'
-          client.following.count(params)
-        end
+        method = env['REQUEST_METHOD'] || 'GET'
+        path = env['PATH_INFO'].sub(%r{\A/tent-proxy/[^/]+/}, '')
+        query_string = env['QUERY_STRING']
+        path << "?#{query_string}" unless query_string.to_s == ""
+        res = client.http.send(method.downcase, path)
       rescue Faraday::Error::ConnectionFailed
         halt 404
       end
 
       if res
-        if res.success?
-          json res.body
-        else
-          status res.status
-        end
+        res.headers.delete('connection')
+        res.headers.delete('transfer-encoding')
+        [res.status, res.headers, res.body]
       else
         status 404
       end
