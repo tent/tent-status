@@ -7,6 +7,8 @@ require 'hogan_assets'
 require 'uglifier'
 require 'yui/compressor'
 require 'marbles-js'
+require 'sprockets-sass'
+require 'compass'
 
 namespace :assets do
   Rake::SprocketsTask.new do |t|
