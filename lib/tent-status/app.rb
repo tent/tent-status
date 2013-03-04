@@ -7,6 +7,8 @@ require 'hashie'
 require 'uri'
 require 'sass'
 require 'hogan_assets'
+require 'sprockets-sass'
+require 'compass'
 
 module Tent
   class Status < Sinatra::Base

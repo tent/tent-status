@@ -1,8 +1,5 @@
+<h1 class="brand">TentStatus</h1>
 <ul class='unstyled'>
-  <li class='brand'>
-    <h1>TentStatus</h1>
-  </li>
-
   <% if current_user || guest_user %>
     <li class='<%= nav_selected_class('/') %> timeline'>
       <% if tent_host_domain %>

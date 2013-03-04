@@ -1,29 +1,22 @@
-//= require bootstrap
-//= require bootstrap-responsive
-//= require metro-buttons
-//= require metro-buttons-overrides
 //= require_self
 //= require permissions
 
+@import 'compass';
+@import 'settings';
+@import 'bootstrap';
+@import 'bootstrap-responsive';
+@import 'bootstrap-overrides';
 @import './common.css.scss';
-
-@font-face {
-  font-family: 'source_sans_proregular';
-  src: url(<%= asset_path('sourcesanspro-regular-webfont.eot') %>);
-  src: url(<%= asset_path('sourcesanspro-regular-webfont.eot') %>) format('embedded-opentype'),
-       url(<%= asset_path('sourcesanspro-regular-webfont.woff') %>) format('woff'),
-       url(<%= asset_path('sourcesanspro-regular-webfont.ttf') %>) format('truetype'),
-       url(<%= asset_path('sourcesanspro-regular-webfont.svg') %>) format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
+@import 'font-awesome';
+@import 'additions';
 
 html, body {
   height: 100%;
 }
 
 body {
-  font-family: 'source_sans_proregular';
+  margin-top: 40px;
+  font-family: $paragraphFont;
 }
 
 .fetch-posts-pool {
@@ -36,17 +29,20 @@ body {
   top: 0px;
   left: 0px;
   bottom: 0px;
-  background: $black;
+  background: $mainColor;
   color: $white;
+  border-width: 0 1px 0 0;
+  border-style:solid;
+  border-color:darken($mainColor, 10%);
 
   .v-navbar-inner {
-    margin-left: 6px;
-    margin-right: 6px;
+    margin-left: 10px;
+    margin-right: 10px;
     height: 100%;
 
     ul {
       li {
-        margin-top: 6px;
+        margin-top: 10px;
         a {
           &:hover, &:active {
             text-decoration: none;
@@ -54,41 +50,6 @@ body {
         }
       }
     }
-
-    .settings {
-      margin-top: 3px;
-      margin-right: 3px;
-      width: 34px;
-      height: 34px;
-      background-image: url(<%= asset_path('gears.png') %>);
-      background-size: 34px 34px;
-    }
-
-    .search {
-      .icon {
-        background-image: url(<%= asset_path('search.png') %>);
-        background-size: 34px 34px;
-        width: 34px;
-        height: 34px;
-      }
-    }
-  }
-}
-
-.h-navbar-fixed-top {
-  background: $dark_gray;
-  color: $white;
-
-  position: fixed;
-  top: 0px;
-  left: 181px;
-  right: 0px;
-  z-index: 1030;
-
-  .h-navbar-inner {
-    min-height: 40px;
-    line-height: 2.5rem;
-    font-size: 0.875rem; /* 14/16 */
   }
 }
 
@@ -104,11 +65,13 @@ body {
   width: $post_body_width - 80px;
 }
 
+#main-container {
+  margin-left:300px;
+}
+
 #main {
-  margin-left: 181px;
   width: $content_width;
   padding-left: 40px;
-  @include box_shadow(0px 0px 20px rgba(50, 50, 50, 0.75));
 }
 
 #author-info {
@@ -139,12 +102,18 @@ body {
 }
 
 #main-nav {
-  background: $gray;
+  background: $secondaryColor;
+  padding-left: 1.3em;
+  padding-right: 1.3em;
   color: $black;
   text-align: left;
 
+  border-color: darken($secondaryColor, 5%);
+  border-style:solid;
+  border-width: 0 1px 0 0;
+
   position: fixed;
-  left: 49px;
+  left: 68px;
   top: 0px;
   bottom: 0px;
   line-height: 1.5rem;
