@@ -9,6 +9,7 @@ require 'sass'
 require 'hogan_assets'
 require 'sprockets-sass'
 require 'compass'
+require 'marbles-js'
 
 module Tent
   class Status < Sinatra::Base
