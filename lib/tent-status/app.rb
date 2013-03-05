@@ -420,6 +420,25 @@ module Tent
         end
         server_urls
       end
+
+      def client_app_config
+        {
+          :url_root => full_path('/'),
+          :authenticated => !!(current_user || guest_user),
+          :guest_authenticated => !!guest_user,
+          :tent_host_api_root => app_api_root,
+          :tent_api_root => tent_api_root,
+          :tent_host_domain => tent_host_domain,
+          :tent_host_scheme => tent_host_scheme,
+          :tent_proxy_root => tent_proxy_root,
+          :domain_entity => domain_entity,
+          :domain_tent_api_root => domain_tent_api_root,
+          :current_entity => current_entity,
+          :current_user => {
+            :auth_details => auth_details || {},
+          },
+        }
+      end
     end
 
     def json(data)
