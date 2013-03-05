@@ -2,7 +2,7 @@
 - [x] Update title with num new posts
 - [x] Update title with current page
 - [x] Fix new post box in FireFox
-- [ ] Fix mentions autocomplete in FireFox
+- [ ] Setup mentions autocomplete to use webservice
 - [ ] Fix parsing inline mentions that don't include host (match against out of band mentions instead of guessing host)
 - [ ] Open external links in new window/tab
 - [ ] Add mentions badge
