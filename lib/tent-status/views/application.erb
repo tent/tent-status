@@ -11,6 +11,9 @@
     <link rel="apple-touch-icon" sizes="72x72" href="http://dr49qsqhb5y4j.cloudfront.net/appicon72.png" />
     <link rel="apple-touch-icon" sizes="114x114" href="http://dr49qsqhb5y4j.cloudfront.net/appicon114.png" />
 
+    <!-- Font for testing, remove in production. By Tommi -->
+    <script type="text/javascript" src="http://fast.fonts.com/jsapi/4251b5e0-d3a0-48d1-a1fb-af64aa7d573e.js"></script>
+
     <link rel="stylesheet" type="text/css" href="<%= asset_path("application.css") %>" />
     <link rel="shortcut icon" href="http://dr49qsqhb5y4j.cloudfront.net/favicon.png" />
 
@@ -19,40 +22,36 @@
 
   <body>
     <div class='v-navbar-fixed-left'>
-      <div class='v-navbar-inner'>
-        <ul class='unstyled'>
-          <li>
-            <a href='https://tent.is'><div class='nav-icon icon-magnet icon-2x'></div></a>
-          </li>
+      <ul class='unstyled custom-container'>
+        <li>
+          <a href='https://tent.is'><div class='nav-icon icon-magnet icon-2x'></div></a>
+        </li>
 
-          <li class='search'>
-            <a href="https://skate.io"><div class='nav-icon icon-dashboard icon-2x'></div></a>
-          </li>
+        <li class='search'>
+          <a href="https://skate.io"><div class='nav-icon icon-dashboard icon-2x'></div></a>
+        </li>
 
-          <li>
-            <a href='<%= full_path('/admin') %>'><div class='nav-icon icon-wrench icon-2x'></div></a>
-          </li>
-        </ul>
-      </div>
+        <li>
+          <a href='<%= full_path('/admin') %>'><div class='nav-icon icon-wrench icon-2x'></div></a>
+        </li>
+      </ul>
     </div>
 
     <div id='main-nav'>
       <%= erb :nav %>
     </div>
 
-    <div id='main-container' class='container-fluid'>
+    <div id='main-container' class='container'>
       <% if in_application? %>
         <div id='loading-indicator' class='pulse'>&nbsp;</div>
       <% end %>
 
-      <div class='row'>
         <div id='main' class='pull-left'>
           <%= yield if block_given? %>
         </div>
 
         <div id='author-info'>
         </div>
-      </div>
     </div>
 
     <% if in_application? %>

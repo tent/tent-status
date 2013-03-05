@@ -1,5 +1,4 @@
 //= require_self
-//= require permissions
 
 @import 'compass';
 @import 'settings';
@@ -9,14 +8,29 @@
 @import './common.css.scss';
 @import 'font-awesome';
 @import 'additions';
+@import 'permissions';
+
+//---------------------
+//
+// BASIC ELEMENT STYLES
+//
+//---------------------
 
 html, body {
   height: 100%;
 }
 
 body {
-  margin-top: 40px;
   font-family: $paragraphFont;
+}
+
+h1,h2,h3 {
+  font-family: 'Avenir LT W01 85 Heavy';
+  font-weight:normal;
+}
+h4,h5,h6 {
+  font-family: 'Avenir LT W01 55 Roman';
+  font-weight:normal;
 }
 
 .fetch-posts-pool {
@@ -24,76 +38,81 @@ body {
   margin-right: 16px;
 }
 
+// Vertical navigation bar
+
 .v-navbar-fixed-left {
-  position: fixed;
-  top: 0px;
-  left: 0px;
-  bottom: 0px;
-  background: $mainColor;
+  @include clearfix;
+  z-index:10;
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  padding-top:$navIconMargin;
+  padding-bottom: $navIconMargin;
+
+  background-color: $mainColor;
   color: $white;
-  border-width: 0 1px 0 0;
+
+  border-width: 1px 0 0 0;
   border-style:solid;
-  border-color:darken($mainColor, 10%);
+  border-color:darken($mainColor, 7%);
+}
 
-  .v-navbar-inner {
-    margin-left: 10px;
-    margin-right: 10px;
-    height: 100%;
+  .nav-icon {
+    float:right;
+    margin-left:$navIconMargin;
+    @include transition-property(color);
+    @include transition-duration(0.2s);
 
-    ul {
-      li {
-        margin-top: 10px;
-        a {
-          &:hover, &:active {
-            text-decoration: none;
-          }
-        }
-      }
+    &:hover {
+      text-decoration:none;
+      color: lighten($mainColor, 10%);
     }
   }
+
+.brand {
+  float:left;
+  margin:0;
+  line-height:em($lineHeight * 4, 36px);
 }
 
-.fetch-pool {
-  width: $content_width;
+.menu-switch {
+  line-height: em($lineHeight * 4);
+  float:right;
 }
 
-.content-width {
-  width: $content_width;
+.app-nav-list {
+  clear:both;
+  display:none;
+  float:left;
 }
 
-.profile-left {
-  width: $post_body_width - 80px;
+.show {
+  display:block;
+}
+
+.mentions-autocomplete {
+  margin-bottom:em($lineHeight);
 }
 
 #main-container {
-  margin-left:300px;
+  @include clearfix;
+  margin-top: em($lineHeight * 2);
+  width:100%;
+}
+
+#main .row {
+  margin-left:0;
 }
 
 #main {
-  width: $content_width;
-  padding-left: 40px;
+  width:90%;
+  margin-left:5%;
 }
 
 #author-info {
-  position: absolute;
-  top: 39px;
-  left: $content_width + 221px;
-  width: 170px;
-  padding: 6px;
-  padding-top: 0px;
-  border: 1px solid $black;
-  background-color: $white;
-
-  h3 {
-    font-size: 14px;
-    line-height: 14px;
-    margin-top: 4px;
-    margin-bottom: 4px;
-  }
-
-  p {
-    font-size: 12px;
-  }
+  // Hidden in mobile view
+  display:none;
 }
 
 .profile-stats {
@@ -102,20 +121,17 @@ body {
 }
 
 #main-nav {
+  @include clearfix;
   background: $secondaryColor;
-  padding-left: 1.3em;
-  padding-right: 1.3em;
+  padding-left: em($lineHeight);
+  padding-right: em($lineHeight);
   color: $black;
   text-align: left;
 
   border-color: darken($secondaryColor, 5%);
   border-style:solid;
-  border-width: 0 1px 0 0;
+  border-width: 0 0 1px 0;
 
-  position: fixed;
-  left: 68px;
-  top: 0px;
-  bottom: 0px;
   line-height: 1.5rem;
   z-index: 1031;
 
@@ -151,11 +167,22 @@ body {
   }
 }
 
-ul.posts {
-  width: $content_width;
+.post {
+  position:relative;
+
+  margin-bottom: em($lineHeight);
 }
 
-li.post {
+.post-container {
+  width:80%;
+  float:right;
+
+  .post-container {
+    width: 70%;
+  }
+}
+
+.post {
   &.conversation {
     border-top: 3px solid $gray;
     border-bottom: 4px solid $gray;
@@ -170,14 +197,6 @@ li.post {
     }
   }
 
-  .post-container {
-    width: $post_body_width;
-
-    .post-container {
-      width: $repost_width;
-    }
-  }
-
   h5 {
     margin: 0px;
   }
@@ -185,37 +204,21 @@ li.post {
   .post-date {
     float: right;
     margin-left: 12px;
-    font-variant: small-caps;
-    font-size: 0.875rem; /* 14/16 */
+    font-size: em(12px);
   }
 
   .actions {
     .action {
-      visibility: hidden;
       margin-right: 60px;
       display: inline;
-      i {
-        background-size: 14px 14px;
-        width: 14px;
-        height: 14px;
-        display: inline-block;
-        cursor: pointer;
+      cursor: pointer;
+      opacity:0;
+      color: rgba(0,0,0,0.6);
+      @include transition-property(color, opacity);
+      @include transition-duration(0.2s, 0.2s);
 
-        &.reply {
-          background-image: url(<%= asset_path('reply.png') %>);
-        }
-
-        &.repost {
-          background-image: url(<%= asset_path('repost.png') %>);
-        }
-
-        &.edit {
-          background-image: url(<%= asset_path('edit.png') %>);
-        }
-
-        &.conversation {
-          background-image: url(<%= asset_path('conversation.png') %>);
-        }
+      &:hover {
+        color: rgba(0,0,0,0.9);
       }
     }
   }
@@ -223,7 +226,7 @@ li.post {
   &:hover {
     > .row > .post-container .actions {
       .action {
-        visibility: visible;
+        opacity:1;
       }
     }
   }
@@ -232,7 +235,7 @@ li.post {
 .new-post-form, .reply-post-form, .edit-post-form {
   margin-bottom: 8px;
   .char-limit {
-    margin-top: 14px;
+    line-height:em(30px);
     margin-right: 12px;
   }
 }
@@ -282,19 +285,24 @@ textarea {
   word-wrap: break-word;
 }
 
-img.avatar {
+.avatar-container {
+  float:left;
+}
+
+.avatar {
   width: 42px;
   height: 42px;
   margin-right: 4px;
+  border-radius:4px;
 }
 
-img.avatar-medium {
+.avatar-medium {
   width: 57px;
   height: 57px;
   margin-right: 4px;
 }
 
-img.avatar-large {
+.avatar-large {
   max-width: 100px;
   max-height: 150px;
   min-width: 100px;
@@ -309,3 +317,135 @@ img.avatar-large {
   background-color: #0099ff;
 }
 
+//---------------------
+//
+// BREAKPOINTS (everything above is the mobile view)
+//
+//---------------------
+
+// First breakpoint where content width isn't 100%
+@media screen and (min-width: 37em) {
+  .custom-container {
+    width:40em;
+    margin-left:auto;
+    margin-right:auto;
+
+    &.unstyled {
+      margin-left:auto;
+    }
+  }
+
+  #main-container {
+    width:40em;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  #main {
+    margin-left:0;
+  }
+
+  .post {
+    width:40em;
+  }
+
+  .post-container {
+    width: em(560px - 42px - 20px);
+  }
+}
+
+// Desktop breakpoint, moving navs to the left
+@media screen and (min-width: 70em) {
+
+  .custom-container {
+    width:auto;
+    margin-left:auto;
+    margin-right:auto;
+
+    &.unstyled {
+      margin-left:auto;
+    }
+  }
+
+  #main {
+    width: 40em;
+    margin-left: 0;
+  }
+
+  .v-navbar-fixed-left {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right:auto;
+    bottom: 0px;
+    padding-right:$navIconMargin;
+    border-width: 0 1px 0 0;
+  }
+
+    .nav-icon {
+      margin-bottom:$navIconMargin;
+    }
+
+  .menu-switch {
+    display:none;
+  }
+  .app-nav-list {
+    display:block;
+  }
+
+  #main-nav {
+    position:fixed;
+    left:$navIconMargin * 2 + 48px;
+    top:0;
+    bottom:0;
+    padding-left: 1.3em;
+    padding-right: 1.3em;
+    text-align: left;
+
+    border-width: 0 1px 0 0;
+
+    z-index: 1031;
+  }
+
+  #main-container {
+    margin-left:$vNavWidth + 250px;
+    width: auto;
+  }
+
+  .posts {
+    width: $content_width;
+  }
+
+  #author-info {
+    position: absolute;
+    top: 39px;
+    left: $content_width + $vNavWidth + 320px;
+    width: 170px;
+    padding: 6px;
+    padding-top: 0px;
+    border: 1px solid $black;
+    background-color: $white;
+
+    h3 {
+      font-size: 14px;
+      line-height: 14px;
+      margin-top: 4px;
+      margin-bottom: 4px;
+    }
+
+    p {
+      font-size: 12px;
+    }
+  }
+
+  .fetch-pool {
+    width: $content_width;
+  }
+
+  .content-width {
+    width: $content_width;
+  }
+
+  .profile-left {
+    width: $post_body_width - 80px;
+  }
+}

@@ -66,6 +66,16 @@ _.extend TentStatus, Marbles.Events, {
     @ready = true
     @trigger 'ready'
 
+    # Added by Tommi Kaikkonen. This hides and shows the app menu
+    # by clicking the menu link when viewport is narrow
+    Marbles.DOM.on Marbles.DOM.querySelector('.js-menu-switch'), 'click', (e) =>
+      navListElement =  Marbles.DOM.querySelector('.app-nav-list')
+      if Marbles.DOM.querySelector('.app-nav-list.show')
+        Marbles.DOM.removeClass navListElement, 'show'
+      else
+        Marbles.DOM.addClass navListElement, 'show'
+
+
   showLoadingIndicator: ->
     @_num_running_requests ?= 0
     @_num_running_requests += 1
