@@ -96,91 +96,16 @@ Marbles.Views.PermissionsFieldsPicker = class PermissionsFieldsPickerView extend
     return if @current_query == query
     @current_query = query
     return @displayMatches([]) if query.match(/^[\s\r\t\n]*$/)
-    matched_entities = {}
-    matches = []
-    complete = (results, nextPage) =>
-      return unless @current_query == query
-      results ?= []
-      for result in results
-        result.score = ((result.name || "").score(query) + result.entity.score(query))
-        result.value = result.entity
-        if result.score
-          matches.push(result)
-      matches = _.filter matches, (m) => m.score && !@parent_view.optionsInclude(m)
-      matches = _.sortBy matches, (m) => m.score * -1
-      @displayMatches(matches)
 
-      if results.length && (matches.length < 3 || _.first(matches).score < 0.6)
-        nextPage(complete)
+    return @displayMatches([]) unless TentStatus.entity_search_service
+    TentStatus.entity_search_service.search query,
+      success: (res) =>
+        results = _.map res, (result) =>
+          { score: result.score, value: result.entity, name: result.name, entity: result.entity }
 
-    @fetchFollowings complete
-
-  fetchProfile: (entity, callback) =>
-    TentStatus.Models.Profile.fetch { entity: entity },
-      success: (profile) =>
-        callback(profile)
-
-      error: =>
-        callback()
-
-  fetchProfiles: (results, callback) =>
-    return callback() unless results.length
-
-    _num_remaining = results.length
-    complete = =>
-      _num_remaining -= 1
-      callback(results) if _num_remaining == 0
-
-    for result, index in results
-      do (result, index) =>
-        @input.showLoading()
-        @fetchProfile result.entity, (profile) =>
-          @input.hideLoading()
-          results[index].name = profile?.get('name')
-          complete()
-
-  fetchFollowings: (callback) =>
-    params = {
-      limit: TentStatus.config.PER_PAGE
-    }
-
-    nextPage = =>
-      @input.showLoading()
-      if params.before_id
-        cache_key = "followings:#{params.before_id}:#{params.limit}"
-        cache_options = {saveToLocalStorage: true}
-      else
-        cache_key = "followings:#{params.limit}"
-        cache_options = {}
-
-      TentStatus.Cache.get cache_key, (follows = []) =>
-        params.before_id = id if id = _.last(follows)?.id
-        @input.hideLoading()
-        return callback(follows, nextPage) if follows.length
-
-        @input.showLoading()
-
-        followings_collection = new TentStatus.Collections.Followings
-        followings_collection.fetch params, {
-          success: (followings) =>
-            @input.hideLoading()
-
-            if id = _.last(followings)?.id
-              params.before_id = id
-
-            results = _.map followings, (follow) =>
-              { entity: follow.entity, id: follow.id }
-
-            @fetchProfiles results, (results) =>
-              TentStatus.Cache.set cache_key, results, cache_options
-              callback(results, nextPage)
-
-          error: =>
-            @input.hideLoading()
-            callback()
-        }
-
-    nextPage()
+        console.log results
+        results = _.filter results, (result) => !@parent_view.optionsInclude(result)
+        @displayMatches(results)
 
   context: =>
     options: @matches

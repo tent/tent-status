@@ -22,6 +22,7 @@ module Tent
       self.class.set :app_url, (options[:app_url] || ENV['APP_URL'])
       self.class.set :app_description, (options[:app_description] || ENV['APP_DESCRIPTION'])
       self.class.set :primary_entity, (options[:primary_entity] || ENV['PRIMARY_ENTITY'])
+      self.class.set :entity_search_service_api_root, (options[:entity_search_service_api_root] || ENV['ENTITY_SEARCH_SERVICE_API_ROOT'])
     end
 
     configure do
@@ -437,6 +438,7 @@ module Tent
           :current_user => {
             :auth_details => auth_details || {},
           },
+          :entity_search_service_api_root => settings.entity_search_service_api_root,
         }
       end
     end
