@@ -7,14 +7,14 @@
         <% if tent_host_domain %>
           <a href="<%= username_entity %>">Timeline</a>
         <% else %>
-          <a href="<%= full_path('/') %>">Timeline</a>
+          <a href="<%= full_path('/') %>"><i class="icon-list"></i>Timeline</a>
         <% end %>
       </li>
       <li class="<%= nav_selected_class('/mentions') %> mentions">
-        <a href="<%= full_url('/mentions') %>">Mentions</a>
+        <a href="<%= full_url('/mentions') %>"><i class="icon-pushpin"></i>Mentions</a>
       </li>
       <li class="<%= nav_selected_class('/profile') %> profile">
-        <a href="<%= full_url('/profile') %>">Profile</a>
+        <a href="<%= full_url('/profile') %>"><i class="icon-user"></i>Profile</a>
       </li>
     <% end %>
 

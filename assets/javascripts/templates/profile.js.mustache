@@ -1,41 +1,39 @@
 <div class="row">
-  <div class="pull-left content-width no-offset">
-    <div class="page-header">
-      <div class="row">
-        <div class="span2">
-          <img class="avatar-large" src="{{avatar}}" />
+  <div class="page-header">
+    <div class="row">
+      <img class="avatar avatar-large pull-left" src="{{avatar}}" />
 
-          <div class='clearfix profile-stats'>
-            <div data-view='AuthorInfoFollowersCount'></div>
-            <div data-view='AuthorInfoFollowingCount'></div>
-            <div data-view='AuthorInfoPostsCount'></div>
-          </div>
+      <div class="pull-left profile-right">
+        <h2 class="profile-name">
+          {{^has_name}}
+          <a href="{{{entity}}}">{{name}}</a>
+          {{/has_name}}
+          
+          {{#has_name}}{{name}}{{/has_name}}
+        </h2>
+
+        {{#has_name}}
+        <a href="{{{entity}}}"><small>{{formatted.entity}}</small></a>
+        {{/has_name}}
+
+        <div class="pull-left profile-left no-offset has-overflow">
+          <p>{{formatted.bio}}</p>
         </div>
-        <div class="pull-left profile-left no-offset">
-          <h2 class="condensed">
-            {{^has_name}}
-            <a href="{{{entity}}}">{{name}}</a>
-            {{/has_name}}
-            
-            {{#has_name}}{{name}}{{/has_name}}
-            
-            {{#has_name}}
-            <br />
-            <a href="{{{entity}}}"><small>{{formatted.entity}}</small></a>
-            {{/has_name}}
 
-            {{^entity_authenticated}}
-            <div data-view='FollowButton' class='pull-right'></div>
-            {{/entity_authenticated}}
-          </h2>
-
-          <div class="pull-left profile-left no-offset has-overflow">
-            <p>{{formatted.bio}}</p>
-          </div>
-
-          <a href='{{website_url}}'>{{formatted.website_url}}</a>
-        </div>
+        <a href='{{website_url}}'>{{formatted.website_url}}</a>
       </div>
+    </div>
+    <div class="row">
+      <table class="profile-count-infos">
+        <tr>
+          <td data-view='AuthorInfoFollowersCount'></td>
+          <td data-view='AuthorInfoFollowingCount'></td>
+          <td data-view='AuthorInfoPostsCount'></td>
+          {{^entity_authenticated}}
+          <td data-view='FollowButton'></td>
+          {{/entity_authenticated}}
+        </tr>
+      </table>
     </div>
   </div>
 </div>

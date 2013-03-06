@@ -60,12 +60,12 @@ Marbles.Views.PermissionsFields = class PermissionsFieldsView extends TentStatus
     @visible = false
     Marbles.DOM.hide(@options_view.el)
     @picker_view?.hide()
-    Marbles.DOM.setInnerText(@elements.visibility_toggle, @text.visibility_toggle.show)
+    #Marbles.DOM.setInnerText(@elements.visibility_toggle, @text.visibility_toggle.show)
 
   show: (should_focus = true) =>
     @visible = true
     Marbles.DOM.show(@options_view.el)
-    Marbles.DOM.setInnerText(@elements.visibility_toggle, @text.visibility_toggle.hide)
+    #Marbles.DOM.setInnerText(@elements.visibility_toggle, @text.visibility_toggle.hide)
     @focusInput() if should_focus
 
   addOption: (option) =>

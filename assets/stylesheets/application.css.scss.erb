@@ -1,6 +1,8 @@
 //= require_self
 
-@import 'compass';
+@import 'compass/css3';
+@import 'compass/utilities/general/clearfix';
+@import "compass/utilities/links/link-colors";
 @import 'settings';
 @import 'bootstrap';
 @import 'bootstrap-responsive';
@@ -71,21 +73,49 @@ h4,h5,h6 {
   }
 
 .brand {
+  //Not displaying in the proprietary version
+  display:none;
+
   float:left;
   margin:0;
   line-height:em($lineHeight * 4, 36px);
 }
 
+// Menu button
 .menu-switch {
   line-height: em($lineHeight * 4);
+  cursor:pointer;
   float:right;
 }
 
 .app-nav-list {
   clear:both;
   display:none;
+  width:100%;
+  margin-top: em($lineHeight);
   float:left;
 }
+
+.app-nav-list li {
+  text-align:center;
+  padding: em($lineHeight * 2) 0;
+}
+
+.app-nav-list i {
+  margin-right:1em;
+}
+
+.nav-selected .nav-icon {
+  @include background-image(linear-gradient(lighten($mainColor, 7%) 70%, lighten($mainColor, 12%)));
+  background-color: lighten($mainColor, 10%);
+  border-color: darken($mainColor, 3%);
+  text-shadow:none;
+
+  &:hover {
+    color:$mainColor;
+  }
+}
+
 
 .show {
   display:block;
@@ -115,9 +145,34 @@ h4,h5,h6 {
   display:none;
 }
 
-.profile-stats {
-  line-height: 26px;
-  font-size: 16px;
+.post-profile-name {
+  font-weight:bold;
+}
+
+.profile-name {
+  line-height:1em;
+  margin:0;
+}
+
+.profile-count-infos {
+  margin-top: em($lineHeight);
+  margin-bottom: em($lineHeight);
+  width:100%;
+  text-align:center;
+}
+
+.profile-count-infos tr td {
+  border-width: 0 1px 0 0;
+  border-style:solid;
+  border-color:$secondaryColor;
+
+  &:last-child {
+    border-width:0;
+  }
+}
+
+.profile-right {
+  margin-left: em($lineHeight);
 }
 
 #main-nav {
@@ -167,10 +222,8 @@ h4,h5,h6 {
   }
 }
 
-.post {
-  position:relative;
-
-  margin-bottom: em($lineHeight);
+.post h1, .post h2, .post h3, .post h4, .post h5, .post h6 {
+  font-family:$paragraphFont;
 }
 
 .post-container {
@@ -238,6 +291,10 @@ h4,h5,h6 {
     line-height:em(30px);
     margin-right: 12px;
   }
+}
+
+.edit-post-form .btn {
+  margin-left:em($lineHeight / 2);
 }
 
 .followings {
@@ -350,11 +407,29 @@ textarea {
 
   .post-container {
     width: em(560px - 42px - 20px);
+
+    .post-container {
+      width: em(560px - 42px - 20px - 42px - 10px);
+    }
   }
 }
 
 // Desktop breakpoint, moving navs to the left
 @media screen and (min-width: 70em) {
+
+
+
+  .app-nav-list {
+    display:block;
+    width:auto;
+    margin-top: em($lineHeight);
+  }
+
+  .app-nav-list li {
+    text-align:left;
+    line-height: em($lineHeight * 2);
+    padding:0;
+  }
 
   .custom-container {
     width:auto;
@@ -388,9 +463,7 @@ textarea {
   .menu-switch {
     display:none;
   }
-  .app-nav-list {
-    display:block;
-  }
+
 
   #main-nav {
     position:fixed;
@@ -407,7 +480,7 @@ textarea {
   }
 
   #main-container {
-    margin-left:$vNavWidth + 250px;
+    margin-left:$vNavWidth + 170px;
     width: auto;
   }
 
@@ -416,25 +489,31 @@ textarea {
   }
 
   #author-info {
+    display:block;
     position: absolute;
     top: 39px;
-    left: $content_width + $vNavWidth + 320px;
-    width: 170px;
-    padding: 6px;
-    padding-top: 0px;
-    border: 1px solid $black;
+    max-width: 18em;
+    left: $content_width + $vNavWidth + 220px;
+    padding: em($lineHeight);
+    border: 1px solid #bbbbbb;
+    border-radius:4px;
     background-color: $white;
 
     h3 {
-      font-size: 14px;
-      line-height: 14px;
-      margin-top: 4px;
-      margin-bottom: 4px;
+      font-size: em(18px);
+      line-height: em(18px);
+      margin:0;
     }
+  }
 
-    p {
-      font-size: 12px;
-    }
+  .author-info-bio {
+    margin-top: em($lineHeight);
+  }
+  .author-info-top-container {
+    @include clearfix;
+  }
+  ul.author-count-infos {
+    margin-left: em($lineHeight);
   }
 
   .fetch-pool {
@@ -443,9 +522,5 @@ textarea {
 
   .content-width {
     width: $content_width;
-  }
-
-  .profile-left {
-    width: $post_body_width - 80px;
   }
 }

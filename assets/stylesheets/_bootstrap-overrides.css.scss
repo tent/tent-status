@@ -25,6 +25,22 @@ a {
 	background-color: $mainColor;
 }
 
+.btn-danger {
+	border-color: lighten($dangerColor, 30%);
+	color: $dangerColor;
+	background-color:$whiteColor;
+	@include background-image(linear-gradient($whiteColor 70%, lighten($dangerColor, 45%)));
+}
+
+.btn-danger:hover,
+.btn-danger:active,
+.btn-danger.active,
+.btn-danger.disabled,
+.btn-danger[disabled] {
+	background-color: lighten($dangerColor, 45%);
+	color:$dangerColor;
+}
+
 // Input focus color
 
 textarea:focus,

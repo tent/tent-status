@@ -1,23 +1,23 @@
 {{#config.authenticated}}
 <li class="post clearfix" data-post_cid="{{cid}}">
   <div class="row">
-    <div class="span1 avatar-container" data-view='ProfileAvatar' data-model_cid='{{post.cid}}'>
-      <a href="{{profileUrl}}"><img class="pull-left avatar" src="{{avatar}}" /></a>
+    <div class="avatar-container" data-view='ProfileAvatar' data-model_cid='{{post.cid}}'>
+      <a href="{{profileUrl}}"><img class="avatar" src="{{avatar}}" /></a>
     </div>
 
-    <div class='post-container {{#has_parent}}span4{{/has_parent}}{{^has_parent}}span5{{/has_parent}} no-offset'>
+    <div class='post-container {{#has_parent}}{{/has_parent}}{{^has_parent}}{{/has_parent}} no-offset pull-left'>
       <h5>
-        <span data-view='ProfileName' data-model_cid='{{post.cid}}'>
+        <span class="post-profile-name" data-view='ProfileName' data-model_cid='{{post.cid}}'>
           <a href="{{profileUrl}}">{{formatted.entity}}</a>
         </span>
       </h5>
 
       <form class="form-horizontal post-body edit-post-form" method="POST">
         <div data-errors_container class="alert alert-error hide">&nbsp;</div>
-        <div class='mentions-autocomplete' data-view='MentionsAutoCompleteTextareaContainer'></div>
-        <input class="m-btn blue pull-right" type="submit" data-disable_with='Saving...' value="Save" />
-        <input class="m-btn red pull-right" type="button" data-action='delete' data-confirm="Delete this post? You're sure about that?" data-disable_with='Deleting...' value="Delete" />
-        <input class="m-btn pull-right" type="button" data-action='cancel' value="Cancel" />
+        <div class='mentions-autocomplete' data-view='EditPostMentionsAutoCompleteTextarea'></div>
+        <input class="btn btn-primary pull-right" type="submit" data-disable_with='Saving...' value="Save" />
+        <input class="btn btn-danger pull-right" type="button" data-action='delete' data-confirm="Delete this post? You're sure about that?" data-disable_with='Deleting...' value="Delete" />
+        <input class="btn pull-right" type="button" data-action='cancel' value="Cancel" />
         <span class="char-limit pull-right">{{max_chars}}</span>
 
         <div class='permissions' data-view='PermissionsFields'></div>
