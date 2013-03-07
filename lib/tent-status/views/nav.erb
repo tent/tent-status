@@ -1,27 +1,25 @@
-<div class="custom-container">
-  <h1 class="brand">TentStatus</h1>
-  <a class="menu-switch js-menu-switch">Menu</a>
-  <ul class='unstyled app-nav-list'>
-    <% if current_user || guest_user %>
-      <li class='<%= nav_selected_class('/') %> timeline'>
-        <% if tent_host_domain %>
-          <a href="<%= username_entity %>">Timeline</a>
-        <% else %>
-          <a href="<%= full_path('/') %>"><i class="icon-list"></i>Timeline</a>
-        <% end %>
-      </li>
-      <li class="<%= nav_selected_class('/mentions') %> mentions">
-        <a href="<%= full_url('/mentions') %>"><i class="icon-pushpin"></i>Mentions</a>
-      </li>
-      <li class="<%= nav_selected_class('/profile') %> profile">
-        <a href="<%= full_url('/profile') %>"><i class="icon-user"></i>Profile</a>
-      </li>
-    <% end %>
+<h1 class="brand">TentStatus</h1>
+<a class="menu-switch js-menu-switch">Menu</a>
+<ul class='unstyled app-nav-list'>
+  <% if current_user || guest_user %>
+    <li class='<%= nav_selected_class('/') %> timeline'>
+      <% if tent_host_domain %>
+        <a href="<%= username_entity %>">Timeline</a>
+      <% else %>
+        <a href="<%= full_path('/') %>"><i class="icon-list"></i>Timeline</a>
+      <% end %>
+    </li>
+    <li class="<%= nav_selected_class('/mentions') %> mentions">
+      <a href="<%= full_url('/mentions') %>"><i class="icon-pushpin"></i>Mentions</a>
+    </li>
+    <li class="<%= nav_selected_class('/profile') %> profile">
+      <a href="<%= full_url('/profile') %>"><i class="icon-user"></i>Profile</a>
+    </li>
+  <% end %>
 
-    <% if tent_host_domain %>
-      <li class='<%= nav_selected_class('/global') %> site_feed'>
-        <a href="https://app.<%= tent_host_domain %>/global">Site Feed</a>
-      </li>
-    <% end %>
-  </ul>
-</div>
+  <% if tent_host_domain %>
+    <li class='<%= nav_selected_class('/global') %> site_feed'>
+      <a href="https://app.<%= tent_host_domain %>/global">Site Feed</a>
+    </li>
+  <% end %>
+</ul>

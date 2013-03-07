@@ -1,15 +1,8 @@
 <div class="row solid-container followers">
-  <div class="span6">
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        {{#followers}}{{> _follower}}{{/followers}}
-      </tbody>
-    </table>
-  </div>
+  <h2>Followers</h2>
+  <table class="table table-striped">
+    <tbody>
+      {{#followers}}{{> _follower}}{{/followers}}
+    </tbody>
+  </table>
 </div>

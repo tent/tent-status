@@ -1,15 +1,16 @@
 .nav-icon {
 	color:$mainColor;
-	@include text-shadow(0 1px 1px rgba(0,0,0,0.1));
 	padding:5px;
 
-	border-color:darken($mainColor, 10%);
 	border-width:1px;
 	border-style:solid;
 	border-radius: 4px;
-	background-color: darken($mainColor, 5%);
 
-	@include box-shadow(inset 0 1px 2px 0 rgba(0,0,0,0.1));
+	@include background-image(linear-gradient(lighten($mainColor, 5%), $mainColor));
+	background-color: lighten($mainColor, 10%);
+	border-color: darken($mainColor, 7%);
+	@include text-shadow(0 -1px 0 darken($mainColor, 10%));
+	color:darken($mainColor, 5%);
 }
 
 @function em($px, $base: $baseFontSize) {

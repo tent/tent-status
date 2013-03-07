@@ -1,19 +1,15 @@
 <div class="row solid-container followings">
-  <div class="span6">
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        {{#entity_authenticated}}
-        <tr data-view='NewFollowingForm'></tr>
-        {{/entity_authenticated}}
-
-        {{#followings}}{{> _following}}{{/followings}}
-      </tbody>
-    </table>
-  </div>
+  <h2>Following</h2>
+  <table class="table table-striped">
+    <tbody>
+      {{#entity_authenticated}}
+      <tr data-view='NewFollowingForm'></tr>
+      {{/entity_authenticated}}
+    </tbody>
+  </table>
+  <table class="table table-striped">
+    <tbody>
+      {{#followings}}{{> _following}}{{/followings}}
+    </tbody>
+  </table>
 </div>

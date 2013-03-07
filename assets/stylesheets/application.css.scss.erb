@@ -26,13 +26,16 @@ body {
   font-family: $paragraphFont;
 }
 
-h1,h2,h3 {
-  font-family: 'Avenir LT W01 85 Heavy';
-  font-weight:normal;
+h1,h2,h3,h4 {
+  font-family: $headingFont;
 }
-h4,h5,h6 {
-  font-family: 'Avenir LT W01 55 Roman';
+h5,h6 {
   font-weight:normal;
+  font-family: $headingFont;
+}
+
+.table .align-middle {
+  vertical-align:middle;
 }
 
 .fetch-posts-pool {
@@ -40,7 +43,39 @@ h4,h5,h6 {
   margin-right: 16px;
 }
 
-// Vertical navigation bar
+//---------------------
+//
+// LAYOUT
+//
+// note that these are for mobile view,
+// desktop rules come after breakpoints
+//---------------------
+
+#main-container {
+  @include clearfix;
+  margin-top: em($lineHeight);
+  width:100%;
+}
+
+#main .row {
+  margin-left:0;
+}
+
+#main {
+  width:90%;
+  margin-left:5%;
+}
+
+#author-info {
+  // Hidden in mobile view
+  display:none;
+}
+
+//---------------------
+//
+// VERTICAL NAVIGATION BAR (GREEN)
+//
+//---------------------
 
 .v-navbar-fixed-left {
   @include clearfix;
@@ -60,18 +95,50 @@ h4,h5,h6 {
   border-color:darken($mainColor, 7%);
 }
 
+  
+  // Icons inside the nav bar
   .nav-icon {
     float:right;
-    margin-left:$navIconMargin;
+    margin-right:$navIconMargin;
     @include transition-property(color);
     @include transition-duration(0.2s);
 
     &:hover {
       text-decoration:none;
-      color: lighten($mainColor, 10%);
+      color: darken($mainColor, 10%);
     }
   }
 
+  // Style for the selected icon
+  .nav-selected .nav-icon {
+    background-image:none;
+    background-color: darken($mainColor, 10%);
+    border-color: darken($mainColor, 15%);
+    text-shadow:none;
+    color:lighten($mainColor, 5%);
+  }
+
+//---------------------
+//
+// APP NAVIGATION BAR (GRAY)
+//
+//---------------------
+
+#main-nav {
+  @include clearfix;
+  background: $secondaryColor;
+  color: $black;
+  text-align: left;
+
+  border-color: darken($secondaryColor, 5%);
+  border-style:solid;
+  border-width: 0 0 1px 0;
+
+  line-height: 1.5rem;
+  z-index: 1031;
+}
+
+// App name
 .brand {
   //Not displaying in the proprietary version
   display:none;
@@ -81,13 +148,16 @@ h4,h5,h6 {
   line-height:em($lineHeight * 4, 36px);
 }
 
-// Menu button
+// Menu button, shown only on mobile and tablet viewports
 .menu-switch {
-  line-height: em($lineHeight * 4);
+  display:block;
+  text-align:center;
+  font-size:em(18px);
+  line-height: em($lineHeight * 4 / em(18px));
   cursor:pointer;
-  float:right;
 }
 
+// List (timeline, mentions, profile..)
 .app-nav-list {
   clear:both;
   display:none;
@@ -96,57 +166,60 @@ h4,h5,h6 {
   float:left;
 }
 
-.app-nav-list li {
-  text-align:center;
-  padding: em($lineHeight * 2) 0;
-}
+  // List elements
+  .app-nav-list li {
+    text-align:center;
+    padding-top: em($lineHeight * 2);
+    padding-bottom: em($lineHeight * 2);
+    padding-left: em($lineHeight);
+    padding-right: em($lineHeight * 2);
+    font-size: em(20px);
 
-.app-nav-list i {
-  margin-right:1em;
-}
+    &.brand {
+      h1 {
+        font-size: 1.5rem;
+        margin: 0px;
+      }
+      margin-bottom: 10px;
+    }
 
-.nav-selected .nav-icon {
-  @include background-image(linear-gradient(lighten($mainColor, 7%) 70%, lighten($mainColor, 12%)));
-  background-color: lighten($mainColor, 10%);
-  border-color: darken($mainColor, 3%);
-  text-shadow:none;
+    a {
+      color: $dark_gray;
 
-  &:hover {
-    color:$mainColor;
+      &:hover {
+        text-decoration: none;
+      }
+    }
+
+    &.active {
+      background-color: lighten($secondaryColor, 5%);
+    }
   }
-}
 
+    // Some spacing for icons in the list
+    .app-nav-list i {
+      margin-right:0.5em;
+    }
 
-.show {
-  display:block;
-}
 
 .mentions-autocomplete {
   margin-bottom:em($lineHeight);
 }
 
-#main-container {
-  @include clearfix;
-  margin-top: em($lineHeight * 2);
-  width:100%;
+.post-profile-name a {
+  font-weight:700;
+  color: $paragraphColor;
 }
 
-#main .row {
-  margin-left:0;
-}
+//---------------------
+//
+// PROFILE VIEW
+//
+//---------------------
 
-#main {
-  width:90%;
-  margin-left:5%;
-}
-
-#author-info {
-  // Hidden in mobile view
-  display:none;
-}
-
-.post-profile-name {
-  font-weight:bold;
+.profile-entity {
+  font-size: em(18px);
+  color: $grayTextColor;
 }
 
 .profile-name {
@@ -175,55 +248,12 @@ h4,h5,h6 {
   margin-left: em($lineHeight);
 }
 
-#main-nav {
-  @include clearfix;
-  background: $secondaryColor;
-  padding-left: em($lineHeight);
-  padding-right: em($lineHeight);
-  color: $black;
-  text-align: left;
-
-  border-color: darken($secondaryColor, 5%);
-  border-style:solid;
-  border-width: 0 0 1px 0;
-
-  line-height: 1.5rem;
-  z-index: 1031;
-
-  ul {
-    li {
-      padding-top: 4px;
-      font-size: 1rem;
-      margin-left: 6px;
-      margin-right: 6px;
-
-      &.brand {
-        h1 {
-          font-size: 1.5rem;
-          margin: 0px;
-        }
-        margin-bottom: 10px;
-      }
-
-      a {
-        color: $dark_gray;
-
-        &:hover {
-          text-decoration: none;
-        }
-      }
-
-      &.active {
-        a {
-          color: $black;
-        }
-      }
-    }
-  }
+.profile-left {
+  margin-top: em($lineHeight);
 }
 
-.post h1, .post h2, .post h3, .post h4, .post h5, .post h6 {
-  font-family:$paragraphFont;
+.avatar-table-column {
+  width:42px;
 }
 
 .post-container {
@@ -233,6 +263,25 @@ h4,h5,h6 {
   .post-container {
     width: 70%;
   }
+}
+
+.table .post-name {
+  font-size: em(20px);
+  font-weight:700;
+  color: $paragraphColor;
+  & a:visited {
+    color:$paragraphColor;
+  }
+}
+
+//---------------------
+//
+// FEED
+//
+//---------------------
+
+.post-body p {
+  margin-bottom:0;
 }
 
 .post {
@@ -252,28 +301,14 @@ h4,h5,h6 {
 
   h5 {
     margin: 0px;
+    line-height:1em;
   }
 
   .post-date {
+    color:$grayTextColor;
     float: right;
     margin-left: 12px;
     font-size: em(12px);
-  }
-
-  .actions {
-    .action {
-      margin-right: 60px;
-      display: inline;
-      cursor: pointer;
-      opacity:0;
-      color: rgba(0,0,0,0.6);
-      @include transition-property(color, opacity);
-      @include transition-duration(0.2s, 0.2s);
-
-      &:hover {
-        color: rgba(0,0,0,0.9);
-      }
-    }
   }
 
   &:hover {
@@ -283,6 +318,33 @@ h4,h5,h6 {
       }
     }
   }
+}
+
+.action {
+  margin-right: 30px;
+  display: inline;
+  cursor: pointer;
+  color: rgba(0,0,0,0.6);
+  @include transition-property(color, opacity);
+  @include transition-duration(0.2s, 0.2s);
+
+  &:hover {
+    color: rgba(0,0,0,0.9);
+  }
+}
+
+.actions {
+  margin-bottom: em($lineHeight);
+}
+
+//---------------------
+//
+// FORMS
+//
+//---------------------
+
+.new-post-container {
+  margin-bottom: em($lineHeight);
 }
 
 .new-post-form, .reply-post-form, .edit-post-form {
@@ -301,6 +363,46 @@ h4,h5,h6 {
   .m-btn {
     margin-top: 0px;
   }
+}
+
+//---------------------
+//
+// AVATARS
+//
+//---------------------
+
+.avatar-container {
+  float:left;
+}
+
+.avatar {
+  width: 42px;
+  height: 42px;
+  margin-right: 4px;
+  border-radius:4px;
+}
+
+.avatar-medium {
+  width: 57px;
+  height: 57px;
+  margin-right: 4px;
+}
+
+.avatar-large {
+  max-width: 100px;
+  max-height: 150px;
+  min-width: 100px;
+  min-height: 100px;
+}
+
+//---------------------
+//
+// MISC
+//
+//---------------------
+
+.show {
+  display:block;
 }
 
 #loading-indicator {
@@ -342,30 +444,6 @@ textarea {
   word-wrap: break-word;
 }
 
-.avatar-container {
-  float:left;
-}
-
-.avatar {
-  width: 42px;
-  height: 42px;
-  margin-right: 4px;
-  border-radius:4px;
-}
-
-.avatar-medium {
-  width: 57px;
-  height: 57px;
-  margin-right: 4px;
-}
-
-.avatar-large {
-  max-width: 100px;
-  max-height: 150px;
-  min-width: 100px;
-  min-height: 100px;
-}
-
 #iframe-cache {
   display: none;
 }
@@ -383,7 +461,7 @@ textarea {
 // First breakpoint where content width isn't 100%
 @media screen and (min-width: 37em) {
   .custom-container {
-    width:40em;
+    width:$feedWidth;
     margin-left:auto;
     margin-right:auto;
 
@@ -393,12 +471,13 @@ textarea {
   }
 
   #main-container {
-    width:40em;
+    width:$feedWidth;
     margin-left: auto;
     margin-right: auto;
   }
   #main {
     margin-left:0;
+    width: $feedWidth;
   }
 
   .post {
@@ -416,19 +495,18 @@ textarea {
 
 // Desktop breakpoint, moving navs to the left
 @media screen and (min-width: 70em) {
-
-
-
   .app-nav-list {
     display:block;
     width:auto;
-    margin-top: em($lineHeight);
+    margin-top: 0;
   }
 
   .app-nav-list li {
     text-align:left;
+    font-size: em(16px);
     line-height: em($lineHeight * 2);
-    padding:0;
+    padding-top:0;
+    padding-bottom:0;
   }
 
   .custom-container {
@@ -452,7 +530,7 @@ textarea {
     left: 0px;
     right:auto;
     bottom: 0px;
-    padding-right:$navIconMargin;
+    padding-left:$navIconMargin;
     border-width: 0 1px 0 0;
   }
 
@@ -470,9 +548,7 @@ textarea {
     left:$navIconMargin * 2 + 48px;
     top:0;
     bottom:0;
-    padding-left: 1.3em;
-    padding-right: 1.3em;
-    text-align: left;
+    text-align: center;
 
     border-width: 0 1px 0 0;
 
@@ -486,6 +562,23 @@ textarea {
 
   .posts {
     width: $content_width;
+  }
+  .actions {
+    margin-bottom: 0;
+  }
+
+  .action {
+    opacity:0;
+  }
+
+  .post {
+    &:hover {
+      > .row > .post-container .actions {
+        .action {
+          opacity:1;
+        }
+      }
+    }
   }
 
   #author-info {

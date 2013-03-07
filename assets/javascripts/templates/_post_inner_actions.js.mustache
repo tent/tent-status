@@ -1,17 +1,17 @@
 {{#config.authenticated}}
 <div class='actions'>
-  <span class='action' data-view='PostActionReply'><i class='icon-reply' title='Reply'></i></span>
+  <span class='action' data-view='PostActionReply'><i class='icon-reply' title='Reply'></i> Reply</span>
 
   {{^current_user_owns_post}}
-  <span class='action' data-view='PostActionRepost' data-confirm="Repost?"><i class='icon-retweet' title='Repost'></i></span>
+  <span class='action' data-view='PostActionRepost' data-confirm="Repost?"><i class='icon-retweet' title='Repost'></i> Repost</span>
   {{/current_user_owns_post}}
 
   {{^is_conversation_view}}
-  <span class='action' data-view='PostActionConversation'><i class='icon-comments' title='Conversation'></i></span>
+  <span class='action' data-view='PostActionConversation'><i class='icon-comments' title='Conversation'></i> Conversation</span>
   {{/is_conversation_view}}
 
   {{#current_user_owns_post}}
-  <span class='action' data-view='PostActionEdit'><i class='icon-pencil' title='Edit'></i></span>
+  <span class='action' data-view='PostActionEdit'><i class='icon-pencil' title='Edit'></i> Edit</span>
   {{/current_user_owns_post}}
 
   {{^is_repost}}

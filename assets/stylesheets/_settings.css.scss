@@ -1,5 +1,7 @@
 $paragraphFont: 'Helvetica Neue', 'Helvetica', Arial, Ubuntu, Verdana, sans-serif;
-
+$paragraphFont: 'PT Sans';
+$paragraphFont: 'Source Sans Pro';
+$headingFont: $paragraphFont;
 $mainColor: #00B55A;
 $secondaryColor: #eeeeee;
 $whiteColor: #ffffff;
@@ -13,3 +15,5 @@ $navIconMargin: 10px;
 
 $baseFontSize: 14px;
 $lineHeight: 18px;
+
+$feedWidth: 40em;
