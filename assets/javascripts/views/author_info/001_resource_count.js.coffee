@@ -17,6 +17,6 @@ Marbles.Views.AuthorInfoResourceCount = class FollowersCountView extends TentSta
     profile = @profile()
 
     url: TentStatus.Helpers.entityResourceUrl(profile.get('entity'), @constructor.model.resource_path)
-    formatted:
-      count: "#{count} #{TentStatus.Helpers.capitalize TentStatus.Helpers.pluralize(@constructor.resource_name.singular, count, @constructor.resource_name.plural)}"
+    count: count
+    pluralized_resource_name: TentStatus.Helpers.capitalize TentStatus.Helpers.pluralize(@constructor.resource_name.singular, count, @constructor.resource_name.plural)
 
