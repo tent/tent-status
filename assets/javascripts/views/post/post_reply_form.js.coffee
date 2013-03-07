@@ -29,13 +29,3 @@ Marbles.Views.PostReplyForm = class PostReplyFormView extends Marbles.Views.NewP
   post: =>
     TentStatus.Models.Post.instances.all[@parent_view.post_cid]
 
-  context: =>
-    post = @post()
-    reply_to_entities = post.replyToEntities(trim: true)
-    _.extend {}, super,
-      max_chars: TentStatus.config.MAX_LENGTH
-      id: post.id
-      entity: post.entity
-      formatted:
-        reply_to_entities: reply_to_entities
-

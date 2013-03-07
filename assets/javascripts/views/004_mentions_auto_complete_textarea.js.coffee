@@ -1,11 +1,12 @@
 Marbles.Views.MentionsAutoCompleteTextarea = class MentionsAutoCompleteTextareaView extends TentStatus.View
-  @template_name: 'mentions_autocomplete_textarea'
   @view_name: 'mentions_autocomplete_textarea'
 
   constructor: (options = {}) ->
     super
 
-    @parent_view.on 'init:PermissionsFields', (view) =>
+    @render()
+
+    @parentFormView()?.on 'init:PermissionsFields', (view) =>
       for entity in @replyToEntities()
         view.addOption(
           text: TentStatus.Helpers.minimalEntity(entity)
@@ -14,57 +15,69 @@ Marbles.Views.MentionsAutoCompleteTextarea = class MentionsAutoCompleteTextareaV
         )
     , @
 
-    @on 'init:PermissionsFieldsPicker', @initPickerView
-    @on 'ready', @initAutoComplete
-
-    @options_view = {
-      options: []
-    }
-
-    @render()
-
-  initPickerView: (@picker_view) =>
-    @textarea_view = @picker_view.input = new TextareaView(
-      parent_view: @
-      el: @textarea = Marbles.DOM.querySelector('textarea', @el)
-      picker_view: @picker_view
-    )
-
-  optionsInclude: => false
-
-  addOption: (option) =>
-    @textarea_view.addOption(option)
-    if permissions_fields_view = TentStatus.View.instances.all[@parent_view._child_views.PermissionsFields?[0]]
-      permissions_fields_view.addOption(option)
-      permissions_fields_view.show(false)
-
-  replyToEntities: =>
-    return [] unless @parent_view.is_reply_form
-
-    post = @parent_view.post()
-    return [] unless post
-
-    post.replyToEntities()
-
-  context: =>
-    return {} unless @parent_view.is_reply_form
-    @parent_view.context()
-
-class TextareaView
-  constructor: (params = {}) ->
-    @[k] = v for k,v of params
+    options.parent_view.on 'init:PermissionsFieldsPicker', @initPickerView
 
     @elements = {
-      loading: Marbles.DOM.querySelector('.loading', @parent_view.el)
+      loading: Marbles.DOM.querySelector('.loading', options.parent_view.el)
     }
     @loading_view = new Marbles.Views.LoadingIndicator el: @elements.loading
 
+    @bindEvents()
+
+  parentFormView: =>
+    if view = Marbles.View.find(@_parent_form_view_cid)
+      return view
+
+    if view = @findParentView('new_post_form') || @findParentView('post_reply_form') || @findParentView('edit_post')
+      @_parent_form_view_cid = view.cid
+      return view
+
+  replyToEntities: =>
+    return [] unless parent_form_view = @parentFormView()
+
+    if parent_form_view.is_reply_form
+      post = parent_form_view.post()
+      return [] unless post
+      post.replyToEntities()
+    else
+      if (parent_profile_view = @findParentView('profile')) && (profile = parent_profile_view.profile()) && !TentStatus.config.current_entity.assertEqual(profile.get 'entity')
+        console.log 'mention', profile.get('entity')
+        [profile.get('entity')]
+      else
+        []
+
+  context: =>
+    return {} unless parent_form_view = @parentFormView()
+    _.extend parent_form_view.context(),
+      is_edit_form: parent_form_view.constructor.is_edit_form
+      formatted:
+        reply_to_entities: _.map( @replyToEntities(), (entity) => TentStatus.Helpers.minimalEntity(entity) )
+
+  # Generate content to be rendered in textarea
+  renderHTML: (context = @context()) =>
+    if context.is_edit_form
+      context.post.content
+    else
+      _.map( context.formatted?.reply_to_entities || [], (i) -> "^#{i} " ).join("")
+
+  initPickerView: (picker_view) =>
+    @picker_view_cid = picker_view.cid
+
+  optionsInclude: (option) =>
+    for mention in TentStatus.Helpers.extractMentionsWithIndices(@el.value)
+      return true if option.entity == mention.entity
+    false
+
+  pickerView: =>
+    Marbles.View.find(@picker_view_cid)
+
+  bindEvents: =>
     Marbles.DOM.on @el, 'keydown', (e) =>
       switch e.keyCode
         when 13 # enter/return
           return unless @enabled
           e.preventDefault()
-          @picker_view.addActiveOption()
+          @pickerView()?.addActiveOption()
           false
         when 8 # backspace
           if @enabled
@@ -78,12 +91,12 @@ class TextareaView
         when 38 # up arrow
           return unless @enabled
           e.preventDefault()
-          @picker_view.prevOption()
+          @pickerView()?.prevOption()
           false
         when 40 # down arrow
           return unless @enabled
           e.preventDefault()
-          @picker_view.nextOption()
+          @pickerView()?.nextOption()
           false
         when 32 # space
           @close()
@@ -95,7 +108,7 @@ class TextareaView
 
       return unless @enabled
       @setPickerPosition()
-      @_fetch_timeout = setTimeout (=> @picker_view.fetchResults(@selectionValue())), 60
+      @_fetch_timeout = setTimeout (=> @pickerView()?.fetchResults(@selectionValue())), 60
 
   focus: =>
     selection = new Marbles.DOM.InputSelection @el
@@ -108,7 +121,7 @@ class TextareaView
 
     [left, top] = coordinates
     left -= start_coordinates[0]
-    picker_width = @picker_view.el.parentNode.offsetWidth
+    picker_width = @pickerView()?.el.parentNode.offsetWidth
     right_bound = parseInt Marbles.DOM.getStyle(@el, 'width')
 
     css = {
@@ -121,7 +134,7 @@ class TextareaView
     else
       css.left = left
 
-    Marbles.DOM.setStyles(@picker_view.el.parentNode, css)
+    Marbles.DOM.setStyles(@pickerView()?.el.parentNode, css)
 
   selectionValue: =>
     value = @el.value
@@ -137,14 +150,19 @@ class TextareaView
     @selection.setSelectionRange(end, end)
     @close()
 
+    # TODO: refactor
+    if permissions_fields_view = TentStatus.View.instances.all[@parentFormView()?._child_views.PermissionsFields?[0]]
+      permissions_fields_view.addOption(option)
+      permissions_fields_view.show(false)
+
   open: =>
     @enabled = true
-    @picker_view.show()
+    @pickerView()?.show()
     @selection = new Marbles.DOM.InputSelection @el
 
   close: =>
     @enabled = false
-    @picker_view.hide()
+    @pickerView()?.hide()
     delete @selection
 
   showLoading: =>

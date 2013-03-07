@@ -103,7 +103,6 @@ Marbles.Views.PermissionsFieldsPicker = class PermissionsFieldsPickerView extend
         results = _.map res, (result) =>
           { score: result.score, value: result.entity, name: result.name, entity: result.entity }
 
-        console.log results
         results = _.filter results, (result) => !@parent_view.optionsInclude(result)
         @displayMatches(results)
 

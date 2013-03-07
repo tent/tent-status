@@ -84,6 +84,7 @@ _.extend TentStatus.Helpers,
     _indices
 
   escapeRegExChars: (string) ->
+    string ?= ""
     string.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&")
 
   extractMentionsWithIndices: (text, options = {}) ->
