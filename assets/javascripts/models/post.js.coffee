@@ -1,7 +1,7 @@
 TentStatus.Models.Post = class PostModel extends TentStatus.Model
   @model_name: 'post'
   @resource_path: 'posts'
-  @id_maping_scope: ['id', 'entity']
+  @id_mapping_scope: ['id', 'entity']
 
   @create: (data, options = {}) ->
     client = HTTP.TentClient.currentEntityClient()
