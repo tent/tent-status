@@ -1,5 +1,5 @@
 .nav-icon {
-	color:$mainColor;
+	color:darken($mainColor, 8%);
 	padding:5px;
 
 	border-width:1px;
@@ -9,8 +9,7 @@
 	@include background-image(linear-gradient(lighten($mainColor, 5%), $mainColor));
 	background-color: lighten($mainColor, 10%);
 	border-color: darken($mainColor, 7%);
-	@include text-shadow(0 -1px 0 darken($mainColor, 10%));
-	color:darken($mainColor, 5%);
+	@include text-shadow(0 -1px 0 darken($mainColor, 13%));
 }
 
 @function em($px, $base: $baseFontSize) {

@@ -7,22 +7,28 @@
   {{/current_user_owns_post}}
 
   {{^is_conversation_view}}
-  <span class='action' data-view='PostActionConversation'><i class='icon-comments' title='Conversation'></i> Conversation</span>
+  <span class='action' data-view='PostActionConversation'><i class='icon-comments' title='Conversation'></i>
+
+    {{^in_reply_to}}
+    Conversation
+    {{/in_reply_to}}
+
+    {{^is_repost}}
+    {{#in_reply_to}}
+    {{#config.authenticated}}
+    <span data-view='ParentPostLink'>
+      in reply to {{name}}
+    </span>
+    {{/config.authenticated}}
+    {{/in_reply_to}}
+    {{/is_repost}}
+  </span>
   {{/is_conversation_view}}
 
   {{#current_user_owns_post}}
   <span class='action' data-view='PostActionEdit'><i class='icon-pencil' title='Edit'></i> Edit</span>
   {{/current_user_owns_post}}
 
-  {{^is_repost}}
-  {{#in_reply_to}}
-  {{#config.authenticated}}
-  <div class="post-sub-header action">
-    <a href="{{url}}" data-view='ParentPostLink'><small>in reply to {{name}}</small></a>
-  </div>
-  {{/config.authenticated}}
-  {{/in_reply_to}}
-  {{/is_repost}}
 </div>
 {{/config.authenticated}}
 

@@ -11,6 +11,7 @@
 @import 'font-awesome';
 @import 'additions';
 @import 'permissions';
+@import 'sourcesanspro';
 
 //---------------------
 //
@@ -105,7 +106,7 @@ h5,h6 {
 
     &:hover {
       text-decoration:none;
-      color: darken($mainColor, 10%);
+      color: darken($mainColor, 15%);
     }
   }
 
@@ -164,18 +165,28 @@ h5,h6 {
   width:100%;
   margin-top: em($lineHeight);
   float:left;
+
+  a {
+    color: $grayTextColor;
+  }
 }
 
   // List elements
-  .app-nav-list li {
-    text-align:center;
-    padding: em($lineHeight);
-    padding-top: em($lineHeight);
-    padding-bottom: em($lineHeight);
-    padding-left: em($lineHeight);
-    font-size: em(20px);
+  .app-nav-list {
 
-    &.brand {
+    li {
+      text-align:center;
+      padding: em($lineHeight);
+      padding-top: em($lineHeight);
+      padding-bottom: em($lineHeight);
+      padding-left: em($lineHeight);
+      font-size: em(20px);
+      border-color: darken($secondaryColor, 10%);
+      border-style:solid;
+      border-width: 0;
+    }
+
+    .brand {
       h1 {
         font-size: 1.5rem;
         margin: 0px;
@@ -184,15 +195,19 @@ h5,h6 {
     }
 
     a {
-      color: $dark_gray;
-
-      &:hover {
-        text-decoration: none;
-      }
+      @include transition-property(color);
+      @include transition-duration(0.2s);
     }
 
-    &.active {
+    a:hover {
+      color: darken($grayTextColor, 30%);
+      text-decoration: none;
+    }
+
+    a.active li {
       background-color: lighten($secondaryColor, 5%);
+      border-width: 1px 0;
+      color: darken($grayTextColor, 30%);
     }
   }
 
@@ -219,6 +234,7 @@ h5,h6 {
 
 .page-header {
   margin-top:0;
+  text-align:center;
 }
 
 .profile-entity {
@@ -249,10 +265,6 @@ h5,h6 {
   &:last-child {
     border-width:0;
   }
-}
-
-.profile-right {
-  margin-left: em($lineHeight);
 }
 
 .profile-left {
@@ -288,21 +300,60 @@ h5,h6 {
 //---------------------
 
 .post-body p {
+  margin-top: em($lineHeight / 6);
   margin-bottom:0;
 }
 
-.post {
-  &.conversation {
-    border-top: 3px solid $gray;
-    border-bottom: 4px solid $gray;
+.post .post-name {
+  color: darken($mainColor, 25%);
+  font-size: em(16px);
+}
 
-    margin-top: 20px;
-    margin-bottom: 20px;
+.post {
+  padding-left: em($lineHeight);
+  padding-right: em($lineHeight);
+
+  &.conversation {
+    padding-top: em($lineHeight);
+    padding-bottom: em($lineHeight);
+    padding-left:0;
+    padding-right:0;
+
+    margin-top: em($lineHeight);
+    margin-bottom: em($lineHeight);
 
     .parents, .children {
       li.post {
-        background-color: $gray;
+        padding-top: em($lineHeight);
+        padding-bottom: em($lineHeight);
+        //background-color: lighten($secondaryColor, 5%);
+        border-width:0 0 1px 0;
+        border-style:solid;
+        border-color: darken($secondaryColor, 10%);
       }
+    }
+
+    .parents .post {
+      border-radius: 4px 4px 0 0;
+      margin-bottom: em($lineHeight);
+
+      &:after {
+        content: ' ';
+        display:block;
+        width:0;
+        height:0;
+        border-width: 12px;
+        border-style:solid;
+        border-color: transparent transparent $secondaryColor transparent;
+        position:absolute;
+        left:0;
+        top:0;
+        z-index:2;
+      }
+    }
+    .children .post {
+      border-radius: 0 0 4px 4px;
+      margin-top: em($lineHeight);
     }
   }
 
@@ -325,6 +376,11 @@ h5,h6 {
       }
     }
   }
+}
+
+.repost {
+  margin-top: em($lineHeight);
+  margin-bottom: em($lineHeight / 2);
 }
 
 .action {
@@ -381,6 +437,10 @@ h5,h6 {
 // AVATARS
 //
 //---------------------
+
+.profile-avatar {
+  margin-bottom: em($lineHeight);
+}
 
 .avatar-container {
   float:left;
@@ -492,20 +552,45 @@ textarea {
   }
 
   .post {
-    width:40em;
+    width:$feedWidth - em($lineHeight * 2);
   }
 
   .post-container {
-    width: em(560px - 42px - 20px);
+    width: em(560px - 42px - 10px);
 
     .post-container {
       width: em(560px - 42px - 20px - 42px - 10px);
     }
   }
+
+  .profile-right {
+    margin-left: em($lineHeight);
+  }
+
+  .page-header {
+    text-align:left;
+  }
+
+  .profile-avatar {
+    float:left;
+  }
 }
 
 // Desktop breakpoint, moving navs to the left
 @media screen and (min-width: 70em) {
+
+  .followings .table td {
+    border-width:0;
+  }
+
+  .following .table tr {
+    min-height: 42px;
+  }
+
+  .followings .table tr:hover {
+    background-color: lighten($secondaryColor, 5%);
+  }
+
   .app-nav-list {
     display:block;
     width:auto;
@@ -532,7 +617,7 @@ textarea {
   }
 
   #main {
-    width: 40em;
+    width: $feedWidth;
     margin-left: 0;
   }
 
@@ -573,7 +658,7 @@ textarea {
   }
 
   .posts {
-    width: $content_width;
+    width: $feedWidth;
   }
   .actions {
     margin-bottom: 0;
@@ -598,10 +683,11 @@ textarea {
     position: absolute;
     top: 39px;
     width: 18em;
-    left: $content_width + $vNavWidth + 220px;
+    left: $content_width + $vNavWidth + 260px;
     padding: em($lineHeight);
-    border: 1px solid #bbbbbb;
-    border-radius:4px;
+    border-width: 0 0 0 2px;
+    border-style:solid;
+    border-color: $secondaryColor;
     background-color: $white;
 
     h3 {
@@ -609,6 +695,19 @@ textarea {
       line-height: em(18px);
       margin:0;
     }
+  }
+
+  .author-info-triangle {
+    display:block;
+    width:0;
+    height:0;
+    border-width:12px;
+    border-style:solid;
+    border-color: transparent $secondaryColor transparent transparent;
+    position:absolute;
+    top: em($lineHeight);
+    left:- em($lineHeight + 8px);
+    z-index:5;
   }
 
   .author-info-bio {

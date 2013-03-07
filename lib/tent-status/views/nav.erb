@@ -2,19 +2,25 @@
 <a class="menu-switch js-menu-switch">Menu</a>
 <ul class='unstyled app-nav-list'>
   <% if current_user || guest_user %>
-    <li class='<%= nav_selected_class('/') %> timeline'>
-      <% if tent_host_domain %>
-        <a href="<%= username_entity %>">Timeline</a>
-      <% else %>
-        <a href="<%= full_path('/') %>"><i class="icon-list"></i>Timeline</a>
-      <% end %>
-    </li>
-    <li class="<%= nav_selected_class('/mentions') %> mentions">
-      <a href="<%= full_url('/mentions') %>"><i class="icon-pushpin"></i>Mentions</a>
-    </li>
-    <li class="<%= nav_selected_class('/profile') %> profile">
-      <a href="<%= full_url('/profile') %>"><i class="icon-user"></i>Profile</a>
-    </li>
+    <% if tent_host_domain %>
+      <a href="<%= username_entity %>" class='<%= nav_selected_class('/') %> timeline'>Timeline
+    <% else %>
+      <a href="<%= full_path('/') %>" class='<%= nav_selected_class('/') %> timeline'>
+    <% end %>
+      <li>
+        <i class="icon-list"></i>Timeline
+      </li>
+    </a>
+    <a href="<%= full_url('/mentions') %>" class="<%= nav_selected_class('/mentions') %> mentions">
+      <li>
+        <i class="icon-pushpin"></i>Mentions
+      </li>
+    </a>
+    <a href="<%= full_url('/profile') %>" class="<%= nav_selected_class('/profile') %> profile">
+      <li>
+        <i class="icon-user"></i>Profile
+      </li>
+    </a>
   <% end %>
 
   <% if tent_host_domain %>
