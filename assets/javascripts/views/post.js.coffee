@@ -46,7 +46,7 @@ Marbles.Views.Post = class PostView extends TentStatus.View
         permissible_entities: permissible_entities.join(', ')
         content:
           text: TentStatus.Helpers.simpleFormatText(
-            TentStatus.Helpers.autoLinkText(TentStatus.Helpers.truncate(post.get('content')?.text, TentStatus.config.MAX_LENGTH, ''))
+            TentStatus.Helpers.autoLinkText(TentStatus.Helpers.truncate(post.get('content')?.text, TentStatus.config.MAX_LENGTH, ''), entity_whitelist: _.map( post.get('mentions') || [], (m) -> m.entity ))
           )
         entity: TentStatus.Helpers.formatUrl post.get('entity')
         published_at: TentStatus.Helpers.formatRelativeTime post.get('published_at')

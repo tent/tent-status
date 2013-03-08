@@ -98,14 +98,14 @@ _.extend TentStatus.Helpers,
       _truncated = text
     _truncated
 
-  autoLinkText: (text) ->
+  autoLinkText: (text, options = {}) ->
     return unless text
 
     text = TentStatus.Helpers.htmlEscapeText(text)
 
     urls = TentStatus.Helpers.flattenUrlsWithIndices(TentStatus.Helpers.extractUrlsWithIndices text)
     mentions = TentStatus.Helpers.flattenUrlsWithIndices(
-      TentStatus.Helpers.extractMentionsWithIndices(text, {exclude_urls: true, uniq: false})
+      TentStatus.Helpers.extractMentionsWithIndices(text, _.extend({exclude_urls: true, uniq: false}, options))
     )
 
     return text unless urls.length or mentions.length
