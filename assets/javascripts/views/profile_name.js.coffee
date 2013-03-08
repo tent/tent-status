@@ -6,4 +6,12 @@ Marbles.Views.ProfileName = class ProfileNameView extends Marbles.Views.ProfileV
     super
 
     @model_cid = Marbles.DOM.attr(@el, 'data-model_cid')
+
+    context = {
+      has_name: false
+      formatted:
+        entity: TentStatus.Helpers.minimalEntity(Marbles.Model.instances.all[@model_cid]?.entity)
+    }
+    @render(context)
+
     @fetch()

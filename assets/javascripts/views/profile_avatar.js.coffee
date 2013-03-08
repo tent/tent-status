@@ -10,4 +10,5 @@ Marbles.Views.ProfileAvatar = class ProfileAvatarView extends Marbles.Views.Prof
       error: =>
         TentStatus.trigger('loading:stop')
         @render()
+      entity: Marbles.DOM.attr(@el, 'data-entity') unless @model_cid
     })

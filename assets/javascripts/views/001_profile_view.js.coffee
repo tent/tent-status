@@ -1,15 +1,18 @@
 Marbles.Views.ProfileView = class ProfileView extends TentStatus.View
   fetch: (params = {}, options = {}) =>
-    instance = TentStatus.Model.find(cid: @model_cid)
+    instance = TentStatus.Model.find(cid: @model_cid) if @model_cid
 
     TentStatus.trigger('loading:start')
     TentStatus.Models.Profile.fetch _.extend(
-      entity: instance.get('entity')
+      entity: instance?.get('entity') || options.entity
     , params), _.extend(
       success: (profile, xhr) =>
         TentStatus.trigger('loading:stop')
         @profile_cid = profile.cid
         @render(@context profile)
+
+        if Marbles.DOM.attr(@el, 'title') == profile.get('entity') && profile.hasName()
+          Marbles.DOM.setAttr(@el, 'title', profile.get('name'))
 
       error: (res, xhr) =>
         TentStatus.trigger('loading:stop')

@@ -29,7 +29,12 @@ Marbles.Views.Repost = class RepostView extends Marbles.Views.Post
     TentStatus.Models.Post.instances.all[@post_cid]
 
   context: (post) =>
+    parent_post = @parentPost()
     _.extend super, {
       has_parent: true
       is_conversation_view: !!@conversationView()
+      parent:
+        cid: parent_post.cid
+        formatted:
+          entity: TentStatus.Helpers.minimalEntity(parent_post.get('entity'))
     }

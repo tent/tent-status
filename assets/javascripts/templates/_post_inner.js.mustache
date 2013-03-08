@@ -1,5 +1,6 @@
-<div class="{{^has_parent}}row{{/has_parent}}">
-  <div class="avatar-container {{#has_parent}}no-offset{{/has_parent}}">
+{{^is_repost}}
+<div class="row">
+  <div class="avatar-container">
     <div data-view='ProfileAvatar' data-model_cid='{{cid}}'>
       <a href="{{profileUrl}}"><img class="avatar" src="{{avatar}}" /></a>
     </div>
@@ -9,30 +10,28 @@
     <h5>
       <a href="{{url}}" class='post-date' data-view='RelativeTimestamp' data-datetime='{{published_at}}' title="{{formatted.full_published_at}}">{{formatted.published_at}}</a>
 
-      <span class="post-profile-name" data-view='ProfileName' data-model_cid='{{cid}}'>
-        <a href="{{profileUrl}}">{{formatted.entity}}</a>
-      </span>
+      <span class="post-profile-name" data-view='ProfileName' data-model_cid='{{cid}}'></span>
 
       {{^public}}&nbsp;<span class='label {{#only_me}}label-inverse{{/only_me}}{{^only_me}}label-info{{/only_me}}' title='{{#only_me}}Only Me{{/only_me}}{{formatted.permissible_entities}}'>{{#only_me}}Private{{/only_me}}{{^only_me}}Limited{{/only_me}}</span>{{/public}}
     </h5>
     
-    {{^is_repost}}
     <div class="post-body has-overflow">
       <p>{{{formatted.content.text}}}</p>
+      {{#has_parent}}
+      Reposted by <span class="post-profile-name" data-view="ProfileName" data-model_cid="{{parent.cid}}"></span>
+      <div data-view='RepostVisibility'></div>
+      {{/has_parent}}
     </div>
-    {{/is_repost}}
-    
-    {{#is_repost}}
-    <div class="repost post" data-view='Repost'></div>
-    {{/is_repost}}
 
-    {{^is_repost}}
     {{> _post_inner_actions}}
-    {{/is_repost}}
 
     {{#config.authenticated}}
     <div data-view='PostReplyForm'></div>
     {{/config.authenticated}}
   </div>
 </div>
+{{/is_repost}}
 
+{{#is_repost}}
+<div class="repost post" data-view='Repost'></div>
+{{/is_repost}}
