@@ -1,3 +1,7 @@
+@function em($px, $base: $baseFontSize) {
+  @return ($px / $base) * 1em;
+}
+
 @mixin rounded($amount) {
   -webkit-border-radius: $amount;
   -moz-border-radius: $amount;

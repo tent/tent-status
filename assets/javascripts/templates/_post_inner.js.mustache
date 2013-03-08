@@ -18,7 +18,9 @@
     <div class="post-body has-overflow">
       <p>{{{formatted.content.text}}}</p>
       {{#has_parent}}
-      Reposted by <span class="post-profile-name" data-view="ProfileName" data-model_cid="{{parent.cid}}"></span>
+      <span class='repost-label'>
+        Reposted by <span class="post-profile-name" data-view="ProfileName" data-model_cid="{{parent.cid}}"></span>
+      </span>
       <div data-view='RepostVisibility'></div>
       {{/has_parent}}
     </div>
