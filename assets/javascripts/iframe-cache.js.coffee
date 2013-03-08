@@ -1,6 +1,6 @@
 #= require moment
 #= require lowdash
-#= require uri
+#= require marbles/http/uri
 #= require store
 
 class Cache
