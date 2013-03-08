@@ -44,7 +44,7 @@ HTTP.TentClient = class HTTPTentClient
     return unless (entity = params.entity)
 
     if client = @entity_mapping[entity]
-      callback(client)
+      callback?(client)
       return client
 
     unless (options.hasOwnProperty('fetch') && !options.fetch)
@@ -61,7 +61,7 @@ HTTP.TentClient = class HTTPTentClient
     if TentStatus.Helpers.isCurrentEntity(entity)
       client = @currentEntityClient(options)
       @entity_mapping[entity] = client
-      return callback(client)
+      return callback?(client)
 
     # Following proxy broken atm
     options.skip_following_check = true
@@ -71,7 +71,7 @@ HTTP.TentClient = class HTTPTentClient
         if xhr.status == 200
           client = @currentEntityFollowingProxyClient(res.id, options)
           @entity_mapping[entity] = client
-          callback(client)
+          callback?(client)
         else
           @fetch(params, callback, _.extend(options, {skip_following_check: true}))
 
@@ -81,7 +81,7 @@ HTTP.TentClient = class HTTPTentClient
         middleware: [].concat(@middleware.tent)
       }, options.client_options)
       @entity_mapping[entity] = client
-      return callback(client)
+      return callback?(client)
 
     if (cid = TentStatus.Models.Profile.entity_mapping[entity]) && (profile = TentStatus.Models.Profile.find(cid: cid, fetch: false))
       if profile.get('servers').length
@@ -90,7 +90,7 @@ HTTP.TentClient = class HTTPTentClient
           middleware: [].concat(@middleware.tent)
         }, options.client_options)
         @entity_mapping[entity] = client
-        return callback(client)
+        return callback?(client)
 
     client = new HTTP.Client _.extend({
       hosts: [TentStatus.config.tent_proxy_root + "/#{encodeURIComponent entity}"]
@@ -98,5 +98,5 @@ HTTP.TentClient = class HTTPTentClient
     }, options.client_options)
 
     @entity_mapping[entity] = client
-    callback(client)
+    callback?(client)
 
