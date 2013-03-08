@@ -17,9 +17,11 @@ _.extend TentStatus.Helpers,
           scheme = 'https://'
           entity = scheme + entity
 
+        entity = entity.replace(/\/$/, '')
+        url = if typeof options.process_entity_fn == 'function' then options.process_entity_fn(entity) else entity
         _from_urls.push {
           entity: entity
-          url: entity.replace(/\/$/, '')
+          url: url
           text: original_text
           indices: i.indices
         } unless (_entities[entity] and options.uniq != false)
@@ -39,7 +41,6 @@ _.extend TentStatus.Helpers,
       original_text = entity
       _length = original_text.length
       _indices = TentStatus.Helpers.substringIndices(text, matched, /[a-z0-9]/i)
-      console.log 'extractUrlsWithIndices', text, entity
       if entity.match(/^[^.]+\.\w+/i)
         entity = "https://#{entity}"
       else
@@ -77,10 +78,11 @@ _.extend TentStatus.Helpers,
 
         continue if should_skip
 
+        url = if typeof options.process_entity_fn == 'function' then options.process_entity_fn(entity.toLowerCase()) else entity.toLowerCase()
         _from_mentions.push {
           entity: entity.toLowerCase()
           text: original_text
-          url: entity.toLowerCase()
+          url: url
           indices: _indices
         } unless (_entities[entity] and options.uniq != false)
         _entities[entity] = true

@@ -105,7 +105,7 @@ _.extend TentStatus.Helpers,
 
     urls = TentStatus.Helpers.flattenUrlsWithIndices(TentStatus.Helpers.extractUrlsWithIndices text)
     mentions = TentStatus.Helpers.flattenUrlsWithIndices(
-      TentStatus.Helpers.extractMentionsWithIndices(text, _.extend({exclude_urls: true, uniq: false}, options))
+      TentStatus.Helpers.extractMentionsWithIndices(text, _.extend({uniq: false, process_entity_fn: TentStatus.Helpers.entityProfileUrl }, options))
     )
 
     return text unless urls.length or mentions.length
@@ -127,7 +127,7 @@ _.extend TentStatus.Helpers,
           _new_items.push i
       _new_items
 
-    urls_and_mentions = urls.concat(mentions)
+    urls_and_mentions = mentions.concat(urls)
     while urls_and_mentions.length
       item = urls_and_mentions.shift()
       original = text.substring(item.start_index, item.end_index)

@@ -55,15 +55,16 @@ _.extend TentStatus.Helpers,
     TentStatus.config.tent_host_domain and window.location.hostname == "app.#{TentStatus.config.tent_host_domain}"
 
   isURLExternal: (url) ->
-    !url.match(
-      new RegExp(TentStatus.Helpers.escapeRegExChars(
+    !url.match(/^\//) && !url.match(
+      new RegExp("^[a-z]+:\/\/#{TentStatus.Helpers.escapeRegExChars(
         TentStatus.Helpers.currentHostWithoutSubdomain()
-      ))
+      )}")
     )
 
   ensureUrlHasScheme: (url) ->
     return unless url
     return url if url.match /^[a-z]+:\/\//i
+    return url if url.match /^\// # relative
     'http://' + url
 
   substringIndices: (string, substring, invalid_after) ->
