@@ -4,7 +4,7 @@ TentStatus.Models.Post = class PostModel extends TentStatus.Model
   @id_mapping_scope: ['id', 'entity']
 
   @create: (data, options = {}) ->
-    client = HTTP.TentClient.currentEntityClient()
+    client = Marbles.HTTP.TentClient.currentEntityClient()
     client.post '/posts', data, (res, xhr) =>
       unless xhr.status == 200
         @trigger('create:failed', res, xhr)
@@ -16,7 +16,7 @@ TentStatus.Models.Post = class PostModel extends TentStatus.Model
       options.success?(post, xhr)
 
   @update: (post, data, options = {}) ->
-    client = HTTP.TentClient.currentEntityClient()
+    client = Marbles.HTTP.TentClient.currentEntityClient()
     client.put "/posts/#{post.get('id')}", data, (res, xhr) =>
       unless xhr.status == 200
         post.trigger('update:failed', res, xhr)
@@ -28,7 +28,7 @@ TentStatus.Models.Post = class PostModel extends TentStatus.Model
       options.success?(post, xhr)
 
   @delete: (post, options = {}) ->
-    client = HTTP.TentClient.currentEntityClient()
+    client = Marbles.HTTP.TentClient.currentEntityClient()
     client.delete "/posts/#{post.get('id')}", null, (res, xhr) =>
       unless xhr.status == 200
         post.trigger('delete:failed', res, xhr)
@@ -45,7 +45,7 @@ TentStatus.Models.Post = class PostModel extends TentStatus.Model
 
   @fetch: (params, options = {}) ->
     unless options.client
-      return HTTP.TentClient.find entity: (params.entity || TentStatus.config.current_entity), (client) =>
+      return Marbles.HTTP.TentClient.find entity: (params.entity || TentStatus.config.current_entity), (client) =>
         @fetch(params, _.extend(options, {client: client}))
 
     path = if params.entity
@@ -107,7 +107,7 @@ TentStatus.Models.Post = class PostModel extends TentStatus.Model
 
   fetchChildMentions: (options = {}) =>
     unless options.client
-      return HTTP.TentClient.find {entity: @get('entity')}, (client) =>
+      return Marbles.HTTP.TentClient.find {entity: @get('entity')}, (client) =>
         @fetchChildMentions(_.extend(options, {client: client}))
 
     params = _.extend({

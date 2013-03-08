@@ -6,9 +6,6 @@
 #= require setImmediate
 #= require string_score
 #= require pluralize
-#= require http
-#= require http/middleware
-#= require http/client
 #= require ./textarea_cursor_position
 #= require ./cache
 #= require ./config

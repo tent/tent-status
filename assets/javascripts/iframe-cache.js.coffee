@@ -12,8 +12,8 @@ class Cache
     @postMessage({ action: "init" })
 
   receiveMessage: (event) =>
-    origin_uri = new HTTP.URI(event.origin)
-    self_uri = new HTTP.URI(window.location.href)
+    origin_uri = new Marbles.HTTP.URI(event.origin)
+    self_uri = new Marbles.HTTP.URI(window.location.href)
 
     return unless origin_uri.base_host == self_uri.base_host &&
                   origin_uri.port == self_uri.port

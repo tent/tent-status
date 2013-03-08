@@ -13,7 +13,7 @@ Marbles.Views.RepostVisibility = class RepostVisibilityView extends TentStatus.V
   fetchReposts: (client) =>
     return unless post = @post()
     unless client
-      return HTTP.TentClient.find entity: post.get('entity'), @fetchReposts
+      return Marbles.HTTP.TentClient.find entity: post.get('entity'), @fetchReposts
 
     params = {
       entity: post.get('entity')

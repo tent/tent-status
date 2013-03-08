@@ -14,7 +14,7 @@ TentStatus.Models.Profile = class ProfileModel extends TentStatus.Model
       return
 
     unless options.client
-      return HTTP.TentClient.find entity: entity, (client) =>
+      return Marbles.HTTP.TentClient.find entity: entity, (client) =>
         @fetch(params, _.extend(options, {client: client}))
 
     options.client.get '/profile', null, (res, xhr) =>

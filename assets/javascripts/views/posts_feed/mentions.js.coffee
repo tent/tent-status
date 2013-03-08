@@ -14,7 +14,7 @@ Marbles.Views.MentionsPostsFeed = class MentionsPostsFeedView extends Marbles.Vi
 
   initPostsCollection: (options = {}) =>
     unless options.client
-      return HTTP.TentClient.fetch {entity: @parent_view.entity}, (client) =>
+      return Marbles.HTTP.TentClient.fetch {entity: @parent_view.entity}, (client) =>
         @initPostsCollection(_.extend(options, {client: client}))
 
     @posts_collection = new TentStatus.Collections.Posts

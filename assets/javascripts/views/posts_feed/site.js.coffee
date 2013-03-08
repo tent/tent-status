@@ -6,7 +6,7 @@ Marbles.Views.SitePostsFeed = class SitePostsFeedView extends Marbles.Views.Post
     @on 'ready', @initAutoPaginate
 
     @posts_collection = new TentStatus.Collections.Posts
-    @posts_collection.client = HTTP.TentClient.hostClient()
+    @posts_collection.client = Marbles.HTTP.TentClient.hostClient()
     @posts_collection.params = {
       post_types: TentStatus.config.POST_TYPES.STATUS
       limit: TentStatus.config.PER_PAGE

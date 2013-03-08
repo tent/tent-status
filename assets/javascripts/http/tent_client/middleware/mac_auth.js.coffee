@@ -1,7 +1,7 @@
 #= require sjcl
 
-HTTP.Middleware ||= {}
-class HTTP.Middleware.MacAuth
+Marbles.HTTP.Middleware ||= {}
+Marbles.HTTP.Middleware.MacAuth = class MacAuthMiddleware
   constructor: (@options) ->
     @options = _.extend {
       time: parseInt((new Date * 1) / 1000)
@@ -24,3 +24,4 @@ class HTTP.Middleware.MacAuth
     """
     MAC id="#{options.mac_key_id}", ts="#{options.time}", nonce="#{options.nonce}", mac="#{signature}"
     """
+

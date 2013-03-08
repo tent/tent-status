@@ -1,15 +1,18 @@
-HTTP.TentClient = class HTTPTentClient
+#= require ./tent_client/middleware
+#= require_self
+
+Marbles.HTTP.TentClient = class HTTPTentClient
   @middleware:
     auth: [
-      new HTTP.Middleware.MacAuth(TentStatus.config.current_user.auth_details),
+      new Marbles.HTTP.Middleware.MacAuth(TentStatus.config.current_user.auth_details),
     ]
     tent: [
-      new HTTP.Middleware.SerializeJSON
-      new HTTP.Middleware.TentJSONHeader
+      Marbles.HTTP.Client.Middleware.SerializeJSON
+      Marbles.HTTP.Middleware.TentJSONHeader
     ]
 
   @currentEntityClient: (options = {}) ->
-    new HTTP.Client _.extend(
+    new Marbles.HTTP.Client _.extend(
       hosts: [TentStatus.config.tent_api_root]
       middleware: [].concat(@middleware.auth, @middleware.tent)
       current_entity_host: true
@@ -24,7 +27,7 @@ HTTP.TentClient = class HTTPTentClient
     , options.client_options || {})
 
   @appProxyClient: (entity, options = {}) ->
-    new HTTP.Client _.extend(
+    new Marbles.HTTP.Client _.extend(
       hosts: [TentStatus.config.tent_proxy_root + "/#{encodeURIComponent entity}"]
       middleware: [].concat(@middleware.tent)
       current_entity_host: false
@@ -32,7 +35,7 @@ HTTP.TentClient = class HTTPTentClient
 
   @hostClient: (options = {}) ->
     return unless TentStatus.config.tent_host_api_root
-    new HTTP.Client _.extend(
+    new Marbles.HTTP.Client _.extend(
       hosts: [TentStatus.config.tent_host_api_root]
       middleware: [].concat(@middleware.tent)
       current_entity_host: false
@@ -76,7 +79,7 @@ HTTP.TentClient = class HTTPTentClient
           @fetch(params, callback, _.extend(options, {skip_following_check: true}))
 
     if TentStatus.Helpers.isEntityOnTentHostDomain(entity)
-      client = new HTTP.Client _.extend({
+      client = new Marbles.HTTP.Client _.extend({
         hosts: [entity + TentStatus.config.tent_host_domain_tent_api_path]
         middleware: [].concat(@middleware.tent)
       }, options.client_options)
@@ -85,14 +88,14 @@ HTTP.TentClient = class HTTPTentClient
 
     if (cid = TentStatus.Models.Profile.entity_mapping[entity]) && (profile = TentStatus.Models.Profile.find(cid: cid, fetch: false))
       if profile.get('servers').length
-        client = new HTTP.Client _.extend({
+        client = new Marbles.HTTP.Client _.extend({
           hosts: profile.get('servers')
           middleware: [].concat(@middleware.tent)
         }, options.client_options)
         @entity_mapping[entity] = client
         return callback?(client)
 
-    client = new HTTP.Client _.extend({
+    client = new Marbles.HTTP.Client _.extend({
       hosts: [TentStatus.config.tent_proxy_root + "/#{encodeURIComponent entity}"]
       middleware: [].concat(@middleware.tent)
     }, options.client_options)

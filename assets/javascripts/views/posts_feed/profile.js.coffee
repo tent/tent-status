@@ -15,7 +15,7 @@ Marbles.Views.ProfilePostsFeed = class ProfilePostsFeedView extends Marbles.View
   initPostsCollection: (options = {}) =>
     profile = options.profile || @profile()
     unless options.client
-      return HTTP.TentClient.fetch {entity: profile.get('entity')}, (client) =>
+      return Marbles.HTTP.TentClient.fetch {entity: profile.get('entity')}, (client) =>
         @initPostsCollection(_.extend(options, {client: client}))
 
     @posts_collection = new TentStatus.Collections.Posts

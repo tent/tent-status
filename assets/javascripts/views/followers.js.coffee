@@ -20,7 +20,7 @@ Marbles.Views.Followers = class FollowersView extends TentStatus.View
 
   initFollowersCollection: (options = {}) =>
     unless options.client
-      return HTTP.TentClient.fetch {entity: options.entity}, (client) =>
+      return Marbles.HTTP.TentClient.fetch {entity: options.entity}, (client) =>
         @initFollowersCollection(_.extend(options, {client: client}))
 
     @followers_collection = new TentStatus.Collections.Followers

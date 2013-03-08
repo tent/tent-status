@@ -3,7 +3,7 @@ _.extend TentStatus.Helpers,
     return unless post and post.get
     entity = post.get('entity')
 
-    if (new HTTP.URI entity).hostname == TentStatus.config.domain_entity.hostname
+    if (new Marbles.HTTP.URI entity).hostname == TentStatus.config.domain_entity.hostname
       "/posts/#{post.get('id')}"
     else if TentStatus.Helpers.isEntityOnTentHostDomain(entity)
       "#{entity}/posts/#{post.get 'id'}"

@@ -22,7 +22,7 @@ TentStatus.Models.Following = class FollowingModel extends TentStatus.Model
 
   @fetch: (params, options = {}) ->
     unless options.client
-      return HTTP.TentClient.find entity: (options.entity || TentStatus.config.current_entity), (client) =>
+      return Marbles.HTTP.TentClient.find entity: (options.entity || TentStatus.config.current_entity), (client) =>
         @fetch(params, _.extend(options, {client: client}))
 
     options.client.get "#{@resource_path}/#{encodeURIComponent(params.id || params.entity)}", null, (res, xhr) =>
@@ -36,7 +36,7 @@ TentStatus.Models.Following = class FollowingModel extends TentStatus.Model
       @trigger('fetch:success', following, xhr)
 
   @create: (params, options = {}) ->
-    options.client ?= HTTP.TentClient.currentEntityClient()
+    options.client ?= Marbles.HTTP.TentClient.currentEntityClient()
 
     options.client.post @resource_path, { entity: params.entity }, (res, xhr) =>
       unless xhr.status == 200
@@ -49,7 +49,7 @@ TentStatus.Models.Following = class FollowingModel extends TentStatus.Model
       @trigger('create:success', following, xhr)
 
   @delete: (following, options = {}) ->
-    options.client ?= HTTP.TentClient.currentEntityClient()
+    options.client ?= Marbles.HTTP.TentClient.currentEntityClient()
 
     options.client.delete "#{@resource_path}/#{following.get('id')}", null, (res, xhr) =>
       unless xhr.status == 200

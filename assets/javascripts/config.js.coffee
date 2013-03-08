@@ -18,15 +18,15 @@ moment.relativeTime = {
 TentStatus.config ?= {}
 _.extend TentStatus.config, {
   tent_host_api_root: TentStatus._config.tent_host_api_root
-  tent_api_root: new HTTP.URI(TentStatus._config.tent_api_root) if TentStatus._config.tent_api_root
-  current_tent_api_root: new HTTP.URI(TentStatus._config.domain_tent_api_root) if TentStatus._config.domain_tent_api_root
+  tent_api_root: new Marbles.HTTP.URI(TentStatus._config.tent_api_root) if TentStatus._config.tent_api_root
+  current_tent_api_root: new Marbles.HTTP.URI(TentStatus._config.domain_tent_api_root) if TentStatus._config.domain_tent_api_root
   tent_host_domain: TentStatus._config.tent_host_domain
   tent_host_scheme: TentStatus._config.tent_host_scheme
   tent_host_domain_tent_api_path: '/tent'
-  tent_proxy_root: new HTTP.URI(TentStatus._config.tent_proxy_root)
-  domain_entity: new HTTP.URI(TentStatus._config.domain_entity) if TentStatus._config.domain_entity
-  domain_tent_api_root: new HTTP.URI(TentStatus._config.domain_tent_api_root) if TentStatus._config.domain_tent_api_root
-  current_entity: new HTTP.URI(TentStatus._config.current_entity) if TentStatus._config.current_entity
+  tent_proxy_root: new Marbles.HTTP.URI(TentStatus._config.tent_proxy_root)
+  domain_entity: new Marbles.HTTP.URI(TentStatus._config.domain_entity) if TentStatus._config.domain_entity
+  domain_tent_api_root: new Marbles.HTTP.URI(TentStatus._config.domain_tent_api_root) if TentStatus._config.domain_tent_api_root
+  current_entity: new Marbles.HTTP.URI(TentStatus._config.current_entity) if TentStatus._config.current_entity
   POST_TYPES:
     STATUS: 'https://tent.io/types/post/status/v0.1.0'
     REPOST: 'https://tent.io/types/post/repost/v0.1.0'

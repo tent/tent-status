@@ -2,7 +2,7 @@ TentStatus.Collection = class Collection extends Marbles.Collection
   ignore_cids: []
 
   fetch: (params = {}, options = {}) =>
-    options.client ?= @client || HTTP.TentClient.currentEntityClient()
+    options.client ?= @client || Marbles.HTTP.TentClient.currentEntityClient()
     params = _.extend({}, (@params || @constructor.params), params)
     options.client.get @constructor.model.resource_path, params, (res, xhr) =>
       unless xhr.status == 200

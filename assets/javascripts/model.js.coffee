@@ -2,7 +2,7 @@ TentStatus.Model = class Model extends Marbles.Model
   @fetchCount: (params, options = {}) ->
     return unless params.entity && @resource_path
     unless options.client
-      return HTTP.TentClient.find entity: (params.entity), (client) =>
+      return Marbles.HTTP.TentClient.find entity: (params.entity), (client) =>
         @fetchCount(params, _.extend(options, {client: client}))
 
     options.client.head @resource_path, params.fetch_params, (res, xhr) =>
