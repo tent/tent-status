@@ -25,3 +25,19 @@ Marbles.Views.MentionsPostsFeed = class MentionsPostsFeedView extends Marbles.Vi
       limit: TentStatus.config.PER_PAGE
     }
     @fetch()
+
+  fetchSuccess: (res, xhr) =>
+    super
+
+    link_header = new TentStatus.PaginationLinkHeader xhr.getResponseHeader('Link')
+    @updateProfileCursor(link_header)
+
+  updateProfileCursor: (link_header) =>
+    unless TentStatus.background_mentions_cursor
+      return TentStatus.once 'init:background_mentions_cursor', => @updateProfileCursor(link_header)
+
+    unless cursor = TentStatus.background_mentions_cursor.get('cursor')
+      return TentStatus.background_mentions_cursor.once 'change:cursor', => @updateProfileCursor(link_header)
+
+    TentStatus.background_mentions_cursor.updateProfileCursor(cursor, link_header)
+

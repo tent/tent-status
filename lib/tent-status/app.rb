@@ -226,7 +226,7 @@ module Tent
             }
           },
           :post_types => %w( https://tent.io/types/post/status/v0.1.0 https://tent.io/types/post/repost/v0.1.0 ),
-          :profile_info_types => %w( https://tent.io/types/info/tent-status/v0.1.0 )
+          :profile_info_types => %w( https://tent.io/types/info/tent-status/v0.1.0 https://tent.io/types/info/cursor/v0.1.0 )
       end
 
       get '/auth' do

@@ -7,6 +7,7 @@ class TentStatus.FetchInterval
 
   start: => @reset()
   stop: => @clear()
+  resume: => @resetInterval()
 
   resetInterval: =>
     @clear()

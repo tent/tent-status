@@ -30,6 +30,8 @@ _.extend TentStatus.config, {
   POST_TYPES:
     STATUS: 'https://tent.io/types/post/status/v0.1.0'
     REPOST: 'https://tent.io/types/post/repost/v0.1.0'
+  PROFILE_TYPES:
+    CURSOR: 'https://tent.io/types/info/cursor/v0.1.0'
   PER_PAGE: 20
   PER_CONVERSATION_PAGE: 10
   FETCH_INTERVAL: 3000

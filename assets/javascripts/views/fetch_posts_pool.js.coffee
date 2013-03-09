@@ -42,6 +42,11 @@ Marbles.Views.FetchPostsPool = class FetchPostsPoolView extends Marbles.View
     posts_feed_view.prependRender(@posts_collection.models())
     posts_feed_view.posts_collection.prependModels(@posts_collection.model_ids)
     @posts_collection.empty()
+
+    # Update Mentions Profile Cursor / Unread Badge
+    if posts_feed_view.constructor.view_name == 'mentions_posts_feed'
+      posts_feed_view.updateProfileCursor(@posts_collection)
+
     @render()
 
   context: =>

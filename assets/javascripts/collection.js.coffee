@@ -35,15 +35,7 @@ TentStatus.Collection = class Collection extends Marbles.Collection
     @fetch(@pagination_params.next, options)
 
   parseLinkHeader: (link_header="") =>
-    @pagination_params = {}
-    parts = link_header.split(/,\s*/)
-    for part in parts
-      continue unless part.match(/<([^>]+)>;\s*rel=['"]([^'"]+)['"]/)
-      continue unless RegExp.$2 in ['next', 'prev']
-      path = RegExp.$1
-      params = Marbles.History::deserializeParams(path.split('?')[1])
-      @pagination_params[RegExp.$2] = params
-    @pagination_params
+    @pagination_params = (new TentStatus.PaginationLinkHeader link_header).pagination_params
 
   append: (resources_attribtues) =>
     return [] unless resources_attribtues?.length
