@@ -26,8 +26,10 @@ Marbles.Views.MentionsPostsFeed = class MentionsPostsFeedView extends Marbles.Vi
     }
     @fetch()
 
-  fetchSuccess: (res, xhr) =>
+  fetchSuccess: (res, xhr, params, options) =>
     super
+
+    return if options.append
 
     link_header = new TentStatus.PaginationLinkHeader xhr.getResponseHeader('Link')
     @updateProfileCursor(link_header)
