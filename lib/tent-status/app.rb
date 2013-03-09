@@ -520,7 +520,7 @@ module Tent
         query_string = env['QUERY_STRING']
         path << "?#{query_string}" unless query_string.to_s == ""
         res = client.http.send(method.downcase, path)
-      rescue Faraday::Error::ConnectionFailed
+      rescue Faraday::Error::ConnectionFailed, URI::BadURIError
         halt 404
       end
 
