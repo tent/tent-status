@@ -112,7 +112,7 @@ TentStatus.Models.Post = class PostModel extends TentStatus.Model
 
     params = _.extend({
       limit: TentStatus.config.PER_CONVERSATION_PAGE
-      post_types: TentStatus.config.post_types
+      post_types: [TentStatus.config.POST_TYPES.STATUS]
     }, options.params || {})
 
     options.client.get "/posts/#{@get('id')}/mentions", params, {
