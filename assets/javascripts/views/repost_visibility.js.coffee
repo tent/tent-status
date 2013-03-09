@@ -5,10 +5,29 @@ Marbles.Views.RepostVisibility = class RepostVisibilityView extends TentStatus.V
   constructor: ->
     super
 
+    @render()
+    @fetchRepostedCount()
     @fetchReposts()
 
   post: =>
     @parentView()?.post()
+
+  fetchRepostedCount: (client) =>
+    return unless post = @post()
+    unless client
+      return Marbles.HTTP.TentClient.find entity: post.get('entity'), @fetchRepostedCount
+
+    params = {
+      entity: post.get('entity')
+      post_types: [TentStatus.config.POST_TYPES.REPOST]
+      limit: 10
+    }
+    client.head "posts/#{post.get('id')}/mentions", params,
+      success: (res, xhr) =>
+        @count = parseInt xhr.getResponseHeader('Count')
+        @render()
+
+      error: =>
 
   fetchReposts: (client) =>
     return unless post = @post()
@@ -22,10 +41,19 @@ Marbles.Views.RepostVisibility = class RepostVisibilityView extends TentStatus.V
     }
     client.get "posts/#{post.get('id')}/mentions", params,
       success: (mentions) =>
-        @render(@context(mentions))
+        @mentions = mentions
+        @render()
 
       error: =>
 
-  context: (mentions = {}) =>
-    mentions: _.map( mentions, (mention) => { entity: mention.entity } )
+  context: =>
+    count = if @count && @count > 0 then @count - 1 else 0
+    post = @post()
+    mentions = @mentions || []
+    entity = if post?.isRepost() then post.get('entity') else _.first(mentions)?.entity
+
+    entity: entity
+    count: count
+    pluralized_other: TentStatus.Helpers.pluralize('other', count, 'others')
+    mentions: _.map( mentions || [], (mention) => { entity: mention.entity } )
 
