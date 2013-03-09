@@ -2,25 +2,49 @@ class BackgroundMentionsUnreadCount extends TentStatus.Object
   constructor: ->
     @fetch_interval = new TentStatus.FetchInterval fetch_callback: @fetchMentionsCount
 
-    @on 'change:unread_count', => @fetch_interval.reset()
+    for type in TentStatus.config.post_types
+      short_type = TentStatus.Helpers.shortType(type)
+      @on "change:unread_count:#{short_type}", @updateUnreadCount
+      @on "change:unread_count:#{short_type}", @fetch_interval.resetDelay
 
     @fetch_interval.start()
     @fetchMentionsCount()
 
+  updateUnreadCount: =>
+    full_count = 0
+    for type in TentStatus.config.post_types
+      short_type = TentStatus.Helpers.shortType(type)
+      count = @get("unread_count:#{short_type}")
+      full_count += count if count
+    @set 'unread_count', full_count
+
   fetchMentionsCount: (options = {}) =>
+    @fetch_interval.stop()
+
     if !options.skip_cursor && !TentStatus.background_mentions_cursor
-      @fetch_interval.stop()
-      return TentStatus.once 'init:background_mentions_cursor', =>
-        @fetch_interval.resume()
-        @fetchMentionsCount()
+      return TentStatus.once 'init:background_mentions_cursor', => @fetchMentionsCount(arguments...)
 
     if !options.skip_cursor && !TentStatus.background_mentions_cursor.get('cursor')
-      @fetch_interval.stop()
-      return TentStatus.background_mentions_cursor.once 'change:cursor', =>
-        @fetch_interval.resume()
-        @fetchMentionsCount()
+      return TentStatus.background_mentions_cursor.once 'change:cursor', => @fetchMentionsCount(arguments...)
 
-    if cursor = TentStatus.background_mentions_cursor.get('cursor.mentions')?[TentStatus.config.POST_TYPES.STATUS]
+    cursor = TentStatus.background_mentions_cursor.get('cursor')
+
+    callbacks_remaining = TentStatus.config.post_types.length
+    callback = (type, count) =>
+      callbacks_remaining--
+
+      short_type = TentStatus.Helpers.shortType(type)
+      @set "unread_count:#{short_type}", count if short_type
+
+      if callbacks_remaining == 0
+        @fetch_interval.increaseDelay()
+        @fetch_interval.resume()
+
+    for type in TentStatus.config.post_types
+      @fetchMentionsCountForType(type, cursor, callback)
+
+  fetchMentionsCountForType: (type, cursor, callback) =>
+    if cursor = cursor.mentions?[type]
       pagination_params = {
         since_id: cursor.post
         since_id_entity: cursor.entity
@@ -28,20 +52,21 @@ class BackgroundMentionsUnreadCount extends TentStatus.Object
     else
       pagination_params = {}
 
+
     client = Marbles.HTTP.TentClient.currentEntityClient()
     params = _.extend pagination_params, {
       mentioned_entity: TentStatus.config.current_entity.toString()
-      post_types: TentStatus.config.post_types
+      post_types: [type]
     }
     client.head "/posts", params,
       success: (res, xhr) =>
         count = parseInt xhr.getResponseHeader('Count')
+        callback?(type, count)
+        callback.success?(type, res, xhr)
 
-        @fetch_interval.increaseDelay()
-
-        @set 'unread_count', count
-
-        options.success?(arguments...)
+      error: (res, xhr) =>
+        callback?(type, 0)
+        callback.error?(type, res, xhr)
 
 TentStatus.once 'ready', =>
   TentStatus.background_mentions_unread_count = new BackgroundMentionsUnreadCount

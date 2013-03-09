@@ -41,5 +41,11 @@ Marbles.Views.MentionsPostsFeed = class MentionsPostsFeedView extends Marbles.Vi
     unless cursor = TentStatus.background_mentions_cursor.get('cursor')
       return TentStatus.background_mentions_cursor.once 'change:cursor', => @updateProfileCursor(link_header)
 
-    TentStatus.background_mentions_cursor.updateProfileCursor(cursor, link_header)
+    return unless link_header.pagination_params?.prev
+
+    post_id = link_header.pagination_params.prev.since_id
+    post_id_entity = link_header.pagination_params.prev.since_id_entity
+    TentStatus.Models.Post.find { id: post_id, entity: post_id_entity },
+      success: (post) =>
+        TentStatus.background_mentions_cursor.updateProfileCursor(post.get('type'), cursor, link_header)
 

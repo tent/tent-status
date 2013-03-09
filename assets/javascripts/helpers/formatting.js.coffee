@@ -28,6 +28,9 @@ _.extend TentStatus.Helpers,
     return count unless options.max && count > options.max
     "#{options.max}+"
 
+  shortType: (type_uri) ->
+    type_uri?.match(/([^\/]+)\/v[\d.]+/)?[1]
+
   minimalEntity: (entity) ->
     if TentStatus.config.tent_host_domain && entity.match(new RegExp("([a-z0-9]{2,})\.#{TentStatus.config.tent_host_domain}"))
       RegExp.$1

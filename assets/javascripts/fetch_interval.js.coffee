@@ -17,8 +17,11 @@ class TentStatus.FetchInterval
     @delay_offset = Math.min(@delay_offset + @options.delay_increment, @options.max_delay - @options.delay_increment)
     @resetInterval()
 
-  reset: =>
+  resetDelay: =>
     @delay_offset = @options.delay_increment
+
+  reset: =>
+    @resetDelay()
     @resetInterval()
 
   clear: =>
