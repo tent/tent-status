@@ -14,10 +14,7 @@ _.extend TentStatus.Helpers,
     now = moment()
     time = moment.unix(time_or_int)
 
-    formatted_time = if time.format('YYYY-MM-DD') == now.format('YYYY-MM-DD')
-      time.fromNow()
-    else
-      time.format('DD-MMM-YY') # date and time
+    formatted_time = time.fromNow()
 
     "#{formatted_time}"
 
