@@ -14,7 +14,8 @@ class BackgroundMentionsCursor extends TentStatus.Object
 
       error: (res, xhr) =>
         if xhr.status == 404
-          @resetProfileCursor()
+          for type in TentStatus.config.post_types
+            @resetProfileCursor(type, res)
 
   resetProfileCursor: (type, cursor) =>
     unless TentStatus.background_mentions_unread_count
