@@ -34,6 +34,10 @@ Marbles.Views.PostActionConversation = class PostActionConversationView extends 
     el = view.parent_view.el
     offsetTop = el.offsetTop - window.scrollY
 
+    view.on 'init:ConversationReference', (reference_view) =>
+      delta = (el.offsetTop - window.scrollY) - offsetTop
+      window.scrollTo(window.scrollX, window.scrollY + delta)
+
     view.on 'init:ConversationParents', (parents_view) =>
       parents_view.once 'ready', =>
         delta = (el.offsetTop - window.scrollY) - offsetTop
