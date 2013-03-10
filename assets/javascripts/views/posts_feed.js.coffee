@@ -8,7 +8,6 @@ Marbles.Views.PostsFeed = class PostsFeedView extends TentStatus.View
     @init()
 
   init: =>
-    @on 'ready', @initPostViews
     @on 'ready', @initAutoPaginate
 
     @posts_collection = new TentStatus.Collections.Posts
@@ -37,6 +36,8 @@ Marbles.Views.PostsFeed = class PostsFeedView extends TentStatus.View
       @appendRender(posts)
     else
       @render()
+
+    @trigger('fetch:success:after_render', arguments...)
 
   fetchError: (res, xhr) =>
     TentStatus.trigger 'loading:stop'
@@ -71,8 +72,6 @@ Marbles.Views.PostsFeed = class PostsFeedView extends TentStatus.View
   render: =>
     @pagination_frozen = false
     super
-
-  initPostViews: =>
 
   initAutoPaginate: =>
     TentStatus.on 'window:scroll', @windowScrolled

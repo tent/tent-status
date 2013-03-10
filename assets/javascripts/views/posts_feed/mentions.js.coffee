@@ -2,8 +2,12 @@ Marbles.Views.MentionsPostsFeed = class MentionsPostsFeedView extends Marbles.Vi
   @view_name: 'mentions_posts_feed'
 
   init: =>
-    @on 'ready', @initPostViews
     @on 'ready', @initAutoPaginate
+
+    # after initial render (first page)
+    @once 'fetch:success:after_render', (res, xhr, params, options) =>
+      link_header = new TentStatus.PaginationLinkHeader xhr.getResponseHeader('Link')
+      @updateProfileCursor(link_header)
 
     @initPostsCollection()
 
@@ -25,14 +29,6 @@ Marbles.Views.MentionsPostsFeed = class MentionsPostsFeedView extends Marbles.Vi
       limit: TentStatus.config.PER_PAGE
     }
     @fetch()
-
-  fetchSuccess: (res, xhr, params, options) =>
-    super
-
-    return if options.append
-
-    link_header = new TentStatus.PaginationLinkHeader xhr.getResponseHeader('Link')
-    @updateProfileCursor(link_header)
 
   updateProfileCursor: (link_header) =>
     unless TentStatus.background_mentions_cursor
