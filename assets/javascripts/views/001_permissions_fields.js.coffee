@@ -23,6 +23,7 @@ Marbles.Views.PermissionsFields = class PermissionsFieldsView extends TentStatus
 
   initOptions: (@options_view) =>
     @options_view.on 'ready', (=> @initInput()), @
+    @options_view.on 'change:options', => @trigger('change:options', arguments...)
 
     @bindEvents()
     @hide()

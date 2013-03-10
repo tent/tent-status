@@ -5,10 +5,14 @@ Marbles.Views.PermissionsFieldsToggle = class PermissionsFieldsToggleView extend
   constructor: ->
     super
 
-    @on 'ready', =>
+    @once 'ready', =>
       setImmediate @bindEvents
 
     @render()
+
+  context: (permissions = { public: true }) =>
+    _.extend super,
+      permissions: permissions
 
   permissionsFieldsView: =>
     _.last(@parentView()?.childViews('PermissionsFields') || [])
@@ -16,6 +20,10 @@ Marbles.Views.PermissionsFieldsToggle = class PermissionsFieldsToggleView extend
   bindEvents: =>
     permissions_fields_view = @permissionsFieldsView()
     return unless permissions_fields_view
+
+    permissions_fields_view.on 'change:options', =>
+      permissions = permissions_fields_view.buildPermissions()
+      @render(@context(permissions))
 
     @text ?= {}
     @text.visibility_toggle = {
