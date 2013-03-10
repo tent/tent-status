@@ -75,7 +75,7 @@ Marbles.Views.PermissionsFieldsPicker = class PermissionsFieldsPickerView extend
 
   displayMatches: (@matches) =>
     if !@matches.length && (q = @current_query?.replace(/^[\s\r\t\n]*/, '').replace(/[\s\r\t\n]*$/, '')) &&
-       q.match(/^https?:\/\/[^.]+\..{2,}$/i) && !_.any(@parent_view.options_view.options, (o) => o.value == q)
+       q.match(/^https?:\/\/[^.]+\..{2,}$/i) && !_.any(@parent_view.options_view?.options || [], (o) => o.value == q)
       @matches.unshift({
         entity: q
         value: q
