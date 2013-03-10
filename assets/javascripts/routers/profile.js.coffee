@@ -21,6 +21,9 @@ TentStatus.Routers.profile = new class ProfileRouter extends Marbles.Router
     @_initAuthorInfoView()
     TentStatus.setPageTitle page: @actions_titles.currentProfile
 
+    TentStatus.initBackgroundMentionsCursor()
+    TentStatus.initBackgroundMentionsUnreadCount()
+
   profile: (params) =>
     if TentStatus.Helpers.isAppSubdomain()
       return @navigate('/global', {trigger:true, replace: true})
@@ -31,3 +34,6 @@ TentStatus.Routers.profile = new class ProfileRouter extends Marbles.Router
     title = @actions_titles.profile
     title = "#{TentStatus.Helpers.formatUrlWithPath(params.entity)} - #{title}" if params.entity
     TentStatus.setPageTitle page: title
+
+    TentStatus.initBackgroundMentionsCursor()
+    TentStatus.initBackgroundMentionsUnreadCount()

@@ -1,5 +1,7 @@
 class BackgroundMentionsUnreadCount extends TentStatus.Object
-  constructor: ->
+  constructor: (options = {}) ->
+    return if options.initialize_only == true
+
     @fetch_interval = new TentStatus.FetchInterval fetch_callback: @fetchMentionsCount
 
     for type in TentStatus.config.post_types
@@ -22,10 +24,10 @@ class BackgroundMentionsUnreadCount extends TentStatus.Object
     @fetch_interval.stop()
 
     if !options.skip_cursor && !TentStatus.background_mentions_cursor
-      return TentStatus.once 'init:background_mentions_cursor', => @fetchMentionsCount(arguments...)
+      return TentStatus.once 'init:background_mentions_cursor', => @fetchMentionsCount(options)
 
     if !options.skip_cursor && !TentStatus.background_mentions_cursor.get('cursor')
-      return TentStatus.background_mentions_cursor.once 'change:cursor', => @fetchMentionsCount(arguments...)
+      return TentStatus.background_mentions_cursor.once 'change:cursor', => @fetchMentionsCount(options)
 
     cursor = TentStatus.background_mentions_cursor.get('cursor')
 
@@ -68,6 +70,6 @@ class BackgroundMentionsUnreadCount extends TentStatus.Object
         callback?(type, 0)
         callback.error?(type, res, xhr)
 
-TentStatus.once 'ready', =>
-  TentStatus.background_mentions_unread_count = new BackgroundMentionsUnreadCount
+TentStatus.initBackgroundMentionsUnreadCount = (options) ->
+  TentStatus.background_mentions_unread_count = new BackgroundMentionsUnreadCount(options)
   TentStatus.trigger 'init:background_mentions_unread_count'

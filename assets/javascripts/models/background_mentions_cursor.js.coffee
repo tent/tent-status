@@ -1,5 +1,7 @@
 class BackgroundMentionsCursor extends TentStatus.Object
-  constructor: ->
+  constructor: (options = {}) ->
+    return if options.initialize_only == true
+
     client = Marbles.HTTP.TentClient.currentEntityClient()
     client.get "/profile/#{encodeURIComponent TentStatus.config.PROFILE_TYPES.CURSOR}", null,
       success: (res, xhr) =>
@@ -14,12 +16,15 @@ class BackgroundMentionsCursor extends TentStatus.Object
 
       error: (res, xhr) =>
         if xhr.status == 404
-          for type in TentStatus.config.post_types
-            @resetProfileCursor(type, res)
+          @resetProfileCursorForAllTypes()
+
+  resetProfileCursorForAllTypes: (cursor) =>
+    for type in TentStatus.config.post_types
+      @resetProfileCursor(type, cursor)
 
   resetProfileCursor: (type, cursor) =>
     unless TentStatus.background_mentions_unread_count
-      return TentStatus.once('init:background_mentions_unread_count', => @resetProfileCursor(arguments...))
+      return TentStatus.once('init:background_mentions_unread_count', => @resetProfileCursor(type, cursor))
 
     TentStatus.background_mentions_unread_count.fetchMentionsCountForType type, cursor,
       success: (type, res, xhr) =>
@@ -33,7 +38,7 @@ class BackgroundMentionsCursor extends TentStatus.Object
 
     # reset mentions unread count
     unless TentStatus.background_mentions_unread_count
-      return TentStatus.once 'init:background_mentions_unread_count', => @updateProfileCursor(arguments...)
+      return TentStatus.once 'init:background_mentions_unread_count', => @updateProfileCursor(type, cursor)
     short_type = TentStatus.Helpers.shortType(type)
     TentStatus.background_mentions_unread_count.set("unread_count:#{short_type}", 0)
 
@@ -51,6 +56,6 @@ class BackgroundMentionsCursor extends TentStatus.Object
       success: (res, xhr) =>
         @set 'cursor', cursor
 
-TentStatus.once 'ready', =>
-  TentStatus.background_mentions_cursor = new BackgroundMentionsCursor
+TentStatus.initBackgroundMentionsCursor = (options) ->
+  TentStatus.background_mentions_cursor = new BackgroundMentionsCursor(options)
   TentStatus.trigger 'init:background_mentions_cursor'

@@ -4,10 +4,7 @@ Marbles.Views.MentionsPostsFeed = class MentionsPostsFeedView extends Marbles.Vi
   init: =>
     @on 'ready', @initAutoPaginate
 
-    # after initial render (first page)
-    @once 'fetch:success:after_render', (res, xhr, params, options) =>
-      link_header = new TentStatus.PaginationLinkHeader xhr.getResponseHeader('Link')
-      @updateProfileCursor(link_header)
+    @resetProfileCursor()
 
     @initPostsCollection()
 
@@ -30,18 +27,9 @@ Marbles.Views.MentionsPostsFeed = class MentionsPostsFeedView extends Marbles.Vi
     }
     @fetch()
 
-  updateProfileCursor: (link_header) =>
+  resetProfileCursor: =>
     unless TentStatus.background_mentions_cursor
-      return TentStatus.once 'init:background_mentions_cursor', => @updateProfileCursor(link_header)
+      return TentStatus.once 'init:background_mentions_cursor', @resetProfileCursor
 
-    unless cursor = TentStatus.background_mentions_cursor.get('cursor')
-      return TentStatus.background_mentions_cursor.once 'change:cursor', => @updateProfileCursor(link_header)
-
-    return unless link_header.pagination_params?.prev
-
-    post_id = link_header.pagination_params.prev.since_id
-    post_id_entity = link_header.pagination_params.prev.since_id_entity
-    TentStatus.Models.Post.find { id: post_id, entity: post_id_entity },
-      success: (post) =>
-        TentStatus.background_mentions_cursor.updateProfileCursor(post.get('type'), cursor, link_header)
+    TentStatus.background_mentions_cursor.resetProfileCursorForAllTypes()
 

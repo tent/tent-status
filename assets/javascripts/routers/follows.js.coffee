@@ -21,6 +21,9 @@ TentStatus.Routers.follows = new class FollowsRouter extends Marbles.Router
     title = "#{TentStatus.Helpers.formatUrlWithPath(params.entity)} - #{title}" if params.entity
     TentStatus.setPageTitle page: title
 
+    TentStatus.initBackgroundMentionsCursor()
+    TentStatus.initBackgroundMentionsUnreadCount()
+
   followers: (params) =>
     if TentStatus.Helpers.isAppSubdomain()
       return @navigate('/', {trigger: true, replace: true})
@@ -30,4 +33,7 @@ TentStatus.Routers.follows = new class FollowsRouter extends Marbles.Router
     title = @actions_titles.followers
     title = "#{TentStatus.Helpers.formatUrlWithPath(params.entity)} - #{title}" if params.entity
     TentStatus.setPageTitle page: title
+
+    TentStatus.initBackgroundMentionsCursor()
+    TentStatus.initBackgroundMentionsUnreadCount()
 
