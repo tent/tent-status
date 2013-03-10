@@ -19,8 +19,11 @@ Marbles.Views.PostReplyForm = class PostReplyFormView extends Marbles.Views.NewP
 
   show: =>
     @visible = true
+
+    # Focus textarea
     setImmediate =>
-      @constructor.instances.all[@_child_views.MentionsAutoCompleteTextarea?[0]]?.textarea_view?.focus()
+      @childViews('MentionsAutoCompleteTextareaContainer')?[0]?.childViews('MentionsAutoCompleteTextarea')?[0]?.focus()
+
     if @ready
       Marbles.DOM.show(@el)
     else
