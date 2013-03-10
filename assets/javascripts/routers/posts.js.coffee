@@ -32,7 +32,6 @@ TentStatus.Routers.posts = new class PostsRouter extends Marbles.Router
     @index(arguments...)
 
   feed: (params) =>
-    TentStatus.setPageTitle @actions_titles.feed
     new Marbles.Views.Feed
     @_initAuthorInfoView()
     TentStatus.setPageTitle page: @actions_titles.feed
@@ -40,21 +39,21 @@ TentStatus.Routers.posts = new class PostsRouter extends Marbles.Router
   siteFeed: (params) =>
     unless TentStatus.Helpers.isAppSubdomain()
       return @navigate('/', {trigger: true, replace: true})
-    TentStatus.setPageTitle @actions_titles.siteFeed
     new Marbles.Views.SiteFeed
+    @_initAuthorInfoView()
     TentStatus.setPageTitle page: @actions_titles.siteFeed
 
   post: (params) =>
     if TentStatus.Helpers.isAppSubdomain()
       return @navigate('/', {trigger: true, replace: true})
-    TentStatus.setPageTitle @actions_titles.post
     new Marbles.Views.SinglePost entity: (params.entity || TentStatus.config.domain_entity.toString()), id: params.id
+    @_initAuthorInfoView()
     TentStatus.setPageTitle page: @actions_titles.post
 
   mentions: (params) =>
     if TentStatus.Helpers.isAppSubdomain()
       return @navigate('/', {trigger: true, replace: true})
-    TentStatus.setPageTitle @actions_titles.mentions
     new Marbles.Views.Mentions entity: (params.entity || TentStatus.config.domain_entity.toString())
+    @_initAuthorInfoView()
     TentStatus.setPageTitle page: @actions_titles.mentions
 
