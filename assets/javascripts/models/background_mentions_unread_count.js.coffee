@@ -44,7 +44,7 @@ class BackgroundMentionsUnreadCount extends TentStatus.Object
       @fetchMentionsCountForType(type, cursor, callback)
 
   fetchMentionsCountForType: (type, cursor, callback) =>
-    if cursor = cursor.mentions?[type]
+    if cursor = cursor?.mentions?[type]
       pagination_params = {
         since_id: cursor.post
         since_id_entity: cursor.entity
