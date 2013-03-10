@@ -39,6 +39,9 @@ Marbles.Views.FetchPostsPool = class FetchPostsPoolView extends Marbles.View
   emptyPool: =>
     posts_feed_view = Marbles.View.instances.all[@posts_feed_view_cid]
     return unless posts_feed_view
+
+    last_post_cid = _.last(@posts_collection.model_ids)
+
     posts_feed_view.prependRender(@posts_collection.models())
     posts_feed_view.posts_collection.prependModels(@posts_collection.model_ids)
     @posts_collection.empty()
@@ -48,6 +51,10 @@ Marbles.Views.FetchPostsPool = class FetchPostsPoolView extends Marbles.View
       posts_feed_view.updateProfileCursor(@posts_collection)
 
     @render()
+
+    if last_post_el = Marbles.DOM.querySelector("[data-post_cid='#{last_post_cid}']", posts_feed_view.el)
+      postition = last_post_el.offsetTop - 20 # 20 is an arbitrary padding amount
+      window.scrollTo(window.scrollX, postition)
 
   context: =>
     posts_count: @posts_collection.model_ids.length
