@@ -16,8 +16,9 @@ TentStatus.Routers.posts = new class PostsRouter extends Marbles.Router
     'mentions' : 'Mentions'
   }
 
-  _initAuthorInfoView: =>
-    new Marbles.Views.AuthorInfo el: document.getElementById('author-info')
+  _initAuthorInfoView: (options = {}) =>
+    new Marbles.Views.AuthorInfo _.extend options,
+      el: document.getElementById('author-info')
 
   index: (params) =>
     if TentStatus.config.guest
@@ -33,7 +34,7 @@ TentStatus.Routers.posts = new class PostsRouter extends Marbles.Router
 
   feed: (params) =>
     new Marbles.Views.Feed
-    @_initAuthorInfoView()
+    @_initAuthorInfoView(entity: TentStatus.config.current_entity.toString())
     TentStatus.setPageTitle page: @actions_titles.feed
 
   siteFeed: (params) =>
@@ -46,8 +47,9 @@ TentStatus.Routers.posts = new class PostsRouter extends Marbles.Router
   post: (params) =>
     if TentStatus.Helpers.isAppSubdomain()
       return @navigate('/', {trigger: true, replace: true})
-    new Marbles.Views.SinglePost entity: (params.entity || TentStatus.config.domain_entity.toString()), id: params.id
-    @_initAuthorInfoView()
+    entity = params.entity || TentStatus.config.domain_entity.toString()
+    new Marbles.Views.SinglePost entity: entity, id: params.id
+    @_initAuthorInfoView(entity: entity)
     TentStatus.setPageTitle page: @actions_titles.post
 
   mentions: (params) =>

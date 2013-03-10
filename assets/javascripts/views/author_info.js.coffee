@@ -6,7 +6,7 @@ Marbles.Views.AuthorInfo = class AuthorInfoView extends TentStatus.View
   constructor: (options = {}) ->
     super
 
-    @fetchProfile()
+    @fetchProfile(options.entity) if options.entity
 
     Marbles.Views.Post.on 'click', (view, e) =>
       Marbles.DOM.setStyle(@el, 'top', "#{view.el.offsetTop}px")
@@ -14,7 +14,8 @@ Marbles.Views.AuthorInfo = class AuthorInfoView extends TentStatus.View
       entity = if post.isRepost() then post.get('content.entity') else post.get('entity')
       @fetchProfile(entity)
 
-  fetchProfile: (entity = TentStatus.config.current_entity.toString()) =>
+  fetchProfile: (entity) =>
+    return unless entity
     return if entity == @profile()?.get('entity')
     TentStatus.Models.Profile.fetch {entity: entity},
       error: (res, xhr) =>

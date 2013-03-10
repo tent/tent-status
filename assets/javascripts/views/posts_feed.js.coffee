@@ -5,6 +5,13 @@ Marbles.Views.PostsFeed = class PostsFeedView extends TentStatus.View
 
   constructor: (options = {}) ->
     super
+
+    # fire click event for first post view in feed (caught by author info view)
+    @once 'ready', =>
+      first_post_view = @childViews('Post')?[0]
+      if first_post_view
+        first_post_view.constructor.trigger('click', first_post_view)
+
     @init()
 
   init: =>
