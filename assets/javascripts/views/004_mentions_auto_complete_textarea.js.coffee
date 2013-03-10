@@ -152,8 +152,13 @@ Marbles.Views.MentionsAutoCompleteTextarea = class MentionsAutoCompleteTextareaV
 
     # TODO: refactor
     if permissions_fields_view = TentStatus.View.instances.all[@parentFormView()?._child_views.PermissionsFields?[0]]
+      selection = new Marbles.DOM.InputSelection @el
+
       permissions_fields_view.addOption(option)
       permissions_fields_view.show(false)
+
+      # prevent permissions fields from hijacking cusor focus
+      selection.setSelectionRange(selection.start, selection.end)
 
   open: =>
     @enabled = true
