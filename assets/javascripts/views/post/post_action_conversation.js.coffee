@@ -16,11 +16,27 @@ Marbles.Views.PostActionConversation = class PostActionConversationView extends 
 
   hide: =>
     view = @conversationView()
+
+    el = view.parent_view.el
+    offsetTop = el.offsetTop - window.scrollY
+
     view.destroy()
     delete @conversation_view_cid
     @visible = false
 
+    delta = (el.offsetTop - window.scrollY) - offsetTop
+    window.scrollTo(window.scrollX, window.scrollY + delta)
+
   show: =>
     @visible = true
     view = @conversationView()
+
+    el = view.parent_view.el
+    offsetTop = el.offsetTop - window.scrollY
+
+    view.on 'init:ConversationParents', (parents_view) =>
+      parents_view.once 'ready', =>
+        delta = (el.offsetTop - window.scrollY) - offsetTop
+        window.scrollTo(window.scrollX, window.scrollY + delta)
+
 

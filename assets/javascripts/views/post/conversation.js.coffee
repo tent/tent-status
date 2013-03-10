@@ -8,7 +8,7 @@ Marbles.Views.Conversation = class ConversationView extends TentStatus.View
     @el = document.createElement('div')
     Marbles.DOM.insertBefore(@el, @parent_view.el)
 
-    @render()
+    setImmediate @render
 
   destroy: =>
     @detachChildViews()
