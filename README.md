@@ -86,6 +86,7 @@ There are additional ENV variables not presented above which can be configured a
 | AIRBRAKE_API_KEY | API key for exception logging via Airbrake |
 | AIRBREAKE_HOST | Airbrake host to send exceptions to |
 | ENTITY_SEARCH_SERVICE_API_ROOT | URL for service taking `q={query}` param that returns a JSON array of objects with `entity`, `score`, and `name` properties. |
+| AVATAR_PROXY_HOST | URL for https proxy service that takes a hex encoded url as the path. |
 
 ## Contributing
 

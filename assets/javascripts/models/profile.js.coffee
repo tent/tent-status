@@ -45,6 +45,11 @@ TentStatus.Models.Profile = class ProfileModel extends TentStatus.Model
       bio: basic_profile?.bio
       website_url: basic_profile?.website_url
     }
+
+    # Use https proxy when available and avatar non-https
+    if TentStatus.avatar_proxy_service && attributes.avatar && !attributes.avatar.match(/^https/)
+      attributes.avatar = TentStatus.avatar_proxy_service.proxyURL(attributes.avatar)
+
     attributes[TentStatus.config.TENT_STATUS_PROFILE_TYPE] = tent_status_profile if tent_status_profile
 
     super(attributes)
