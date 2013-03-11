@@ -15,8 +15,4 @@ group :development, :assets do
   gem 'mime-types'
   gem 'yui-compressor'
   gem 'rake'
-
-  gem 'sprockets-helpers', '~> 0.2'
-  gem 'sprockets-sass',    '~> 0.5'
-  gem 'compass', '~> 0.12.2'
 end

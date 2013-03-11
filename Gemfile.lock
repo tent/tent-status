@@ -41,6 +41,7 @@ PATH
     tent-status (0.0.1)
       asset_sync (~> 0.5.0)
       coffee-script
+      compass (~> 0.12.2)
       hashie
       hogan_assets
       pg
@@ -50,6 +51,8 @@ PATH
       sinatra
       slim
       sprockets (~> 2.0)
+      sprockets-helpers (~> 0.2)
+      sprockets-sass (~> 0.5)
       tent-client
       tilt
       uglifier
@@ -102,7 +105,7 @@ GEM
     fssm (0.2.10)
     hashie (1.2.0)
     hike (1.2.1)
-    hogan_assets (1.3.3)
+    hogan_assets (1.3.4)
       execjs (>= 1.2.9)
       sprockets (>= 2.0.3)
       tilt (>= 1.3.3)
@@ -125,17 +128,17 @@ GEM
     puma (1.6.3)
       rack (~> 1.2)
     rack (1.5.2)
-    rack-protection (1.2.0)
+    rack-protection (1.4.0)
       rack
     rack_csrf (2.4.0)
       rack (>= 0.9)
     rake (10.0.3)
     ruby-hmac (0.4.0)
-    sass (3.2.3)
-    sequel (3.41.0)
-    sinatra (1.3.3)
-      rack (~> 1.3, >= 1.3.6)
-      rack-protection (~> 1.2)
+    sass (3.2.7)
+    sequel (3.43.0)
+    sinatra (1.3.5)
+      rack (~> 1.4)
+      rack-protection (~> 1.3)
       tilt (~> 1.3, >= 1.3.3)
     slim (1.3.4)
       temple (~> 0.5.5)
@@ -145,13 +148,13 @@ GEM
       multi_json (~> 1.0)
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
-    sprockets-helpers (0.8.0)
+    sprockets-helpers (0.9.1)
       sprockets (~> 2.0)
     sprockets-sass (0.9.1)
       sprockets (~> 2.0)
       tilt (~> 1.1)
     temple (0.5.5)
-    tilt (1.3.3)
+    tilt (1.3.5)
     uglifier (1.3.0)
       execjs (>= 0.3.0)
       multi_json (~> 1.0, >= 1.0.2)
@@ -165,15 +168,12 @@ PLATFORMS
 DEPENDENCIES
   addressable
   asset_sync!
-  compass (~> 0.12.2)
   kicker
   marbles-js!
   mime-types
   omniauth-tent!
   puma
   rake
-  sprockets-helpers (~> 0.2)
-  sprockets-sass (~> 0.5)
   tent-client!
   tent-status!
   yui-compressor
