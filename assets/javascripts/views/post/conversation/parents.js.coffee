@@ -12,14 +12,9 @@ Marbles.Views.ConversationParents = class ConversationParentsView extends Marble
     reference_post = @postView().post()
     mentions = reference_post.postMentions()
 
-    num_remaining = mentions.length
-    complete = =>
-      num_remaining--
-      @trigger('ready') if num_remaining == 0
-
     for m in mentions
       do (m) =>
         @fetchPost {entity: m.entity, id: m.post}, (post) =>
           @prependRender([post])
-          complete()
+          @trigger('ready')
 
