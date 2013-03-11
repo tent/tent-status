@@ -5,6 +5,8 @@ class Marbles.Views.FollowButton extends TentStatus.View
   constructor: (options = {}) ->
     super
 
+    return unless TentStatus.config.authenticated
+
     @elements = {}
     @text = {}
 
