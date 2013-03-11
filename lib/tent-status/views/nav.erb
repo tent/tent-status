@@ -3,7 +3,7 @@
 <ul class='unstyled app-nav-list'>
   <% if current_user || guest_user %>
     <% if tent_host_domain %>
-      <a href="<%= username_entity %>" class='<%= nav_selected_class('/') %> timeline'>Timeline
+      <a href="<%= username_entity %>" class='<%= nav_selected_class('/') %> timeline'>
     <% else %>
       <a href="<%= full_path('/') %>" class='<%= nav_selected_class('/') %> timeline'>
     <% end %>
@@ -21,11 +21,5 @@
         <i class="icon-user"></i>Profile
       </li>
     </a>
-  <% end %>
-
-  <% if tent_host_domain %>
-    <li class='<%= nav_selected_class('/global') %> site_feed'>
-      <a href="https://app.<%= tent_host_domain %>/global">Site Feed</a>
-    </li>
   <% end %>
 </ul>
