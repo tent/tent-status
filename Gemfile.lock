@@ -44,6 +44,7 @@ PATH
       compass (~> 0.12.2)
       hashie
       hogan_assets
+      marbles-js
       pg
       rack_csrf
       sass
