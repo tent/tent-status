@@ -53,7 +53,7 @@ _.extend TentStatus.Helpers,
     )
 
   isAppSubdomain: =>
-    TentStatus.config.tent_host_domain and window.location.hostname == "app.#{TentStatus.config.tent_host_domain}"
+    TentStatus.config.tent_host_domain and window.location.hostname == "app.#{TentStatus.config.tent_host_domain.replace(/:\d+$/, '')}"
 
   isURLExternal: (url) ->
     !url.match(/^\//) && !url.match(

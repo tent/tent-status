@@ -320,7 +320,7 @@ module Tent
       end
 
       def tent_host_domain
-        ENV['TENT_HOST_DOMAIN']
+        ENV['TENT_HOST_DOMAIN'] + ENV['TENT_HOST_PORT'].to_s
       end
 
       def tent_host_scheme
@@ -376,6 +376,22 @@ module Tent
       def nav_selected_class(path)
         return '' if guest_user && !(env['PATH_INFO'] == '/global' && env['HTTP_HOST'] =~ %r{^app\.})
         env['PATH_INFO'] == path ? 'active' : ''
+      end
+
+      def app_nav_selected_class(path, options = {})
+        match = path == '*' || path == env['PATH_INFO']
+
+        subdomain = env['HTTP_HOST'].split('.').first
+
+        if options[:subdomain] && options[:subdomain] != subdomain
+          match = false
+        end
+
+        if (exclude_subdomain = (options[:except] || {})[:subdomain]) && subdomain == exclude_subdomain
+          match = false
+        end
+
+        match ? 'nav-selected' : ''
       end
 
       def discover(entity)

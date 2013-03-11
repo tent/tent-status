@@ -20,20 +20,20 @@
   <body>
     <div class='v-navbar-fixed-left'>
       <ul class='unstyled custom-container'>
-        <li class='nav-selected'>
-          <a href='https://tent.is'><div class='nav-icon app-icon-tentstatus icon-2x'></div></a>
+        <li class='<%= app_nav_selected_class('*', :except => { :subdomain => 'app' }) %>'>
+          <a href='<%= current_entity %>'><div class='nav-icon app-icon-tentstatus icon-2x'></div></a>
         </li>
 
-        <li class='search'>
-          <a href="https://skate.io"><div class='nav-icon app-icon-search icon-2x'></div></a>
+        <li class='<%= app_nav_selected_class('/search', :subdomain => 'app') %>'>
+          <a href="<%= tent_host_scheme %>app.<%= tent_host_domain %>/search"><div class='nav-icon app-icon-search icon-2x'></div></a>
+        </li>
+
+        <li class='<%= app_nav_selected_class('/global', :subdomain => 'app') %>'>
+          <a href='<%= tent_host_scheme %>app.<%= tent_host_domain %>/global'><div class='nav-icon app-icon-sitefeed icon-2x'></div></a>
         </li>
 
         <li>
-          <a href='https://app.tent.is/global'><div class='nav-icon app-icon-sitefeed icon-2x'></div></a>
-        </li>
-
-        <li>
-          <a href='<%= tent_api_root.to_s + '/admin' %>'><div class='nav-icon app-icon-settings icon-2x'></div></a>
+          <a href='<%= current_entity.to_s + '/admin' %>'><div class='nav-icon app-icon-settings icon-2x'></div></a>
         </li>
 
         <li>
