@@ -13,6 +13,7 @@ Marbles.Views.FetchPostsPool = class FetchPostsPoolView extends Marbles.View
       @posts_feed_view_cid = posts_feed_view.cid
       posts_feed_view.posts_collection.once 'fetch:success', (posts_collection) =>
         @posts_collection = new TentStatus.Collections.Posts
+        @posts_collection.client = posts_collection.client
         @posts_collection.params = posts_collection.params
         @posts_collection.pagination_params = {
           prev: posts_collection.pagination_params?.prev || {}
