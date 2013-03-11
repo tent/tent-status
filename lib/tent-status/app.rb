@@ -176,7 +176,16 @@ module Tent
 
         posts = dataset.all
 
-        json posts
+        _env = Hashie::Mash.new(
+          :response => posts,
+          :params => params,
+          'SCRIPT_NAME' => env['SCRIPT_NAME'],
+        )
+        pagination_header = TentD::API::Posts::PaginationHeader.new(nil)
+        pagination_header.action(_env)
+        headers = _env['response.headers'] || {}
+
+        json posts, headers
       end
 
       get '/api/posts/:post_id' do
@@ -461,8 +470,8 @@ module Tent
       end
     end
 
-    def json(data)
-      [200, { 'Content-Type' => 'application/json' }, [data.to_json]]
+    def json(data, headers = {})
+      [200, { 'Content-Type' => 'application/json' }.merge(headers), [data.to_json]]
     end
 
     def self.match(route, &block)
