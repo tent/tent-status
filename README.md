@@ -66,6 +66,8 @@ gem install bundler
 
 Node.js should be installed as a javascript runtime for asset compiliation (`brew install node` on OS X).
 
+**Note:** Not compatible with CoffeeScript 1.6.x, only tested with 1.3.3
+
 ### Starting tent-status
 
 Clone this repository, and `cd` into the directory. This should start the app:
