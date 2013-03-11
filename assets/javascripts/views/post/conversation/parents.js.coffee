@@ -8,8 +8,12 @@ Marbles.Views.ConversationParents = class ConversationParentsView extends Marble
 
     setImmediate @fetchPosts
 
-  fetchPosts: =>
-    reference_post = @postView().post()
+  postContext: =>
+    _.extend super,
+      is_conversation_view_parent: true
+
+  fetchPosts: (reference_post) =>
+    reference_post ?= @postView().post()
     mentions = reference_post.postMentions()
 
     for m in mentions

@@ -2,6 +2,23 @@ Marbles.Views.PostActionConversation = class PostActionConversationView extends 
   @view_name: 'post_action_conversation'
 
   performAction: =>
+    if view = @findParentView('conversation_parents')
+      post_view = @findParentView('post')
+      reference_post = post_view.post()
+
+      el = post_view.el
+      offset_top = el.offsetTop - window.scrollY
+
+      unless @visible
+        @visible = true
+
+        view.once 'ready', =>
+          delta = (el.offsetTop - window.scrollY) - offset_top
+          window.scrollTo(window.scrollX, window.scrollY + delta)
+
+        view.fetchPosts(reference_post) if reference_post
+      return
+
     if @visible
       @hide()
     else

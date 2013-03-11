@@ -13,17 +13,27 @@
     Conversation
     {{/in_reply_to}}
 
-    {{^is_repost}}
+    {{^has_parent}}
     {{#in_reply_to}}
     {{#config.authenticated}}
-    <span data-view='ParentPostLink'>
+    <span>
       in reply to {{name}}
     </span>
     {{/config.authenticated}}
     {{/in_reply_to}}
-    {{/is_repost}}
+    {{/has_parent}}
   </span>
   {{/is_conversation_view}}
+
+  {{#is_conversation_view_parent}}
+  {{#in_reply_to}}
+  <span class='action' data-view='PostActionConversation'><i class='icon-comments' title='Conversation'></i>
+    <span>
+      in reply to {{name}}
+    </span>
+  </span>
+  {{/in_reply_to}}
+  {{/is_conversation_view_parent}}
 
   {{#current_user_owns_post}}
   <span class='action' data-view='PostActionEdit'><i class='icon-pencil' title='Edit'></i> Edit</span>
