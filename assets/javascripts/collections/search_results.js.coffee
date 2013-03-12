@@ -25,7 +25,7 @@ TentStatus.Collections.SearchResults = class SearchResultsCollection extends Mar
         else
           @resetRaw(results)
 
-        options.success?(models, xhr)
+        options.success?(models, res,  xhr)
         @trigger('fetch:success', @, res, xhr)
 
       error: (res, xhr) =>
@@ -33,10 +33,15 @@ TentStatus.Collections.SearchResults = class SearchResultsCollection extends Mar
         @trigger('fetch:failed', @, res, xhr)
 
   searchParams: (params = {}) =>
-    _params = {
-      text: params.q || ''
-    }
-    _params.entity = params.entity if params.entity
-    _params.types = params.types || TentStatus.config.post_types
-    _params
+    params = _.clone(params)
+    [q, entity, types] = [params.q || '', params.entity, params.types || TentStatus.config.post_types]
+    delete params.q
+    delete params.entity
+    delete params.types
+
+    params.text = q
+    params.entity = entity if entity
+    params.types = types
+
+    params
 

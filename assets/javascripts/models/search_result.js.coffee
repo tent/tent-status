@@ -38,7 +38,7 @@ TentStatus.Models.SearchResult = class SearchResultModel extends TentStatus.Mode
       _attrs.post_cid = post.cid
 
     post.set('profile_cid', _attrs.profile_cid)
-    super(_.extend(_attrs, highlight: attributes.highlight, id: attributes.id))
+    super(_.extend(_attrs, highlight: attributes.highlight, id: attributes.id, published_at: attributes.source.published_at))
 
   post: =>
     TentStatus.Model.instances.all[@post_cid]
