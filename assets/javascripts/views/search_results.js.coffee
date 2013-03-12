@@ -16,6 +16,8 @@ Marbles.Views.SearchResults = class SearchResultsView extends TentStatus.View
     @fetch(@params)
 
   fetch: (params) =>
+    return unless params.q
+
     @pagination_frozen = true
     TentStatus.trigger('loading:start')
 
