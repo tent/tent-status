@@ -9,10 +9,10 @@ Marbles.Views.SearchHits = class SearchHitsView extends TentStatus.View
       search_results_view.results_collection.on 'fetch:success', @fetchSuccess
       search_results_view.results_collection.on 'fetch:error', @fetchError
 
-  fetchSuccess: (res, xhr) =>
+  fetchSuccess: (collection, res, xhr) =>
     @render(@context(res))
 
-  fetchError: (res, xhr) =>
+  fetchError: (collection, res, xhr) =>
     @render()
 
   context: (res = {}) =>

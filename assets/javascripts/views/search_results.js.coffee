@@ -19,9 +19,9 @@ Marbles.Views.SearchResults = class SearchResultsView extends TentStatus.View
     @once 'ready', =>
       first_post_view = @childViews('Post')?[0]
       if first_post_view
-        first_post_view.constructor.trigger('click', first_post_view)
+        setImmediate => first_post_view.constructor.trigger('click', first_post_view)
 
-    @fetch(@params)
+    setImmediate => @fetch(@params)
 
   fetch: (params, options = {}) =>
     # hide author info
