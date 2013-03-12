@@ -13,9 +13,18 @@ Marbles.Views.SearchResults = class SearchResultsView extends TentStatus.View
     @results_collection.on 'append:complete', @appendRender
     @results_collection.on 'prepend:complete', @prependRender
 
+    # fire click event for first post view in feed (caught by author info view)
+    @once 'ready', =>
+      first_post_view = @childViews('Post')?[0]
+      if first_post_view
+        first_post_view.constructor.trigger('click', first_post_view)
+
     @fetch(@params)
 
   fetch: (params) =>
+    # hide author info
+    Marbles.Views.Post.trigger('click', null)
+
     return unless params.q
 
     @pagination_frozen = true

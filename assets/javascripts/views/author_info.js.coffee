@@ -9,6 +9,7 @@ Marbles.Views.AuthorInfo = class AuthorInfoView extends TentStatus.View
     @fetchProfile(options.entity) if options.entity
 
     Marbles.Views.Post.on 'click', (view, e) =>
+      return @render() unless view
       Marbles.DOM.setStyle(@el, 'top', "#{view.el.offsetTop}px")
       post = view.post()
       entity = if post.isRepost() then post.get('content.entity') else post.get('entity')
@@ -28,6 +29,7 @@ Marbles.Views.AuthorInfo = class AuthorInfoView extends TentStatus.View
     TentStatus.Models.Profile.find(cid: @current_profile_cid)
 
   context: (profile = @profile()) =>
+    return { hidden: true } unless profile
     _.extend super, profile.toJSON(),
       name: profile.get('name') || TentStatus.Helpers.formatUrlWithPath(profile.get('entity'))
       avatar: profile.get('avatar') || TentStatus.config.default_avatar
