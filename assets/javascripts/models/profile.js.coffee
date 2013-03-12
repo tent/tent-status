@@ -1,5 +1,6 @@
 TentStatus.Models.Profile = class ProfileModel extends TentStatus.Model
   @model_name: 'profile'
+  @id_mapping_scope: ['entity']
 
   @entity_mapping: {}
 
@@ -33,9 +34,8 @@ TentStatus.Models.Profile = class ProfileModel extends TentStatus.Model
       options.success?(profile, xhr)
 
   parseAttributes: (attributes) =>
-    core_profile = attributes[TentStatus.config.CORE_PROFILE_TYPE]
-    basic_profile = attributes[TentStatus.config.BASIC_PROFILE_TYPE]
-    tent_status_profile = attributes[TentStatus.config.TENT_STATUS_PROFILE_TYPE]
+    core_profile = attributes[TentStatus.config.PROFILE_TYPES.CORE]
+    basic_profile = attributes[TentStatus.config.PROFILE_TYPES.BASIC]
 
     attributes = {
       entity: core_profile?.entity
@@ -49,8 +49,6 @@ TentStatus.Models.Profile = class ProfileModel extends TentStatus.Model
     # Use https proxy when available and avatar non-https
     if TentStatus.avatar_proxy_service && attributes.avatar && !attributes.avatar.match(/^https/)
       attributes.avatar = TentStatus.avatar_proxy_service.proxyURL(attributes.avatar)
-
-    attributes[TentStatus.config.TENT_STATUS_PROFILE_TYPE] = tent_status_profile if tent_status_profile
 
     super(attributes)
 

@@ -63,7 +63,15 @@ TentStatus.Models.Post = class PostModel extends TentStatus.Model
         return
 
       return if @find(params, _.extend(options, {fetch:false}))
-      post = new @(res)
+
+      if options.cid
+        if post = @instances.all[options.cid]
+          post.parseAttributes(res)
+        else
+          post = new @(res, cid: options.cid)
+        post.options.partial_data = false
+      else
+        post = new @(res)
 
       @trigger("fetch:success", params, post, xhr)
       options.success?(post, xhr)
@@ -80,6 +88,9 @@ TentStatus.Models.Post = class PostModel extends TentStatus.Model
     return errors if errors.length
     null
 
+  fetch: (options = {}) =>
+    @constructor.fetch({ id: @get('id'), entity: @get('entity') }, _.extend(options, cid: @cid))
+
   update: (data, options = {}) =>
     @constructor.update(@, data, options)
 
@@ -93,7 +104,12 @@ TentStatus.Models.Post = class PostModel extends TentStatus.Model
     _.any @get('mentions'), (m) => m.entity == entity
 
   postMentions: =>
-    @post_mentions ?= _.select @get('mentions') || [], (m) => m.entity && m.post
+    @post_mentions ?= @_postMentions()
+
+  _postMentions: =>
+    @post_mentions = _.select @get('mentions') || [], (m) => m.entity && m.post
+    @on 'change:mentions', @_postMentions
+    @post_mentions
 
   replyToEntities: (options = {}) =>
     _entities = []

@@ -24,6 +24,7 @@ module Tent
       self.class.set :primary_entity, (options[:primary_entity] || ENV['PRIMARY_ENTITY'])
       self.class.set :entity_search_service_api_root, (options[:entity_search_service_api_root] || ENV['ENTITY_SEARCH_SERVICE_API_ROOT'])
       self.class.set :avatar_proxy_host, (options[:avatar_proxy_host] || ENV['AVATAR_PROXY_HOST'])
+      self.class.set :search_api_root, (options[:search_api_root] || ENV['SEARCH_API_ROOT'])
     end
 
     configure do
@@ -467,6 +468,7 @@ module Tent
           },
           :entity_search_service_api_root => settings.entity_search_service_api_root,
           :avatar_proxy_host => settings.avatar_proxy_host,
+          :search_api_root => settings.search_api_root,
         }
       end
     end

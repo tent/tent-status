@@ -1,5 +1,12 @@
 Marbles.Views.ProfileView = class ProfileView extends TentStatus.View
+  constructor: ->
+    super
+    @profile_cid = Marbles.DOM.attr(@el, 'data-profile_cid')
+
   fetch: (params = {}, options = {}) =>
+    if @profile_cid
+      return @render()
+
     instance = TentStatus.Model.find(cid: @model_cid) if @model_cid
 
     TentStatus.trigger('loading:start')
@@ -18,7 +25,7 @@ Marbles.Views.ProfileView = class ProfileView extends TentStatus.View
         TentStatus.trigger('loading:stop')
     , options)
 
-  context: (profile = TentStatus.Models.Profile.find(cid: @profile_cid)) =>
+  context: (profile = TentStatus.Model.instances.all[@profile_cid]) =>
     has_name: profile?.hasName() || false
     name: profile?.get('name')
     avatar: profile?.get('avatar') || TentStatus.config.default_avatar

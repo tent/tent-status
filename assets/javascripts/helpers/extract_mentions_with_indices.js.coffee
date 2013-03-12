@@ -45,10 +45,13 @@ _.extend TentStatus.Helpers,
         entity = "https://#{entity}"
       else
         if options.entity_whitelist
+          found = false
           for url in options.entity_whitelist
             if url.match(new RegExp "^[a-z]+:\/\/#{TentStatus.Helpers.escapeRegExChars entity}\.", "i")
               entity = url
+              found = true
               break
+          continue unless found
         else if TentStatus.config.tent_host_domain
           entity = "https://#{entity}.#{TentStatus.config.tent_host_domain}"
 

@@ -11,7 +11,7 @@ Marbles.Views.Post = class PostView extends TentStatus.View
     Marbles.DOM.on @el, 'click', (e) => @constructor.trigger('click', @, e)
 
   post: =>
-    TentStatus.Models.Post.find(cid: @post_cid, fetch: false)
+    TentStatus.Model.instances.all[@post_cid]
 
   hide: =>
     Marbles.DOM.hide(@el)
@@ -35,6 +35,7 @@ Marbles.Views.Post = class PostView extends TentStatus.View
     permissible_entities = @getPermissibleEntities(post)
     context = _.extend super, post.toJSON(), {
       cid: post.cid
+      profile_cid: post.profile_cid
       is_repost: post.isRepost()
       in_reply_to: @inReplyToJSON(post.postMentions()[0])
       url: TentStatus.Helpers.postUrl(post)

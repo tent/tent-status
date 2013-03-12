@@ -1,7 +1,7 @@
 {{^is_repost}}
 <div class="row">
   <div class="avatar-container">
-    <div data-view='ProfileAvatar' data-model_cid='{{cid}}'>
+    <div data-view='ProfileAvatar' {{#profile_cid}}data-profile_cid='{{profile_cid}}'{{/profile_cid}} {{^profile_cid}}data-model_cid='{{cid}}'{{/profile_cid}}>
       <a href="{{profileUrl}}"><img class="avatar" src="{{avatar}}" /></a>
     </div>
   </div>
@@ -10,7 +10,7 @@
     <h5>
       <a href="{{url}}" class='post-date' data-view='RelativeTimestamp' data-datetime='{{published_at}}' title="{{formatted.full_published_at}}">{{formatted.published_at}}</a>
 
-      <span class="post-profile-name" data-view='ProfileName' data-model_cid='{{cid}}'></span>
+      <span class="post-profile-name" data-view='ProfileName' {{#profile_cid}}data-profile_cid='{{profile_cid}}'{{/profile_cid}} {{^profile_cid}}data-model_cid='{{cid}}'{{/profile_cid}}></span>
 
       {{^public}}&nbsp;<span class='label {{#only_me}}label-inverse{{/only_me}}{{^only_me}}label-info{{/only_me}}' title='{{#only_me}}Only Me{{/only_me}}{{formatted.permissible_entities}}'>{{#only_me}}Private{{/only_me}}{{^only_me}}Limited{{/only_me}}</span>{{/public}}
     </h5>

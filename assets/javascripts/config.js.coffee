@@ -32,6 +32,8 @@ _.extend TentStatus.config, {
     REPOST: 'https://tent.io/types/post/repost/v0.1.0'
   PROFILE_TYPES:
     CURSOR: 'https://tent.io/types/info/cursor/v0.1.0'
+    BASIC: 'https://tent.io/types/info/basic/v0.1.0'
+    CORE: 'https://tent.io/types/info/core/v0.1.0'
   PER_PAGE: 20
   PER_CONVERSATION_PAGE: 10
   FETCH_INTERVAL: 3000
@@ -39,9 +41,6 @@ _.extend TentStatus.config, {
   URL_TRIM_LENGTH: 30
   MAX_LENGTH: 256
   default_avatar: 'http://dr49qsqhb5y4j.cloudfront.net/default1.png'
-  CORE_PROFILE_TYPE: 'https://tent.io/types/info/core/v0.1.0'
-  BASIC_PROFILE_TYPE: 'https://tent.io/types/info/basic/v0.1.0'
-  TENT_STATUS_PROFILE_TYPE: 'https://tent.io/types/info/tent-status/v0.1.0'
   BASE_TITLE: document.title
 }
 

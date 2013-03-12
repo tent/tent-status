@@ -12,12 +12,12 @@ TentStatus.Collection = class Collection extends Marbles.Collection
 
       @parseLinkHeader(xhr.getResponseHeader('Link')) if res.length
 
-      if options.append
-        models = @append(res)
+      models = if options.append
+        @appendRaw(res)
       else if options.prepend
-        models = @prepend(res)
+        @prependRaw(res)
       else
-        models = @reset(res)
+        @resetRaw(res)
 
       options.success?(models, xhr, params, options, @)
       @trigger('fetch:success', @)
@@ -37,7 +37,7 @@ TentStatus.Collection = class Collection extends Marbles.Collection
   parseLinkHeader: (link_header="") =>
     @pagination_params = (new TentStatus.PaginationLinkHeader link_header).pagination_params
 
-  append: (resources_attribtues) =>
+  appendRaw: (resources_attribtues) =>
     return [] unless resources_attribtues?.length
     models = []
     for attrs in resources_attribtues
@@ -52,7 +52,7 @@ TentStatus.Collection = class Collection extends Marbles.Collection
       model
     models
 
-  prepend: (resources_attribtues) =>
+  prependRaw: (resources_attribtues) =>
     return [] unless resources_attribtues?.length
     models = []
     for i in [resources_attribtues.length-1..0]

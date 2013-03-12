@@ -19,6 +19,12 @@ Marbles.Views.PostActionConversation = class PostActionConversationView extends 
         view.fetchPosts(reference_post) if reference_post
       return
 
+    if (post_view = @postView()) && (reference_post = post_view.post()) && reference_post.options.partial_data
+      return reference_post.fetch
+        success: (post) =>
+          post_view.render(post_view.context(post))
+          _.last(post_view.childViews('PostActionConversation'))?.performAction()
+
     if @visible
       @hide()
     else
