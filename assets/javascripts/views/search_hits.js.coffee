@@ -17,3 +17,4 @@ Marbles.Views.SearchHits = class SearchHitsView extends TentStatus.View
 
   context: (res = {}) =>
     total_hits: res.total_hits
+    no_results: res.total_hits == 0
