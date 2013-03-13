@@ -49,8 +49,9 @@ Marbles.Views.RepostVisibility = class RepostVisibilityView extends TentStatus.V
   context: =>
     count = if @count && @count > 0 then @count - 1 else 0
     post = @post()
+    _post = @findParentView('post')?.post()
     mentions = @mentions || []
-    entity = if post?.isRepost() then post.get('entity') else _.first(mentions)?.entity
+    entity = if _post?.isRepost() then _post.get('entity') else _.first(mentions)?.entity
 
     entity: entity
     count: count
