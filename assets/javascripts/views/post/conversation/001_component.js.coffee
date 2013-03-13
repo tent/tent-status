@@ -1,6 +1,11 @@
 Marbles.Views.ConversationComponent = class ConversationComponentView extends TentStatus.View
   postView: =>
-    @parent_view.parent_view
+    @findParentView('post')
+
+  post: =>
+    return unless post_view = @postView()
+    repost_view = _.last(post_view.childViews('Repost') || [])
+    (repost_view || post_view).post()
 
   postContext: =>
     _.extend Marbles.Views.Post::context(arguments...),

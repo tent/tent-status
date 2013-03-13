@@ -9,7 +9,7 @@ Marbles.Views.ConversationChildren = class ConversationChildrenView extends Marb
     @fetchPosts()
 
   fetchPosts: =>
-    reference_post = @postView().post()
+    reference_post = @post()
     reference_post.fetchChildMentions
       success: (mentions) =>
         for m in mentions
