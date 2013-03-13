@@ -48,15 +48,10 @@ TentStatus.Models.Post = class PostModel extends TentStatus.Model
       return Marbles.HTTP.TentClient.find entity: (params.entity || TentStatus.config.current_entity), (client) =>
         @fetch(params, _.extend(options, {client: client}))
 
-    path = if params.entity
-      "/posts/#{encodeURIComponent params.entity}/#{params.id}"
-    else
-      "/posts/#{params.id}"
-
     _params = _.clone(params)
     delete _params.id
     delete _params.entity
-    options.client.get path, _params, (res, xhr) =>
+    options.client.get "/posts/#{params.id}", _params, (res, xhr) =>
       if xhr.status != 200
         @trigger("fetch:failed", params, res, xhr)
         options.error?(res, xhr)
