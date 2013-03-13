@@ -25,19 +25,19 @@
         </li>
 
         <li class='<%= app_nav_selected_class('/search', :subdomain => 'app') %>'>
-          <a href="<%= tent_host_scheme %>app.<%= tent_host_domain %>/search"><div class='nav-icon app-icon-search icon-2x'></div></a>
+          <a href="<%= tent_host_scheme %>app.<%= tent_host_domain %>/search" title='Search'><div class='nav-icon app-icon-search icon-2x'></div></a>
         </li>
 
         <li class='<%= app_nav_selected_class('/global', :subdomain => 'app') %>'>
-          <a href='<%= tent_host_scheme %>app.<%= tent_host_domain %>/global'><div class='nav-icon app-icon-sitefeed icon-2x'></div></a>
+          <a href='<%= tent_host_scheme %>app.<%= tent_host_domain %>/global' title='Site Feed'><div class='nav-icon app-icon-sitefeed icon-2x'></div></a>
         </li>
 
         <li>
-          <a href='<%= current_entity.to_s + '/admin' %>'><div class='nav-icon app-icon-settings icon-2x'></div></a>
+          <a href='<%= current_entity.to_s + '/admin' %>' title='Admin'><div class='nav-icon app-icon-settings icon-2x'></div></a>
         </li>
 
         <li>
-          <a href='<%= full_path('/signout') %>'><div class='nav-icon app-icon-signout icon-2x'></div></a>
+          <a href='<%= full_path('/signout') %>' title='Signout'><div class='nav-icon app-icon-signout icon-2x'></div></a>
         </li>
       </ul>
     </div>
