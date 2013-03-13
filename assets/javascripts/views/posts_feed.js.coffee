@@ -31,11 +31,10 @@ Marbles.Views.PostsFeed = class PostsFeedView extends TentStatus.View
     @posts_collection.fetch params, _.extend(options,
       success: @fetchSuccess
       error: @fetchError
+      complete: => TentStatus.trigger 'loading:stop'
     )
 
   fetchSuccess: (posts, xhr, params, options) =>
-    TentStatus.trigger 'loading:stop'
-
     unless posts.length
       @last_page = true
 
@@ -47,7 +46,6 @@ Marbles.Views.PostsFeed = class PostsFeedView extends TentStatus.View
     @trigger('fetch:success:after_render', arguments...)
 
   fetchError: (res, xhr) =>
-    TentStatus.trigger 'loading:stop'
 
   nextPage: =>
     @pagination_frozen = true

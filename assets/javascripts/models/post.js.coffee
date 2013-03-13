@@ -60,6 +60,7 @@ TentStatus.Models.Post = class PostModel extends TentStatus.Model
       if xhr.status != 200
         @trigger("fetch:failed", params, res, xhr)
         options.error?(res, xhr)
+        options.complete?(res, xhr)
         return
 
       return if @find(params, _.extend(options, {fetch:false}))
@@ -75,6 +76,7 @@ TentStatus.Models.Post = class PostModel extends TentStatus.Model
 
       @trigger("fetch:success", params, post, xhr)
       options.success?(post, xhr)
+      options.complete?(res, xhr)
 
   @validate: (attrs, options = {}) ->
     errors = []

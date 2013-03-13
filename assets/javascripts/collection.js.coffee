@@ -7,6 +7,7 @@ TentStatus.Collection = class Collection extends Marbles.Collection
     options.client.get @constructor.model.resource_path, params, (res, xhr) =>
       unless xhr.status == 200
         options.error?(res, xhr)
+        options.complete?(res, xhr)
         @trigger('fetch:failed', res, xhr)
         return
 
@@ -20,6 +21,7 @@ TentStatus.Collection = class Collection extends Marbles.Collection
         @resetRaw(res)
 
       options.success?(models, xhr, params, options, @)
+      options.complete?(res, xhr)
       @trigger('fetch:success', @)
 
   fetchPrev: (options = {}) =>

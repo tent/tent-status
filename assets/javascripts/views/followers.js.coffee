@@ -39,7 +39,6 @@ Marbles.Views.Followers = class FollowersView extends TentStatus.View
     TentStatus.trigger 'loading:start'
     @followers_collection.fetch params, _.extend(options,
       success: (followers) =>
-        TentStatus.trigger 'loading:stop'
         @followers_collection.before_id = _.last(followers)?.id
 
         unless followers.length
@@ -50,8 +49,7 @@ Marbles.Views.Followers = class FollowersView extends TentStatus.View
         else
           @render()
 
-      error: (res, xhr) =>
-        TentStatus.trigger 'loading:stop'
+      complete: => TentStatus.trigger 'loading:stop'
     )
 
   nextPage: =>

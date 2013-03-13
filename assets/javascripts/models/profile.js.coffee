@@ -12,6 +12,7 @@ TentStatus.Models.Profile = class ProfileModel extends TentStatus.Model
     if (cid = @entity_mapping[entity])
       profile = @find(cid: cid)
       options.success?(profile)
+      options.complete?(profile)
       return
 
     unless options.client
@@ -22,6 +23,7 @@ TentStatus.Models.Profile = class ProfileModel extends TentStatus.Model
       if xhr.status != 200 || !res
         @trigger('fetch:failed', entity, res, xhr)
         options.error?(res, xhr)
+        options.complete?(res, xhr)
         return
 
       if (cid = @entity_mapping[entity])
@@ -32,6 +34,7 @@ TentStatus.Models.Profile = class ProfileModel extends TentStatus.Model
 
       @trigger('fetch:success', entity, profile, xhr)
       options.success?(profile, xhr)
+      options.complete?(res, xhr)
 
   parseAttributes: (attributes) =>
     core_profile = attributes[TentStatus.config.PROFILE_TYPES.CORE]

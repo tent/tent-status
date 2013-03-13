@@ -7,8 +7,6 @@ Marbles.Views.ProfileAvatar = class ProfileAvatarView extends Marbles.Views.Prof
 
     @model_cid = Marbles.DOM.attr(@el, 'data-model_cid')
     @fetch({}, {
-      error: =>
-        TentStatus.trigger('loading:stop')
-        @render()
+      error: => @render()
       entity: Marbles.DOM.attr(@el, 'data-entity') unless @model_cid || @profile_model_cid
     })

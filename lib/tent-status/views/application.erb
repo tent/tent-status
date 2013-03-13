@@ -51,12 +51,12 @@
         <div id='loading-indicator' class='pulse'>&nbsp;</div>
       <% end %>
 
-        <div id='main' class='pull-left'>
-          <%= yield if block_given? %>
-        </div>
+      <div id='main' class='pull-left'>
+        <%= yield if block_given? %>
+      </div>
 
-        <div id='author-info'>
-        </div>
+      <div id='author-info'>
+      </div>
     </div>
 
     <% if in_application? %>

@@ -16,8 +16,6 @@ Marbles.Views.ProfileName = class ProfileNameView extends Marbles.Views.ProfileV
     @render(context)
 
     @fetch({}, {
-      error: =>
-        TentStatus.trigger('loading:stop')
-        @render()
+      error: => @render()
       entity: entity unless @model_cid
     })
