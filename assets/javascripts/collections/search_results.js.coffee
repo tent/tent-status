@@ -32,6 +32,9 @@ TentStatus.Collections.SearchResults = class SearchResultsCollection extends Mar
         options.error?(res, xhr)
         @trigger('fetch:failed', @, res, xhr)
 
+      complete: (res, xhr) =>
+        options.complete?(res, xhr)
+
   searchParams: (params = {}) =>
     params = _.clone(params)
     [q, entity, types] = [params.q || '', params.entity, params.types || TentStatus.config.post_types]
