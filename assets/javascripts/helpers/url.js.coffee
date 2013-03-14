@@ -55,6 +55,11 @@ _.extend TentStatus.Helpers,
   isAppSubdomain: =>
     TentStatus.config.tent_host_domain and window.location.hostname == "app.#{TentStatus.config.tent_host_domain.replace(/:\d+$/, '')}"
 
+  appDomain: =>
+    return TentStatus.config.app_domain if TentStatus.config.app_domain
+    return unless TentStatus.config.tent_host_domain
+    TentStatus.config.app_domain = "#{window.location.protocol.replace(/:?$/, ':')}//app.#{TentStatus.config.tent_host_domain.replace(/:\d+$/, '')}"
+
   isURLExternal: (url) ->
     !url.match(/^\//) && !url.match(
       new RegExp("^[a-z]+:\/\/#{TentStatus.Helpers.escapeRegExChars(

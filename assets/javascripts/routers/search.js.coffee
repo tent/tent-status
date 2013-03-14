@@ -12,6 +12,9 @@ TentStatus.Routers.search = new class SearchRouter extends Marbles.Router
       el: document.getElementById('author-info')
 
   search: (params) =>
+    if TentStatus.Helpers.appDomain() && !TentStatus.Helpers.isAppSubdomain()
+      return window.location.href = TentStatus.Helpers.appDomain() + "/search#{Marbles.history.serializeParams(params)}"
+
     if !TentStatus.config.search_api_root
       return @navigate('/', {trigger: true, replace: true})
 
