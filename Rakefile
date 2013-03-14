@@ -21,7 +21,7 @@ namespace :assets do
     t.environment.js_compressor = Uglifier.new
     t.environment.css_compressor = YUI::CssCompressor.new
     t.output      = "./public/assets"
-    t.assets      = %w( application.js iframe-cache.js notifier.js application.css glyphicons-halflings-white.png glyphicons-halflings.png gears.png mentions.png profile.png search.png site_feed.png timeline.png conversation.png edit.png reply.png repost.png sourcesanspro-regular-webfont.eot sourcesanspro-regular-webfont.woff sourcesanspro-regular-webfont.ttf sourcesanspro-regular-webfont.svg assets/fonts/appicons.eot assets/fonts/appicons.svg assets/fonts/appicons.ttf assets/fonts/appicons.woff)
+    t.assets      = %w( application.js iframe-cache.js notifier.js application.css glyphicons-halflings-white.png glyphicons-halflings.png gears.png mentions.png profile.png search.png site_feed.png timeline.png conversation.png edit.png reply.png repost.png sourcesanspro-regular-webfont.eot sourcesanspro-regular-webfont.woff sourcesanspro-regular-webfont.ttf sourcesanspro-regular-webfont.svg appicons.eot appicons.svg appicons.ttf appicons.woff)
     t.manifest = lambda { Sprockets::Manifest.new(t.environment, "./public/assets", "./public/assets/manifest.json") }
 
     t.environment.context_class.class_eval do
