@@ -41,7 +41,6 @@ Marbles.Views.MentionsAutoCompleteTextarea = class MentionsAutoCompleteTextareaV
       post.replyToEntities()
     else
       if (parent_profile_view = @findParentView('profile')) && (profile = parent_profile_view.profile()) && !TentStatus.config.current_entity.assertEqual(profile.get 'entity')
-        console.log 'mention', profile.get('entity')
         [profile.get('entity')]
       else
         []

@@ -22,7 +22,6 @@ Marbles.Views.Repost = class RepostView extends Marbles.Views.Post
 
       error: (res, xhr) =>
         @parent_view.hide()
-        console.log 'Repost:fetch:failed', res
     }
 
   post: =>
