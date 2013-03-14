@@ -39,6 +39,7 @@ TentStatus.Collections.SearchResults = class SearchResultsCollection extends Mar
     delete params.entity
     delete params.types
 
+    params.api_key = TentStatus.config.search_api_key
     params.text = q
     params.entity = entity if entity
     params.types = types
