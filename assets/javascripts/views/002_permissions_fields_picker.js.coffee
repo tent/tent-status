@@ -139,10 +139,10 @@ class PickerOptionView
     @getOption()?.value
 
   getText: =>
-    @getOption().name || TentStatus.Helpers.minimalEntity(@getOption().value)
+    @getOption()?.name || TentStatus.Helpers.minimalEntity(@getOption().value)
 
   isGroup: =>
-    !!@getOption().group
+    !!@getOption()?.group
 
   destroy: =>
     Marbles.DOM.removeNode(@el) if @el
