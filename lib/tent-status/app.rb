@@ -332,7 +332,7 @@ module Tent
 
       def tent_host_domain
         return unless ENV['TENT_HOST_DOMAIN']
-        ENV['TENT_HOST_DOMAIN'] + ENV['TENT_HOST_PORT']
+        ENV['TENT_HOST_DOMAIN'] + ENV['TENT_HOST_PORT'].to_s
       end
 
       def tent_host_scheme
