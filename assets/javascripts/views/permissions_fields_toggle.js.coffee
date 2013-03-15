@@ -44,10 +44,8 @@ Marbles.Views.PermissionsFieldsToggle = class PermissionsFieldsToggleView extend
   hide: =>
     @visible = false
     @permissionsFieldsView()?.hide()
-    #Marbles.DOM.setInnerText(@el, @text.visibility_toggle.show)
 
   show: (should_focus = true) =>
     @visible = true
     @permissionsFieldsView()?.show()
-    #Marbles.DOM.setInnerText(@el, @text.visibility_toggle.hide)
 
