@@ -21,6 +21,12 @@ Marbles.Views.SearchFormAdvancedOptionsToggle = class SearchFormAdvancedOptionsT
     view = @advancedOptionsView()
     return unless view
     @visible = !@visible
+
+    if @visible
+      Marbles.DOM.addClass(@el, 'visible')
+    else
+      Marbles.DOM.removeClass(@el, 'visible')
+
     view.set('visible', @visible)
     view.set('auto_focus', options.auto_focus)
     view.render()
