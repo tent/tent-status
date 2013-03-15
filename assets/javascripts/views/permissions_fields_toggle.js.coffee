@@ -10,7 +10,9 @@ Marbles.Views.PermissionsFieldsToggle = class PermissionsFieldsToggleView extend
 
     @render()
 
-  context: (permissions = @parentView()?.post()?.get('permissions')) =>
+  context: (permissions) =>
+    permissions ?= @parentView()?.post()?.get('permissions')
+    permissions ?= { public: true }
     _.extend super,
       permissions: permissions
 
