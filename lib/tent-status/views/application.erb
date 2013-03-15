@@ -67,7 +67,7 @@
         <div id='loading-indicator' class='pulse'>&nbsp;</div>
       <% end %>
 
-      <div id='main' class='pull-left'>
+      <div id='main' class='pull-left<% unless client_app_config[:authenticated] %> no-actions<% end %>'>
         <%= yield if block_given? %>
       </div>
 
