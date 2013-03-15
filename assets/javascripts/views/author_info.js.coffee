@@ -8,7 +8,7 @@ Marbles.Views.AuthorInfo = class AuthorInfoView extends TentStatus.View
 
     @fetchProfile(options.entity) if options.entity
 
-    Marbles.Views.Post.on 'click', (view, e) =>
+    Marbles.Views.Post.on 'focus', (view, e) =>
       return @render() unless view
       Marbles.DOM.setStyle(@el, 'top', "#{Marbles.DOM.offsetTop view.el}px")
       post = view.post()

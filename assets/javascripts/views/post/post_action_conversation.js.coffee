@@ -15,6 +15,7 @@ Marbles.Views.PostActionConversation = class PostActionConversationView extends 
         view.once 'ready', =>
           delta = (el.offsetTop - window.scrollY) - offset_top
           window.scrollTo(window.scrollX, window.scrollY + delta)
+          post_view.focus()
 
         view.fetchPosts(reference_post) if reference_post
       return
@@ -53,17 +54,19 @@ Marbles.Views.PostActionConversation = class PostActionConversationView extends 
   show: =>
     @visible = true
     view = @conversationView()
+    post_view = view.parentView()
 
-    el = view.parent_view.el
+    el = post_view.el
     offsetTop = el.offsetTop - window.scrollY
 
     view.on 'init:ConversationReference', (reference_view) =>
       delta = (el.offsetTop - window.scrollY) - offsetTop
       window.scrollTo(window.scrollX, window.scrollY + delta)
+      post_view.focus()
 
     view.on 'init:ConversationParents', (parents_view) =>
       parents_view.once 'ready', =>
         delta = (el.offsetTop - window.scrollY) - offsetTop
         window.scrollTo(window.scrollX, window.scrollY + delta)
-
+        post_view.focus()
 

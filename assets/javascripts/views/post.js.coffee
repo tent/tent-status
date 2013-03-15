@@ -8,7 +8,14 @@ Marbles.Views.Post = class PostView extends TentStatus.View
 
     @post_cid = Marbles.DOM.attr(@el, 'data-post_cid')
 
-    Marbles.DOM.on @el, 'click', (e) => @constructor.trigger('click', @, e)
+    @bindEl()
+    @on 'ready', @bindEl
+
+  bindEl: =>
+    Marbles.DOM.on @el, 'click', @focus
+
+  focus: (e) =>
+    @constructor.trigger('focus', @, e)
 
   post: =>
     TentStatus.Model.instances.all[@post_cid]

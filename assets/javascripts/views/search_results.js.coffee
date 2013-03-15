@@ -15,17 +15,17 @@ Marbles.Views.SearchResults = class SearchResultsView extends TentStatus.View
 
     @once 'ready', @initAutoPaginate
 
-    # fire click event for first post view in feed (caught by author info view)
+    # fire focus event for first post view in feed (caught by author info view)
     @once 'ready', =>
       first_post_view = @childViews('Post')?[0]
       if first_post_view
-        setImmediate => first_post_view.constructor.trigger('click', first_post_view)
+        setImmediate => first_post_view.constructor.trigger('focus', first_post_view)
 
     setImmediate => @fetch(@params)
 
   fetch: (params, options = {}) =>
     # hide author info
-    Marbles.Views.Post.trigger('click', null)
+    Marbles.Views.Post.trigger('focus', null)
 
     return unless params.q
 
