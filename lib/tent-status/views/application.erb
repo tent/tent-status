@@ -20,9 +20,11 @@
   <body>
     <div class='v-navbar-fixed-left'>
       <ul class='unstyled custom-container'>
-        <li class='<%= app_nav_selected_class('*', :except => { :subdomain => 'app' }) %>'>
-          <a href='<%= current_entity %>'><div class='nav-icon app-icon-tentstatus icon-2x'></div></a>
-        </li>
+        <% if client_app_config[:authenticated] %>
+          <li class='<%= app_nav_selected_class('*', :except => { :subdomain => 'app' }) %>'>
+            <a href='<%= current_entity %>'><div class='nav-icon app-icon-tentstatus icon-2x'></div></a>
+          </li>
+        <% end %>
 
         <li class='<%= app_nav_selected_class('/search', :subdomain => 'app') %>'>
           <a href="<%= tent_host_scheme %>app.<%= tent_host_domain %>/search" title='Search'><div class='nav-icon app-icon-search icon-2x'></div></a>
