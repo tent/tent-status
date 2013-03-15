@@ -12,9 +12,13 @@
     color: darken($grayTextColor, 5%);
   }
 
+  .icon-caret-down {
+    @include rotate(270deg);
+  }
+
   &.visible {
     .icon-caret-down {
-      @include rotate(270deg);
+      @include rotate(0deg);
     }
   }
 }
