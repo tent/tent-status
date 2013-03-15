@@ -11,6 +11,12 @@
   &:hover {
     color: darken($grayTextColor, 5%);
   }
+
+  &.visible {
+    .icon-caret-down {
+      @include rotate(270deg);
+    }
+  }
 }
 
 .permissions-options-container, .mentions-autocomplete {
