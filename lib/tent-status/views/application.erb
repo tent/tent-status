@@ -54,6 +54,12 @@
       <div id='main-nav'>
         <%= erb :nav %>
       </div>
+    <% else %>
+      <div id='signup'>
+        <a href='<%= tent_host_scheme + tent_host_domain %>' class='btn btn-primary'>
+          Signup
+        </a>
+      </div>
     <% end %>
 
     <div id='main-container' class='container'>
