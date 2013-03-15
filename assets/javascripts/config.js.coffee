@@ -9,9 +9,9 @@ moment.relativeTime = {
   d: "1d",
   dd: "%dd",
   M: "1mo",
-  MM: "%d mon",
-  y: "a year",
-  yy: "%d years"
+  MM: "%dmo",
+  y: "ay",
+  yy: "%dy"
 }
 
 @TentStatus ?= {}
