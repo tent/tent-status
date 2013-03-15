@@ -89,8 +89,8 @@ Marbles.Views.SearchFetchPool = class SearchFetchPoolView extends TentStatus.Vie
     context = @context()
     super(context)
 
-    if context.results_count
-      TentStatus.setPageTitle prefix: "(#{context.results_count})"
+    if context.posts_count
+      TentStatus.setPageTitle prefix: "(#{context.posts_count})"
     else
       TentStatus.setPageTitle prefix: null
 
