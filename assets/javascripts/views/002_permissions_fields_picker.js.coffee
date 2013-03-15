@@ -106,6 +106,8 @@ Marbles.Views.PermissionsFieldsPicker = class PermissionsFieldsPickerView extend
         results = _.filter results, (result) => !@parent_view.optionsInclude(result)
         @displayMatches(results)
 
+      error: => @displayMatches([])
+
   context: =>
     options: @matches
     query: @current_query
