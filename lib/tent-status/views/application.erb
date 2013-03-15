@@ -48,9 +48,11 @@
       </ul>
     </div>
 
-    <div id='main-nav'>
-      <%= erb :nav %>
-    </div>
+    <% if client_app_config[:authenticated] %>
+      <div id='main-nav'>
+        <%= erb :nav %>
+      </div>
+    <% end %>
 
     <div id='main-container' class='container'>
       <% if in_application? %>

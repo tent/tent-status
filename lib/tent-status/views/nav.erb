@@ -1,7 +1,7 @@
 <h1 class="brand">TentStatus</h1>
 <a class="menu-switch js-menu-switch">Menu</a>
 <ul class='unstyled app-nav-list'>
-  <% if current_user || guest_user %>
+  <% if client_app_config[:authenticated] %>
     <% if tent_host_domain %>
       <a href="<%= username_entity %>" class='<%= nav_selected_class('/') %> timeline'>
     <% else %>
