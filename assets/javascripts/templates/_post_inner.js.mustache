@@ -8,7 +8,7 @@
 
   <div class='post-container no-offset pull-left'>
     <h5>
-      <a href="{{url}}" class='post-date' data-view='RelativeTimestamp' data-datetime='{{published_at}}' title="{{formatted.full_published_at}}">{{formatted.published_at}}</a>
+      <a href="{{url}}" class='post-date' data-view='RelativeTimestamp' data-datetime='{{published_at}}' title="{{formatted.full_published_at}}{{#app.name}} via {{app.name}}{{/app.name}}">{{formatted.published_at}}</a>
 
       <span class="post-profile-name" data-view='ProfileName' {{#profile_cid}}data-profile_cid='{{profile_cid}}'{{/profile_cid}} {{^profile_cid}}data-model_cid='{{cid}}'{{/profile_cid}}></span>
 
