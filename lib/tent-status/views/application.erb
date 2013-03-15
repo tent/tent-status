@@ -32,13 +32,19 @@
           <a href='<%= tent_host_scheme %>app.<%= tent_host_domain %>/global' title='Site Feed'><div class='nav-icon app-icon-sitefeed icon-2x'></div></a>
         </li>
 
-        <li>
-          <a href='<%= current_entity.to_s + '/admin' %>' title='Admin'><div class='nav-icon app-icon-settings icon-2x'></div></a>
-        </li>
+        <% if client_app_config[:authenticated] %>
+          <li>
+            <a href='<%= current_entity.to_s + '/admin' %>' title='Admin'><div class='nav-icon app-icon-settings icon-2x'></div></a>
+          </li>
 
-        <li>
-          <a href='<%= full_path('/signout') %>' title='Signout'><div class='nav-icon app-icon-signout icon-2x'></div></a>
-        </li>
+          <li>
+            <a href='<%= full_path('/signout') %>' title='Signout'><div class='nav-icon app-icon-signout icon-2x'></div></a>
+          </li>
+        <% else %>
+          <li>
+            <a href='<%= tent_host_scheme + tent_host_domain %>/login' title='Signin'><div class='nav-icon app-icon-signin icon-2x'></div></a>
+          </li>
+        <% end %>
       </ul>
     </div>
 

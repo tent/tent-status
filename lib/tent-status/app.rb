@@ -452,7 +452,7 @@ module Tent
       end
 
       def client_app_config
-        {
+        @client_app_config ||= {
           :url_root => full_path('/'),
           :authenticated => !!(current_user || guest_user),
           :guest_authenticated => !!guest_user,
