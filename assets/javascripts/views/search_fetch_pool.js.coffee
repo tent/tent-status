@@ -72,10 +72,6 @@ Marbles.Views.SearchFetchPool = class SearchFetchPoolView extends TentStatus.Vie
 
     @render()
 
-    if last_result_el = Marbles.DOM.querySelector("[data-post_cid='#{last_result_cid}']", results_feed_view.el)
-      resultition = last_result_el.offsetTop - 20 # 20 is an arbitrary padding amount
-      window.scrollTo(window.scrollX, resultition)
-
   context: =>
     posts_count: @results_collection.model_ids.length
 

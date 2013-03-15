@@ -53,10 +53,6 @@ Marbles.Views.FetchPostsPool = class FetchPostsPoolView extends Marbles.View
 
     @render()
 
-    if last_post_el = Marbles.DOM.querySelector("[data-post_cid='#{last_post_cid}']", posts_feed_view.el)
-      postition = last_post_el.offsetTop - 20 # 20 is an arbitrary padding amount
-      window.scrollTo(window.scrollX, postition)
-
   context: =>
     posts_count: @posts_collection.model_ids.length
 
