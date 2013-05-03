@@ -1,6 +1,6 @@
 class EntitySearchService
   constructor: (@options = {}) ->
-    @client = new Marbles.HTTP.Client middleware: [Marbles.HTTP.Client.Middleware.SerializeJSON]
+    @client = new Marbles.HTTP.Client(middleware: [Marbles.HTTP.Middleware.SerializeJSON])
 
   # options:
   #   - success: fn
@@ -12,5 +12,7 @@ class EntitySearchService
 _.extend EntitySearchService::, Marbles.Events
 _.extend EntitySearchService::, Marbles.Accessors
 
-if TentStatus.config.entity_search_service_api_root
-  TentStatus.entity_search_service = new EntitySearchService api_root: TentStatus.config.entity_search_service_api_root
+if (api_root = TentStatus.config.entity_search_api_root)
+  TentStatus.services ?= {}
+  TentStatus.services.entity_search = new EntitySearchService(api_root: api_root)
+

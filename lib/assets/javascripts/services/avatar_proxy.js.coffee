@@ -11,5 +11,7 @@ class AvatarProxyService
 _.extend AvatarProxyService::, Marbles.Events
 _.extend AvatarProxyService::, Marbles.Accessors
 
-if TentStatus.config.avatar_proxy_host
-  TentStatus.avatar_proxy_service = new AvatarProxyService api_root: TentStatus.config.avatar_proxy_host
+if (api_root = TentStatus.config.avatar_proxy_host)
+  TentStatus.services ?= {}
+  TentStatus.services.avatar_proxy = new AvatarProxyService api_root: api_root
+

@@ -9,8 +9,7 @@
 #= require ./config
 #= require_self
 #= require ./fetch_interval
-#= require ./entity_search_service
-#= require ./avatar_proxy_service
+#= require_tree ./services
 #= require http/tent_client
 #= require ./model
 #= require_tree ./models
