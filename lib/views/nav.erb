@@ -1,0 +1,31 @@
+<ul class="unstyled app-nav-list">
+  <a href="<%= full_path('/') %>" class='<%= nav_selected_class('/') %>'>
+    <li>
+      <i class="icon-list"></i>Timeline
+    </li>
+  </a>
+
+  <a href="<%= full_path('/replies') %>" class='<%= nav_selected_class('/replies') %>'>
+    <li>
+      <i class="icon-pushpin"></i>Replies <span data-view="RepliesUnreadCount"></span>
+    </li>
+  </a>
+
+  <a href="<%= full_path('/dms') %>" class='<%= nav_selected_class('/dms') %>'>
+    <li>
+      <i class="icon-envelope"></i>DMs <span data-view="DMsUnreadCount"></span>
+    </li>
+  </a>
+
+  <a href="<%= full_path('/profile') %>" class='<%= nav_selected_class('/profile') %>'>
+    <li>
+      <i class="icon-user"></i>Profile
+    </li>
+  </a>
+
+  <a href="<%= full_path('/site-feed') %>" class='<%= nav_selected_class('/site-feed') %>'>
+    <li>
+      <i class="icon-globe"></i>Site Feed
+    </li>
+  </a>
+</ul>

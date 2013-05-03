@@ -1,28 +1,76 @@
 GIT
-  remote: git://github.com/jvatic/marbles-js.git
-  revision: 3bc5c38bb24f11f1f2ad3c09b0e46b1b07dc5c61
+  remote: git://github.com/jvatic/lodash-assets.git
+  revision: 2fd617d6b767ba18b456a07f1c794c634e514155
   branch: master
   specs:
-    marbles-js (0.0.1)
+    lodash-assets (0.0.1)
+      execjs (>= 1.2.9)
+      sprockets (>= 2.0.3)
+      tilt (>= 1.3.3)
+      yajl-ruby
+
+GIT
+  remote: git://github.com/jvatic/marbles-js.git
+  revision: 315f06e8eae91a7b4ae7db5a19fa95f759022125
+  branch: master
+  specs:
+    marbles-js (0.0.2)
+
+GIT
+  remote: git://github.com/tent/hawk-ruby.git
+  revision: e94e538e0f503e94ff10ca02f904a28b9875ac51
+  branch: master
+  specs:
+    hawk-auth (0.0.0)
+
+GIT
+  remote: git://github.com/tent/icing.git
+  revision: 456c1c8879564a3a56c0ad04987f1c2480b3e950
+  branch: master
+  specs:
+    icing (0.0.1)
+      compass (~> 0.12.2)
+      sass
+      sprockets (~> 2.0)
+      sprockets-helpers (~> 0.2)
+      sprockets-sass (~> 0.5)
 
 GIT
   remote: git://github.com/tent/omniauth-tent.git
-  revision: 0145df035d47288f89d6ebc82622cc46c9161b9e
-  branch: master
+  revision: 8db01a232c0b1544fd4ba1538a455efa427273f4
+  branch: 0.3
   specs:
-    omniauth-tent (0.1.6)
+    omniauth-tent (0.2.0)
       omniauth (~> 1.1.1)
       tent-client
 
 GIT
-  remote: git://github.com/tent/tent-client-ruby.git
-  revision: cee0c212a3e435b79719914cb0e3fae6e9a574ae
+  remote: git://github.com/tent/rack-putty.git
+  revision: a2a1b0d50118d656d6298c8c4713981665b9d6bc
   branch: master
   specs:
-    tent-client (0.0.1)
+    rack-putty (0.0.1)
+      rack-mount (~> 0.8.3)
+
+GIT
+  remote: git://github.com/tent/sequel-json.git
+  revision: 5899348946cbf0bf338c1358c85294c4e8adb6ee
+  branch: master
+  specs:
+    sequel-json (0.0.1)
+      sequel
+      yajl-ruby
+
+GIT
+  remote: git://github.com/tent/tent-client-ruby.git
+  revision: 77c030b3e113b4ad804c54ad26d832b682ea68c5
+  branch: 0.3
+  specs:
+    tent-client (0.2.0)
       faraday (= 0.8.4)
       faraday_middleware (= 0.8.8)
       faraday_middleware-multi_json
+      hawk-auth
       nokogiri
       yajl-ruby
 
@@ -38,25 +86,21 @@ GIT
 PATH
   remote: .
   specs:
-    tent-status (0.0.1)
-      asset_sync (~> 0.5.0)
+    tent-status (0.2.0)
       coffee-script
-      compass (~> 0.12.2)
-      hashie
       hogan_assets
+      icing
+      lodash-assets
       marbles-js
+      mimetype-fu
+      omniauth-tent
       pg
-      rack_csrf
-      sass
-      sequel
-      sinatra
-      slim
+      rack-putty
+      sequel (= 3.46)
+      sequel-json
       sprockets (~> 2.0)
-      sprockets-helpers (~> 0.2)
       sprockets-sass (~> 0.5)
       tent-client
-      tilt
-      uglifier
 
 GEM
   remote: https://rubygems.org/
@@ -71,13 +115,12 @@ GEM
     activesupport (3.2.8)
       i18n (~> 0.6)
       multi_json (~> 1.0)
-    addressable (2.3.2)
     builder (3.0.3)
-    chunky_png (1.2.7)
+    chunky_png (1.2.8)
     coffee-script (2.2.0)
       coffee-script-source
       execjs
-    coffee-script-source (1.4.0)
+    coffee-script-source (1.6.2)
     compass (0.12.2)
       chunky_png (~> 1.2)
       fssm (>= 0.2.7)
@@ -89,7 +132,7 @@ GEM
       multipart-post (~> 1.1)
     faraday_middleware (0.8.8)
       faraday (>= 0.7.4, < 0.9)
-    faraday_middleware-multi_json (0.0.3)
+    faraday_middleware-multi_json (0.0.5)
       faraday_middleware
       multi_json
     fog (1.6.0)
@@ -104,47 +147,36 @@ GEM
       ruby-hmac
     formatador (0.2.3)
     fssm (0.2.10)
-    hashie (1.2.0)
-    hike (1.2.1)
-    hogan_assets (1.3.4)
+    hashie (2.0.4)
+    hike (1.2.2)
+    hogan_assets (1.6.0)
       execjs (>= 1.2.9)
       sprockets (>= 2.0.3)
       tilt (>= 1.3.3)
     i18n (0.6.1)
-    kicker (2.6.1)
-      listen
-    listen (0.5.0)
     mime-types (1.19)
+    mimetype-fu (0.1.2)
     multi_json (1.6.1)
-    multipart-post (1.1.5)
+    multipart-post (1.2.0)
     net-scp (1.0.4)
       net-ssh (>= 1.99.1)
     net-ssh (2.5.2)
     nokogiri (1.5.5)
-    omniauth (1.1.1)
-      hashie (~> 1.2)
+    omniauth (1.1.4)
+      hashie (>= 1.2, < 3)
       rack
     open4 (1.3.0)
-    pg (0.14.1)
+    pg (0.15.1)
     puma (1.6.3)
       rack (~> 1.2)
     rack (1.5.2)
-    rack-protection (1.4.0)
-      rack
-    rack_csrf (2.4.0)
-      rack (>= 0.9)
+    rack-mount (0.8.3)
+      rack (>= 1.0.0)
     rake (10.0.3)
     ruby-hmac (0.4.0)
-    sass (3.2.7)
-    sequel (3.43.0)
-    sinatra (1.3.5)
-      rack (~> 1.4)
-      rack-protection (~> 1.3)
-      tilt (~> 1.3, >= 1.3.3)
-    slim (1.3.4)
-      temple (~> 0.5.5)
-      tilt (~> 1.3.3)
-    sprockets (2.9.0)
+    sass (3.2.8)
+    sequel (3.46.0)
+    sprockets (2.9.3)
       hike (~> 1.2)
       multi_json (~> 1.0)
       rack (~> 1.0)
@@ -154,8 +186,7 @@ GEM
     sprockets-sass (0.9.1)
       sprockets (~> 2.0)
       tilt (~> 1.1)
-    temple (0.5.5)
-    tilt (1.3.5)
+    tilt (1.4.0)
     uglifier (1.3.0)
       execjs (>= 0.3.0)
       multi_json (~> 1.0, >= 1.0.2)
@@ -167,14 +198,18 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  addressable
   asset_sync!
-  kicker
+  hawk-auth!
+  icing!
+  lodash-assets!
   marbles-js!
   mime-types
   omniauth-tent!
   puma
+  rack-putty!
   rake
+  sequel-json!
   tent-client!
   tent-status!
+  uglifier
   yui-compressor

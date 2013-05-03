@@ -1,0 +1,60 @@
+<form method="POST">
+  <h1 class='page-header'>Authorize App: <small><%= env['oauth.app'][:content][:name] %></small></h1>
+
+  <h2>Requested Post Type Access</h2>
+  <table class='table table-striped'>
+    <thead>
+      <tr>
+        <th>Read</th>
+        <th>Write</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% read_types = env['oauth.app'][:content][:post_types][:read].sort %>
+      <% write_types = env['oauth.app'][:content][:post_types][:write].sort %>
+      <% [read_types.size, write_types.size].max.times do |index| %>
+        <tr>
+          <td>
+            <% unless index >= read_types.size  %>
+              <label class='control-label'>
+                <input name="<%= read_types[index] %>" type="checkbox" checked />&nbsp;<%= read_types[index] %>
+              </label>
+            <% end %>
+          </td>
+
+          <td>
+            <% unless index >= write_types.size  %>
+              <label class='control-label'>
+                <input name="<%= write_types[index] %>" type="checkbox" checked />&nbsp;<%= write_types[index] %>
+              </label>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <% if env['oauth.app'][:content][:scopes].to_a.any? %>
+    <h2>Requested Scopes</h2>
+
+    <table class='table table-striped'>
+      <tbody>
+        <% env['oauth.app'][:content][:scopes].each do |scope| %>
+          <tr>
+            <td>
+              <label>
+                <input name="<%= scope %>" type="checkbox" checked />&nbsp;<%= scope %>
+              </label>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+
+  <div class='form-actions'>
+    <input class='btn btn-success' type='submit' name='commit' value='Allow Access' />
+    <input class='btn pull-right' type='submit' name='commit' value='No Thanks' />
+  </div>
+</form>

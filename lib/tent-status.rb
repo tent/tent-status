@@ -1,6 +1,60 @@
-require "sinatra/base"
+require 'tent-status/version'
 
-module Tent
-  class Status < Sinatra::Base
+module TentStatus
+  require 'tent-status/utils'
+
+  def self.settings
+    @settings ||= {
+      :read_post_types => %w(
+        https://tent.io/types/basic-profile/v0#
+        https://tent.io/types/status/v0#
+        https://tent.io/types/repost/v0#
+        https://tent.io/types/cursor/v0#https://tent.io/rels/status-mentions
+        https://tent.io/types/cursor/v0#https://tent.io/rels/status-feed
+      ),
+      :write_post_types => %w(
+        https://tent.io/types/status/v0#
+        https://tent.io/types/repost/v0#
+        https://tent.io/types/cursor/v0#https://tent.io/rels/status-mentions
+        https://tent.io/types/cursor/v0#https://tent.io/rels/status-feed
+      ),
+      :scopes => %w()
+    }
+  end
+
+  def self.new(settings = {})
+    self.settings.merge!(
+      ##
+      # App registration settings
+      :name        => settings[:name]        || ENV['TENT_STATUS_NAME'],
+      :icon        => settings[:icon]        || ENV['TENT_STATUS_ICON'],
+      :url         => settings[:url]         || ENV['TENT_STATUS_URL'],
+      :description => settings[:description] || ENV['TENT_STATUS_DESCRIPTION'],
+
+      ##
+      # App settings
+      :cdn_url          => settings[:cdn_url]          || ENV['TENT_STATUS_CDN_URL'],
+      :asset_manifest   => settings[:asset_manifest]   || (Yajl::Parser.parse(File.read(ENV['TENT_STATUS_ASSET_MANIFEST'])) if ENV['TENT_STATUS_ASSET_MANIFEST']),
+      :database_url     => settings[:database_url]     || ENV['DATABASE_URL'],
+      :database_logfile => settings[:database_logfile] || ENV['DATABASE_LOGFILE'] || STDOUT, 
+      :public_dir       => settings[:public_dir]       || File.expand_path('../../public/assets', __FILE__), # lib/../public/assets
+
+      ##
+      # App service settings
+      :avatar_proxy_host      => settings[:avatar_proxy_host]      || ENV['AVATAR_PROXY_HOST'],
+      :search_api_root        => settings[:search_api_root]        || ENV['SEARCH_API_ROOT'],
+      :search_api_key         => settings[:search_api_key]         || ENV['SEARCH_API_KEY'],
+      :entity_search_api_root => settings[:entity_search_api_root] || ENV['ENTITY_SEARCH_API_ROOT'],
+      :entity_search_api_key  => settings[:entity_search_api_key]  || ENV['ENTITY_SEARCH_API_KEY']
+    )
+
+    # App registration, oauth callback uri
+    self.settings[:redirect_uri] ||= "#{self.settings[:url].sub(%r{/\Z}, '')}/auth/tent/callback"
+
+    require 'tent-status/app'
+    require 'tent-status/model'
+
+    Model.new(self.settings)
+    App.new
   end
 end

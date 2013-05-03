@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="<%= TentStatus.settings[:name] %>" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <link rel="apple-touch-icon" sizes="57x57" href="https://dr49qsqhb5y4j.cloudfront.net/appicon57.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="https://dr49qsqhb5y4j.cloudfront.net/appicon72.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="https://dr49qsqhb5y4j.cloudfront.net/appicon114.png" />
+
+    <link rel="stylesheet" type="text/css" href="<%= asset_path("icing.css") %>" />
+    <link rel="shortcut icon" href="https://dr49qsqhb5y4j.cloudfront.net/favicon.png" />
+
+    <title><%= TentStatus.settings[:name] %></title>
+  </head>
+
+  <body>
+    <div class='v-navbar-fixed-left'>
+      <ul class='unstyled custom-container'>
+        <li class='nav-selected'>
+          <a href='https://tent.is'><div class='nav-icon app-icon-tentstatus icon-2x'></div></a>
+        </li>
+
+        <li>
+          <a href="https://app.tent.is/search" title='Search'><div class='nav-icon app-icon-search icon-2x'></div></a>
+        </li>
+
+        <li>
+          <a href='https://app.tent.is/admin' title='Admin'><div class='nav-icon app-icon-settings icon-2x'></div></a>
+        </li>
+
+        <li>
+          <a href='https://app.tent.is/signout' title='Signout'><div class='nav-icon app-icon-signout icon-2x'></div></a>
+        </li>
+      </ul>
+    </div>
+
+    <div id='main-nav'>
+      <a class="menu-switch js-menu-switch">Menu</a>
+      <%= erb :nav %>
+    </div>
+
+    <div id='main-container' class='container'>
+      <% unless block_given? %>
+        <div id='loading-indicator' class='pulse'>&nbsp;</div>
+      <% end %>
+
+      <div id='main' class='pull-left'>
+        <% if block_given? %>
+          <%= yield %>
+        <% else %>
+          <div id='author-info'>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <% unless block_given? %>
+      <script type='application/javascript'>
+        window.TentStatus = {};
+        window.TentStatus.config = {
+          current_user: {
+            credentials: <%= Yajl::Encoder.encode(current_user.auth) %>,
+            entity: <%= current_user.entity.to_s.inspect %>,
+            server_meta_post: <%= Yajl::Encoder.encode(current_user.server_meta_post) %>
+          },
+          url: <%= TentStatus.settings[:url].to_s.inspect %>,
+          services: {
+            avatar_proxy_host: <%= Yajl::Encoder.encode(TentStatus.settings[:avatar_proxy_host]) %>,
+            entity_search_api_root: <%= Yajl::Encoder.encode(TentStatus.settings[:entity_search_api_root]) %>,
+            entity_search_api_key: <%= Yajl::Encoder.encode(TentStatus.settings[:entity_search_api_root]) %>,
+            search_api_root: <%= Yajl::Encoder.encode(TentStatus.settings[:search_api_root]) %>,
+            search_api_key: <%= Yajl::Encoder.encode(TentStatus.settings[:search_api_key]) %>
+          }
+        };
+      </script>
+
+      <script type='application/javascript' src='<%= asset_path('application.js') %>'></script>
+      <iframe id='iframe-cache' src='<%= full_path('/iframe-cache') %>'></iframe>
+    <% end %>
+  </body>
+</html>

@@ -6,11 +6,12 @@ Bundler.require
 
 $stdout.sync = true
 
-require 'tent-status/app'
+require 'tent-status'
+require 'securerandom'
 
 map '/' do
   use Rack::Session::Cookie,  :key => 'tent-status.session',
                               :expire_after => 2592000, # 1 month
-                              :secret => ENV['COOKIE_SECRET'] || SecureRandom.hex
-  run Tent::Status.new
+                              :secret => ENV['SESSION_SECRET'] || SecureRandom.hex
+  run TentStatus.new
 end
