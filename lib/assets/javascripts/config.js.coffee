@@ -17,40 +17,23 @@ moment.relativeTime = {
 @TentStatus ?= {}
 TentStatus.config ?= {}
 _.extend TentStatus.config, {
-  tent_host_api_root: TentStatus._config.tent_host_api_root
-  tent_api_root: new Marbles.HTTP.URI(TentStatus._config.tent_api_root) if TentStatus._config.tent_api_root
-  current_tent_api_root: new Marbles.HTTP.URI(TentStatus._config.domain_tent_api_root) if TentStatus._config.domain_tent_api_root
-  tent_host_domain: TentStatus._config.tent_host_domain
-  tent_host_scheme: TentStatus._config.tent_host_scheme
-  tent_host_domain_tent_api_path: '/tent'
-  tent_proxy_root: new Marbles.HTTP.URI(TentStatus._config.tent_proxy_root)
-  domain_entity: new Marbles.HTTP.URI(TentStatus._config.domain_entity) if TentStatus._config.domain_entity
-  domain_tent_api_root: new Marbles.HTTP.URI(TentStatus._config.domain_tent_api_root) if TentStatus._config.domain_tent_api_root
-  current_entity: new Marbles.HTTP.URI(TentStatus._config.current_entity) if TentStatus._config.current_entity
   POST_TYPES:
-    STATUS: 'https://tent.io/types/post/status/v0.1.0'
-    REPOST: 'https://tent.io/types/post/repost/v0.1.0'
-  PROFILE_TYPES:
-    CURSOR: 'https://tent.io/types/info/cursor/v0.1.0'
-    BASIC: 'https://tent.io/types/info/basic/v0.1.0'
-    CORE: 'https://tent.io/types/info/core/v0.1.0'
+    BASIC_PROFILE: 'https://tent.io/types/basic-profile/v0#'
+    STATUS: 'https://tent.io/types/status/v0#'
+    STATUS_REPLY: 'https://tent.io/types/status/v0#reply'
+    REPOST: 'https://tent.io/types/repost/v0#'
+    MENTIONS_CURSOR: 'https://tent.io/types/cursor/v0#https://tent.io/rels/status-mentions'
+    FEED_CURSOR: 'https://tent.io/types/cursor/v0#https://tent.io/rels/status-feed'
   PER_PAGE: 20
   PER_CONVERSATION_PAGE: 10
   FETCH_INTERVAL: 3000
   MAX_FETCH_LATENCY: 30000
   URL_TRIM_LENGTH: 30
-  MAX_LENGTH: 256
-  default_avatar: 'https://dr49qsqhb5y4j.cloudfront.net/default1.png'
-  BASE_TITLE: document.title
+  MAX_STATUS_LENGTH: 256
 }
 
-TentStatus.config.post_types = [TentStatus.config.POST_TYPES.STATUS, TentStatus.config.POST_TYPES.REPOST]
-
-for k,v of TentStatus._config
-  TentStatus.config[k] = v unless TentStatus.config.hasOwnProperty(k)
-
-delete TentStatus._config
-
-TentStatus.config.guest = !TentStatus.config.authenticated || !TentStatus.config.current_entity.assertEqual(TentStatus.config.domain_entity)
-TentStatus.config.app_domain = TentStatus.config.tent_host_domain and window.location.hostname == "app.#{TentStatus.config.tent_host_domain}"
+TentStatus.config.feed_types = [
+  TentStatus.config.POST_TYPES.STATUS
+  TentStatus.config.POST_TYPES.REPOST
+]
 

@@ -73,7 +73,9 @@
             entity_search_api_key: <%= Yajl::Encoder.encode(TentStatus.settings[:entity_search_api_root]) %>,
             search_api_root: <%= Yajl::Encoder.encode(TentStatus.settings[:search_api_root]) %>,
             search_api_key: <%= Yajl::Encoder.encode(TentStatus.settings[:search_api_key]) %>
-          }
+          },
+          DEFAULT_AVATAR_URL: 'https://dr49qsqhb5y4j.cloudfront.net/default1.png',
+          BASE_TITLE: <%= TentStatus.settings[:name].to_s.inspect %>
         };
       </script>
 
