@@ -1,6 +1,6 @@
 #= require_tree ./core_ext
 #= require moment
-#= require lowdash
+#= require lodash
 #= require marbles
 #= require object
 #= require setImmediate
