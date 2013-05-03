@@ -2,7 +2,6 @@
 #= require moment
 #= require lodash
 #= require marbles
-#= require object
 #= require string_score
 #= require pluralize
 #= require textarea_cursor_position

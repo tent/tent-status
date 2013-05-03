@@ -1,4 +1,4 @@
-class BackgroundMentionsUnreadCount extends TentStatus.Object
+class BackgroundMentionsUnreadCount extends Marbles.Object
   constructor: (options = {}) ->
     return if options.initialize_only == true
 

@@ -1,4 +1,4 @@
-class BackgroundMentionsCursor extends TentStatus.Object
+class BackgroundMentionsCursor extends Marbles.Object
   constructor: (options = {}) ->
     return if options.initialize_only == true
 

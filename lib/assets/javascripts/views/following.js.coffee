@@ -16,4 +16,4 @@ Marbles.Views.Following = class FollowingView extends TentStatus.View
     TentStatus.Models.Following.find(cid: @following_cid)
 
   profile: =>
-    new TentStatus.Object entity: @entity
+    new Marbles.Object entity: @entity
