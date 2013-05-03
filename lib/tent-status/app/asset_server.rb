@@ -39,7 +39,9 @@ module TentStatus
           paths = %w[ javascripts stylesheets images fonts ]
           @asset_roots.each do |asset_root|
             paths.each do |path|
-              environment.append_path(File.join(asset_root, path))
+              full_path = File.join(asset_root, path)
+              next unless File.exists?(full_path)
+              environment.append_path(full_path)
             end
           end
 
