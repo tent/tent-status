@@ -2,12 +2,12 @@ class EntitySearchService
   constructor: (@options = {}) ->
     @client = new Marbles.HTTP.Client(middleware: [Marbles.HTTP.Middleware.SerializeJSON])
 
-  # options:
+  # callback can either be a function or an object:
   #   - success: fn
   #   - error: fn
   #   - complete: fn
-  search: (query, options = {}) =>
-    @client.get @options.api_root, { q: query }, options
+  search: (query, callback) =>
+    @client.get(url: @options.api_root, params: { q: query }, callback: callback)
 
 _.extend EntitySearchService::, Marbles.Events
 _.extend EntitySearchService::, Marbles.Accessors
