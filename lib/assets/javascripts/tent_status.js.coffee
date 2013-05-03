@@ -3,10 +3,9 @@
 #= require lodash
 #= require marbles
 #= require object
-#= require setImmediate
 #= require string_score
 #= require pluralize
-#= require ./textarea_cursor_position
+#= require textarea_cursor_position
 #= require ./cache
 #= require ./config
 #= require_self

@@ -1,5 +1,5 @@
 #= require moment
-#= require lowdash
+#= require lodash
 #= require marbles/http/uri
 #= require store
 
