@@ -2,15 +2,12 @@
 #= require moment
 #= require lodash
 #= require marbles
-#= require string_score
-#= require pluralize
 #= require textarea_cursor_position
 #= require ./cache
 #= require ./config
 #= require_self
 #= require ./fetch_interval
 #= require_tree ./services
-#= require http/tent_client
 #= require ./model
 #= require_tree ./models
 #= require ./collection
@@ -18,7 +15,6 @@
 #= require hogan
 #= require_tree ./templates
 #= require_tree ./helpers
-#= require ./view
 #= require_tree ./views
 #= require_tree ./routers
 
@@ -33,7 +29,8 @@ _.extend TentStatus, Marbles.Events, {
     options.page += " -" if options.page
     [prefix, page] = [options.prefix, options.page || @current_title.page]
 
-    prefix = null if page != @current_title.page && @current_title.page
+    if @current_title.page && !options.prefix
+      prefix = null if page != @current_title.page
 
     @current_title.prefix = prefix
     @current_title.page = page
@@ -54,10 +51,10 @@ _.extend TentStatus, Marbles.Events, {
     @on 'loading:start', @showLoadingIndicator
     @on 'loading:stop',  @hideLoadingIndicator
 
-    Marbles.history.start(@config.history_options)
-
     Marbles.DOM.on window, 'scroll', (e) => @trigger 'window:scroll', e
     Marbles.DOM.on window, 'resize', (e) => @trigger 'window:resize', e
+
+    Marbles.history.start()
 
     @ready = true
     @trigger 'ready'
@@ -72,7 +69,7 @@ _.extend TentStatus, Marbles.Events, {
     @_num_running_requests -= 1
     Marbles.Views.loading_indicator.hide() if @_num_running_requests == 0
 
-  redirectToGlobalFeed: =>
+  redirectToSiteFeed: =>
     return unless TentStatus.config.app_domain
-    Marbles.history.navigate('/global', {trigger:true})
+    Marbles.history.navigate('/site-feed', {trigger:true})
 }
