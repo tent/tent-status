@@ -1,0 +1,12 @@
+<% if (config.authenticated) { %>
+  <div class="row new-post-container">
+    <div data-view="NewPostForm"></div>
+  </div>
+<% } %>
+
+<div class="row">
+  <div class="span6 fetch-pool" data-view="FetchPostsPool"></div>
+</div>
+<div class="row">
+  <ul class="unstyled posts span6" data-view="SitePostsFeed"></ul>
+</div>

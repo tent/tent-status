@@ -1,0 +1,1 @@
+<% if (url) { %><a href='<%= url %>'><% } %><span class='count-number'><%= count %></span> <%= pluralized_resource_name %><% if (url) { %></a><% } %>

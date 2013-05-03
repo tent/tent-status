@@ -1,0 +1,9 @@
+<% if (options) { %>
+<li class='option <% if (group) { %>green<% } %>' <% if (group == null) { %>title='<%= value %>'<% } %>>
+  <span class='text'><%= text %></span><span class='remove'>&times;</span>
+</li>
+<% } %>
+<li class='picker-input'>
+  <input type='text' value='<%= query %>' />
+  <div class='loading'>&nbsp;</div>
+</li>

@@ -12,7 +12,6 @@
 #= require_tree ./models
 #= require ./collection
 #= require_tree ./collections
-#= require hogan
 #= require_tree ./templates
 #= require_tree ./helpers
 #= require_tree ./views

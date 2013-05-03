@@ -1,0 +1,5 @@
+<div class='row'>
+  <ul class='unstyled posts span6'>
+    <%= partials['_post'].render(context) %>
+  </ul>
+</div>

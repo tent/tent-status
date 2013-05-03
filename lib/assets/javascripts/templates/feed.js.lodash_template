@@ -1,0 +1,14 @@
+<% if (config.authenticated) { %>
+  <% if (config.guest_authenticated == null) { %>
+    <div class="row new-post-container">
+      <div data-view="NewPostForm"></div>
+    </div>
+  <% } %>
+<% } %>
+
+<div class="row">
+  <div data-view="FetchPostsPool"></div>
+</div>
+<div class="row">
+  <ul class="unstyled posts pull-left" data-view="PostsFeed"></ul>
+</div>

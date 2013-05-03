@@ -1,0 +1,3 @@
+<% if (options) { %>
+<li class='option <% if (group) { %>green<% } %>'><% if (name) { %><%= name %> <small><%= entity %></small><% } %><% if (name == null) { %><%= entity %><% } %></li>
+<% } %>

@@ -1,0 +1,7 @@
+<div class="row">&nbsp;</div>
+<div class="row">
+  <div class="span2">&nbsp;</div>
+  <div class="pull-left">
+    <ul class="unstyled posts"><% if (parent_posts) { %><%= partials['_post'].render(context) %><% } %></ul>
+  </div>
+</div>

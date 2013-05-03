@@ -1,0 +1,53 @@
+<div class="row">
+  <div class="page-header">
+    <div class="row">
+      <img class="avatar avatar-large profile-avatar" src="<%= avatar %>" />
+
+      <div class="pull-left profile-right">
+        <h2 class="profile-name">
+          <% if (has_name == null) { %>
+            <a href="<%- entity %>"><%= name %></a>
+          <% } %>
+          
+          <% if (has_name) { %><%= name %><% } %>
+        </h2>
+
+        <% if (has_name) { %>
+          <a href="<%- entity %>" class="profile-entity"><%= formatted.entity %></a>
+        <% } %>
+
+        <div class="profile-left no-offset has-overflow">
+          <p><%= formatted.bio %></p>
+        </div>
+
+        <a href='<%= website_url %>'><%= formatted.website_url %></a>
+      </div>
+    </div>
+    <div class="row">
+      <table class="profile-count-infos">
+        <tr>
+          <td data-view='AuthorInfoFollowersCount'></td>
+          <td data-view='AuthorInfoFollowingCount'></td>
+          <td data-view='AuthorInfoPostsCount'></td>
+          <% if (entity_authenticated == null) { %>
+            <td data-view='FollowButton'></td>
+          <% } %>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<% if (config.authenticated) { %>
+  <div class="row new-post-container">
+    <div data-view="NewPostForm"></div>
+  </div>
+<% } %>
+
+<div class="row">
+  <div data-view="FetchPostsPool"></div>
+</div>
+
+<div class="row">
+  <ul class="unstyled posts pull-left" data-view="ProfilePostsFeed"></ul>
+</div>

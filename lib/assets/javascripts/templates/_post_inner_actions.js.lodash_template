@@ -1,0 +1,41 @@
+<% if (config.authenticated) { %>
+  <div class='actions'>
+    <span class='action' data-view='PostActionReply'><i class='icon-reply' title='Reply'></i> Reply</span>
+
+    <% if (current_user_owns_post == null) { %>
+    <span class='action' data-view='PostActionRepost' data-confirm="Repost?"><i class='icon-retweet' title='Repost'></i> Repost</span>
+    <% } %>
+
+    <% if (is_conversation_view == null) { %>
+      <span class='action' data-view='PostActionConversation'><i class='icon-comments' title='Conversation'></i>
+
+        <% if (in_reply_to == null) { %>
+          Conversation
+        <% } %>
+
+        <% if (in_reply_to) { %>
+          <% if (config.authenticated) { %>
+            <span>
+              in reply to <%= name %>
+            </span>
+          <% } %>
+        <% } %>
+      </span>
+    <% } %>
+
+    <% if (is_conversation_view_parent) { %>
+      <% if (in_reply_to) { %>
+        <span class='action' data-view='PostActionConversation'><i class='icon-comments' title='Conversation'></i>
+          <span>
+            in reply to <%= name %>
+          </span>
+        </span>
+      <% } %>
+    <% } %>
+
+    <% if (current_user_owns_post) { %>
+      <span class='action' data-view='PostActionDelete' data-confirm="Delete this post? You're sure about that?"><i class='icon-trash' title='Delete'></i> Delete</span>
+    <% } %>
+
+  </div>
+<% } %>

@@ -4,7 +4,6 @@ require 'sprockets'
 require 'coffee_script'
 require 'sass'
 require 'lodash-assets'
-require 'hogan_assets'
 require 'marbles-js'
 require 'icing'
 

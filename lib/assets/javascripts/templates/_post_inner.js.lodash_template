@@ -1,0 +1,37 @@
+<% if (is_repost == null) { %>
+  <div class="row">
+    <div class="avatar-container">
+      <div data-view='ProfileAvatar' <% if (profile_cid) { %>data-profile_cid='<%= profile_cid %>'<% } %> <% if (profile_cid == null) { %>data-model_cid='<%= cid %>'<% } %>>
+        <a href="<%= profileUrl %>"><img class="avatar" src="<%= avatar %>" /></a>
+      </div>
+    </div>
+
+    <div class='post-container no-offset pull-left'>
+      <h5>
+        <a href="<%= url %>" class='post-date' data-view='RelativeTimestamp' data-datetime='<%= published_at %>' title="<%= formatted.full_published_at %><% if (app.name) { %> via <%= app.name %><% } %>"><%= formatted.published_at %></a>
+
+        <span class="post-profile-name" data-view='ProfileName' <% if (profile_cid) { %>data-profile_cid='<%= profile_cid %>'<% } %> <% if (profile_cid == null) { %>data-model_cid='<%= cid %>'<% } %>></span>
+
+        <% if (public == null) { %>&nbsp;<span class='label <% if (only_me) { %>label-inverse<% } %><% if (only_me == null) { %>label-info<% } %>' title='<% if (only_me) { %>Only Me<% } %><%= formatted.permissible_entities %>'><% if (only_me) { %>Private<% } %><% if (only_me == null) { %>Limited<% } %></span><% } %>
+      </h5>
+      
+      <div class="post-body has-overflow">
+        <p><%- formatted.content.text %></p>
+
+        <% if (has_parent) { %>
+          <div data-view='RepostVisibility'></div>
+        <% } %>
+      </div>
+
+      <%= partials['_post_inner_actions'].render(context) %>
+
+      <% if (config.authenticated) { %>
+        <div data-view='PostReplyForm'></div>
+      <% } %>
+    </div>
+  </div>
+<% } %>
+
+<% if (is_repost) { %>
+  <div class="repost post" data-view='Repost'></div>
+<% } %>

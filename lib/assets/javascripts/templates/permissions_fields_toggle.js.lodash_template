@@ -1,0 +1,7 @@
+<% if (permissions.public) { %>
+  <i class="icon-globe"></i> Everyone<i class='icon-caret-down'></i>
+<% } %>
+
+<% if (permissions.public == null) { %>
+  <i class="icon-warning-sign"></i> Limited<i class='icon-caret-down'></i>
+<% } %>
