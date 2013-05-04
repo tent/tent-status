@@ -2,6 +2,7 @@
 #= require moment
 #= require lodash
 #= require marbles
+#= require tent-client
 #= require textarea_cursor_position
 #= require ./cache
 #= require ./config
@@ -16,6 +17,12 @@
 #= require_tree ./helpers
 #= require_tree ./views
 #= require_tree ./routers
+
+TentStatus.tent_client = new TentClient(
+  TentStatus.config.current_user.entity,
+  credentials: TentStatus.config.current_user.credentials
+  server_meta_post: TentStatus.config.current_user.server_meta_post
+)
 
 _.extend TentStatus, Marbles.Events, {
   Models: {}

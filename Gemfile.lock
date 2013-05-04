@@ -47,6 +47,13 @@ GIT
       sprockets-sass (~> 0.5)
 
 GIT
+  remote: git://github.com/tent/marbles-tent-client-js.git
+  revision: 7068667da98e90633ed0acacb899699f0f795843
+  branch: master
+  specs:
+    marbles-tent-client-js (0.0.1)
+
+GIT
   remote: git://github.com/tent/omniauth-tent.git
   revision: 8db01a232c0b1544fd4ba1538a455efa427273f4
   branch: 0.3
@@ -102,6 +109,7 @@ PATH
       icing
       lodash-assets
       marbles-js
+      marbles-tent-client-js
       mimetype-fu
       omniauth-tent
       pg
@@ -204,6 +212,7 @@ DEPENDENCIES
   icing!
   lodash-assets!
   marbles-js!
+  marbles-tent-client-js!
   mime-types
   omniauth-tent!
   puma

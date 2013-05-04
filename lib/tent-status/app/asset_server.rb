@@ -5,6 +5,7 @@ require 'coffee_script'
 require 'sass'
 require 'lodash-assets'
 require 'marbles-js'
+require 'marbles-tent-client-js'
 require 'icing'
 
 module TentStatus
@@ -44,7 +45,8 @@ module TentStatus
             end
           end
 
-          MarblesJS.sprockets_setup(environment)
+          MarblesJS::Sprockets.setup(environment)
+          MarblesTentClientJS::Sprockets.setup(environment)
           Icing::Sprockets.setup(environment)
 
           environment
