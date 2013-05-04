@@ -1,4 +1,4 @@
-Marbles.Views.PostsFeed = class PostsFeedView extends TentStatus.View
+Marbles.Views.PostsFeed = class PostsFeedView extends Marbles.View
   @template_name: 'posts_feed'
   @partial_names: ['_post_reply_form', '_post', '_post_inner', '_post_inner_actions']
   @view_name: 'posts_feed'

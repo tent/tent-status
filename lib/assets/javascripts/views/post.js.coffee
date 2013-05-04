@@ -1,4 +1,4 @@
-Marbles.Views.Post = class PostView extends TentStatus.View
+Marbles.Views.Post = class PostView extends Marbles.View
   @template_name: '_post'
   @partial_names: ['_post_inner', '_post_inner_actions']
   @view_name: 'post'

@@ -1,4 +1,4 @@
-Marbles.Views.SearchResults = class SearchResultsView extends TentStatus.View
+Marbles.Views.SearchResults = class SearchResultsView extends Marbles.View
   @view_name: 'search_results'
   @template_name: 'search_results'
   @partial_names: ['_post'].concat(Marbles.Views.Post.partial_names)

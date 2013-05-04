@@ -1,4 +1,4 @@
-Marbles.Views.ExternalLink = class ExternalLinkView extends TentStatus.View
+Marbles.Views.ExternalLink = class ExternalLinkView extends Marbles.View
   @view_name: 'external_link'
 
   constructor: (options = {}) ->

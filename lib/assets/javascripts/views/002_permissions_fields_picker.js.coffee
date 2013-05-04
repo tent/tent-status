@@ -1,4 +1,4 @@
-Marbles.Views.PermissionsFieldsPicker = class PermissionsFieldsPickerView extends TentStatus.View
+Marbles.Views.PermissionsFieldsPicker = class PermissionsFieldsPickerView extends Marbles.View
   @template_name: 'permissions_fields_picker'
   @view_name: 'permissions_fields_picker'
 

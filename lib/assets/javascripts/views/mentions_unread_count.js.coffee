@@ -1,4 +1,4 @@
-Marbles.Views.MentionsUnreadCount = class MentionsUnreadCountView extends TentStatus.View
+Marbles.Views.MentionsUnreadCount = class MentionsUnreadCountView extends Marbles.View
   @view_name: 'mentions_unread_count'
   @template_name: 'mentions_unread_count'
 

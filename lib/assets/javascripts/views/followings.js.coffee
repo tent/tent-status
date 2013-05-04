@@ -1,4 +1,4 @@
-Marbles.Views.Followings = class FollowingsView extends TentStatus.View
+Marbles.Views.Followings = class FollowingsView extends Marbles.View
   @template_name: 'followings'
   @partial_names: ['_following']
   @view_name: 'followings'

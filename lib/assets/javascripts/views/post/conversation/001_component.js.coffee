@@ -1,4 +1,4 @@
-Marbles.Views.ConversationComponent = class ConversationComponentView extends TentStatus.View
+Marbles.Views.ConversationComponent = class ConversationComponentView extends Marbles.View
   postView: =>
     @findParentView('post')
 

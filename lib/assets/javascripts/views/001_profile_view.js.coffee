@@ -1,4 +1,4 @@
-Marbles.Views.ProfileView = class ProfileView extends TentStatus.View
+Marbles.Views.ProfileView = class ProfileView extends Marbles.View
   constructor: ->
     super
     @profile_cid = Marbles.DOM.attr(@el, 'data-profile_cid')

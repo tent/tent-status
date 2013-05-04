@@ -1,4 +1,4 @@
-Marbles.Views.Feed = class FeedView extends TentStatus.View
+Marbles.Views.Feed = class FeedView extends Marbles.View
   @template_name: 'feed'
   @view_name: 'feed'
 

@@ -1,4 +1,4 @@
-Marbles.Views.Profile = class ProfileView extends TentStatus.View
+Marbles.Views.Profile = class ProfileView extends Marbles.View
   @template_name: 'profile'
   @view_name: 'profile'
 

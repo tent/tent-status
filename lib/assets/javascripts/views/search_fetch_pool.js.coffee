@@ -1,4 +1,4 @@
-Marbles.Views.SearchFetchPool = class SearchFetchPoolView extends TentStatus.View
+Marbles.Views.SearchFetchPool = class SearchFetchPoolView extends Marbles.View
   @view_name: 'search_fetch_pool'
   @template_name: 'fetch_posts_pool'
 

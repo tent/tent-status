@@ -1,4 +1,4 @@
-class Marbles.Views.FollowButton extends TentStatus.View
+class Marbles.Views.FollowButton extends Marbles.View
   @view_name: 'follow_button'
   @template_name: 'follow_button'
 

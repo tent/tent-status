@@ -1,4 +1,4 @@
-Marbles.Views.SearchHits = class SearchHitsView extends TentStatus.View
+Marbles.Views.SearchHits = class SearchHitsView extends Marbles.View
   @view_name: 'search_hits'
   @template_name: 'search_hits'
 

@@ -1,4 +1,4 @@
-Marbles.Views.NewFollowingForm = class NewFollowingFormView extends TentStatus.View
+Marbles.Views.NewFollowingForm = class NewFollowingFormView extends Marbles.View
   @template_name: '_new_following_form'
   @view_name: 'new_following_form'
 

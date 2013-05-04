@@ -1,4 +1,4 @@
-Marbles.Views.Conversation = class ConversationView extends TentStatus.View
+Marbles.Views.Conversation = class ConversationView extends Marbles.View
   @template_name: 'conversation'
   @view_name: 'conversation'
 

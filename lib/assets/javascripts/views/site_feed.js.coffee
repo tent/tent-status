@@ -1,4 +1,4 @@
-Marbles.Views.SiteFeed = class SiteFeedView extends TentStatus.View
+Marbles.Views.SiteFeed = class SiteFeedView extends Marbles.View
   @template_name: 'site_feed'
   @view_name: 'site_feed'
 

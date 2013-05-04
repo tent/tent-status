@@ -1,4 +1,4 @@
-Marbles.Views.AuthorInfo = class AuthorInfoView extends TentStatus.View
+Marbles.Views.AuthorInfo = class AuthorInfoView extends Marbles.View
   @template_name: 'author_info'
   @partial_names: []
   @view_name: 'author_info'

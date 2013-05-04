@@ -1,4 +1,4 @@
-class AppNavigationView extends TentStatus.View
+class AppNavigationView extends Marbles.View
   @view_name: 'app_navigation'
 
   elements: {}

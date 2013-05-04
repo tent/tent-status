@@ -1,4 +1,4 @@
-Marbles.Views.NewPostForm = class NewPostFormView extends TentStatus.View
+Marbles.Views.NewPostForm = class NewPostFormView extends Marbles.View
   @template_name: '_new_post_form'
   @view_name: 'new_post_form'
 
@@ -190,7 +190,7 @@ Marbles.Views.NewPostForm = class NewPostFormView extends TentStatus.View
 
   buildPostPermissionsAttributes: (attrs) =>
     permissions_view_cid = @_child_views.PermissionsFields?[0]
-    if permissions_view_cid && (permissions_view = TentStatus.View.instances.all[permissions_view_cid])
+    if permissions_view_cid && (permissions_view = Marbles.View.instances.all[permissions_view_cid])
       attrs.permissions = permissions_view.buildPermissions()
     else
       attrs.permissions = {

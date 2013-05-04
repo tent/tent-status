@@ -1,4 +1,4 @@
-Marbles.Views.SinglePost = class SinglePostView extends TentStatus.View
+Marbles.Views.SinglePost = class SinglePostView extends Marbles.View
   @template_name: 'single_post'
   @partial_names: ['_post'].concat(Marbles.Views.Post.partial_names)
   @view_name: 'single_post'

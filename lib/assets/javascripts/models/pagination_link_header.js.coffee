@@ -1,4 +1,4 @@
-TentStatus.PaginationLinkHeader = class PaginationLinkHeader extends TentStatus.Object
+TentStatus.PaginationLinkHeader = class PaginationLinkHeader extends Marbles.Object
   constructor: (link_header='') ->
     @pagination_params = {}
     parts = link_header.split(/,\s*/)

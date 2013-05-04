@@ -1,4 +1,4 @@
-class MainNavigationView extends TentStatus.View
+class MainNavigationView extends Marbles.View
   @view_name: 'main_navigation'
   constructor: ->
     super

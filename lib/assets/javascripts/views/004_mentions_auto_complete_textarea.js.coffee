@@ -1,4 +1,4 @@
-Marbles.Views.MentionsAutoCompleteTextarea = class MentionsAutoCompleteTextareaView extends TentStatus.View
+Marbles.Views.MentionsAutoCompleteTextarea = class MentionsAutoCompleteTextareaView extends Marbles.View
   @view_name: 'mentions_autocomplete_textarea'
 
   constructor: (options = {}) ->
@@ -150,7 +150,7 @@ Marbles.Views.MentionsAutoCompleteTextarea = class MentionsAutoCompleteTextareaV
     @close()
 
     # TODO: refactor
-    if permissions_fields_view = TentStatus.View.instances.all[@parentFormView()?._child_views.PermissionsFields?[0]]
+    if permissions_fields_view = Marbles.View.instances.all[@parentFormView()?._child_views.PermissionsFields?[0]]
       selection = new Marbles.DOM.InputSelection @el
 
       permissions_fields_view.addOption(option)

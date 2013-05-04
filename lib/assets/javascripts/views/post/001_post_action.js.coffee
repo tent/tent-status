@@ -1,4 +1,4 @@
-Marbles.Views.PostAction = class PostActionView extends TentStatus.View
+Marbles.Views.PostAction = class PostActionView extends Marbles.View
   @view_name: 'post_action'
 
   constructor: ->

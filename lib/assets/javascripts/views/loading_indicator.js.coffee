@@ -1,4 +1,4 @@
-Marbles.Views.LoadingIndicator = class LoadingIndicatorView extends TentStatus.View
+Marbles.Views.LoadingIndicator = class LoadingIndicatorView extends Marbles.View
   @view_name: 'loading_indicator'
 
   show: =>

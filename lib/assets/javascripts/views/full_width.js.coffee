@@ -1,4 +1,4 @@
-Marbles.Views.FullWidth = class FullWidthView extends TentStatus.View
+Marbles.Views.FullWidth = class FullWidthView extends Marbles.View
   @view_name: 'full_width'
 
   constructor: ->

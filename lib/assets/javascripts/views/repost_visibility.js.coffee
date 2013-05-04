@@ -1,4 +1,4 @@
-Marbles.Views.RepostVisibility = class RepostVisibilityView extends TentStatus.View
+Marbles.Views.RepostVisibility = class RepostVisibilityView extends Marbles.View
   @template_name: 'repost_visibility'
   @view_name: 'repost_visibility'
 

@@ -1,4 +1,4 @@
-Marbles.Views.SearchFormAdvancedOptionsToggle = class SearchFormAdvancedOptionsToggleView extends TentStatus.View
+Marbles.Views.SearchFormAdvancedOptionsToggle = class SearchFormAdvancedOptionsToggleView extends Marbles.View
   @view_name: 'search_form_advanced_options_toggle'
   @template_name: 'search_form_advanced_options_toggle'
 

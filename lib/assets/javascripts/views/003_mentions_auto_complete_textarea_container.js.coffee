@@ -1,4 +1,4 @@
-Marbles.Views.MentionsAutoCompleteTextareaContainer = class MentionsAutoCompleteTextareaContainerView extends TentStatus.View
+Marbles.Views.MentionsAutoCompleteTextareaContainer = class MentionsAutoCompleteTextareaContainerView extends Marbles.View
   @template_name: 'mentions_autocomplete_textarea_container'
   @view_name: 'mentions_autocomplete_textarea_container'
 
