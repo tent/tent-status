@@ -22,10 +22,10 @@ GIT
 
 GIT
   remote: git://github.com/jvatic/marbles-js.git
-  revision: 315f06e8eae91a7b4ae7db5a19fa95f759022125
+  revision: dd92dc817ea8df88d44fb4385f7aa829e124f4c9
   branch: master
   specs:
-    marbles-js (0.0.2)
+    marbles-js (0.0.3)
 
 GIT
   remote: git://github.com/tent/hawk-ruby.git
