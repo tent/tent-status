@@ -1,5 +1,5 @@
 <% context.options.forEach(function(option) { %>
-<li class='option <% if (option.group) { %>green<% } else { %>' title='<%= option.value %>'<% } %>>
+<li class='option <% if (option.group) { %>green'<% } else { %> title='<%= option.value %>'<% } %>>
   <span class='text'><%= option.text %></span><span class='remove'>&times;</span>
 </li>
 <% }) %>
