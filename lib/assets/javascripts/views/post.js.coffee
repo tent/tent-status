@@ -18,7 +18,7 @@ Marbles.Views.Post = class PostView extends Marbles.View
     @constructor.trigger('focus', @, e)
 
   post: =>
-    TentStatus.Model.instances.all[@post_cid]
+    Marbles.Model.instances.all[@post_cid]
 
   hide: =>
     Marbles.DOM.hide(@el)
@@ -43,8 +43,8 @@ Marbles.Views.Post = class PostView extends Marbles.View
     context = _.extend super, post.toJSON(), {
       cid: post.cid
       profile_cid: post.profile_cid
-      is_repost: post.isRepost()
-      in_reply_to: @inReplyToJSON(post.postMentions()[0])
+      is_repost: post.get('is_repost')
+      in_reply_to: @inReplyToJSON(post.get('mentioned_posts')[0])
       url: TentStatus.Helpers.postUrl(post)
       profileUrl: TentStatus.Helpers.entityProfileUrl(post.get 'entity')
       public: post.get('permissions.public')

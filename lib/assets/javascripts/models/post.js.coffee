@@ -1,92 +1,149 @@
-TentStatus.Models.Post = class PostModel extends TentStatus.Model
+TentStatus.Models.Post = class PostModel extends Marbles.Model
   @model_name: 'post'
-  @resource_path: 'posts'
   @id_mapping_scope: ['id', 'entity']
 
   @create: (data, options = {}) ->
-    client = Marbles.HTTP.TentClient.currentEntityClient()
-    client.post '/posts', data, (res, xhr) =>
+    completeFn = (res, xhr) =>
       unless xhr.status == 200
-        @trigger('create:failed', res, xhr)
-        options.error?(res, xhr)
+        @trigger('create:failure', res, xhr)
+        options.failure?(res, xhr)
         return
 
       post = new @(res)
       @trigger('create:success', post, xhr)
       options.success?(post, xhr)
 
+    TentStatus.tent_client.post.create(
+      body: data
+      callback: completeFn
+    )
+
   @update: (post, data, options = {}) ->
-    client = Marbles.HTTP.TentClient.currentEntityClient()
-    client.put "/posts/#{post.get('id')}", data, (res, xhr) =>
+    completeFn = (res, xhr) =>
       unless xhr.status == 200
-        post.trigger('update:failed', res, xhr)
-        options.error?(res, xhr)
+        post.trigger('update:failure', res, xhr)
+        options.failure?(res, xhr)
         return
 
       post.parseAttributes(res)
       post.trigger('update:success', post, xhr)
       options.success?(post, xhr)
 
+    data.versions ?= { parents: [{ version: post.get('version.id') }] }
+
+    TentStatus.tent_client.post.update(
+      params:
+        post: post.get('id')
+        entity: post.get('entity')
+      body: data
+      complete: completeFn
+    )
+
   @delete: (post, options = {}) ->
-    client = Marbles.HTTP.TentClient.currentEntityClient()
-    client.delete "/posts/#{post.get('id')}", null, (res, xhr) =>
+    completeFn = (res, xhr) =>
       unless xhr.status == 200
-        post.trigger('delete:failed', res, xhr)
-        options.error?(res, xhr)
+        post.trigger('delete:failure', res, xhr)
+        options.failure?(res, xhr)
         return
 
       post.detach()
       post.trigger('delete:success', post, xhr)
       options.success?(post, xhr)
 
+    TentStatus.tent_client.post.delete(
+      params:
+        post: post.get('id')
+        entity: post.get('entity')
+      callback: completeFn
+    )
+
   @fetchCount: (params, options = {}) ->
-    params.fetch_params ?= { post_types: TentStatus.config.post_types }
-    super(params, options)
+    return unless params.entity && @post_type
+
+    completeFn = (data, xhr) =>
+      unless xhr.status == 200
+        options.failure?(res, xhr)
+        return
+
+      count = parseInt(xhr.getResponseHeader('Count'))
+      return unless typeof count is 'number'
+      return if count.toString() is 'NaN'
+
+      options.success?(count, xhr)
+
+    TentStatus.tent_client.post.list(
+      method: 'HEAD'
+      params: _.extend({
+        types: [@post_type.toString()]
+      }, params)
+      callback: completeFn
+    )
 
   @fetch: (params, options = {}) ->
-    unless options.client
-      return Marbles.HTTP.TentClient.find entity: (params.entity || TentStatus.config.current_entity), (client) =>
-        @fetch(params, _.extend(options, {client: client}))
-
-    _params = _.clone(params)
-    delete _params.id
-    delete _params.entity
-    options.client.get "/posts/#{params.id}", _params, (res, xhr) =>
+    completeFn = (res, xhr) =>
       if xhr.status != 200
-        @trigger("fetch:failed", params, res, xhr)
-        options.error?(res, xhr)
+        @trigger("fetch:failure", params, res, xhr)
+        options.failure?(res, xhr)
         options.complete?(res, xhr)
         return
 
-      return if @find(params, _.extend(options, {fetch:false}))
-
-      if options.cid
-        if post = @instances.all[options.cid]
+      if params.cid
+        if post = @instances.all[params.cid]
           post.parseAttributes(res)
         else
-          post = new @(res, cid: options.cid)
-        post.options.partial_data = false
+          post = new @(res, cid: params.cid)
       else
         post = new @(res)
 
-      @trigger("fetch:success", params, post, xhr)
+      @trigger("fetch:success", post, xhr)
       options.success?(post, xhr)
       options.complete?(res, xhr)
 
-  @validate: (attrs, options = {}) ->
-    errors = []
+    TentStatus.tent_client.post.get(
+      params:
+        post: params.id
+        entity: params.entity
+      callback: completeFn
+    )
 
-    if (attrs.content?.text and attrs.content.text.match /^[\s\r\t]*$/) || (options.validate_empty and attrs.content?.text == "")
-      errors.push { text: 'Status must not be empty' }
+  parseAttributes: (attrs) =>
+    super
+    @updateRepostFlag(@get('type'))
+    @updateMentionedPosts(@get('mentions'))
+    @updateConversationEntities(@get('mentions'))
 
-    if attrs.content?.text and attrs.content.text.length > TentStatus.config.MAX_LENGTH
-      errors.push { text: "Status must be no more than #{TentStatus.config.MAX_LENGTH} characters" }
+  updateRepostFlag: (type) =>
+    type = new TentClient.PostType(type) if type
+    if !type || !type.base || !type.base == (new TentClient.PostType(TentStatus.config.POST_TYPES.REPOST)).base
+      @set('is_repost', false)
+    else
+      @set('is_repost', true)
 
-    return errors if errors.length
-    null
+  updateMentionedPosts: (mentions) =>
+    if mentions && mentions.length
+      mentioned_posts = _.map(_.select(mentions, ((m) => !!m.post)), (m) =>
+        m.entity ?= @get('entity')
+        m
+      )
+      @set('mentioned_posts', mentioned_posts)
+    else
+      @set('mentioned_posts', [])
+
+  updateConversationEntities: (mentions) =>
+    _entities = []
+    for m in [{ entity: @get('entity') }].concat(mentions)
+      continue unless m && m.entity
+      continue if TentStatus.Helpers.isCurrentUserEntity(m.entity)
+      _entity = m.entity
+      _entities.push(_entity) if _entities.indexOf(_entity) == -1
+    @set('conversation_entities', _entities)
 
   fetch: (options = {}) =>
-    @constructor.fetch({ id: @get('id'), entity: @get('entity') }, _.extend(options, cid: @cid))
+    @constructor.fetch({
+      cid: @cid
+      id: @get('id')
+      entity: @get('entity')
+    }, options)
 
   update: (data, options = {}) =>
     @constructor.update(@, data, options)
@@ -94,45 +151,6 @@ TentStatus.Models.Post = class PostModel extends TentStatus.Model
   delete: (options = {}) =>
     @constructor.delete(@, options)
 
-  isRepost: =>
-    !!(@get('type') || '').match(/repost/)
-
-  entityMentioned: (entity) =>
+  isEntityMentioned: (entity) =>
     _.any @get('mentions'), (m) => m.entity == entity
-
-  postMentions: =>
-    @post_mentions ?= @_postMentions()
-
-  _postMentions: =>
-    @post_mentions = _.select @get('mentions') || [], (m) => m.entity && m.post
-    @on 'change:mentions', @_postMentions
-    @post_mentions
-
-  replyToEntities: (options = {}) =>
-    _entities = []
-    for m in [{ entity: @get('entity') }].concat(@get('mentions'))
-      continue unless m && m.entity
-      continue if TentStatus.Helpers.isCurrentUserEntity(m.entity)
-      _entity = m.entity
-      _entity = TentStatus.Helpers.minimalEntity(_entity) if options.trim
-      _entities.push(_entity) if _entities.indexOf(_entity) == -1
-    _entities
-
-  fetchChildMentions: (options = {}) =>
-    unless options.client
-      return Marbles.HTTP.TentClient.find {entity: @get('entity')}, (client) =>
-        @fetchChildMentions(_.extend(options, {client: client}))
-
-    params = _.extend({
-      limit: TentStatus.config.PER_CONVERSATION_PAGE
-      post_types: [TentStatus.config.POST_TYPES.STATUS]
-    }, options.params || {})
-
-    options.client.get "/posts/#{@get('id')}/mentions", params, {
-      success: options.success
-      error: options.error
-      complete: options.complete
-    }
-
-    null
 

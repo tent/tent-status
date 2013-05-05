@@ -8,21 +8,35 @@ Marbles.Views.NewPostForm = class NewPostFormView extends Marbles.View
     @elements = {}
     @text = {}
 
-    post = new TentStatus.Models.Post entity: TentStatus.config.current_entity.toString()
-    @post_cid = post.cid
+    @entity = TentStatus.config.current_user.entity
 
     @on 'ready', => @ready = true
     @on 'ready', @init
 
-    @render() unless @is_reply_form
+    post = new TentStatus.Models.Post entity: @entity
+    @post_cid = post.cid
+
+    profile = TentStatus.Models.BasicProfile.find(entity: @entity, fetch: false)
+    unless profile
+      profile = new TentStatus.Models.BasicProfile(entity: @entity)
+      profile.fetch(null, success: (=> @render()))
+    @profile_cid = profile.cid
+
+    @render()
 
   post: =>
-    TentStatus.Models.Post.instances.all[@post_cid]
+    TentStatus.Models.Post.find(cid: @post_cid, fetch: false)
+
+  profile: =>
+    TentStatus.Models.BasicProfile.find(cid: @profile_cid, fetch: false)
 
   context: =>
-    _.extend {}, super,
-      post: @post()
-      max_chars: TentStatus.config.MAX_LENGTH
+    post: @post()
+    profile: @profile()
+    profileUrl: TentStatus.Helpers.entityProfileUrl(@entity)
+    max_chars: TentStatus.config.MAX_STATUS_LENGTH
+    formatted:
+      entity: TentStatus.Helpers.formatUrlWithPath(@entity)
 
   init: =>
     @elements.submit = Marbles.DOM.querySelector('input[type=submit]', @el)
@@ -50,7 +64,7 @@ Marbles.Views.NewPostForm = class NewPostFormView extends Marbles.View
 
   initCharCounter: =>
     @elements.char_counter = Marbles.DOM.querySelector('.char-limit', @el)
-    @max_chars = TentStatus.config.MAX_LENGTH
+    @max_chars = TentStatus.config.MAX_STATUS_LENGTH
 
     Marbles.DOM.on @elements.textarea, 'keydown', (e) =>
       clearTimeout @_updateCharCounterTimeout
@@ -80,7 +94,7 @@ Marbles.Views.NewPostForm = class NewPostFormView extends Marbles.View
   submit: (data) =>
     @disableWith(@text.disable_with)
     data ?= @buildPostAttributes()
-    TentStatus.Models.Post.create(data,
+    TentStatus.Models.StatusPost.create(data,
       error: (res, xhr) =>
         @enable()
         @showErrors([{ text: "Error: #{JSON.parse(xhr.responseText)?.error}" }])
@@ -110,7 +124,7 @@ Marbles.Views.NewPostForm = class NewPostFormView extends Marbles.View
   validate: (data, options = {}) =>
     return if @frozen
     data ?= @buildPostAttributes()
-    errors = TentStatus.Models.Post.validate(data, options)
+    errors = TentStatus.Models.StatusPost.validate(data, options)
     @clearErrors()
     @showErrors(errors) if errors
 

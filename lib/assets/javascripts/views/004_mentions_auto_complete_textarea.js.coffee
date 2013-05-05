@@ -7,7 +7,7 @@ Marbles.Views.MentionsAutoCompleteTextarea = class MentionsAutoCompleteTextareaV
     @render()
 
     @parentFormView()?.on 'init:PermissionsFields', (view) =>
-      for entity in @replyToEntities()
+      for entity in @conversationEntities()
         view.addOption(
           text: TentStatus.Helpers.minimalEntity(entity)
           value: entity
@@ -32,15 +32,15 @@ Marbles.Views.MentionsAutoCompleteTextarea = class MentionsAutoCompleteTextareaV
       @_parent_form_view_cid = view.cid
       return view
 
-  replyToEntities: =>
+  conversationEntities: =>
     return [] unless parent_form_view = @parentFormView()
 
     if parent_form_view.is_reply_form
       post = parent_form_view.post()
       return [] unless post
-      post.replyToEntities()
+      post.get('conversation_entities')
     else
-      if (parent_profile_view = @findParentView('profile')) && (profile = parent_profile_view.profile()) && !TentStatus.config.current_entity.assertEqual(profile.get 'entity')
+      if (parent_profile_view = @findParentView('profile')) && (profile = parent_profile_view.profile()) && !TentStatus.Helpers.isCurrentUserEntity(profile.get('entity'))
         [profile.get('entity')]
       else
         []
@@ -50,7 +50,7 @@ Marbles.Views.MentionsAutoCompleteTextarea = class MentionsAutoCompleteTextareaV
     _.extend parent_form_view.context(),
       is_edit_form: parent_form_view.constructor.is_edit_form
       formatted:
-        reply_to_entities: _.map( @replyToEntities(), (entity) => TentStatus.Helpers.minimalEntity(entity) )
+        reply_to_entities: _.map( @conversationEntities(), (entity) => TentStatus.Helpers.minimalEntity(entity) )
 
   # Generate content to be rendered in textarea
   renderHTML: (context = @context()) =>

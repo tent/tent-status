@@ -5,6 +5,7 @@ Marbles.Views.PostsFeed = class PostsFeedView extends Marbles.View
 
   constructor: (options = {}) ->
     super
+    return console.warn("TODO: Implement PostsFeed")
 
     # fire focus event for first post view in feed (caught by author info view)
     @once 'ready', =>

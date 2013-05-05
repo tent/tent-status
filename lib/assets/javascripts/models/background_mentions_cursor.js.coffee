@@ -1,5 +1,6 @@
 class BackgroundMentionsCursor extends Marbles.Object
   constructor: (options = {}) ->
+    return
     return if options.initialize_only == true
 
     client = Marbles.HTTP.TentClient.currentEntityClient()

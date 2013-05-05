@@ -4,6 +4,7 @@ Marbles.Views.FetchPostsPool = class FetchPostsPoolView extends Marbles.View
 
   constructor: (options = {}) ->
     super
+    return console.warn("TODO: Implement FetchPostsPool")
 
     @on 'ready', @bindLink
 

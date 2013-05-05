@@ -61,10 +61,10 @@ Marbles.Views.PermissionsFields = class PermissionsFieldsView extends Marbles.Vi
   buildPermissions: =>
     data = {
       public: false
-      entities: {}
+      entities: []
     }
     for option in @options_view.options
       return { public: true } if option.value == 'all'
-      data.entities[option.value] = true
+      data.entities.push(option.value)
     data
 

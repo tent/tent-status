@@ -1,1 +1,7 @@
-<a href="<%= profile_url %>"><img class="avatar" src="<%= avatar %>" /></a>
+<a href="<%= profile_url %>">
+  <% if (profile) { %>
+    <img class="avatar" src="<%= profile.get('avatar_url') %>" />
+  <% } else { %>
+    <img class="avatar" src="<%= TentStatus.config.DEFAULT_AVATAR_URL %>" />
+  <% } %>
+</a>

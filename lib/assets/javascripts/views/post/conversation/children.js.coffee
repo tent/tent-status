@@ -10,10 +10,8 @@ Marbles.Views.ConversationChildren = class ConversationChildrenView extends Marb
 
   fetchPosts: =>
     reference_post = @post()
-    reference_post.fetchChildMentions
-      success: (mentions) =>
-        for m in mentions
-          do (m) =>
-            @fetchPost {entity: m.entity, id: m.post}, (post) =>
-              @appendRender([post])
+    reference_post.fetchReplies(
+      success: (posts) =>
+        @appendRender(posts)
+    )
 

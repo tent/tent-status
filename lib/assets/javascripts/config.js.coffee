@@ -19,6 +19,8 @@ TentStatus.config ?= {}
 _.extend TentStatus.config, {
   POST_TYPES:
     BASIC_PROFILE: 'https://tent.io/types/basic-profile/v0#'
+    FOLLOWER: 'https://tent.io/types/relationship/v0#follower'
+    FOLLOWING: 'https://tent.io/types/relationship/v0#following'
     STATUS: 'https://tent.io/types/status/v0#'
     STATUS_REPLY: 'https://tent.io/types/status/v0#reply'
     REPOST: 'https://tent.io/types/repost/v0#'
@@ -31,6 +33,8 @@ _.extend TentStatus.config, {
   URL_TRIM_LENGTH: 30
   MAX_STATUS_LENGTH: 256
 }
+
+TentStatus.config.authenticated = !!TentStatus.config.current_user
 
 TentStatus.config.feed_types = [
   TentStatus.config.POST_TYPES.STATUS

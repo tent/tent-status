@@ -6,25 +6,26 @@ Marbles.Views.Profile = class ProfileView extends Marbles.View
     @container = Marbles.Views.container
     super
 
-    @fetchProfile(options.entity)
+    @fetchBasicProfile(options.entity)
 
-  fetchProfile: (entity) =>
-    TentStatus.Models.Profile.fetch {entity: entity},
-      error: (res, xhr) =>
+  fetchBasicProfile: (entity) =>
+    model = TentStatus.Models.BasicProfile.find(entity: entity, fetch: false) || new TentStatus.Models.BasicProfile(entity: entity)
+    @profile_cid = model.cid
+    model.fetch {entity: entity},
+      failure: (profile, xhr) =>
+        @render(@context(profile))
 
       success: (profile) =>
-        @profile_cid = profile.cid
         @render(@context(profile))
 
   profile: =>
-    TentStatus.Models.Profile.find(cid: @profile_cid, fetch: false)
+    TentStatus.Models.BasicProfile.find(cid: @profile_cid, fetch: false)
 
   context: (profile = @profile()) =>
-    _.extend Marbles.Views.AuthorInfo::context.apply(@, arguments),
-      entity_authenticated: TentStatus.config.authenticated && TentStatus.config.current_entity.assertEqual(@profile().get('entity'))
-      has_name: !!profile.get('name')
-      formatted:
-        name: profile.get('name') || TentStatus.Helpers.formatUrlWithPath(profile.get('entity'))
-        bio: profile.get('bio')
-        entity: TentStatus.Helpers.formatUrlWithPath(profile.get('entity'))
-        website_url: TentStatus.Helpers.formatUrlWithPath(profile.get('website_url'))
+    profile: profile
+    has_name: !!profile.get('content.name')
+    formatted:
+      bio: profile.get('content.bio')
+      entity: TentStatus.Helpers.formatUrlWithPath(profile.get('entity'))
+      website_url: TentStatus.Helpers.formatUrlWithPath(profile.get('content.website_url'))
+

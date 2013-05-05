@@ -51,7 +51,7 @@ Marbles.Views.RepostVisibility = class RepostVisibilityView extends Marbles.View
     post = @post()
     _post = @findParentView('post')?.post()
     mentions = @mentions || []
-    entity = if _post?.isRepost() then _post.get('entity') else _.first(mentions)?.entity
+    entity = if _post?.get('is_repost') then _post.get('entity') else _.first(mentions)?.entity
 
     entity: entity
     count: count

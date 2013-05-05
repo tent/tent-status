@@ -1,8 +1,10 @@
 _.extend TentStatus.Helpers,
   isCurrentUserEntity: (entity) ->
-    return false unless TentStatus.config.current_entity
-    TentStatus.config.current_entity.assertEqual( new Marbles.HTTP.URI entity )
+    return false unless TentStatus.config.current_user
+    uri = new Marbles.HTTP.URI(TentStatus.config.current_user.entity)
+    uri.assertEqual( new Marbles.HTTP.URI entity )
 
   isDomainEntity: (entity) ->
     return false unless TentStatus.config.domain_entity
-    TentStatus.config.domain_entity.assertEqual( new Marbles.HTTP.URI entity )
+    uri = new Marbles.HTTP.URI(TentStatus.config.domain_entity)
+    uri.assertEqual( new Marbles.HTTP.URI entity )

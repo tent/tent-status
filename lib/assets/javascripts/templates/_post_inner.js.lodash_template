@@ -1,7 +1,7 @@
 <% if (is_repost == null) { %>
   <div class="row">
     <div class="avatar-container">
-      <div data-view='ProfileAvatar' <% if (profile_cid) { %>data-profile_cid='<%= profile_cid %>'<% } %> <% if (profile_cid == null) { %>data-model_cid='<%= cid %>'<% } %>>
+      <div data-view='ProfileAvatar' data-entity='<%= entity %>'>
         <a href="<%= profileUrl %>"><img class="avatar" src="<%= avatar %>" /></a>
       </div>
     </div>
@@ -10,7 +10,7 @@
       <h5>
         <a href="<%= url %>" class='post-date' data-view='RelativeTimestamp' data-datetime='<%= published_at %>' title="<%= formatted.full_published_at %><% if (app.name) { %> via <%= app.name %><% } %>"><%= formatted.published_at %></a>
 
-        <span class="post-profile-name" data-view='ProfileName' <% if (profile_cid) { %>data-profile_cid='<%= profile_cid %>'<% } %> <% if (profile_cid == null) { %>data-model_cid='<%= cid %>'<% } %>></span>
+      <span class="post-profile-name" data-view='ProfileName' data-entity='<%= entity %>'></span>
 
         <% if (public == null) { %>&nbsp;<span class='label <% if (only_me) { %>label-inverse<% } %><% if (only_me == null) { %>label-info<% } %>' title='<% if (only_me) { %>Only Me<% } %><%= formatted.permissible_entities %>'><% if (only_me) { %>Private<% } %><% if (only_me == null) { %>Limited<% } %></span><% } %>
       </h5>

@@ -1,5 +1,6 @@
 class BackgroundMentionsUnreadCount extends Marbles.Object
   constructor: (options = {}) ->
+    return
     return if options.initialize_only == true
 
     @fetch_interval = new TentStatus.FetchInterval fetch_callback: @fetchMentionsCount

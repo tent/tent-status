@@ -1,22 +1,25 @@
 #= require_tree ./core_ext
 #= require moment
+#= require pluralize
 #= require lodash
 #= require marbles
 #= require tent-client
 #= require textarea_cursor_position
 #= require ./cache
 #= require ./config
+#= require_tree ./templates
 #= require_self
 #= require ./fetch_interval
 #= require_tree ./services
-#= require ./model
 #= require_tree ./models
 #= require ./collection
 #= require_tree ./collections
-#= require_tree ./templates
 #= require_tree ./helpers
+#= require helpers/extract-urls
 #= require_tree ./views
 #= require_tree ./routers
+
+Marbles.View.templates = LoDashTemplates
 
 TentStatus.tent_client = new TentClient(
   TentStatus.config.current_user.entity,

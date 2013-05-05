@@ -1,4 +1,4 @@
-TentStatus.Models.SearchResult = class SearchResultModel extends TentStatus.Model
+TentStatus.Models.SearchResult = class SearchResultModel extends Marbles.Model
   @model_name: 'search_result'
   @id_mapping_scope: ['id']
 
@@ -41,5 +41,5 @@ TentStatus.Models.SearchResult = class SearchResultModel extends TentStatus.Mode
     super(_.extend(_attrs, highlight: attributes.highlight, id: attributes.id, published_at: attributes.source.published_at))
 
   post: =>
-    TentStatus.Model.instances.all[@post_cid]
+    Marbles.Model.instances.all[@post_cid]
 

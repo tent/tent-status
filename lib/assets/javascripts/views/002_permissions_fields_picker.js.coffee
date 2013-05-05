@@ -81,7 +81,7 @@ Marbles.Views.PermissionsFieldsPicker = class PermissionsFieldsPickerView extend
         value: q
       })
     if !@matches.length && !@current_query?.match(/^[\s\r\t\n]*$/) && "Everyone".score(@current_query) &&
-       !_.any(@parent_view.options_view.options, (o) => o.value == 'all')
+       !_.any(@parent_view.options_view?.options, (o) => o.value == 'all')
       @matches.unshift({
         name: 'Everyone'
         value: 'all'

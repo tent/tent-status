@@ -14,7 +14,7 @@ Marbles.Views.ConversationParents = class ConversationParentsView extends Marble
 
   fetchPosts: (reference_post) =>
     reference_post ?= @post()
-    mentions = reference_post.postMentions()
+    mentions = reference_post.get('mentioned_posts')
 
     for m in mentions
       do (m) =>

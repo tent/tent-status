@@ -1,16 +1,16 @@
-<% if (config.authenticated) { %>
+<% if (TentStatus.config.authenticated) { %>
 <ul class="unstyled posts">
   <li class="post clearfix">
     <div class="row">
-      <div class="avatar-container" data-view='ProfileAvatar' data-model_cid='<%= post.cid %>'>
-        <a href="<%= profileUrl %>"><img class="avatar" src="<%= avatar %>" /></a>
+      <div class="avatar-container" data-view='ProfileAvatar' data-entity='<%= post.get('entity') %>'>
+        <a href="<%= profileUrl %>"><img class="avatar" src="<%= profile.get('avatar_url') %>" /></a>
       </div>
 
       <div class='post-container span5 no-offset'>
         <h5>
           <a class='post-date'>now</a>
 
-          <span data-view='ProfileName' data-model_cid='<%= post.cid %>' class='post-profile-name'>
+          <span data-view='ProfileName' data-entity='<%= post.get('entity') %>' class='post-profile-name'>
             <a href="<%= profileUrl %>"><%= formatted.entity %></a>
           </span>
         </h5>

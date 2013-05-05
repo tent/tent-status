@@ -19,7 +19,7 @@ Marbles.Views.PermissionsFieldsOptions = class PermissionsFieldsOptionsView exte
     else
       options = []
       if post
-        for m in post.postMentions()
+        for m in post.get('mentioned_posts')
           continue unless m.entity
           options.push {
             text: TentStatus.Helpers.minimalEntity(m.entity)

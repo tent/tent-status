@@ -1,6 +1,6 @@
-TentStatus.Models.Following = class FollowingModel extends TentStatus.Model
+TentStatus.Models.Following = class FollowingModel extends TentStatus.Models.Post
   @model_name: 'following'
-  @resource_path: 'followings'
+  @post_type: new TentClient.PostType(TentStatus.config.POST_TYPES.FOLLOWING)
   @entity_mapping: {}
 
   @find: (params, options = {}) ->

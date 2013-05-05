@@ -9,7 +9,7 @@ Marbles.Views.MentionsPostsFeed = class MentionsPostsFeedView extends Marbles.Vi
     @initPostsCollection()
 
     TentStatus.Models.Post.on 'create:success', (post, xhr) =>
-      return unless post.entityMentioned(@parent_view.entity)
+      return unless post.isEntityMentioned(@parent_view.entity)
       @posts_collection.unshift(post)
       @prependRender([post])
 
