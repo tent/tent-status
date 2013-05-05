@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: git://github.com/jvatic/lodash-assets.git
-  revision: 2fd617d6b767ba18b456a07f1c794c634e514155
+  revision: 34bfb392e2407053d6cf28f76c884c6e77df34e8
   branch: master
   specs:
     lodash-assets (0.0.1)
@@ -22,7 +22,7 @@ GIT
 
 GIT
   remote: git://github.com/jvatic/marbles-js.git
-  revision: dd92dc817ea8df88d44fb4385f7aa829e124f4c9
+  revision: 14b502d333757b3a1a5cc723553a3e8248fa6a46
   branch: master
   specs:
     marbles-js (0.0.3)
