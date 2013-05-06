@@ -12,7 +12,7 @@
 
   <p class='author-info-bio'><%= formatted.bio %></p>
 
-  <a href='<%= profile.get('content.website_url') %>'><%= formatted.website_url %></a>
+  <a href='<%- TentStatus.Helpers.ensureUrlHasScheme(profile.get('content.website_url')) %>'><%- formatted.website_url %></a>
 
   <div data-view='FollowButton'></div>
 <% } %>

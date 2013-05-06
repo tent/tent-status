@@ -21,7 +21,7 @@
         </div>
 
         <% if (profile.get('content.website_url')) { %>
-          <a href='<%- profile.get('content.website_url') %>'><%- formatted.website_url %></a>
+          <a href='<%- TentStatus.Helpers.ensureUrlHasScheme(profile.get('content.website_url')) %>'><%- formatted.website_url %></a>
         <% } %>
       </div>
     </div>
