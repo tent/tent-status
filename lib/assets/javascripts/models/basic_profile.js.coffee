@@ -50,7 +50,7 @@ TentStatus.Models.BasicProfile = class BasicProfileModel extends Marbles.Model
     return setDefaultAvatar() unless value && value.length
     return setDefaultAvatar() unless avatar_attachment = _.find value, (attachment) =>
       attachment.category == 'avatar'
-    url = TentAdmin.tent_client.getNamedUrl('attachment',
+    url = TentStatus.tent_client.getNamedUrl('attachment',
       entity: @get('entity')
       digest: avatar_attachment.digest
     )
