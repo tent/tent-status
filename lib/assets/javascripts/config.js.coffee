@@ -23,7 +23,8 @@ _.extend TentStatus.config, {
     FOLLOWING: 'https://tent.io/types/relationship/v0#following'
     STATUS: 'https://tent.io/types/status/v0#'
     STATUS_REPLY: 'https://tent.io/types/status/v0#reply'
-    REPOST: 'https://tent.io/types/repost/v0#'
+    REPOST: 'https://tent.io/types/repost/v0'
+    STATUS_REPOST: 'https://tent.io/types/repost/v0#https://tent.io/types/status/v0'
     MENTIONS_CURSOR: 'https://tent.io/types/cursor/v0#https://tent.io/rels/status-mentions'
     FEED_CURSOR: 'https://tent.io/types/cursor/v0#https://tent.io/rels/status-feed'
   PER_PAGE: 20
@@ -38,8 +39,11 @@ TentStatus.config.PLACEHOLDER_AVATAR_URL = TentStatus.config.DEFAULT_AVATAR_URL
 
 TentStatus.config.authenticated = !!TentStatus.config.current_user
 
+TentStatus.config.repost_types = [
+  TentStatus.config.POST_TYPES.STATUS_REPOST
+]
+
 TentStatus.config.feed_types = [
   TentStatus.config.POST_TYPES.STATUS
-  TentStatus.config.POST_TYPES.REPOST
-]
+].concat(TentStatus.config.repost_types)
 

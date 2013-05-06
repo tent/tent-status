@@ -1,14 +1,14 @@
 <% if (entity) { %>
-<span class='repost-label'>
-  Reposted by <span class="post-profile-name" data-view="ProfileName" data-entity="<%= entity %>"></span>
-  <% if (count) { %>
-  and <%= count %> <%= pluralized_other %>
-  <% } %>
-</span>
+  <span class='repost-label'>
+    Reposted by <span class="post-profile-name" data-view="ProfileName" data-entity="<%= entity %>"></span>
+    <% if (count) { %>
+    and <%= count %> <%= pluralized_other %>
+    <% } %>
+  </span>
 <% } %>
 
 <div class='clearfix mention-avatars'>
-<% if (mentions) { %>
-  <div class='pull-left' data-view='ProfileAvatar' data-entity='<%= entity %>' title='<%= entity %>'></div>
-<% } %>
+  <% entities.forEach(function(entity) { %>
+    <div class='pull-left' data-view='ProfileAvatar' data-entity='<%= entity %>' title='<%= TentStatus.Helpers.formatUrlWithPath(entity) %>'></div>
+  <% }) %>
 </div>
