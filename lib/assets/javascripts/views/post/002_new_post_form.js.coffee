@@ -13,7 +13,7 @@ Marbles.Views.NewPostForm = class NewPostFormView extends Marbles.View
     @on 'ready', => @ready = true
     @on 'ready', @init
 
-    post = new TentStatus.Models.Post entity: @entity
+    post = new TentStatus.Models.StatusPost entity: @entity
     @post_cid = post.cid
 
     profile = TentStatus.Models.BasicProfile.find(entity: @entity, fetch: false)
@@ -25,7 +25,7 @@ Marbles.Views.NewPostForm = class NewPostFormView extends Marbles.View
     @render()
 
   post: =>
-    TentStatus.Models.Post.find(cid: @post_cid, fetch: false)
+    TentStatus.Models.StatusPost.find(cid: @post_cid, fetch: false)
 
   profile: =>
     TentStatus.Models.BasicProfile.find(cid: @profile_cid, fetch: false)
