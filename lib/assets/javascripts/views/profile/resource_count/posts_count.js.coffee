@@ -1,5 +1,5 @@
-Marbles.Views.MiniProfilePostsCount = class PostsCountView extends Marbles.Views.MiniProfileResourceCount
-  @view_name: 'author_info_posts_count'
+Marbles.Views.ProfilePostsCount = class PostsCountView extends Marbles.Views.ProfileResourceCount
+  @view_name: 'profile/posts_count'
   @model: TentStatus.Models.StatusPost
   @resource_name: {singular: 'post', plural: 'posts'}
 

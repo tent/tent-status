@@ -1,17 +1,17 @@
-Marbles.Views.MiniProfileResourceCount = class FollowersCountView extends Marbles.View
-  @template_name: '_author_info_resource_count'
+Marbles.Views.ProfileResourceCount = class FollowersCountView extends Marbles.View
+  @template_name: 'profile/resource_count'
 
   constructor: (options = {}) ->
     super
 
-    profile = @profile()
+    return unless profile = @profile()
     @constructor.model.fetchCount {entity: profile.get('entity')},
-      error: (res, xhr) =>
+      failure: (res, xhr) =>
 
       success: (count) =>
         @render(@context(count))
 
-  profile: => @parent_view.profile()
+  profile: => @parentView().profile()
 
   context: (count) =>
     profile = @profile()
