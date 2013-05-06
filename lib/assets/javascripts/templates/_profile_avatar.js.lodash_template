@@ -2,6 +2,6 @@
   <% if (profile) { %>
     <img class="avatar" src="<%= profile.get('avatar_url') %>" />
   <% } else { %>
-    <img class="avatar" src="<%= TentStatus.config.DEFAULT_AVATAR_URL %>" />
+    <img class="avatar" src="<%= TentStatus.config.PLACEHOLDER_AVATAR_URL %>" />
   <% } %>
 </a>

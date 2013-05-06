@@ -10,6 +10,8 @@ Marbles.Views.ProfileComponent = class ProfileComponentView extends Marbles.View
     if model = @profileModel()
       @render(@context(model))
     else
+      @render() # show something while we wait
+
       model = new TentStatus.Models.BasicProfile(entity: @entity)
       TentStatus.trigger('loading:start')
       model.fetch {entity: @entity},

@@ -27,12 +27,14 @@ _.extend TentStatus.config, {
     MENTIONS_CURSOR: 'https://tent.io/types/cursor/v0#https://tent.io/rels/status-mentions'
     FEED_CURSOR: 'https://tent.io/types/cursor/v0#https://tent.io/rels/status-feed'
   PER_PAGE: 20
-  PER_CONVERSATION_PAGE: 10
+  CONVERSATION_PER_PAGE: 10
   FETCH_INTERVAL: 3000
   MAX_FETCH_LATENCY: 30000
   URL_TRIM_LENGTH: 30
   MAX_STATUS_LENGTH: 256
 }
+
+TentStatus.config.PLACEHOLDER_AVATAR_URL = TentStatus.config.DEFAULT_AVATAR_URL
 
 TentStatus.config.authenticated = !!TentStatus.config.current_user
 

@@ -3,6 +3,7 @@
 #= require pluralize
 #= require lodash
 #= require marbles
+#= require sjcl
 #= require tent-client
 #= require textarea_cursor_position
 #= require ./cache

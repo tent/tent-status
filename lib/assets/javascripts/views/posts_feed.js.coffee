@@ -3,81 +3,104 @@ Marbles.Views.PostsFeed = class PostsFeedView extends Marbles.View
   @partial_names: ['_post_reply_form', '_post', '_post_inner', '_post_inner_actions']
   @view_name: 'posts_feed'
 
-  constructor: (options = {}) ->
-    super
-    return console.warn("TODO: Implement PostsFeed")
+  showLoading: =>
+    TentStatus.trigger 'loading:start'
+
+  hideLoading: =>
+    TentStatus.trigger 'loading:stop'
+
+  initialize: (options = {}) =>
+    @entity = options.entity || TentStatus.config.current_user.entity
+    @post_types = options.post_types || TentStatus.config.feed_types
+    @collection_context = 'feed+' + sjcl.codec.base64.fromBits(sjcl.codec.utf8String.toBits(JSON.stringify(@post_types)))
 
     # fire focus event for first post view in feed (caught by author info view)
+    # TODO: find a better way to do this!
     @once 'ready', =>
       first_post_view = @childViews('Post')?[0]
       if first_post_view
         first_post_view.constructor.trigger('focus', first_post_view)
 
-    @init()
-
-  init: =>
     @on 'ready', @initAutoPaginate
 
-    @posts_collection = new TentStatus.Collections.Posts
     @fetch()
 
-    TentStatus.Models.Post.on 'create:success', (post, xhr) =>
+    TentStatus.Models.StatusPost.on 'create:success', (post, xhr) =>
+      return unless post.get('entity') == @entity
       @posts_collection.unshift(post)
       @prependRender([post])
+
+  postsCollection: =>
+    if @_posts_collection_cid
+      return TentStatus.Collections.Posts.find(cid: @_posts_collection_cid)
+
+    collection = TentStatus.Collections.Posts.find(entity: @entity, context: @collection_context)
+    collection ?= new TentStatus.Collections.Posts(entity: @entity, context: @collection_context)
+    collection.options.params = {
+      types: @post_types
+    }
+    @_posts_collection_cid = collection.cid
+
+    collection
 
   fetch: (params = {}, options = {}) =>
     @pagination_frozen = true
 
-    TentStatus.trigger 'loading:start'
-    @posts_collection.fetch params, _.extend(options,
+    @showLoading()
+    @postsCollection().fetch params, _.extend({}, options,
       success: @fetchSuccess
-      error: @fetchError
-      complete: => TentStatus.trigger 'loading:stop'
+      failure: @fetchError
+      complete: @hideLoading
     )
 
+  fetchNext: =>
+    @pagination_frozen = true
+
+    @showLoading()
+    @last_page = true if @postsCollection().fetchNext(
+      append: true
+      success: @fetchSuccess
+      failure: @fetchError
+      complete: @hideLoading
+    ) is false
+
   fetchSuccess: (posts, xhr, params, options) =>
-    unless posts.length
-      @last_page = true
+    console.log('fetchSuccess', posts)
 
     if options.append
       @appendRender(posts)
     else
-      @render()
+      @render(@context(posts))
 
-    @trigger('fetch:success:after_render', arguments...)
+    @pagination_frozen = false
 
   fetchError: (res, xhr) =>
-
-  nextPage: =>
-    @pagination_frozen = true
-    @posts_collection.fetchNext(append: true, success: @fetchSuccess, error: @fetchError)
+    console?.warn?("#{@constructor.name}.prototype.fetchError", res, xhr)
 
   postContext: (post) =>
     Marbles.Views.Post::context(post)
 
-  context: (posts = @posts_collection.models()) =>
-    posts: _.map(posts, (post) => @postContext(post))
+  renderPostHTML: (post) =>
+    @constructor.partials['_post'].render(@postContext(post), @constructor.partials)
+
+  context: (posts = @postsCollection().models()) =>
+    posts: _.map posts, ((post) => @postContext(post))
 
   appendRender: (posts) =>
-    html = ""
+    fragment = document.createDocumentFragment()
     for post in posts
-      html += @constructor.partials['_post'].render(@postContext(post), @constructor.partials)
+      Marbles.DOM.appendHTML(fragment, @renderPostHTML(post))
 
-    Marbles.DOM.appendHTML(@el, html)
-    @bindViews()
-    @pagination_frozen = false
+    @el.appendChild(fragment)
+    @bindViews(fragment)
 
   prependRender: (posts) =>
-    html = ""
+    fragment = document.createDocumentFragment()
     for post in posts
-      html += @constructor.partials['_post'].render(@postContext(post), @constructor.partials)
+      Marbles.DOM.prependHTML(fragment, @renderPostHTML(post))
 
-    Marbles.DOM.prependHTML(@el, html)
-    @bindViews()
-
-  render: =>
-    @pagination_frozen = false
-    super
+    Marbles.DOM.prependChild(@el, fragment)
+    @bindViews(fragment)
 
   initAutoPaginate: =>
     TentStatus.on 'window:scroll', @windowScrolled
@@ -93,5 +116,5 @@ Marbles.Views.PostsFeed = class PostsFeedView extends Marbles.View
 
     if last_post_offset_top <= bottom_position
       clearTimeout @_auto_paginate_timeout
-      @_auto_paginate_timeout = setTimeout @nextPage, 0 unless @last_page
+      @_auto_paginate_timeout = setTimeout @fetchNext, 0 unless @last_page
 

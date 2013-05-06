@@ -1,1 +1,3 @@
-<% if (posts) { %><%= partials['_post'].render(context) %><% } %>
+<% posts.forEach(function(post_context) { %>
+  <%= partials['_post'].render(post_context, partials) %>
+<% }) %>

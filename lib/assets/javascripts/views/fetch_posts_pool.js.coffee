@@ -23,6 +23,8 @@ Marbles.Views.FetchPostsPool = class FetchPostsPoolView extends Marbles.View
 
     TentStatus.Models.Post.on 'create:success', (post, xhr) =>
       return unless @posts_collection
+
+      # TODO: find another way of doing this
       @posts_collection.ignoreCid(post.cid)
 
   fetchPosts: =>

@@ -1,37 +1,33 @@
-<% if (is_repost == null) { %>
+<% if (!post.get('is_repost')) { %>
   <div class="row">
     <div class="avatar-container">
-      <div data-view='ProfileAvatar' data-entity='<%= entity %>'>
-        <a href="<%= profileUrl %>"><img class="avatar" src="<%= avatar %>" /></a>
-      </div>
+      <div data-view='ProfileAvatar' data-entity='<%= post.get('entity') %>'></div>
     </div>
 
     <div class='post-container no-offset pull-left'>
       <h5>
-        <a href="<%= url %>" class='post-date' data-view='RelativeTimestamp' data-datetime='<%= published_at %>' title="<%= formatted.full_published_at %><% if (app.name) { %> via <%= app.name %><% } %>"><%= formatted.published_at %></a>
+        <a href="<%= url %>" class='post-date' data-view='RelativeTimestamp' data-datetime='<%= post.get('published_at') %>' title="<%= TentStatus.Helpers.rawTime(post.get('published_at')) %><% if (post.get('app.name')) { %> via <%= post.get('app.name') %><% } %>"><%= TentStatus.Helpers.formatRelativeTime(post.get('published_at')) %></a>
 
-      <span class="post-profile-name" data-view='ProfileName' data-entity='<%= entity %>'></span>
+      <span class="post-profile-name" data-view='ProfileName' data-entity='<%= post.get('entity') %>'></span>
 
-        <% if (public == null) { %>&nbsp;<span class='label <% if (only_me) { %>label-inverse<% } %><% if (only_me == null) { %>label-info<% } %>' title='<% if (only_me) { %>Only Me<% } %><%= formatted.permissible_entities %>'><% if (only_me) { %>Private<% } %><% if (only_me == null) { %>Limited<% } %></span><% } %>
+        <% if (!post.get('permissions.public')) { %>&nbsp;<span class='label <% if (only_me) { %>label-inverse<% } else { %>label-info<% } %>' title='<% if (only_me) { %>Only Me<% } else { %><%= formatted.permissible_entities %><% } %>'><% if (only_me) { %>Private<% } else { %>Limited<% } %></span><% } %>
       </h5>
       
       <div class="post-body has-overflow">
-        <p><%- formatted.content.text %></p>
+        <p><%= formatted.content %></p>
 
-        <% if (has_parent) { %>
+        <% if (context.has_parent) { %>
           <div data-view='RepostVisibility'></div>
         <% } %>
       </div>
 
       <%= partials['_post_inner_actions'].render(context) %>
 
-      <% if (config.authenticated) { %>
+      <% if (TentStatus.config.authenticated) { %>
         <div data-view='PostReplyForm'></div>
       <% } %>
     </div>
   </div>
-<% } %>
-
-<% if (is_repost) { %>
+<% } else { %>
   <div class="repost post" data-view='Repost'></div>
 <% } %>

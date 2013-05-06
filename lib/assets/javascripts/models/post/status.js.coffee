@@ -33,7 +33,7 @@ TentStatus.Models.StatusPost = class StatusPostModel extends TentStatus.Models.P
       params:
         mentions: [@get('entity'), @get('id')].join('+')
         types: [TentStatus.config.POST_TYPES.STATUS_REPLY]
-        limit: TentStatus.config.PER_CONVERSATION_PAGE
+        limit: TentStatus.config.CONVERSATION_PER_PAGE
       callback: completeFn
     )
 

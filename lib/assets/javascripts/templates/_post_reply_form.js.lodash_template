@@ -1,4 +1,4 @@
-<% if (config.authenticated) { %>
+<% if (TentStatus.config.authenticated) { %>
 <form class="form-horizontal reply-post-form" method="POST">
   <input name="mentions_post_id" type="hidden" value="<%= post.id %>" /><input name="mentions_post_entity" type="hidden" value="<%= post.entity %>" />
   <div class='clearfix'>

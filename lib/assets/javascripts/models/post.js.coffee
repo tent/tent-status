@@ -107,17 +107,18 @@ TentStatus.Models.Post = class PostModel extends Marbles.Model
     )
 
   parseAttributes: (attrs) =>
-    super
+    attrs.permissions ?= { public: true }
+    super(attrs)
     @updateRepostFlag(@get('type'))
     @updateMentionedPosts(@get('mentions'))
     @updateConversationEntities(@get('mentions'))
 
   updateRepostFlag: (type) =>
     type = new TentClient.PostType(type) if type
-    if !type || !type.base || !type.base == (new TentClient.PostType(TentStatus.config.POST_TYPES.REPOST)).base
-      @set('is_repost', false)
-    else
+    if type && type.base && type.base == (new TentClient.PostType(TentStatus.config.POST_TYPES.REPOST)).base
       @set('is_repost', true)
+    else
+      @set('is_repost', false)
 
   updateMentionedPosts: (mentions) =>
     if mentions && mentions.length
