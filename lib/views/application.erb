@@ -46,14 +46,13 @@
     <div id='main-container' class='container'>
       <% unless block_given? %>
         <div id='loading-indicator' class='pulse'>&nbsp;</div>
+        <div id='author-info'>
+        </div>
       <% end %>
 
       <div id='main' class='pull-left'>
         <% if block_given? %>
           <%= yield %>
-        <% else %>
-          <div id='author-info'>
-          </div>
         <% end %>
       </div>
     </div>

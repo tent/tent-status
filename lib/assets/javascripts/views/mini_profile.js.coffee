@@ -18,24 +18,28 @@ Marbles.Views.MiniProfile = class MiniProfileView extends Marbles.View
   fetchProfile: (entity) =>
     return unless entity
     return if entity == @profile()?.get('entity')
-    TentStatus.Models.Profile.fetch {entity: entity},
-      error: (res, xhr) =>
+    if profile = TentStatus.Models.BasicProfile.find(entity: entity)
+      @current_profile_cid = profile.cid
+      @render(@context(profile))
+    else
+      TentStatus.Models.BasicProfile.fetch({ entity: entity},
+        failure: (res, xhr) =>
 
-      success: (profile) =>
-        @current_profile_cid = profile.cid
-        @render(@context(profile))
+        success: (profile, xhr) =>
+          @current_profile_cid = profile.cid
+          @render(@context(profile))
+      )
 
   profile: =>
-    TentStatus.Models.Profile.find(cid: @current_profile_cid)
+    TentStatus.Models.BasicProfile.find(cid: @current_profile_cid)
 
   context: (profile = @profile()) =>
-    return { hidden: true } unless profile
-    _.extend super, profile.toJSON(),
-      name: profile.get('name') || TentStatus.Helpers.formatUrlWithPath(profile.get('entity'))
-      avatar: profile.get('avatar') || TentStatus.config.default_avatar
-      profile_url: TentStatus.Helpers.entityProfileUrl(profile.get('entity'))
-      formatted:
-        name: TentStatus.Helpers.truncate(profile.get('name') || TentStatus.Helpers.formatUrlWithPath(profile.get('entity')), 22)
-        bio: TentStatus.Helpers.truncate(profile.get('bio'), 256)
-        website_url: TentStatus.Helpers.formatUrlWithPath(profile.get('website_url'))
+    return { profile: null } unless profile
+
+    profile: profile
+    profile_url: TentStatus.Helpers.entityProfileUrl(profile.get('entity'))
+    formatted:
+      name: TentStatus.Helpers.truncate(profile.get('content.name') || TentStatus.Helpers.formatUrlWithPath(profile.get('entity')), 15)
+      bio: TentStatus.Helpers.truncate(profile.get('content.bio'), 256)
+      website_url: TentStatus.Helpers.formatUrlWithPath(profile.get('content.website_url'))
 
