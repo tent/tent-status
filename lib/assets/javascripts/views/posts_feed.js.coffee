@@ -65,8 +65,6 @@ Marbles.Views.PostsFeed = class PostsFeedView extends Marbles.View
     ) is false
 
   fetchSuccess: (posts, xhr, params, options) =>
-    console.log('fetchSuccess', posts)
-
     if options.append
       @appendRender(posts)
     else
