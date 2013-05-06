@@ -1,6 +1,7 @@
 Marbles.Views.PostReplyForm = class PostReplyFormView extends Marbles.Views.NewPostForm
   @template_name: '_post_reply_form'
   @view_name: 'post_reply_form'
+  @model: TentStatus.Models.StatusReplyPost
 
   is_reply_form: true
 

@@ -1,6 +1,7 @@
 Marbles.Views.NewPostForm = class NewPostFormView extends Marbles.View
   @template_name: '_new_post_form'
   @view_name: 'new_post_form'
+  @model: TentStatus.Models.StatusPost
 
   constructor: ->
     super
@@ -13,7 +14,7 @@ Marbles.Views.NewPostForm = class NewPostFormView extends Marbles.View
     @on 'ready', => @ready = true
     @on 'ready', @init
 
-    post = new TentStatus.Models.StatusPost entity: @entity
+    post = new @constructor.model entity: @entity
     @post_cid = post.cid
 
     profile = TentStatus.Models.BasicProfile.find(entity: @entity, fetch: false)
@@ -30,10 +31,10 @@ Marbles.Views.NewPostForm = class NewPostFormView extends Marbles.View
     @render()
 
   post: =>
-    TentStatus.Models.StatusPost.find(cid: @post_cid, fetch: false)
+    @constructor.model.find(cid: @post_cid)
 
   profile: =>
-    TentStatus.Models.BasicProfile.find(cid: @profile_cid, fetch: false)
+    TentStatus.Models.BasicProfile.find(cid: @profile_cid)
 
   context: =>
     post: @post()
@@ -174,7 +175,7 @@ Marbles.Views.NewPostForm = class NewPostFormView extends Marbles.View
     @buildPostMentionsAttributes(attrs)
     @buildPostPermissionsAttributes(attrs)
     attrs = _.extend attrs, {
-      type: TentStatus.config.POST_TYPES.STATUS
+      type: @constructor.model.post_type.toString()
     }
     attrs.content = { text: attrs.text }
     delete attrs.text
