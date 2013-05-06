@@ -1,82 +1,53 @@
 TentStatus.Collection = class Collection extends Marbles.Collection
-  ignore_cids: []
+  pagination: {}
 
-  fetch: (params = {}, options = {}) =>
-    options.client ?= @client || Marbles.HTTP.TentClient.currentEntityClient()
-    params = _.extend({}, (@params || @constructor.params), params)
-    options.client.get @constructor.model.resource_path, params, (res, xhr) =>
-      unless xhr.status == 200
-        options.error?(res, xhr)
-        options.complete?(res, xhr)
-        @trigger('fetch:failed', res, xhr)
-        return
+  @buildModel: (attrs, options = {}) ->
+    if attrs.type == TentStatus.config.POST_TYPES.STATUS
+      options.model = TentStatus.Models.StatusPost
 
-      @parseLinkHeader(xhr.getResponseHeader('Link')) if res.length
-
-      models = if options.append
-        @appendRaw(res)
-      else if options.prepend
-        @prependRaw(res)
-      else
-        @resetRaw(res)
-
-      options.success?(models, xhr, params, options, @)
-      options.complete?(res, xhr)
-      @trigger('fetch:success', @)
-
-  fetchPrev: (options = {}) =>
-    unless @pagination_params?.prev
-      options.error?([])
-      return []
-    @fetch(@pagination_params.prev, options)
+    super(attrs, options)
 
   fetchNext: (options = {}) =>
-    unless @pagination_params?.next
-      options.error?([])
-      return []
-    @fetch(@pagination_params.next, options)
+    return false unless @pagination.next
+    next_params = Marbles.History::parseQueryParams(@pagination.next)
+    @fetch(next_params, _.extend({ append: true }, options))
 
-  parseLinkHeader: (link_header="") =>
-    @pagination_params = (new TentStatus.PaginationLinkHeader link_header).pagination_params
+  fetch: (params = {}, options = {}) =>
+    complete = (res, xhr) =>
+      models = null
+      if xhr.status in [200...300]
+        models = @fetchSuccess(params, options, res, xhr)
+        options.success?(models, res, xhr, params, options)
+        @trigger('fetch:success', models, res, xhr, params, options)
+        # success
+      else
+        options.failure?(res, xhr, params, options)
+        @trigger('fetch:failure', res, xhr, params, options)
+      options.complete?(models, res, xhr)
+      @trigger('fetch:complete', models, res, xhr, params, options)
 
-  appendRaw: (resources_attribtues) =>
-    return [] unless resources_attribtues?.length
-    models = []
-    for attrs in resources_attribtues
-      model = @constructor.model.find(
-        id: attrs.id
-        entity: attrs.entity
-        fetch: false
-      ) || new @constructor.model(attrs)
-      continue if @ignore_cids.indexOf(model.cid) != -1
-      models.push(model)
-      @model_ids.push(model.cid)
-      model
+    params = _.extend {
+      entity: TentStatus.config.current_user.entity
+      types: [@constructor.model.post_type]
+      limit: TentStatus.config.PER_PAGE
+    }, @options.params, params
+
+    TentStatus.tent_client.post.list(params: params, callback: complete)
+
+  fetchSuccess: (params, options, res, xhr) =>
+    @pagination = _.extend({
+      first: @pagination.first
+      last: @pagination.last
+    }, res.pages)
+
+    data = res.data
+
+    models = if options.append
+      @appendJSON(data)
+    else if options.prepend
+      @prependJSON(data)
+    else
+      @resetJSON(data)
+
     models
-
-  prependRaw: (resources_attribtues) =>
-    return [] unless resources_attribtues?.length
-    models = []
-    for i in [resources_attribtues.length-1..0]
-      attrs = resources_attribtues[i]
-      model = @constructor.model.find(
-        id: attrs.id
-        entity: attrs.entity
-        fetch: false
-      ) || new @constructor.model(attrs)
-      continue if @ignore_cids.indexOf(model.cid) != -1
-      models.push(model)
-      @model_ids.unshift(model.cid)
-      model
-    models
-
-  prependModels: (model_ids) =>
-    @model_ids = model_ids.concat(@model_ids)
-
-  ignoreCid: (model_cid) =>
-    @ignore_cids.push model_cid
-    @remove(cid: model_cid)
-
-  empty: =>
-    @model_ids = []
 

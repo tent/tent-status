@@ -19,11 +19,11 @@ TentStatus.Collections.SearchResults = class SearchResultsCollection extends Mar
       success: (res, xhr) =>
         results = res.results || []
         models = if options.append
-          @appendRaw(results)
+          @appendJSON(results)
         else if options.prepend
-          @prependRaw(results)
+          @prependJSON(results)
         else
-          @resetRaw(results)
+          @resetJSON(results)
 
         options.success?(models, res,  xhr)
         @trigger('fetch:success', @, res, xhr)
