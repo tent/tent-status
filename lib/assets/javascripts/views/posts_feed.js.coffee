@@ -66,7 +66,7 @@ Marbles.Views.PostsFeed = class PostsFeedView extends Marbles.View
       complete: @hideLoading
     ) is false
 
-  fetchSuccess: (posts, xhr, params, options) =>
+  fetchSuccess: (posts, res, xhr, params, options) =>
     if options.append
       @appendRender(posts)
     else
