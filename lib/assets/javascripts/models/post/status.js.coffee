@@ -16,26 +16,21 @@ TentStatus.Models.StatusPost = class StatusPostModel extends TentStatus.Models.P
     null
 
   fetchReplies: (options = {}) =>
-    completeFn = (res, xhr) =>
-      posts = null
-      if xhr.status in [200, 304]
-        posts = _.map(res.data, (data) =>
-          post = TentStatus.Models.StatusReplyPost.find(entity: data.entity, id: data.id, fetch: false) || new TentStatus.Models.StatusReplyPost
-          post.parseAttributes(data)
-          post
-        )
-        options.success?(posts, xhr)
-      else
-        options.failure?(res, xhr)
-      options.complete?(posts, res, xhr)
+    collection = TentStatus.Collections.StatusReplies.find(entity: @get('entity'), post_id: @get('id'))
+    collection ?= new TentStatus.Collections.StatusReplies(entity: @get('entity'), post_id: @get('id'))
 
-    TentStatus.tent_client.post.list(
-      params:
-        mentions: [@get('entity'), @get('id')].join('+')
-        types: [TentStatus.config.POST_TYPES.STATUS_REPLY]
-        limit: TentStatus.config.CONVERSATION_PER_PAGE
-      callback: completeFn
-    )
+    limit = TentStatus.config.CONVERSATION_PER_PAGE
+
+    collection.options.params = {
+      mentions: @get('entity') + '+' + @get('id')
+      types: [TentStatus.config.POST_TYPES.STATUS_REPLY]
+      limit: limit
+    }
+
+    if collection.model_ids.length
+      options.success?(collection.models(collection.model_ids.slice(0, limit)))
+    else
+      collection.fetch null, options
 
     null
 
