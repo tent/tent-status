@@ -7,8 +7,8 @@ TentStatus.Routers.search = new class SearchRouter extends Marbles.Router
     'search' : 'Skate Search'
   }
 
-  _initAuthorInfoView: (options = {}) =>
-    new Marbles.Views.AuthorInfo _.extend options,
+  _initMiniProfileView: (options = {}) =>
+    new Marbles.Views.MiniProfile _.extend options,
       el: document.getElementById('author-info')
 
   search: (params) =>
@@ -19,6 +19,6 @@ TentStatus.Routers.search = new class SearchRouter extends Marbles.Router
       return @navigate('/', {trigger: true, replace: true})
 
     new Marbles.Views.Search(params: params, container: Marbles.Views.container)
-    @_initAuthorInfoView()
+    @_initMiniProfileView()
 
     TentStatus.setPageTitle page: @actions_titles.search

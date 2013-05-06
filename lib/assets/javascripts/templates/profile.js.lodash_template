@@ -28,9 +28,9 @@
     <div class="row">
       <table class="profile-count-infos">
         <tr>
-          <td data-view='AuthorInfoFollowersCount'></td>
-          <td data-view='AuthorInfoFollowingCount'></td>
-          <td data-view='AuthorInfoPostsCount'></td>
+          <td data-view='MiniProfileFollowersCount'></td>
+          <td data-view='MiniProfileFollowingCount'></td>
+          <td data-view='MiniProfilePostsCount'></td>
           <% if (TentStatus.Helpers.isCurrentUserEntity(profile.get('entity')) !== true) { %>
             <td data-view='FollowButton'></td>
           <% } %>

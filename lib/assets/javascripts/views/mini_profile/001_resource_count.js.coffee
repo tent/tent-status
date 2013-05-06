@@ -1,4 +1,4 @@
-Marbles.Views.AuthorInfoResourceCount = class FollowersCountView extends Marbles.View
+Marbles.Views.MiniProfileResourceCount = class FollowersCountView extends Marbles.View
   @template_name: '_author_info_resource_count'
 
   constructor: (options = {}) ->

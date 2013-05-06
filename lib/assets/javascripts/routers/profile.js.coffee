@@ -9,8 +9,8 @@ TentStatus.Routers.profile = new class ProfileRouter extends Marbles.Router
     "profile" : "Profile"
   }
 
-  _initAuthorInfoView: (options = {}) =>
-    new Marbles.Views.AuthorInfo _.extend options,
+  _initMiniProfileView: (options = {}) =>
+    new Marbles.Views.MiniProfile _.extend options,
       el: document.getElementById('author-info')
 
   currentProfile: (params) =>
@@ -18,7 +18,7 @@ TentStatus.Routers.profile = new class ProfileRouter extends Marbles.Router
       return @navigate('/global', {trigger:true, replace: true})
 
     new Marbles.Views.Profile entity: TentStatus.config.domain_entity.toString()
-    @_initAuthorInfoView()
+    @_initMiniProfileView()
     TentStatus.setPageTitle page: @actions_titles.currentProfile
 
     TentStatus.initBackgroundMentionsCursor()
@@ -29,7 +29,7 @@ TentStatus.Routers.profile = new class ProfileRouter extends Marbles.Router
       return @navigate('/global', {trigger:true, replace: true})
 
     new Marbles.Views.Profile entity: params.entity
-    @_initAuthorInfoView()
+    @_initMiniProfileView()
 
     title = @actions_titles.profile
     title = "#{TentStatus.Helpers.formatUrlWithPath(params.entity)} - #{title}" if params.entity

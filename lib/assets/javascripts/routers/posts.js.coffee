@@ -16,8 +16,8 @@ TentStatus.Routers.posts = new class PostsRouter extends Marbles.Router
     'mentions' : 'Mentions'
   }
 
-  _initAuthorInfoView: (options = {}) =>
-    new Marbles.Views.AuthorInfo _.extend options,
+  _initMiniProfileView: (options = {}) =>
+    new Marbles.Views.MiniProfile _.extend options,
       el: document.getElementById('author-info')
 
   index: (params) =>
@@ -37,7 +37,7 @@ TentStatus.Routers.posts = new class PostsRouter extends Marbles.Router
 
   feed: (params) =>
     new Marbles.Views.Feed
-    @_initAuthorInfoView(entity: TentStatus.config.current_entity.toString())
+    @_initMiniProfileView(entity: TentStatus.config.current_entity.toString())
     TentStatus.setPageTitle page: @actions_titles.feed
 
     TentStatus.initBackgroundMentionsCursor()
@@ -47,7 +47,7 @@ TentStatus.Routers.posts = new class PostsRouter extends Marbles.Router
     unless TentStatus.Helpers.isAppSubdomain()
       return @navigate('/', {trigger: true, replace: true})
     new Marbles.Views.SiteFeed
-    @_initAuthorInfoView()
+    @_initMiniProfileView()
     TentStatus.setPageTitle page: @actions_titles.siteFeed
 
     TentStatus.initBackgroundMentionsCursor()
@@ -58,7 +58,7 @@ TentStatus.Routers.posts = new class PostsRouter extends Marbles.Router
       return @navigate('/', {trigger: true, replace: true})
     entity = params.entity || TentStatus.config.domain_entity.toString()
     new Marbles.Views.SinglePost entity: entity, id: params.id
-    @_initAuthorInfoView(entity: entity)
+    @_initMiniProfileView(entity: entity)
     TentStatus.setPageTitle page: @actions_titles.post
 
     TentStatus.initBackgroundMentionsCursor()
@@ -68,7 +68,7 @@ TentStatus.Routers.posts = new class PostsRouter extends Marbles.Router
     if TentStatus.Helpers.isAppSubdomain()
       return @navigate('/', {trigger: true, replace: true})
     new Marbles.Views.Mentions entity: (params.entity || TentStatus.config.domain_entity.toString())
-    @_initAuthorInfoView()
+    @_initMiniProfileView()
     TentStatus.setPageTitle page: @actions_titles.mentions
 
     TentStatus.initBackgroundMentionsCursor(initialize_only: true)

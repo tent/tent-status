@@ -1,7 +1,7 @@
-Marbles.Views.AuthorInfo = class AuthorInfoView extends Marbles.View
-  @template_name: 'author_info'
+Marbles.Views.MiniProfile = class MiniProfileView extends Marbles.View
+  @template_name: 'mini_profile'
   @partial_names: []
-  @view_name: 'author_info'
+  @view_name: 'mini_profile'
 
   constructor: (options = {}) ->
     super
