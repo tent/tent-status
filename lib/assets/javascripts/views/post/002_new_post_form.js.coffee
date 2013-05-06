@@ -19,9 +19,14 @@ Marbles.Views.NewPostForm = class NewPostFormView extends Marbles.View
     profile = TentStatus.Models.BasicProfile.find(entity: @entity, fetch: false)
     unless profile
       profile = new TentStatus.Models.BasicProfile(entity: @entity)
-      profile.fetch(null, success: (=> @render()))
+      profile.fetch(null, success: @profileFetchSuccess)
     @profile_cid = profile.cid
 
+    @initialRender()
+
+  initialRender: => @render()
+
+  profileFetchSuccess: =>
     @render()
 
   post: =>

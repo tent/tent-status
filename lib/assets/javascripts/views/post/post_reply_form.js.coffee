@@ -7,6 +7,11 @@ Marbles.Views.PostReplyForm = class PostReplyFormView extends Marbles.Views.NewP
   constructor: ->
     super
 
+  initialRender: =>
+
+  profileFetchSuccess: =>
+    @render() if @visible
+
   toggle: =>
     if @visible
       @hide()
