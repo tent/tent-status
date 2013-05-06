@@ -24,6 +24,7 @@ Marbles.Views.MiniProfile = class MiniProfileView extends Marbles.View
     else
       TentStatus.Models.BasicProfile.fetch({ entity: entity},
         failure: (res, xhr) =>
+          @render()
 
         success: (profile, xhr) =>
           @current_profile_cid = profile.cid

@@ -13,7 +13,8 @@ class Marbles.Views.FollowButton extends Marbles.View
     @on 'ready', @init
 
     profile = @profile()
-    if TentStatus.config.current_entity.assertEqual(profile.get('entity'))
+
+    if TentStatus.Helpers.isCurrentUserEntity(profile.get('entity'))
       @is_self = true
       @render()
     else
@@ -21,7 +22,7 @@ class Marbles.Views.FollowButton extends Marbles.View
 
   fetchFollowing: (profile = @profile()) =>
     TentStatus.Models.Following.find {entity: profile.get('entity')},
-      error: (res, xhr) =>
+      failure: (res, xhr) =>
         if xhr.status == 404
           @is_following = false
           @render()
@@ -39,7 +40,7 @@ class Marbles.Views.FollowButton extends Marbles.View
 
     Marbles.DOM.on(@elements.form, 'submit', @confirmSubmit)
 
-  profile: => @parent_view.profile()
+  profile: => @parentView().profile()
 
   following: => TentStatus.Models.Following.find {cid: @following_cid, fetch: false}
 
