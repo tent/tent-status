@@ -91,16 +91,16 @@ Marbles.Views.PostsFeed = class PostsFeedView extends Marbles.View
     for post in posts
       Marbles.DOM.appendHTML(fragment, @renderPostHTML(post))
 
-    @el.appendChild(fragment)
     @bindViews(fragment)
+    @el.appendChild(fragment)
 
   prependRender: (posts) =>
     fragment = document.createDocumentFragment()
     for post in posts
       Marbles.DOM.prependHTML(fragment, @renderPostHTML(post))
 
-    Marbles.DOM.prependChild(@el, fragment)
     @bindViews(fragment)
+    Marbles.DOM.prependChild(@el, fragment)
 
   initAutoPaginate: =>
     TentStatus.on 'window:scroll', @windowScrolled
