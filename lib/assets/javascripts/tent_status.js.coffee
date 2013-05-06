@@ -1,6 +1,5 @@
 #= require_tree ./core_ext
 #= require moment
-#= require pluralize
 #= require lodash
 #= require marbles
 #= require sjcl

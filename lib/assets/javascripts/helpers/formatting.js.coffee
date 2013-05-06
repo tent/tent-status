@@ -45,7 +45,10 @@ _.extend TentStatus.Helpers,
     string.substr(0, 1).toUpperCase() + string.substr(1, string.length)
 
   pluralize: (word, count, plural) ->
-    owl.pluralize(word, count, plural)
+    if count is 1 || count is -1
+      word
+    else
+      plural
 
   replaceIndexRange: (start_index, end_index, string, replacement) ->
     string.substr(0, start_index) + replacement + string.substr(end_index, string.length-1)
