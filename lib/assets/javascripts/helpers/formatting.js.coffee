@@ -1,7 +1,7 @@
 _.extend TentStatus.Helpers,
-  formatTime: (time_or_int) ->
+  formatTime: (timestamp_int) ->
     now = moment()
-    time = moment.unix(time_or_int)
+    time = moment(timestamp_int)
 
     formatted_time = if time.format('YYYY-MM-DD') == now.format('YYYY-MM-DD')
       time.format('HH:mm') # time only
@@ -10,16 +10,16 @@ _.extend TentStatus.Helpers,
 
     "#{formatted_time}"
 
-  formatRelativeTime: (time_or_int) ->
+  formatRelativeTime: (timestamp_int) ->
     now = moment()
-    time = moment.unix(time_or_int)
+    time = moment(timestamp_int)
 
     formatted_time = time.fromNow()
 
     "#{formatted_time}"
 
-  rawTime: (time_or_int) ->
-    moment.unix(time_or_int).format()
+  rawTime: (timestamp_int) ->
+    moment(timestamp_int).format()
 
   formatCount: (count, options = {}) ->
     return count unless options.max && count > options.max
