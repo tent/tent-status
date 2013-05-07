@@ -1,6 +1,9 @@
 TentStatus.Collection = class Collection extends Marbles.Collection
   pagination: {}
 
+  constructor: (options = {}) ->
+    super(_.extend(unique: true, options))
+
   @buildModel: (attrs, options = {}) ->
     if attrs.type == TentStatus.config.POST_TYPES.STATUS
       options.model = TentStatus.Models.StatusPost
