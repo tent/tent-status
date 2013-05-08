@@ -60,6 +60,7 @@ _.extend TentStatus.Helpers,
     TentStatus.config.app_domain = uri.toStringWithoutSchemePort()
 
   isURLExternal: (url) ->
+    return false unless url
     !url.match(/^\//) && !url.match(
       new RegExp("^[a-z]+:\/\/#{TentStatus.Helpers.escapeRegExChars(
         TentStatus.Helpers.currentHostWithoutSubdomain()

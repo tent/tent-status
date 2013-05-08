@@ -47,10 +47,8 @@ Marbles.Views.Post = class PostView extends Marbles.View
     current_user_owns_post: TentStatus.Helpers.isCurrentUserEntity(post.get('entity'))
     formatted:
       permissible_entities: permissible_entities.join(', ')
-      content: TentStatus.Helpers.simpleFormatText(
-        TentStatus.Helpers.autoLinkText(
-          TentStatus.Helpers.truncate(post.get('content.text'), TentStatus.config.MAX_STATUS_LENGTH, ''),
-          entity_whitelist: _.map( post.get('mentions') || [], (m) -> m.entity )
-        )
+      content: TentStatus.Helpers.formatTentMarkdown(
+        TentStatus.Helpers.truncate(post.get('content.text'), TentStatus.config.MAX_STATUS_LENGTH, ''),
+        post.get('mentions')
       )
 

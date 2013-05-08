@@ -92,9 +92,12 @@ _.extend TentStatus.Helpers,
       _truncated = text
     _truncated
 
-  simpleFormatText: (text = '') ->
-    text.replace /\s+/g, (match) ->
-      newlines = match.replace(/[^\n]*/g, '')
-      return match if newlines.length == 0
-      if newlines.length >= 2 then "<br/><br/>" else "<br/>"
+  formatTentMarkdown: (text = '', mentions = []) ->
+    externalLinkPreprocessor = (jsonml) ->
+      return jsonml unless jsonml[0] is 'link'
+      return jsonml unless TentStatus.Helpers.isURLExternal(jsonml[1]?.href)
+      jsonml[1]['data-view'] = 'ExternalLink'
+      jsonml
+
+    markdown.toHTML(text, 'Tent', { footnotes: mentions, preprocessors: [externalLinkPreprocessor] })
 

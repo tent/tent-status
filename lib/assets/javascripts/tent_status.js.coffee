@@ -4,6 +4,7 @@
 #= require marbles
 #= require sjcl
 #= require tent-client
+#= require tent-markdown
 #= require textarea_cursor_position
 #= require ./cache
 #= require ./config
