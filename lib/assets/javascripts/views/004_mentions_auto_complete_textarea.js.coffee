@@ -82,6 +82,55 @@ Marbles.Views.MentionsAutoCompleteTextarea = class MentionsAutoCompleteTextareaV
           if @enabled
             pos = (new Marbles.DOM.InputSelection @el).start
             @close() if @selection and pos <= @selection.start
+          else
+            pos = (new Marbles.DOM.InputSelection @el).start
+            old_value = @el.value.slice(0, pos)
+            new_value = @el.value.slice(0, pos-1)
+
+            if m = new_value.match(/\^\[([^\]]+)\]\(([^\)]+)\)$/)
+              # backspacing the char before the end of mention markdown selects the whole mention
+              selection = new Marbles.DOM.InputSelection @el
+              @once 'keyup', =>
+                start = m.index
+                end = m.index + m[0].length
+                if @el.value.slice(0, end) == new_value
+                  selection.setSelectionRange(start, end)
+            else if m = old_value.match(/\^\[(\S*?)$/)
+              # backspacing any char within mention markdown removes the markdown and reopens autocomplete for remaining display text
+
+              start = m.index
+              m = @el.value.slice(start, @el.value.length).match(/^\^(\S+)/) # get the full markdown mention (will always match)
+              end = start + m[0].length
+
+              display_text_start = m[0].indexOf("[") + 1 + start
+              display_text_end = m[0].indexOf("]") + start
+              cursor_position = (new Marbles.DOM.InputSelection @el).start-1
+
+              if cursor_position in [display_text_start...display_text_end]
+                # editing display text
+              else
+                console.warn('TODO: remove mention')
+
+                display_text = @el.value.slice(display_text_start, display_text_end)
+                @once 'keyup', =>
+                  return unless @el.value.slice(0, cursor_position) == new_value
+                  selection = new Marbles.DOM.InputSelection @el
+                  @el.value = TentStatus.Helpers.replaceIndexRange(start, cursor_position, @el.value, "^#{display_text}")
+                  new_end = start + display_text.length + 1
+                  selection.setSelectionRange(new_end, new_end)
+
+                  @open()
+                  selection.start = start + 1
+                  selection.end = start + 1
+                  @selection = selection
+                  @fetchResults()
+
+            else if (start = old_value.length-1) && old_value[old_value.length-1] == "^" && (m = @el.value.slice(start, @el.value.length).match(/^\^(\S+)/))
+              # "^" removed so remove the full mention
+              end = start + m[0].length
+              selection = new Marbles.DOM.InputSelection @el
+              selection.setSelectionRange(start, end)
+
         when 27 # escape
           return unless @enabled
           e.preventDefault()
@@ -98,16 +147,28 @@ Marbles.Views.MentionsAutoCompleteTextarea = class MentionsAutoCompleteTextareaV
           @pickerView()?.nextOption()
           false
         when 32 # space
-          @close()
+          return unless @enabled
+          e.preventDefault()
+          @pickerView()?.addActiveOption()
+          false
 
     Marbles.DOM.on @el, 'keyup', (e) =>
+      @trigger('keyup', e)
+
       clearTimeout @_fetch_timeout
       if e.shiftKey && e.keyCode == 54 # carret (^)
         return @open()
 
       return unless @enabled
       @setPickerPosition()
-      @_fetch_timeout = setTimeout (=> @pickerView()?.fetchResults(@selectionValue())), 60
+      @fetchResults()
+
+  fetchResults: =>
+    clearTimeout @_fetch_timeout
+    @_fetch_timeout = setTimeout (=>
+      @pickerView()?.current_query = ''
+      @pickerView()?.fetchResults(@selectionValue())
+    ), 60
 
   focus: =>
     selection = new Marbles.DOM.InputSelection @el
@@ -141,13 +202,16 @@ Marbles.Views.MentionsAutoCompleteTextarea = class MentionsAutoCompleteTextareaV
 
   addOption: (option) =>
     end_selection = new Marbles.DOM.InputSelection @el
-    entity = option.value + ' '
+    mention_index = 0 # TODO: make this mean something
+    markdown = "[#{option.text}](#{mention_index}) "
     value = @el.value
-    @el.value = TentStatus.Helpers.replaceIndexRange(@selection.start, end_selection.end, value, entity)
+    @el.value = TentStatus.Helpers.replaceIndexRange(@selection.start, end_selection.end, value, markdown)
 
-    end = @selection.start + entity.length
+    end = @selection.start + markdown.length
     @selection.setSelectionRange(end, end)
     @close()
+
+    console.warn("TODO: add mention")
 
     # TODO: refactor
     if permissions_fields_view = Marbles.View.instances.all[@parentFormView()?._child_views.PermissionsFields?[0]]
@@ -161,7 +225,10 @@ Marbles.Views.MentionsAutoCompleteTextarea = class MentionsAutoCompleteTextareaV
 
   open: =>
     @enabled = true
-    @pickerView()?.show()
+    if picker_view = @pickerView()
+      picker_view.matches = []
+      picker_view.render()
+      picker_view.show()
     @selection = new Marbles.DOM.InputSelection @el
 
   close: =>

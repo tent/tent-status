@@ -190,8 +190,7 @@ Marbles.Views.NewPostForm = class NewPostFormView extends Marbles.View
     )
     delete attrs.mentions
 
-    for i in TentStatus.Helpers.extractMentionsWithIndices(attrs.text)
-      mentions.push { entity: i.entity }
+    # TODO: inline mentions
 
     # in reply to mention
     if attrs.mentions_post_entity && attrs.mentions_post_id

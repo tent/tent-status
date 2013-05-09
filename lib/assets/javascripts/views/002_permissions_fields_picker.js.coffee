@@ -141,7 +141,7 @@ class PickerOptionView
     @getOption()?.value
 
   getText: =>
-    @getOption()?.name || TentStatus.Helpers.minimalEntity(@getOption().value)
+    @getOption()?.name || TentStatus.Helpers.formatUrlWithPath(@getOption().value)
 
   isGroup: =>
     !!@getOption()?.group
