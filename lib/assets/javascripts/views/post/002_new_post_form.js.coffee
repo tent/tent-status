@@ -9,6 +9,8 @@ Marbles.Views.NewPostForm = class NewPostFormView extends Marbles.View
     @elements = {}
     @text = {}
 
+    @mentions = []
+
     @entity = TentStatus.config.current_user.entity
 
     @on 'ready', => @ready = true
@@ -26,6 +28,9 @@ Marbles.Views.NewPostForm = class NewPostFormView extends Marbles.View
     @initialRender()
 
   initialRender: => @render()
+
+  textareaMentionsView: =>
+    @childViews('MentionsAutoCompleteTextareaContainer')?[0]?.childViews('MentionsAutoCompleteTextarea')?[0]
 
   profileFetchSuccess: =>
     @render()
@@ -89,6 +94,15 @@ Marbles.Views.NewPostForm = class NewPostFormView extends Marbles.View
       null
 
     @updateCharCounter()
+
+  addMention: (entity) =>
+    index = @mentionIndex(entity)
+    return index unless index is -1
+    @mentions.push(entity)
+    @mentions.length-1
+
+  mentionIndex: (entity) =>
+    @mentions.indexOf(entity)
 
   submitWithValidation: (e) =>
     e?.preventDefault()
@@ -184,13 +198,15 @@ Marbles.Views.NewPostForm = class NewPostFormView extends Marbles.View
   buildPostMentionsAttributes: (attrs) =>
     return unless attrs.text
 
-    mentions = _.compact (_.map _.flatten(Array attrs.mentions), (entity) ->
+    mentions = []
+    for entity in @textareaMentionsView()?.inline_mentions_manager.entities
+      mentions.push({ entity: entity })
+
+    mentions = mentions.concat(_.compact (_.map _.flatten(Array attrs.mentions), (entity) ->
       return unless entity
       { entity: entity }
-    )
+    ))
     delete attrs.mentions
-
-    # TODO: inline mentions
 
     # in reply to mention
     if attrs.mentions_post_entity && attrs.mentions_post_id

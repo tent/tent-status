@@ -93,6 +93,8 @@ _.extend TentStatus.Helpers,
     _truncated
 
   formatTentMarkdown: (text = '', mentions = []) ->
+    inline_mention_urls = _.map mentions, (m) => TentStatus.Helpers.entityProfileUrl(m.entity)
+
     parsePara = (para, callback) ->
       new_para = for item in para
         if _.isArray(item) && item[0] in ['para', 'strong', 'em', 'del']
@@ -133,5 +135,5 @@ _.extend TentStatus.Helpers,
       jsonml[1]['data-view'] = 'ExternalLink'
       jsonml
 
-    markdown.toHTML(text, 'Tent', { footnotes: mentions, preprocessors: [autoLinkPreprocessor, externalLinkPreprocessor] })
+    markdown.toHTML(text, 'Tent', { footnotes: inline_mention_urls, preprocessors: [autoLinkPreprocessor, externalLinkPreprocessor] })
 
