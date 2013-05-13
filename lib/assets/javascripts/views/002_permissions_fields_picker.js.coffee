@@ -8,7 +8,6 @@ Marbles.Views.PermissionsFieldsPicker = class PermissionsFieldsPickerView extend
     @option_views = []
     @on 'ready', @initOptions
 
-    @parent_view.on 'change:picker_options', (=> @render(); @show()), @
     @hide()
     @render()
 
@@ -80,7 +79,7 @@ Marbles.Views.PermissionsFieldsPicker = class PermissionsFieldsPickerView extend
         entity: q
         value: q
       })
-    if !@matches.length && !@current_query?.match(/^[\s\r\t\n]*$/) && "Everyone".score(@current_query) &&
+    if !@matches.length && !@current_query?.match(/^[\s\r\t\n]*$/) && "Everyone".score(@current_query || '') &&
        !_.any(@parent_view.options_view?.options, (o) => o.value == 'all')
       @matches.unshift({
         name: 'Everyone'
@@ -93,7 +92,7 @@ Marbles.Views.PermissionsFieldsPicker = class PermissionsFieldsPickerView extend
     @show()
 
   fetchResults: (query) =>
-    return if @current_query == query
+    return @displayMatches([]) if @current_query == query
     @current_query = query
     return @displayMatches([]) if query.match(/^[\s\r\t\n]*$/)
 
