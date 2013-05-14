@@ -112,6 +112,9 @@ TentStatus.Models.Post = class PostModel extends Marbles.Model
 
   parseAttributes: (attrs) =>
     attrs.permissions ?= { public: true }
+    if attrs.mentions
+      for m in attrs.mentions
+        m.entity ?= attrs.entity
     super(attrs)
     @updateRepostFlag(@get('type'))
     @updateMentionedPosts(@get('mentions'))
