@@ -12,7 +12,8 @@ Marbles.Views.PostsFeed = class PostsFeedView extends Marbles.View
   initialize: (options = {}) =>
     @entity = options.entity || TentStatus.config.current_user.entity
     @post_types = options.post_types || TentStatus.config.feed_types
-    @collection_context = 'feed+' + sjcl.codec.base64.fromBits(sjcl.codec.utf8String.toBits(JSON.stringify(@post_types)))
+    @feed_params = options.feed_params || {}
+    @collection_context = 'feed+' + sjcl.codec.base64.fromBits(sjcl.codec.utf8String.toBits(JSON.stringify(@post_types) + JSON.stringify(@feed_params)))
 
     # fire focus event for first post view in feed (caught by author info view)
     # TODO: find a better way to do this!
@@ -26,23 +27,28 @@ Marbles.Views.PostsFeed = class PostsFeedView extends Marbles.View
     @fetch()
 
     TentStatus.Models.StatusPost.on 'create:success', (post, xhr) =>
-      return unless post.get('entity') == @entity
+      return unless @shouldAddPostToFeed(post)
       collection = @postsCollection()
       return unless _.any collection.options.params.types, ((t) => t == post.get('type'))
       collection.unshift(post)
       @prependRender([post])
 
+  shouldAddPostToFeed: (post) =>
+    true
+
   postsCollection: =>
     if @_posts_collection_cid
-      return TentStatus.Collections.Posts.find(cid: @_posts_collection_cid)
+      TentStatus.Collections.Posts.find(cid: @_posts_collection_cid)
+    else
+      @initPostsCollection()
 
+  initPostsCollection: =>
     collection = TentStatus.Collections.Posts.find(entity: @entity, context: @collection_context)
     collection ?= new TentStatus.Collections.Posts(entity: @entity, context: @collection_context)
-    collection.options.params = {
+    collection.options.params = _.extend {
       types: @post_types
-    }
+    }, @feed_params
     @_posts_collection_cid = collection.cid
-
     collection
 
   fetch: (params = {}, options = {}) =>

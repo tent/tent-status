@@ -1,19 +1,18 @@
 TentStatus.Routers.posts = new class PostsRouter extends Marbles.Router
   routes: {
-    "" : "root"
-    "posts" : "index"
-    "global": "siteFeed"
-    "mentions" : "mentions"
-    ":entity/mentions" : "mentions"
-    "posts/:id" : "post"
-    "posts/:entity/:id" : "post"
+    ""                   : "root"
+    "posts"              : "index"
+    "global"             : "siteFeed"
+    "replies"            : "replies"
+    "posts/:id"          : "post"
+    "posts/:entity/:id"  : "post"
   }
 
   actions_titles: {
-    'feed' : 'My Feed'
-    'siteFeed': 'Site Feed'
-    'post' : 'Conversation'
-    'mentions' : 'Mentions'
+    'feed'      : 'My Feed'
+    'siteFeed'  : 'Site Feed'
+    'post'      : 'Conversation'
+    'replies'   : 'Replies'
   }
 
   _initMiniProfileView: (options = {}) =>
@@ -23,9 +22,6 @@ TentStatus.Routers.posts = new class PostsRouter extends Marbles.Router
   index: (params) =>
     if TentStatus.config.guest
       return @navigate('/profile', {trigger:true, replace: true})
-
-    if TentStatus.config.app_domain
-      return TentStatus.redirectToGlobalFeed()
 
     @feed(arguments...)
 
@@ -37,11 +33,8 @@ TentStatus.Routers.posts = new class PostsRouter extends Marbles.Router
 
   feed: (params) =>
     new Marbles.Views.Feed
-    @_initMiniProfileView(entity: TentStatus.config.current_entity.toString())
+    @_initMiniProfileView(entity: TentStatus.config.current_user.entity)
     TentStatus.setPageTitle page: @actions_titles.feed
-
-    TentStatus.initBackgroundMentionsCursor()
-    TentStatus.initBackgroundMentionsUnreadCount()
 
   siteFeed: (params) =>
     unless TentStatus.Helpers.isAppSubdomain()
@@ -64,13 +57,11 @@ TentStatus.Routers.posts = new class PostsRouter extends Marbles.Router
     TentStatus.initBackgroundMentionsCursor()
     TentStatus.initBackgroundMentionsUnreadCount()
 
-  mentions: (params) =>
+  replies: (params) =>
     if TentStatus.Helpers.isAppSubdomain()
       return @navigate('/', {trigger: true, replace: true})
-    new Marbles.Views.Mentions entity: (params.entity || TentStatus.config.domain_entity.toString())
-    @_initMiniProfileView()
-    TentStatus.setPageTitle page: @actions_titles.mentions
-
-    TentStatus.initBackgroundMentionsCursor(initialize_only: true)
-    TentStatus.initBackgroundMentionsUnreadCount(initialize_only: true)
+    params.entity ?= TentStatus.config.domain_entity
+    new Marbles.Views.Replies(entity: params.entity)
+    @_initMiniProfileView(entity: params.entity)
+    TentStatus.setPageTitle page: @actions_titles.replies
 

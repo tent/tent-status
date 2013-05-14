@@ -5,3 +5,7 @@ Marbles.Views.ProfilePostsFeed = class ProfilePostsFeedView extends Marbles.View
     options.entity = @findParentView('profile').profile().get('entity')
     super(options)
 
+  shouldAddPostToFeed: (post) =>
+    return false unless post.get('entity') == @entity
+    true
+
