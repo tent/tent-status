@@ -6,11 +6,11 @@ Marbles.Views.PostActionRepost = class PostActionRepostView extends Marbles.View
     data = {
       permissions:
         public: true
-      type: 'https://tent.io/types/post/repost/v0.1.0'
+      type: "https://tent.io/types/repost/v0##{encodeURIComponent (new TentClient.PostType post.get('type')).toStringWithoutFragment()}"
       mentions: [{ entity: post.get('entity'), post: post.get('id') }]
       content:
         entity: post.get('entity')
-        id: post.get('id')
+        post: post.get('id')
     }
     TentStatus.Models.Post.create(data,
       error: (res, xhr) =>
