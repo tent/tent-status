@@ -9,3 +9,6 @@ Marbles.Views.MentionsAutoCompleteTextarea = class MentionsAutoCompleteTextareaV
   initInlineMentionsManager: =>
     @inline_mentions_manager = new TentStatus.InlineMentionsManager(el: @el)
 
+  focus: =>
+    @el.focus()
+
