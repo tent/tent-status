@@ -35,6 +35,9 @@ TentStatus.Collection = class Collection extends Marbles.Collection
       limit: TentStatus.config.PER_PAGE
     }, @options.params, params
 
+    params.types = [params.types] unless _.isArray(params.types)
+    params.types = _.map params.types, (type) => (new TentClient.PostType type).toURIString()
+
     TentStatus.tent_client.post.list(params: params, callback: complete)
 
   fetchSuccess: (params, options, res, xhr) =>
