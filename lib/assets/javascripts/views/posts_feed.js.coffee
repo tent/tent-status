@@ -29,9 +29,15 @@ Marbles.Views.PostsFeed = class PostsFeedView extends Marbles.View
     TentStatus.Models.StatusPost.on 'create:success', (post, xhr) =>
       return unless @shouldAddPostToFeed(post)
       collection = @postsCollection()
-      return unless _.any collection.options.params.types, ((t) => t == post.get('type'))
+      return unless @shouldAddPostTypeToFeed(post.get('type'), collection)
       collection.unshift(post)
       @prependRender([post])
+
+  shouldAddPostTypeToFeed: (prospect_type, types = @postsCollection().options.params.types) =>
+    prospect_type = new TentClient.PostType prospect_type
+    _.any types, (type) =>
+      type = new TentClient.PostType type
+      type.assertMatch(prospect_type)
 
   shouldAddPostToFeed: (post) =>
     true

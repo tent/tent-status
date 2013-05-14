@@ -4,6 +4,7 @@ TentStatus.Routers.posts = new class PostsRouter extends Marbles.Router
     "posts"              : "index"
     "global"             : "siteFeed"
     "replies"            : "replies"
+    "reposts"            : "reposts"
     "posts/:id"          : "post"
     "posts/:entity/:id"  : "post"
   }
@@ -13,6 +14,7 @@ TentStatus.Routers.posts = new class PostsRouter extends Marbles.Router
     'siteFeed'  : 'Site Feed'
     'post'      : 'Conversation'
     'replies'   : 'Replies'
+    'reposts'   : 'Reposts'
   }
 
   _initMiniProfileView: (options = {}) =>
@@ -64,4 +66,12 @@ TentStatus.Routers.posts = new class PostsRouter extends Marbles.Router
     new Marbles.Views.Replies(entity: params.entity)
     @_initMiniProfileView(entity: params.entity)
     TentStatus.setPageTitle page: @actions_titles.replies
+
+  reposts: (params) =>
+    if TentStatus.Helpers.isAppSubdomain()
+      return @navigate('/', {trigger: true, replace: true})
+    params.entity ?= TentStatus.config.domain_entity
+    new Marbles.Views.Reposts(entity: params.entity)
+    @_initMiniProfileView(entity: params.entity)
+    TentStatus.setPageTitle page: @actions_titles.reposts
 
