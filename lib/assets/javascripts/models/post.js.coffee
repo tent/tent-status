@@ -87,13 +87,17 @@ TentStatus.Models.Post = class PostModel extends Marbles.Model
         options.complete?(res, xhr)
         return
 
+      constructorFn = _.find [TentStatus.Models.StatusPost, TentStatus.Models.StatusReplyPost], (c) =>
+        c.post_type.assertMatch(new TentClient.PostType res.type)
+      constructorFn ?= @
+
       if params.cid
         if post = @instances.all[params.cid]
           post.parseAttributes(res)
         else
-          post = new @(res, cid: params.cid)
+          post = new constructorFn(res, cid: params.cid)
       else
-        post = new @(res)
+        post = new constructorFn(res)
 
       @trigger("fetch:success", post, xhr)
       options.success?(post, xhr)
