@@ -47,17 +47,7 @@ _.extend TentStatus.Helpers,
     )
 
   isAppSubdomain: =>
-    TentStatus.config.tent_host_domain and window.location.hostname == "app.#{TentStatus.config.tent_host_domain.replace(/:\d+$/, '')}"
-
-  appDomain: =>
-    return TentStatus.config.app_domain if TentStatus.config.app_domain
-    return unless TentStatus.config.tent_host_domain
-
-    uri = new Marbles.HTTP.URI(TentStatus.config.tent_host_domain)
-    uri.scheme = TentStatus.config.tent_host_scheme
-    uri.hostname = "app." + uri.hostname
-
-    TentStatus.config.app_domain = uri.toStringWithoutSchemePort()
+    false
 
   isURLExternal: (url) ->
     return false unless url
