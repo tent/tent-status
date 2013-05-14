@@ -25,7 +25,7 @@ _.extend TentStatus.config, {
     STATUS_REPLY: 'https://tent.io/types/status/v0#reply'
     REPOST: 'https://tent.io/types/repost/v0'
     STATUS_REPOST: 'https://tent.io/types/repost/v0#https://tent.io/types/status/v0'
-    MENTIONS_CURSOR: 'https://tent.io/types/cursor/v0#https://tent.io/rels/status-mentions'
+    REPLIES_CURSOR: 'https://tent.io/types/cursor/v0#https://tent.io/rels/status-replies'
     FEED_CURSOR: 'https://tent.io/types/cursor/v0#https://tent.io/rels/status-feed'
   PER_PAGE: 20
   CONVERSATION_PER_PAGE: 10
