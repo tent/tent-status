@@ -29,7 +29,7 @@ Marbles.Views.PostsFeed = class PostsFeedView extends Marbles.View
     TentStatus.Models.StatusPost.on 'create:success', (post, xhr) =>
       return unless @shouldAddPostToFeed(post)
       collection = @postsCollection()
-      return unless @shouldAddPostTypeToFeed(post.get('type'), collection)
+      return unless @shouldAddPostTypeToFeed(post.get('type'), collection.options.params.types)
       collection.unshift(post)
       @prependRender([post])
 
