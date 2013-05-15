@@ -7,6 +7,8 @@ TentStatus.Collection = class Collection extends Marbles.Collection
   @buildModel: (attrs, options = {}) ->
     if attrs.type == TentStatus.config.POST_TYPES.STATUS
       options.model = TentStatus.Models.StatusPost
+    else if attrs.type == TentStatus.config.POST_TYPES.STATUS_REPLY
+      options.model = TentStatus.Models.StatusReplyPost
 
     super(attrs, options)
 
