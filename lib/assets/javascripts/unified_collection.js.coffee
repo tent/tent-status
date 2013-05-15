@@ -1,5 +1,8 @@
 TentStatus.UnifiedCollection = class UnifiedCollection extends Marbles.UnifiedCollection
 
+  sortModelsBy: (model) =>
+    model.get('received_at') * -1
+
   fetchNext: (options = {}) =>
     collections = _.select @collections(), (c) => !!c.pagination.next
     next_params = null
