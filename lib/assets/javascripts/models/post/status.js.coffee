@@ -8,9 +8,8 @@ TentStatus.Models.StatusPost = class StatusPostModel extends TentStatus.Models.P
     if (attrs.content?.text and attrs.content.text.match /^[\s\r\t]*$/) || (options.validate_empty and attrs.content?.text == "")
       errors.push { text: 'Status must not be empty' }
 
-    # TODO: fix length calculation
-    if attrs.content?.text and attrs.content.text.length > TentStatus.config.MAX_STATUS_LENGTH
-      errors.push { text: "Status must be no more than #{TentStatus.config.MAX_STATUS_LENGTH} characters" }
+    if attrs.content?.text and TentStatus.Helpers.byteLength(attrs.content.text) > TentStatus.config.MAX_STATUS_LENGTH
+      errors.push { text: "Status must be no more than #{TentStatus.config.MAX_STATUS_LENGTH} bytes" }
 
     return errors if errors.length
     null

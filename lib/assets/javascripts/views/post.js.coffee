@@ -48,7 +48,7 @@ Marbles.Views.Post = class PostView extends Marbles.View
     formatted:
       permissible_entities: permissible_entities.join(', ')
       content: TentStatus.Helpers.formatTentMarkdown(
-        TentStatus.Helpers.truncate(post.get('content.text'), TentStatus.config.MAX_STATUS_LENGTH, ''),
+        TentStatus.Helpers.truncate(post.get('content.text'), TentStatus.config.MAX_STATUS_LENGTH, '', bytes: true),
         post.get('mentions')
       )
 
