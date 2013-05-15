@@ -29,10 +29,10 @@ GIT
 
 GIT
   remote: git://github.com/tent/hawk-ruby.git
-  revision: e94e538e0f503e94ff10ca02f904a28b9875ac51
+  revision: d7f851e3a836ffedad1860b0dd8db51f92b6fdd1
   branch: master
   specs:
-    hawk-auth (0.0.0)
+    hawk-auth (0.1.0)
 
 GIT
   remote: git://github.com/tent/icing.git
