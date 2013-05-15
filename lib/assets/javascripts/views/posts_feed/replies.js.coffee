@@ -4,9 +4,9 @@ Marbles.Views.RepliesPostsFeed = class RepliesPostsFeedView extends Marbles.View
   initialize: (options = {}) =>
     options.entity = options.parent_view.entity
     options.post_types = [TentStatus.config.POST_TYPES.STATUS_REPLY]
-    options.feed_params = {
+    options.feed_queries = [{
       mentions: options.entity
-    }
+    }]
     super(options)
 
   shouldAddPostToFeed: (post) =>

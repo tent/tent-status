@@ -10,6 +10,9 @@ TentStatus.Collection = class Collection extends Marbles.Collection
 
     super(attrs, options)
 
+  postTypes: =>
+    @options.params.types || []
+
   fetchNext: (options = {}) =>
     return false unless @pagination.next
     next_params = Marbles.History::parseQueryParams(@pagination.next)
@@ -26,7 +29,7 @@ TentStatus.Collection = class Collection extends Marbles.Collection
       else
         options.failure?(res, xhr, params, options)
         @trigger('fetch:failure', res, xhr, params, options)
-      options.complete?(models, res, xhr)
+      options.complete?(models, res, xhr, params, options)
       @trigger('fetch:complete', models, res, xhr, params, options)
 
     params = _.extend {

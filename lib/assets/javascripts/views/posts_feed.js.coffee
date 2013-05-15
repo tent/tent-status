@@ -12,8 +12,9 @@ Marbles.Views.PostsFeed = class PostsFeedView extends Marbles.View
   initialize: (options = {}) =>
     @entity = options.entity || TentStatus.config.current_user.entity
     @post_types = options.post_types || TentStatus.config.feed_types
-    @feed_params = options.feed_params || {}
-    @collection_context = 'feed+' + sjcl.codec.base64.fromBits(sjcl.codec.utf8String.toBits(JSON.stringify(@post_types) + JSON.stringify(@feed_params)))
+    @feed_queries = _.map options.feed_queries || [{}], (q) => q.types ?= @post_types; q
+    @collection_contexts = _.map @feed_queries, (feed_params) =>
+      'feed+' + sjcl.codec.base64.fromBits(sjcl.codec.utf8String.toBits(JSON.stringify(feed_params)))
 
     # fire focus event for first post view in feed (caught by author info view)
     # TODO: find a better way to do this!
@@ -29,11 +30,11 @@ Marbles.Views.PostsFeed = class PostsFeedView extends Marbles.View
     TentStatus.Models.StatusPost.on 'create:success', (post, xhr) =>
       return unless @shouldAddPostToFeed(post)
       collection = @postsCollection()
-      return unless @shouldAddPostTypeToFeed(post.get('type'), collection.options.params.types)
+      return unless @shouldAddPostTypeToFeed(post.get('type'), collection.postTypes())
       collection.unshift(post)
       @prependRender([post])
 
-  shouldAddPostTypeToFeed: (prospect_type, types = @postsCollection().options.params.types) =>
+  shouldAddPostTypeToFeed: (prospect_type, types = @postsCollection().postTypes()) =>
     prospect_type = new TentClient.PostType prospect_type
     _.any types, (type) =>
       type = new TentClient.PostType type
@@ -43,19 +44,19 @@ Marbles.Views.PostsFeed = class PostsFeedView extends Marbles.View
     true
 
   postsCollection: =>
-    if @_posts_collection_cid
-      TentStatus.Collections.Posts.find(cid: @_posts_collection_cid)
-    else
-      @initPostsCollection()
+    @unified_posts_collection || @initPostsCollection()
 
   initPostsCollection: =>
-    collection = TentStatus.Collections.Posts.find(entity: @entity, context: @collection_context)
-    collection ?= new TentStatus.Collections.Posts(entity: @entity, context: @collection_context)
-    collection.options.params = _.extend {
-      types: @post_types
-    }, @feed_params
-    @_posts_collection_cid = collection.cid
-    collection
+    collections = []
+    for feed_params, index in @feed_queries
+      _collection_context = @collection_contexts[index]
+      _collection = TentStatus.Collections.Posts.find(entity: @entity, context: _collection_context)
+      _collection ?= new TentStatus.Collections.Posts(entity: @entity, context: _collection_context)
+      _collection.options.params = feed_params
+
+      collections.push(_collection)
+
+    @unified_posts_collection = new TentStatus.UnifiedCollection(collections)
 
   fetch: (params = {}, options = {}) =>
     @pagination_frozen = true
@@ -85,6 +86,9 @@ Marbles.Views.PostsFeed = class PostsFeedView extends Marbles.View
       @render(@context(posts))
 
     @pagination_frozen = false
+
+    # handle screen being very tall or limit very short
+    @windowScrolled(true) if @shouldFetchNextPage()
 
   fetchError: (res, xhr) =>
     console?.warn?("#{@constructor.name}.prototype.fetchError", res, xhr)
@@ -118,15 +122,18 @@ Marbles.Views.PostsFeed = class PostsFeedView extends Marbles.View
     TentStatus.on 'window:scroll', @windowScrolled
     setTimeout @windowScrolled, 100
 
-  windowScrolled: =>
-    return if @pagination_frozen || @last_page
+  shouldFetchNextPage: =>
+    return false if @pagination_frozen || @last_page
     last_post = Marbles.DOM.querySelector('li.post:last-of-type', @el)
-    return unless last_post
+    return false unless last_post
     last_post_offset_top = last_post.offsetTop || 0
     last_post_offset_top += last_post.offsetHeight || 0
     bottom_position = window.scrollY + Marbles.DOM.windowHeight()
 
-    if last_post_offset_top <= bottom_position
-      clearTimeout @_auto_paginate_timeout
-      @_auto_paginate_timeout = setTimeout @fetchNext, 0 unless @last_page
+    last_post_offset_top <= bottom_position
+
+  windowScrolled: (should_fetch_next_page = @shouldFetchNextPage()) =>
+    return unless should_fetch_next_page
+    clearTimeout @_auto_paginate_timeout
+    @_auto_paginate_timeout = setTimeout @fetchNext, 0 unless @last_page
 
