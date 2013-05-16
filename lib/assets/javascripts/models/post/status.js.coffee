@@ -21,7 +21,7 @@ TentStatus.Models.StatusPost = class StatusPostModel extends TentStatus.Models.P
     limit = TentStatus.config.CONVERSATION_PER_PAGE
 
     collection.options.params = {
-      mentions: @get('entity') + '+' + @get('id')
+      mentions: @get('entity') + ' ' + @get('id')
       types: [TentStatus.config.POST_TYPES.STATUS_REPLY]
       limit: limit
     }
