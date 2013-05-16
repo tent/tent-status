@@ -1,1 +1,19 @@
 //= require ./permissions
+
+.mentions-autocomplete {
+  .markdown-preview {
+    width: 100%;
+    min-height: 70px;
+    display: none;
+    background: #fff;
+  }
+
+  .markdown-preview-toggles {
+    position: absolute;
+    bottom: -22px;
+
+    .btn-link {
+      padding: 0px 4px;
+    }
+  }
+}
