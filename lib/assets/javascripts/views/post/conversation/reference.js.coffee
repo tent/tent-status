@@ -14,7 +14,7 @@ Marbles.Views.ConversationReference = class ConversationReferenceView extends Ma
       @bindViews()
 
   detach: =>
-    Marbles.DOM.insertBefore(@postView().el, @parent_view.el)
+    Marbles.DOM.insertBefore(@postView().el, @parentView().el)
     Marbles.DOM.removeNode(@repost_visibility_el) if @repost_visibility_el
     super
 

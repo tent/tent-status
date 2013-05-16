@@ -9,7 +9,7 @@ Marbles.Views.FetchPostsPool = class FetchPostsPoolView extends Marbles.View
     @on 'ready', @bindLink
 
     @fetch_interval = new TentStatus.FetchInterval fetch_callback: @fetchPosts
-    @parent_view.on 'init-view', (view_class_name, posts_feed_view) =>
+    @parentView().on 'init-view', (view_class_name, posts_feed_view) =>
       return unless view_class_name.match /PostsFeed$/
       @posts_feed_view_cid = posts_feed_view.cid
       posts_feed_view.posts_collection.once 'fetch:success', (posts_collection) =>

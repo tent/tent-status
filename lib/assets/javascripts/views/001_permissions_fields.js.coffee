@@ -19,7 +19,7 @@ Marbles.Views.PermissionsFields = class PermissionsFieldsView extends Marbles.Vi
     value = @picker_view.input?.getValue() || ''
     @picker_view.initInput Marbles.DOM.querySelector('.picker-input', @el)
     @picker_view.input.clear()
-    @picker_view.input.focusAtEnd() unless Marbles.DOM.match(@parent_view.textarea, ':focus')
+    @picker_view.input.focusAtEnd() unless Marbles.DOM.match(@parentView().textarea, ':focus')
 
   initOptions: (@options_view) =>
     @options_view.on 'ready', (=> @initInput()), @

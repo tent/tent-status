@@ -7,7 +7,7 @@ Marbles.Views.PermissionsFieldsOptions = class PermissionsFieldsOptionsView exte
 
     @on 'ready', @initOptions
 
-    post = @parent_view.parent_view.parent_view.post?()
+    post = @parentView().parentView().parentView().post?()
     if !post || post.get('permissions.public')
       @set 'options', [
         {
@@ -64,12 +64,16 @@ class OptionView
   constructor: (params = {}) ->
     for k,v of params
       @[k] = v
+    @_parent_view_cid = params.parent_view.cid
 
     @elements = {
       remove: Marbles.DOM.querySelector('.remove', @el)
     }
 
     Marbles.DOM.on @elements.remove, 'click', @remove
+
+  parentView: =>
+    Marbles.View.find(@_parent_view_cid)
 
   unmarkDelete: =>
     @marked_delete = false
@@ -81,5 +85,5 @@ class OptionView
 
   remove: (e) =>
     e?.stopPropagation()
-    @parent_view.removeOption(@option)
+    @parentView().removeOption(@option)
 

@@ -2,7 +2,7 @@ Marbles.Views.PostActionRepost = class PostActionRepostView extends Marbles.View
   @view_name: 'post_action_repost'
 
   performAction: =>
-    post = TentStatus.Models.Post.find(cid: @parent_view.post_cid)
+    post = TentStatus.Models.Post.find(cid: @parentView().post_cid)
     data = {
       permissions:
         public: true

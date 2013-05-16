@@ -6,7 +6,7 @@ Marbles.Views.Conversation = class ConversationView extends Marbles.View
     super(_.extend({render_method:'replace'}, options))
 
     @el = document.createElement('div')
-    Marbles.DOM.insertBefore(@el, @parent_view.el)
+    Marbles.DOM.insertBefore(@el, @parentView().el)
 
     @render()
 

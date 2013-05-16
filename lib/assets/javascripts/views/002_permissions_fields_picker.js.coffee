@@ -12,7 +12,7 @@ Marbles.Views.PermissionsFieldsPicker = class PermissionsFieldsPickerView extend
     @render()
 
     Marbles.DOM.on document, 'click', (e) =>
-      unless (_.any Marbles.DOM.parentNodes(e.target), (el) => el == @parent_view.el)
+      unless (_.any Marbles.DOM.parentNodes(e.target), (el) => el == options.parent_view.el)
         @hide()
 
   initInput: (el) =>
@@ -74,13 +74,13 @@ Marbles.Views.PermissionsFieldsPicker = class PermissionsFieldsPickerView extend
 
   displayMatches: (@matches) =>
     if !@matches.length && (q = @current_query?.replace(/^[\s\r\t\n]*/, '').replace(/[\s\r\t\n]*$/, '')) &&
-       q.match(/^https?:\/\/[^.]+\..{2,}$/i) && !_.any(@parent_view.options_view?.options || [], (o) => o.value == q)
+       q.match(/^https?:\/\/[^.]+\..{2,}$/i) && !_.any(@parentView().options_view?.options || [], (o) => o.value == q)
       @matches.unshift({
         entity: q
         value: q
       })
     if !@matches.length && !@current_query?.match(/^[\s\r\t\n]*$/) && "Everyone".score(@current_query || '') &&
-       !_.any(@parent_view.options_view?.options, (o) => o.value == 'all')
+       !_.any(@parentView().options_view?.options, (o) => o.value == 'all')
       @matches.unshift({
         name: 'Everyone'
         value: 'all'
@@ -102,7 +102,7 @@ Marbles.Views.PermissionsFieldsPicker = class PermissionsFieldsPickerView extend
         results = _.map res, (result) =>
           { score: result.score, value: result.entity, name: result.name, entity: result.entity }
 
-        results = _.filter results, (result) => !@parent_view.optionsInclude(result)
+        results = _.filter results, (result) => !@parentView().optionsInclude(result)
         @displayMatches(results)
 
       error: => @displayMatches([])
@@ -120,8 +120,9 @@ Marbles.Views.PermissionsFieldsPicker = class PermissionsFieldsPickerView extend
 class PickerOptionView
   constructor: (params = {}) ->
     @[k] = v for k,v of params
+    @_parent_view_cid = params.parent_view.cid
 
-    @permissions_fields_view = @parent_view.parent_view
+    @permissions_fields_view = @parentView().parentView()
 
     @elements = {}
 
@@ -130,11 +131,15 @@ class PickerOptionView
         e.stopPropagation()
         @add()
       Marbles.DOM.on @el, 'mouseover', (e) =>
-        @parent_view.option_views[@parent_view.active_option]?.unsetActive()
+        parent_view = @parentView()
+        parent_view.option_views[parent_view.active_option]?.unsetActive()
         @setActive(false)
 
+  parentView: =>
+    Marbles.View.find(@_parent_view_cid)
+
   getOption: =>
-    @parent_view.matches[@index]
+    @parentView().matches[@index]
 
   getValue: =>
     @getOption()?.value
@@ -150,24 +155,26 @@ class PickerOptionView
 
   scrollIntoView: =>
     offset = @el.offsetTop
-    scrollY = @parent_view.el.scrollTop
+    parent_view = @parentView()
+    scrollY = parent_view.el.scrollTop
 
     if offset < scrollY
-      @parent_view.el.scrollTop = offset
-    else if (offset + parseInt(Marbles.DOM.getStyle(@el, 'height'))) > (scrollY + parseInt(Marbles.DOM.getStyle(@parent_view.el, 'height')))
-      @parent_view.el.scrollTop = offset - parseInt(Marbles.DOM.getStyle(@parent_view.el, 'height')) + @el.offsetHeight
+      parent_view.el.scrollTop = offset
+    else if (offset + parseInt(Marbles.DOM.getStyle(@el, 'height'))) > (scrollY + parseInt(Marbles.DOM.getStyle(parent_view.el, 'height')))
+      parent_view.el.scrollTop = offset - parseInt(Marbles.DOM.getStyle(parent_view.el, 'height')) + @el.offsetHeight
 
   setActive: (should_scroll = true) =>
     @active = true
-    @parent_view.active_option = @index
+    @parentView().active_option = @index
     Marbles.DOM.addClass(@el, 'active')
 
     @scrollIntoView() if should_scroll
 
   unsetActive: =>
     @active = false
-    if @parent_view.active_option == @index
-      @parent_view.active_option = null
+    parent_view = @parentView()
+    if parent_view.active_option == @index
+      parent_view.active_option = null
     Marbles.DOM.removeClass(@el, 'active')
 
   add: =>
@@ -177,12 +184,13 @@ class PickerOptionView
       group: @isGroup()
     }
     @destroy()
-    views = @parent_view.option_views
-    @parent_view.option_views = views.slice(0, @index).concat(views.slice(@index+1, views.length))
-    matches = @parent_view.matches
-    @parent_view.matches = matches.slice(0, @index).concat(matches.slice(@index+1, matches.length))
+    parent_view = @parentView()
+    views = parent_view.option_views
+    parent_view.option_views = views.slice(0, @index).concat(views.slice(@index+1, views.length))
+    matches = parent_view.matches
+    parent_view.matches = matches.slice(0, @index).concat(matches.slice(@index+1, matches.length))
 
-    for view, index in @parent_view.option_views
+    for view, index in parent_view.option_views
       view.index = index
 
     @permissions_fields_view.addOption(option)
@@ -196,9 +204,11 @@ class PickerInputView extends PickerOptionView
     @elements.loading = Marbles.DOM.querySelector('.loading', @el)
     @loading_view = new Marbles.Views.LoadingIndicator el: @elements.loading
 
-    @options_view = @parent_view.parent_view.options_view
+    @options_view = @parentView().parentView().options_view
 
     @_keydown_value = ''
+
+    parent_view = @parentView()
 
     Marbles.DOM.on @elements.input, 'keydown', (e) =>
       @calibrate(e)
@@ -206,29 +216,29 @@ class PickerInputView extends PickerOptionView
       switch e.keyCode
         when 13 # enter/return
           e.preventDefault()
-          if !@parent_view.option_views.length && (e.ctrlKey || e.metaKey)
-            @parent_view.parent_view.parent_view?.submit()
+          if !parent_view.option_views.length && (e.ctrlKey || e.metaKey)
+            parent_view.parentView().parentView()?.submit()
           else
-            @parent_view.addActiveOption()
+            parent_view.addActiveOption()
           false
         when 27 # escape
           e.preventDefault()
           @clear()
-          @parent_view.hide()
+          parent_view.hide()
           false
         when 38 # up arrow
           e.preventDefault()
-          @parent_view.prevOption()
+          parent_view.prevOption()
           false
         when 40 # down arrow
           e.preventDefault()
-          @parent_view.nextOption()
+          parent_view.nextOption()
           false
 
     Marbles.DOM.on @elements.input, 'keyup', (e) =>
       @calibrate()
       clearTimeout @_fetch_timeout
-      @_fetch_timeout = setTimeout (=> @parent_view.fetchResults(@elements.input.value)), 60
+      @_fetch_timeout = setTimeout (=> parent_view.fetchResults(@elements.input.value)), 60
 
       if !@_keydown_value.length
         option_view = _.last(@options_view.option_views)

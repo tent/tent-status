@@ -36,5 +36,5 @@ Marbles.Views.PostReplyForm = class PostReplyFormView extends Marbles.Views.NewP
       @render()
 
   post: =>
-    TentStatus.Models.Post.instances.all[@parent_view.post_cid]
+    TentStatus.Models.Post.instances.all[@parentView().post_cid]
 
