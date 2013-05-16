@@ -16,7 +16,16 @@ TentStatus.Models.StatusPost = class StatusPostModel extends TentStatus.Models.P
 
   fetchReplies: (options = {}) =>
     collection = TentStatus.Collections.StatusReplies.find(entity: @get('entity'), post_id: @get('id'))
-    collection ?= new TentStatus.Collections.StatusReplies(entity: @get('entity'), post_id: @get('id'))
+
+    unless collection
+      collection = new TentStatus.Collections.StatusReplies(entity: @get('entity'), post_id: @get('id'))
+
+      # Handle updating collection when replying to the post
+      TentStatus.Models.StatusPost.on 'create:success', (post, xhr) =>
+        return unless post.get('type') is TentStatus.config.POST_TYPES.STATUS_REPLY
+        return unless _.any post.get('mentions') || [], (m) =>
+          @get('entity') == m.entity && @get('id') == m.post && (!m.version || @get('version.id') == m.version)
+        collection.prependModels([post])
 
     limit = TentStatus.config.CONVERSATION_PER_PAGE
 
