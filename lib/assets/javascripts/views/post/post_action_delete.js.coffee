@@ -3,7 +3,8 @@ Marbles.Views.PostActionDelete = class PostActionDeleteView extends Marbles.View
 
   postView: => @parentView()
 
-  post: => @postView()?.post()
+  post: =>
+    @postView()?.parentPost?() || @postView()?.post()
 
   showErrors: (error) =>
     alert(_.map(error, (e) -> e.text).join("\n"))
