@@ -43,6 +43,7 @@ Marbles.Views.PostsFeed = class PostsFeedView extends Marbles.View
       type.assertMatch(prospect_type)
 
   shouldAddPostToFeed: (post) =>
+    return false if post.get('type') is TentStatus.config.POST_TYPES.STATUS_REPLY
     true
 
   postsCollection: =>
