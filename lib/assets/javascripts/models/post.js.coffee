@@ -9,7 +9,7 @@ TentStatus.Models.Post = class PostModel extends Marbles.Model
         options.failure?(res, xhr)
         return
 
-      post = new @(res)
+      post = new @(res.post)
       @trigger('create:success', post, xhr)
       options.success?(post, xhr)
 
@@ -25,7 +25,7 @@ TentStatus.Models.Post = class PostModel extends Marbles.Model
         options.failure?(res, xhr)
         return
 
-      post.parseAttributes(res)
+      post.parseAttributes(res.post)
       post.trigger('update:success', post, xhr)
       options.success?(post, xhr)
 
@@ -93,11 +93,11 @@ TentStatus.Models.Post = class PostModel extends Marbles.Model
 
       if params.cid
         if post = @instances.all[params.cid]
-          post.parseAttributes(res)
+          post.parseAttributes(res.post)
         else
-          post = new constructorFn(res, cid: params.cid)
+          post = new constructorFn(res.post, cid: params.cid)
       else
-        post = new constructorFn(res)
+        post = new constructorFn(res.post)
 
       @trigger("fetch:success", post, xhr)
       options.success?(post, xhr)
