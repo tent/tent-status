@@ -18,7 +18,7 @@ moment.relativeTime = {
 TentStatus.config ?= {}
 _.extend TentStatus.config, {
   POST_TYPES:
-    BASIC_PROFILE: 'https://tent.io/types/basic-profile/v0#'
+    META: "https://tent.io/types/meta/v0#"
     FOLLOWER: 'https://tent.io/types/relationship/v0#follower'
     FOLLOWING: 'https://tent.io/types/relationship/v0#following'
     STATUS: 'https://tent.io/types/status/v0#'

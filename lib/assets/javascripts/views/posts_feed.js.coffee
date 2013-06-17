@@ -103,7 +103,7 @@ Marbles.Views.PostsFeed = class PostsFeedView extends Marbles.View
     @constructor.partials['_post'].render(@postContext(post), @constructor.partials)
 
   context: (posts = @postsCollection().models()) =>
-    posts: _.map posts, ((post) => @postContext(post))
+    posts: _.map(posts, ((post) => @postContext(post)))
 
   appendRender: (posts) =>
     fragment = document.createDocumentFragment()

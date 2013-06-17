@@ -53,5 +53,5 @@ Marbles.Views.RepostVisibility = class RepostVisibilityView extends Marbles.View
     entity: entity
     count: count
     pluralized_other: TentStatus.Helpers.pluralize('other', count, 'others')
-    entities: _.map reposts, ((post) => post.get('entity'))
+    entities: _.map(reposts, ((post) => post.get('entity')))
 

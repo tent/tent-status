@@ -19,9 +19,9 @@ Marbles.Views.NewPostForm = class NewPostFormView extends Marbles.View
     post = new @constructor.model entity: @entity
     @post_cid = post.cid
 
-    profile = TentStatus.Models.BasicProfile.find(entity: @entity, fetch: false)
+    profile = TentStatus.Models.MetaProfile.find(entity: @entity, fetch: false)
     unless profile
-      profile = new TentStatus.Models.BasicProfile(entity: @entity)
+      profile = new TentStatus.Models.MetaProfile(entity: @entity)
       profile.fetch(null, success: @profileFetchSuccess)
     @profile_cid = profile.cid
 
@@ -39,7 +39,7 @@ Marbles.Views.NewPostForm = class NewPostFormView extends Marbles.View
     @constructor.model.find(cid: @post_cid)
 
   profile: =>
-    TentStatus.Models.BasicProfile.find(cid: @profile_cid)
+    TentStatus.Models.MetaProfile.find(cid: @profile_cid)
 
   context: =>
     post: @post()

@@ -18,11 +18,11 @@ Marbles.Views.MiniProfile = class MiniProfileView extends Marbles.View
   fetchProfile: (entity) =>
     return unless entity
     return if entity == @profile()?.get('entity')
-    if profile = TentStatus.Models.BasicProfile.find(entity: entity)
+    if profile = TentStatus.Models.MetaProfile.find(entity: entity)
       @current_profile_cid = profile.cid
       @render(@context(profile))
     else
-      TentStatus.Models.BasicProfile.fetch({ entity: entity},
+      TentStatus.Models.MetaProfile.fetch({ entity: entity},
         failure: (res, xhr) =>
           @render()
 
@@ -32,7 +32,7 @@ Marbles.Views.MiniProfile = class MiniProfileView extends Marbles.View
       )
 
   profile: =>
-    TentStatus.Models.BasicProfile.find(cid: @current_profile_cid)
+    TentStatus.Models.MetaProfile.find(cid: @current_profile_cid)
 
   context: (profile = @profile()) =>
     return { profile: null } unless profile
@@ -40,7 +40,7 @@ Marbles.Views.MiniProfile = class MiniProfileView extends Marbles.View
     profile: profile
     profile_url: TentStatus.Helpers.entityProfileUrl(profile.get('entity'))
     formatted:
-      name: TentStatus.Helpers.truncate(profile.get('content.name') || TentStatus.Helpers.formatUrlWithPath(profile.get('entity')), 15)
-      bio: TentStatus.Helpers.truncate(profile.get('content.bio'), 256)
-      website_url: TentStatus.Helpers.formatUrlWithPath(profile.get('content.website_url'))
+      name: TentStatus.Helpers.truncate(profile.get('name') || TentStatus.Helpers.formatUrlWithPath(profile.get('entity')), 15)
+      bio: TentStatus.Helpers.truncate(profile.get('bio'), 256)
+      website_url: TentStatus.Helpers.formatUrlWithPath(profile.get('website_url'))
 

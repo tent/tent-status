@@ -4,7 +4,7 @@ Marbles.Views.ProfileComponent = class ProfileComponentView extends Marbles.View
     @entity = Marbles.DOM.attr(@el, 'data-entity')
 
   profileModel: =>
-    TentStatus.Models.BasicProfile.find(entity: @entity, fetch: false)
+    TentStatus.Models.MetaProfile.find(entity: @entity, fetch: false)
 
   fetch: =>
     if model = @profileModel()
@@ -12,7 +12,7 @@ Marbles.Views.ProfileComponent = class ProfileComponentView extends Marbles.View
     else
       @render() # show something while we wait
 
-      model = new TentStatus.Models.BasicProfile(entity: @entity)
+      model = new TentStatus.Models.MetaProfile(entity: @entity)
       TentStatus.trigger('loading:start')
       model.fetch {entity: @entity},
         failure: (model, xhr) =>
@@ -21,14 +21,14 @@ Marbles.Views.ProfileComponent = class ProfileComponentView extends Marbles.View
         success: (model, xhr) =>
           @render(@context(model))
 
-          if Marbles.DOM.attr(@el, 'title') is @entity && (name = model.get('content.name'))
+          if Marbles.DOM.attr(@el, 'title') is @entity && (name = model.get('name'))
             Marbles.DOM.setAttr(@el, 'title', name)
 
         complete: => TentStatus.trigger('loading:stop')
 
   context: (profile = @profileModel()) =>
     profile: profile
-    has_name: !!(profile?.get('content.name'))
+    has_name: !!(profile?.get('name'))
     entity: @entity
     profile_url: TentStatus.Helpers.entityProfileUrl(@entity)
     formatted:

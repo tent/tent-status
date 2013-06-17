@@ -6,10 +6,10 @@ Marbles.Views.Profile = class ProfileView extends Marbles.View
     @container = Marbles.Views.container
     super
 
-    @fetchBasicProfile(options.entity)
+    @fetchMetaProfile(options.entity)
 
-  fetchBasicProfile: (entity) =>
-    model = TentStatus.Models.BasicProfile.find(entity: entity, fetch: false) || new TentStatus.Models.BasicProfile(entity: entity)
+  fetchMetaProfile: (entity) =>
+    model = TentStatus.Models.MetaProfile.find(entity: entity, fetch: false) || new TentStatus.Models.MetaProfile(entity: entity)
     @profile_cid = model.cid
     model.fetch {entity: entity},
       failure: (profile, xhr) =>
@@ -19,13 +19,13 @@ Marbles.Views.Profile = class ProfileView extends Marbles.View
         @render(@context(profile))
 
   profile: =>
-    TentStatus.Models.BasicProfile.find(cid: @profile_cid, fetch: false)
+    TentStatus.Models.MetaProfile.find(cid: @profile_cid, fetch: false)
 
   context: (profile = @profile()) =>
     profile: profile
-    has_name: !!profile.get('content.name')
+    has_name: !!profile.get('name')
     formatted:
-      bio: profile.get('content.bio')
+      bio: profile.get('bio')
       entity: TentStatus.Helpers.formatUrlWithPath(profile.get('entity'))
-      website_url: TentStatus.Helpers.formatUrlWithPath(profile.get('content.website_url'))
+      website_url: TentStatus.Helpers.formatUrlWithPath(profile.get('website_url'))
 
