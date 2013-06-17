@@ -27,5 +27,5 @@ Marbles.Views.Profile = class ProfileView extends Marbles.View
     formatted:
       bio: profile.get('bio')
       entity: TentStatus.Helpers.formatUrlWithPath(profile.get('entity'))
-      website_url: TentStatus.Helpers.formatUrlWithPath(profile.get('website_url'))
+      website: TentStatus.Helpers.formatUrlWithPath(profile.get('website'))
 

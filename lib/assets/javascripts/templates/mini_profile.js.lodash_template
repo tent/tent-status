@@ -3,7 +3,7 @@
   <div class="author-info-top-container">
     <a href='<%= profile_url %>' class="pull-left"><img src='<%= profile.get('avatar_url') %>' class='avatar avatar-large' /></a>
     <ul class="unstyled author-count-infos pull-left">
-      <li><h3><a href='<%= profile_url %>' title='<%= profile.get('content.name') || profile.get('entity') %>'><%= formatted.name %></a></h3></li>
+      <li><h3><a href='<%= profile_url %>' title='<%= profile.get('name') || profile.get('entity') %>'><%= formatted.name %></a></h3></li>
       <li data-view='ProfileFollowersCount'></li>
       <li data-view='ProfileFollowingCount'></li>
       <li data-view='ProfilePostsCount'></li>
@@ -12,7 +12,7 @@
 
   <p class='author-info-bio'><%= formatted.bio %></p>
 
-  <a href='<%- TentStatus.Helpers.ensureUrlHasScheme(profile.get('content.website_url')) %>'><%- formatted.website_url %></a>
+  <a href='<%- TentStatus.Helpers.ensureUrlHasScheme(profile.get('website')) %>'><%- formatted.website %></a>
 
   <div data-view='FollowButton'></div>
 <% } %>

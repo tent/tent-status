@@ -1,5 +1,5 @@
 <% if (has_name) { %>
-  <a href="<%= profile_url %>" class="post-name" title="<%= formatted.entity %>"><%- profile.get('content.name') %></a>
+  <a href="<%= profile_url %>" class="post-name" title="<%= formatted.entity %>"><%- profile.get('name') %></a>
 <% } %>
 
 <% if (!has_name) { %>

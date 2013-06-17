@@ -9,7 +9,7 @@
             <a href="<%- profile.get('entity') %>"><%= formatted.entity %></a>
           <% } %>
           
-          <% if (has_name) { %><%- profile.get('content.name') %><% } %>
+          <% if (has_name) { %><%- profile.get('name') %><% } %>
         </h2>
 
         <% if (has_name) { %>
@@ -20,8 +20,8 @@
           <p><%= formatted.bio %></p>
         </div>
 
-        <% if (profile.get('content.website_url')) { %>
-          <a href='<%- TentStatus.Helpers.ensureUrlHasScheme(profile.get('content.website_url')) %>'><%- formatted.website_url %></a>
+        <% if (profile.get('website')) { %>
+          <a href='<%- TentStatus.Helpers.ensureUrlHasScheme(profile.get('website')) %>'><%- formatted.website %></a>
         <% } %>
       </div>
     </div>

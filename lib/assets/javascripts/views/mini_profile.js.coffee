@@ -12,7 +12,7 @@ Marbles.Views.MiniProfile = class MiniProfileView extends Marbles.View
       return @render() unless view
       Marbles.DOM.setStyle(@el, 'top', "#{Marbles.DOM.offsetTop view.el}px")
       post = view.post()
-      entity = if post.get('is_repost') then post.get('content.entity') else post.get('entity')
+      entity = if post.get('is_repost') then post.get('entity') else post.get('entity')
       @fetchProfile(entity)
 
   fetchProfile: (entity) =>
@@ -42,5 +42,5 @@ Marbles.Views.MiniProfile = class MiniProfileView extends Marbles.View
     formatted:
       name: TentStatus.Helpers.truncate(profile.get('name') || TentStatus.Helpers.formatUrlWithPath(profile.get('entity')), 15)
       bio: TentStatus.Helpers.truncate(profile.get('bio'), 256)
-      website_url: TentStatus.Helpers.formatUrlWithPath(profile.get('website_url'))
+      website: TentStatus.Helpers.formatUrlWithPath(profile.get('website'))
 
