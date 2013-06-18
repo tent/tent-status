@@ -10,21 +10,9 @@ Marbles.Views.ProfileComponent = class ProfileComponentView extends Marbles.View
     if model = @profileModel()
       @render(@context(model))
     else
-      @render() # show something while we wait
-
+      # TODO: request profiles with feed
       model = new TentStatus.Models.MetaProfile(entity: @entity)
-      TentStatus.trigger('loading:start')
-      model.fetch {entity: @entity},
-        failure: (model, xhr) =>
-          @render()
-
-        success: (model, xhr) =>
-          @render(@context(model))
-
-          if Marbles.DOM.attr(@el, 'title') is @entity && (name = model.get('name'))
-            Marbles.DOM.setAttr(@el, 'title', name)
-
-        complete: => TentStatus.trigger('loading:stop')
+      @render()
 
   context: (profile = @profileModel()) =>
     profile: profile
