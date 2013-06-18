@@ -2,3 +2,4 @@ Marbles.Views.ProfileFollowingCount = class FollowingCountView extends Marbles.V
   @view_name: 'profile/following_count'
   @model: TentStatus.Models.Following
   @resource_name: {singular: 'following', plural: 'following'}
+  @path: '/following'
