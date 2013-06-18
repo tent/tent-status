@@ -1,9 +1,7 @@
-<td>
-  <form class='new-following-form'>
-    <input class="span6" name="entity" placeholder="Entity URI" type="text" />
-    <div class="alert alert-error hide"></div>
-  </form>
-</td>
-<td>
-  <input class="btn btn-primary" type="submit" value="Follow" />
-</td>
+<form class='form-horizontal'>
+  <div class='clearfix'>
+    <input class='input input-xlarge' style='width:82%' name="entity" placeholder="Entity URI" type="text" />
+    <input class="btn btn-primary pull-right" style='width:12%' type="submit" value="+" />
+  </div>
+  <div class="alert alert-error hide"></div>
+</form>

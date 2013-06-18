@@ -1,0 +1,6 @@
+<div class="row solid-container followings">
+  <h2>Following</h2>
+  <% if (TentStatus.config.authenticated) { %>
+    <div data-view='NewFollowingForm'></div>
+  <% } %>
+</div>

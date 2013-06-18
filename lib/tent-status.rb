@@ -11,12 +11,14 @@ module TentStatus
         https://tent.io/types/repost/v0
         https://tent.io/types/cursor/v0#https://tent.io/rels/status-mentions
         https://tent.io/types/cursor/v0#https://tent.io/rels/status-feed
+        https://tent.io/types/subscription/v0
       ),
       :write_post_types => %w(
         https://tent.io/types/status/v0
         https://tent.io/types/repost/v0
         https://tent.io/types/cursor/v0#https://tent.io/rels/status-mentions
         https://tent.io/types/cursor/v0#https://tent.io/rels/status-feed
+        https://tent.io/types/subscription/v0
       ),
       :scopes => %w()
     }

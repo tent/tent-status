@@ -23,10 +23,14 @@ _.extend TentStatus.config, {
     FOLLOWING: 'https://tent.io/types/relationship/v0#following'
     STATUS: 'https://tent.io/types/status/v0#'
     STATUS_REPLY: 'https://tent.io/types/status/v0#reply'
+    WILDCARD_STATUS: 'https://tent.io/types/status/v0'
     REPOST: 'https://tent.io/types/repost/v0'
     STATUS_REPOST: 'https://tent.io/types/repost/v0#https://tent.io/types/status/v0'
     REPLIES_CURSOR: 'https://tent.io/types/cursor/v0#https://tent.io/rels/status-replies'
     FEED_CURSOR: 'https://tent.io/types/cursor/v0#https://tent.io/rels/status-feed'
+    STATUS_SUBSCRIPTION: 'https://tent.io/types/subscription/v0#https://tent.io/types/status/v0'
+    REPOST_SUBSCRIPTION: 'https://tent.io/types/subscription/v0#https://tent.io/types/repost/v0'
+    WILDCARD_SUBSCRIPTION: 'https://tent.io/types/subscription/v0#all'
   PER_PAGE: 20
   CONVERSATION_PER_PAGE: 10
   FETCH_INTERVAL: 3000

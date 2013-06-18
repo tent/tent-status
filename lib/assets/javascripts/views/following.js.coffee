@@ -1,19 +1,10 @@
 Marbles.Views.Following = class FollowingView extends Marbles.View
-  @template_name: '_following'
+  @template_name: 'following'
   @view_name: 'following'
 
   constructor: (options = {}) ->
+    @container = Marbles.Views.container
     super
 
-    @following_cid = Marbles.DOM.attr(@el, 'data-cid')
-    @entity = @following().get('entity')
+    @render()
 
-  context: (following) =>
-    _.extend super,
-      cid: following.cid
-
-  following: =>
-    TentStatus.Models.Following.find(cid: @following_cid)
-
-  profile: =>
-    new Marbles.Object entity: @entity

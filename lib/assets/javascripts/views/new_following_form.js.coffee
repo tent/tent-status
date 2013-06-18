@@ -25,13 +25,12 @@ Marbles.Views.NewFollowingForm = class NewFollowingFormView extends Marbles.View
     return if @frozen
 
     entity = @buildEntity(@elements.input.value)
-    data = {entity: entity}
 
     @clearErrors()
-    return unless @validate(data)
+    return unless @validate(entity)
     @disable()
 
-    TentStatus.Models.Following.create data,
+    TentStatus.Models.Following.create entity,
       error: (res, xhr) =>
         @enable()
         @showErrors([{ entity: "Error: #{res?.error}" }])
@@ -73,6 +72,7 @@ Marbles.Views.NewFollowingForm = class NewFollowingFormView extends Marbles.View
         input = Marbles.DOM.querySelector("[name=#{name}]", @el)
         Marbles.DOM.addClass(input, 'error')
         error_messages.push(msg)
+    console.log(error_messages.join("\n"))
     @elements.errors.innerHTML = error_messages.join("<br/>")
     Marbles.DOM.show(@elements.errors)
 
