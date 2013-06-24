@@ -64,7 +64,7 @@ GIT
 
 GIT
   remote: git://github.com/tent/rack-putty.git
-  revision: 182c2107fd692f2bf5bdd31e2a3b21e73668aae5
+  revision: f5769196226018fc87a9f8dcf1eeddc05c45bd6f
   branch: master
   specs:
     rack-putty (0.0.1)
@@ -81,7 +81,7 @@ GIT
 
 GIT
   remote: git://github.com/tent/tent-client-ruby.git
-  revision: 34ae144909ea4098d81ae723a806cf4b2af1afac
+  revision: 96e5ae4d48be67abacff9d5605d26f6580b9c22e
   branch: 0.3
   specs:
     tent-client (0.2.0)
