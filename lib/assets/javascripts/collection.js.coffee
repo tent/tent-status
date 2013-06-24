@@ -33,7 +33,6 @@ TentStatus.Collection = class Collection extends Marbles.Collection
     TentStatus.tent_client.post.list(params: params, callback: ((res, xhr) => @fetchComplete(params, options, res, xhr)))
 
   fetchComplete: (params, options, res, xhr) =>
-    console.log('fetch complete', res, xhr.status)
     models = null
     if xhr.status == 200
       # success
