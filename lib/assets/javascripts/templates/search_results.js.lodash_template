@@ -1,1 +1,0 @@
-<% if (results) { %><%= partials['_post'].render(context) %><% } %>

@@ -4,8 +4,4 @@
   </div>
 
   <input type='submit' class="btn btn-primary pull-right post-button" data-disable_with="Searching..." value="Search" />
-
-  <div class='show-option-picker' data-view='SearchFormAdvancedOptionsToggle'></div>
-
-  <div class='advanced-options' data-view='SearchFormAdvancedOptions'></div>
 </form>

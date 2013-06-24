@@ -22,10 +22,10 @@ Marbles.Views.SearchFetchPool = class SearchFetchPoolView extends Marbles.View
 
   initSearchResultsView: (results_feed_view) =>
     @results_feed_view_cid = results_feed_view.cid
-    results_collection = results_feed_view.results_collection
+    results_collection = results_feed_view.postsCollection()
     results_collection.on 'reset', =>
       @results_collection = new TentStatus.Collections.SearchResults api_root: results_collection.api_root
-      @latest_published_at = (results_collection.first()?.get('published_at') || ((new Date * 1)/1000))
+      @latest_published_at = (results_collection.first()?.get('published_at') || (new Date * 1))
       @params = results_feed_view.params
       @fetch_interval.start()
 
@@ -38,7 +38,7 @@ Marbles.Views.SearchFetchPool = class SearchFetchPoolView extends Marbles.View
     return if @frozen
 
     params = _.extend {}, @params, {
-      since_time: @latest_published_at
+      since: @latest_published_at
     }
     delete params.max_time
 
@@ -67,7 +67,7 @@ Marbles.Views.SearchFetchPool = class SearchFetchPoolView extends Marbles.View
     last_result_cid = _.last(@results_collection.model_ids)
 
     results_feed_view.prependRender(@results_collection.models())
-    results_feed_view.results_collection.prependIds(@results_collection.model_ids)
+    results_feed_view.postsCollection().prependIds(@results_collection.model_ids)
     @results_collection.empty()
 
     @render()

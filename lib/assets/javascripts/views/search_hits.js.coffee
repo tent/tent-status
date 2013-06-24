@@ -6,8 +6,9 @@ Marbles.Views.SearchHits = class SearchHitsView extends Marbles.View
     super
 
     options.parent_view.on 'init:SearchResults', (search_results_view) =>
-      search_results_view.results_collection.once 'fetch:success', @fetchSuccess
-      search_results_view.results_collection.once 'fetch:error', @fetchError
+      results_collection = search_results_view.postsCollection()
+      results_collection.once 'fetch:success', @fetchSuccess
+      results_collection.once 'fetch:error', @fetchError
 
   fetchSuccess: (collection, res, xhr) =>
     @render(@context(res))
