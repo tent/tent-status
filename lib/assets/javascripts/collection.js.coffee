@@ -21,19 +21,6 @@ TentStatus.Collection = class Collection extends Marbles.Collection
     @fetch(next_params, _.extend({ append: true }, options))
 
   fetch: (params = {}, options = {}) =>
-    complete = (res, xhr) =>
-      models = null
-      if xhr.status in [200...300]
-        models = @fetchSuccess(params, options, res, xhr)
-        options.success?(models, res, xhr, params, options)
-        @trigger('fetch:success', models, res, xhr, params, options)
-        # success
-      else
-        options.failure?(res, xhr, params, options)
-        @trigger('fetch:failure', res, xhr, params, options)
-      options.complete?(models, res, xhr, params, options)
-      @trigger('fetch:complete', models, res, xhr, params, options)
-
     params = _.extend {
       entity: TentStatus.config.current_user.entity
       types: [@constructor.model.post_type]
@@ -43,7 +30,21 @@ TentStatus.Collection = class Collection extends Marbles.Collection
     params.types = [params.types] unless _.isArray(params.types)
     params.types = _.map params.types, (type) => (new TentClient.PostType type).toURIString()
 
-    TentStatus.tent_client.post.list(params: params, callback: complete)
+    TentStatus.tent_client.post.list(params: params, callback: ((res, xhr) => @fetchComplete(params, options, res, xhr)))
+
+  fetchComplete: (params, options, res, xhr) =>
+    console.log('fetch complete', res, xhr.status)
+    models = null
+    if xhr.status == 200
+      # success
+      models = @fetchSuccess(params, options, res, xhr)
+      options.success?(models, res, xhr, params, options)
+      @trigger('fetch:success', models, res, xhr, params, options)
+    else
+      options.failure?(res, xhr, params, options)
+      @trigger('fetch:failure', res, xhr, params, options)
+    options.complete?(models, res, xhr, params, options)
+    @trigger('fetch:complete', models, res, xhr, params, options)
 
   fetchSuccess: (params, options, res, xhr) =>
     @pagination = _.extend({
