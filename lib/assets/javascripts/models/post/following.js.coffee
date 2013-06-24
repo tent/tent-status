@@ -23,6 +23,7 @@ TentStatus.Models.Following = class FollowingModel extends TentStatus.Models.Pos
         type: TentStatus.config.POST_TYPES.WILDCARD_STATUS
       mentions: [{ entity: entity }]
       permissions:
+        public: true
         entities: [entity]
     }, {
       success: (subscription) =>
@@ -39,6 +40,7 @@ TentStatus.Models.Following = class FollowingModel extends TentStatus.Models.Pos
         type: TentStatus.config.POST_TYPES.REPOST
       mentions: [{ entity: entity }]
       permissions:
+        public: true
         entities: [entity]
     }, {
       success: (subscription) =>
