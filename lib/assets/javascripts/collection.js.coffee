@@ -52,6 +52,15 @@ TentStatus.Collection = class Collection extends Marbles.Collection
     }, res.pages)
 
     data = res.posts
+    profiles = res.profiles
+
+    if profiles
+      for entity, attrs of profiles
+        if model = TentStatus.Models.MetaProfile.find(entity: entity, fetch: false)
+          for k,v of attrs
+            model.set(k, v)
+        else
+          model = new TentStatus.Models.MetaProfile(_.extend({entity: entity}, attrs))
 
     models = if options.append
       @appendJSON(data)
