@@ -15,6 +15,11 @@ TentStatus.Collection = class Collection extends Marbles.Collection
   postTypes: =>
     @options.params.types || []
 
+  fetchPrev: (options = {}) =>
+    return false unless @pagination.prev
+    prev_params = Marbles.History::parseQueryParams(@pagination.prev)
+    @fetch(prev_params, _.extend({ prepend: true }, options))
+
   fetchNext: (options = {}) =>
     return false unless @pagination.next
     next_params = Marbles.History::parseQueryParams(@pagination.next)

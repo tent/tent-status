@@ -15,6 +15,8 @@
 #= require_tree ./models
 #= require ./collection
 #= require ./unified_collection
+#= require ./collection_pool
+#= require ./unified_collection_pool
 #= require_tree ./collections
 #= require_tree ./helpers
 #= require helpers/extract-urls

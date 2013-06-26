@@ -4,60 +4,47 @@ Marbles.Views.FetchPostsPool = class FetchPostsPoolView extends Marbles.View
 
   constructor: (options = {}) ->
     super
-    return console.warn("TODO: Implement FetchPostsPool")
 
     @on 'ready', @bindLink
 
-    @fetch_interval = new TentStatus.FetchInterval fetch_callback: @fetchPosts
-    @parentView().on 'init-view', (view_class_name, posts_feed_view) =>
-      return unless view_class_name.match /PostsFeed$/
-      @posts_feed_view_cid = posts_feed_view.cid
-      posts_feed_view.posts_collection.once 'fetch:success', (posts_collection) =>
-        @posts_collection = new TentStatus.Collections.Posts
-        @posts_collection.client = posts_collection.client
-        @posts_collection.params = posts_collection.params
-        @posts_collection.pagination_params = {
-          prev: posts_collection.pagination_params?.prev || {}
-        }
-        @fetch_interval.start()
+    @parentView().on('init-view', @parentViewInit)
 
-    TentStatus.Models.Post.on 'create:success', (post, xhr) =>
-      return unless @posts_collection
+  parentViewInit: (view_class_name, view) =>
+    return unless view_class_name.match /PostsFeed$/
 
-      # TODO: find another way of doing this
-      @posts_collection.ignoreCid(post.cid)
+    @parentView().off('init-view', @parentViewInit)
 
-  fetchPosts: =>
-    @posts_collection.fetchPrev success: @fetchSuccess, error: @fetchError, prepend: true
+    @posts_feed_view_cid = view.cid
 
-  fetchSuccess: (posts) =>
-    if posts.length
-      @fetch_interval.reset()
-      @render()
-    else
-      @fetch_interval.increaseDelay()
+    posts_feed_collection = view.postsCollection() # UnifiedCollection
+    @pool = new TentStatus.UnifiedCollectionPool posts_feed_collection
 
-  fetchError: =>
-    @fetch_interval.increaseDelay()
+    @pool.on 'pool:expand', @poolExpanded
+    @pool.on 'pool:overflow', @poolExpanded
+
+  poolExpanded: (size) =>
+    @size = size
 
   emptyPool: =>
     posts_feed_view = Marbles.View.instances.all[@posts_feed_view_cid]
     return unless posts_feed_view
 
-    last_post_cid = _.last(@posts_collection.model_ids)
+    collection = @pool.shadowCollection()
 
-    posts_feed_view.prependRender(@posts_collection.models())
-    posts_feed_view.posts_collection.prependModels(@posts_collection.model_ids)
-    @posts_collection.empty()
+    posts_feed_view.prependRender(collection.models())
+    posts_feed_view.posts_collection.prependIds(collection.model_ids)
 
-    # Update Mentions Profile Cursor / Unread Badge
-    if posts_feed_view.constructor.view_name == 'mentions_posts_feed'
-      posts_feed_view.updateProfileCursor?(@posts_collection)
+    @pool.reset()
 
     @render()
 
   context: =>
-    posts_count: @posts_collection.model_ids.length
+    if !@size
+      posts_count: null
+    else if @size <= @pool.MAX_OVERFLOW_SIZE
+      posts_count: @size
+    else
+      posts_count: "#{@pool.MAX_OVERFLOW_SIZE}+"
 
   bindLink: =>
     link_element = Marbles.DOM.querySelector('.fetch-posts-pool', @el)
@@ -66,8 +53,7 @@ Marbles.Views.FetchPostsPool = class FetchPostsPoolView extends Marbles.View
       @emptyPool()
 
   render: =>
-    context = @context()
-    super(context)
+    super
 
     if context.posts_count
       TentStatus.setPageTitle prefix: "(#{context.posts_count})"

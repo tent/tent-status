@@ -13,7 +13,8 @@ Marbles.Views.SearchResults = class SearchResultsView extends Marbles.Views.Post
 
     @on 'ready', @initAutoPaginate
 
-    setImmediate => @fetch(options.parent_view.params)
+    @params = options.parent_view.params
+    setImmediate => @fetch(@params)
 
   postsCollection: =>
     @_posts_collection ?= new TentStatus.Collections.SearchResults api_root: TentStatus.config.services.search_api_root
