@@ -122,7 +122,7 @@ Marbles.Views.PostsFeed = class PostsFeedView extends Marbles.View
     Marbles.DOM.prependChild(@el, fragment)
 
   initAutoPaginate: =>
-    TentStatus.on 'window:scroll', @windowScrolled
+    TentStatus.on 'window:scroll',  => @windowScrolled()
     setTimeout @windowScrolled, 100
 
   shouldFetchNextPage: =>
@@ -135,8 +135,12 @@ Marbles.Views.PostsFeed = class PostsFeedView extends Marbles.View
 
     last_post_offset_top <= bottom_position
 
-  windowScrolled: (should_fetch_next_page = @shouldFetchNextPage()) =>
-    return unless should_fetch_next_page
-    clearTimeout @_auto_paginate_timeout
-    @_auto_paginate_timeout = setTimeout @fetchNext, 0 unless @last_page
+  windowScrolled: (should_fetch_next_page) =>
+    clearTimeout @_window_scrolled_timeout
+    @_window_scrolled_timeout = setTimeout =>
+      should_fetch_next_page ?= @shouldFetchNextPage()
+      return unless should_fetch_next_page
+      clearTimeout @_auto_paginate_timeout
+      @_auto_paginate_timeout = setTimeout @fetchNext, 0 unless @last_page
+    , 40
 
