@@ -46,14 +46,14 @@ module TentStatus
           :get_app => AppLookup,
           :on_app_created => AppCreate,
           :app => {
-            :name             => TentStatus.settings[:name],
-            :description      => TentStatus.settings[:description],
-            :icon             => TentStatus.settings[:icon],
-            :url              => TentStatus.settings[:url],
-            :redirect_uri     => TentStatus.settings[:redirect_uri],
-            :read_post_types  => TentStatus.settings[:read_post_types],
-            :write_post_types => TentStatus.settings[:write_post_types],
-            :scopes           => TentStatus.settings[:scopes]
+            :name         => TentStatus.settings[:name],
+            :description  => TentStatus.settings[:description],
+            :icon         => TentStatus.settings[:icon],
+            :url          => TentStatus.settings[:url],
+            :redirect_uri => TentStatus.settings[:redirect_uri],
+            :read_types   => TentStatus.settings[:read_types],
+            :write_types  => TentStatus.settings[:write_types],
+            :scopes       => TentStatus.settings[:scopes]
           }
         }
       end

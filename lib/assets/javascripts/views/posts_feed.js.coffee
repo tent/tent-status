@@ -11,10 +11,10 @@ Marbles.Views.PostsFeed = class PostsFeedView extends Marbles.View
 
   initialize: (options = {}) =>
     @entity = options.entity || TentStatus.config.current_user.entity
-    @post_types = options.post_types || TentStatus.config.feed_types
+    @types = options.types || TentStatus.config.feed_types
 
     default_queries = [{ profiles: 'entity' }, { types: [TentStatus.config.POST_TYPES.STATUS_REPLY], mentions: 'friends', profiles: 'entity' }]
-    @feed_queries = _.map options.feed_queries || default_queries, (q) => q.types ?= @post_types; q
+    @feed_queries = _.map options.feed_queries || default_queries, (q) => q.types ?= @types; q
     @collection_contexts = _.map @feed_queries, (feed_params) =>
       'feed+' + sjcl.codec.base64.fromBits(sjcl.codec.utf8String.toBits(JSON.stringify(feed_params)))
 

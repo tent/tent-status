@@ -3,7 +3,7 @@ Marbles.Views.RepostsPostsFeed = class RepostsPostsFeedView extends Marbles.View
 
   initialize: (options = {}) =>
     options.entity = options.parent_view.entity
-    options.post_types = TentStatus.config.repost_types
+    options.types = TentStatus.config.repost_types
     options.feed_queries = [{
       mentions: options.entity
     }]

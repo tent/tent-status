@@ -2,7 +2,7 @@ Marbles.Views.SearchResults = class SearchResultsView extends Marbles.Views.Post
   @view_name: 'search_results'
 
   initialize: (options = {}) =>
-    @post_types = options.post_types || TentStatus.config.feed_types
+    @types = options.types || TentStatus.config.feed_types
 
     # fire focus event for first post view in feed (caught by author info view)
     # TODO: find a better way to do this!

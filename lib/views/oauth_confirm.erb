@@ -11,8 +11,8 @@
     </thead>
 
     <tbody>
-      <% read_types = env['oauth.app'][:content][:post_types][:read].sort %>
-      <% write_types = env['oauth.app'][:content][:post_types][:write].sort %>
+      <% read_types = env['oauth.app'][:content][:types][:read].sort %>
+      <% write_types = env['oauth.app'][:content][:types][:write].sort %>
       <% [read_types.size, write_types.size].max.times do |index| %>
         <tr>
           <td>

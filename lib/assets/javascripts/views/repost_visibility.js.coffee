@@ -2,12 +2,12 @@ Marbles.Views.RepostVisibility = class RepostVisibilityView extends Marbles.View
   @template_name: 'repost_visibility'
   @view_name: 'repost_visibility'
 
-  @post_types: TentStatus.config.repost_types
+  @types: TentStatus.config.repost_types
 
   constructor: ->
     super
 
-    @collection_context = 'repost-visibility+' + sjcl.codec.base64.fromBits(sjcl.codec.utf8String.toBits(JSON.stringify(@constructor.post_types)))
+    @collection_context = 'repost-visibility+' + sjcl.codec.base64.fromBits(sjcl.codec.utf8String.toBits(JSON.stringify(@constructor.types)))
 
     @render()
     @fetchReposts()
@@ -22,7 +22,7 @@ Marbles.Views.RepostVisibility = class RepostVisibilityView extends Marbles.View
     collection ?= new TentStatus.Collections.Reposts(entity: post.get('entity'), post_id: post.get('id'), context: @collection_context)
     collection.options.params = {
       mentions: post.get('entity') + '+' + post.get('id')
-      types: @constructor.post_types
+      types: @constructor.types
     }
     @_posts_collection_cid = collection.cid
 

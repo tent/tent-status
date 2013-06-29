@@ -7,7 +7,7 @@ class BackgroundMentionsCursor extends Marbles.Object
     client.get "/profile/#{encodeURIComponent TentStatus.config.PROFILE_TYPES.CURSOR}", null,
       success: (res, xhr) =>
         reset = false
-        for type in TentStatus.config.post_types
+        for type in TentStatus.config.types
           unless res.mentions?[type]
             @resetProfileCursor(type, res)
             reset = true
@@ -20,7 +20,7 @@ class BackgroundMentionsCursor extends Marbles.Object
           @resetProfileCursorForAllTypes()
 
   resetProfileCursorForAllTypes: (cursor) =>
-    for type in TentStatus.config.post_types
+    for type in TentStatus.config.types
       @resetProfileCursor(type, cursor)
 
   resetProfileCursor: (type, cursor) =>
