@@ -68,9 +68,9 @@ module TentStatus
       b.use RenderView, :view => :iframe_cache
     end
 
-    get '/config.js' do |b|
+    get '/config.json' do |b|
       b.use Authentication
-      b.use RenderView, :view => :'config.js', :content_type => "application/javascript"
+      b.use RenderView, :view => :'config.json', :content_type => "application/json"
     end
 
     get '*' do |b|

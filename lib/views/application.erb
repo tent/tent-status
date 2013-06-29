@@ -17,7 +17,7 @@
     <title><%= TentStatus.settings[:name] %></title>
   </head>
 
-  <body>
+  <% if block_given? %><body><% else %><body data-config-url="<%= TentStatus.settings[:json_config_url] %>"><% end %>
     <div class='v-navbar-fixed-left'>
       <ul class='unstyled custom-container'>
         <li class='nav-selected'>
@@ -58,7 +58,6 @@
     </div>
 
     <% unless block_given? %>
-      <script type='application/javascript' src='<%= full_path('config.js') %>'></script>
       <script type='application/javascript' src='<%= asset_path('application.js') %>'></script>
       <iframe id='iframe-cache' src='<%= full_path('/iframe-cache') %>'></iframe>
     <% end %>

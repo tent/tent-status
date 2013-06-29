@@ -2,12 +2,12 @@
 #= require moment
 #= require lodash
 #= require marbles
+#= require ./config
 #= require sjcl
 #= require tent-client
 #= require tent-markdown
 #= require textarea_cursor_position
 #= require ./cache
-#= require ./config
 #= require_tree ./templates
 #= require_self
 #= require ./fetch_interval
@@ -24,12 +24,6 @@
 #= require_tree ./routers
 
 Marbles.View.templates = LoDashTemplates
-
-TentStatus.tent_client = new TentClient(
-  TentStatus.config.current_user.entity,
-  credentials: TentStatus.config.current_user.credentials
-  server_meta_post: TentStatus.config.current_user.server_meta_post
-)
 
 _.extend TentStatus, Marbles.Events, {
   Models: {}
@@ -86,3 +80,6 @@ _.extend TentStatus, Marbles.Events, {
     return unless TentStatus.config.app_domain
     Marbles.history.navigate('/site-feed', {trigger:true})
 }
+
+TentStatus.trigger('config:ready') if TentStatus.config_ready
+

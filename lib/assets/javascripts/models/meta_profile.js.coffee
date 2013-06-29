@@ -19,11 +19,12 @@ TentStatus.Models.MetaProfile = class  MetaProfileModel extends Marbles.Model
     unless @get('avatar_url')
       @set('avatar_url', TentStatus.config.DEFAULT_AVATAR_URL)
 
-server_meta_post = TentStatus.config.current_user.server_meta_post
-TentStatus.meta_profile = new MetaProfileModel(_.extend(
-  {
-    entity: server_meta_post.content.entity,
-    avatar_digest: server_meta_post.attachments?[0]?.digest
-  },
-  server_meta_post.content.profile || {}
-))
+TentStatus.once 'config:ready', ->
+  server_meta_post = TentStatus.config.current_user.server_meta_post
+  TentStatus.meta_profile = new MetaProfileModel(_.extend(
+    {
+      entity: server_meta_post.content.entity,
+      avatar_digest: server_meta_post.attachments?[0]?.digest
+    },
+    server_meta_post.content.profile || {}
+  ))

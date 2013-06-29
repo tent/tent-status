@@ -14,9 +14,8 @@ moment.relativeTime = {
   yy: "%dy"
 }
 
-@TentStatus ?= {}
-TentStatus.config ?= {}
-_.extend TentStatus.config, {
+window.TentStatus ?= {}
+TentStatus.config = {
   POST_TYPES:
     META: "https://tent.io/types/meta/v0#"
     FOLLOWER: 'https://tent.io/types/relationship/v0#follower'
@@ -41,8 +40,6 @@ _.extend TentStatus.config, {
 
 TentStatus.config.PLACEHOLDER_AVATAR_URL = TentStatus.config.DEFAULT_AVATAR_URL
 
-TentStatus.config.authenticated = !!TentStatus.config.current_user
-
 TentStatus.config.repost_types = [
   TentStatus.config.POST_TYPES.STATUS_REPOST
 ]
@@ -55,4 +52,31 @@ TentStatus.config.subscription_types = [
   TentStatus.config.POST_TYPES.STATUS_SUBSCRIPTION,
   TentStatus.config.POST_TYPES.REPOST_SUBSCRIPTION
 ]
+
+json_config_url = Marbles.DOM.attr(document.body, 'data-config-url')
+unless json_config_url
+	throw "data-config-url must be set on <body> and point to a valid json config file"
+
+new Marbles.HTTP(
+	method: 'GET'
+	url: json_config_url
+	callback: (res, xhr) ->
+    if xhr.status != 200
+      throw "failed to load json config via GET #{json_config_url}: #{xhr.status} #{JSON.stringify(res)}"
+
+    TentStatus.config ?= {}
+    for key, val of JSON.parse(res)
+      TentStatus.config[key] = val
+
+    TentStatus.config.authenticated = !!TentStatus.config.current_user
+
+    TentStatus.tent_client = new TentClient(
+      TentStatus.config.current_user.entity,
+      credentials: TentStatus.config.current_user.credentials
+      server_meta_post: TentStatus.config.current_user.server_meta_post
+    )
+
+    TentStatus.config_ready = true
+    TentStatus.trigger?('config:ready')
+)
 

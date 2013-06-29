@@ -74,6 +74,7 @@ module TentStatus
 
       def erb(view_name, binding, &block)
         view_paths = Array(self.class.view_roots).map { |view_root| File.join(view_root, "#{view_name}.erb") }
+        view_paths.concat Array(self.class.view_roots).map { |view_root| File.join(view_root, "#{view_name}") }
         return unless view_path = view_paths.find { |path| File.exists?(path) }
 
         template = ERB.new(File.read(view_path))

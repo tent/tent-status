@@ -1,2 +1,3 @@
 #= require ./tent_status
-TentStatus.run()
+
+TentStatus.once 'config:ready', -> TentStatus.run()
