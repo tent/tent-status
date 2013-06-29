@@ -51,3 +51,8 @@ TentStatus.config.feed_types = [
   TentStatus.config.POST_TYPES.STATUS
 ].concat(TentStatus.config.repost_types)
 
+TentStatus.config.subscription_types = [
+  TentStatus.config.POST_TYPES.STATUS_SUBSCRIPTION,
+  TentStatus.config.POST_TYPES.REPOST_SUBSCRIPTION
+]
+

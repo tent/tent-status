@@ -1,0 +1,5 @@
+<ul class='unstyled'>
+  <% subscriptions.forEach(function(subscription) { %>
+    <%= partials['subscription'].render({ subscription: subscription }) %>
+  <% }) %>
+</ul>

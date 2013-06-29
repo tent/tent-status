@@ -5,10 +5,13 @@ TentStatus.Collection = class Collection extends Marbles.Collection
     super(_.extend(unique: true, options))
 
   @buildModel: (attrs, options = {}) ->
-    if attrs.type == TentStatus.config.POST_TYPES.STATUS
-      options.model = TentStatus.Models.StatusPost
-    else if attrs.type == TentStatus.config.POST_TYPES.STATUS_REPLY
-      options.model = TentStatus.Models.StatusReplyPost
+    switch attrs.type
+      when TentStatus.config.POST_TYPES.STATUS
+        options.model = TentStatus.Models.StatusPost
+      when TentStatus.config.POST_TYPES.STATUS_REPLY
+        options.model = TentStatus.Models.StatusReplyPost
+      when TentStatus.config.POST_TYPES.STATUS_SUBSCRIPTION, TentStatus.config.POST_TYPES.REPOST_SUBSCRIPTION
+        options.model = TentStatus.Models.Subscription
 
     super(attrs, options)
 

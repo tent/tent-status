@@ -3,4 +3,6 @@
   <% if (TentStatus.config.authenticated) { %>
     <div data-view='NewFollowingForm'></div>
   <% } %>
+
+  <div data-view='SubscriptionsFeed'></div>
 </div>

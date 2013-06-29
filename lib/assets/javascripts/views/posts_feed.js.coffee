@@ -46,6 +46,8 @@ Marbles.Views.PostsFeed = class PostsFeedView extends Marbles.View
     return false if post.get('type') is TentStatus.config.POST_TYPES.STATUS_REPLY
     true
 
+  initFeedQueries: =>
+
   postsCollection: =>
     @unified_posts_collection || @initPostsCollection()
 
