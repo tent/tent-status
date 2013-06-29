@@ -60,7 +60,7 @@ module TentStatus
         return env unless env['response.view']
 
         status = env['response.status'] || 200
-        headers = { 'Content-Type' => 'text/html' }.merge(env['response.headers'] || Hash.new)
+        headers = { 'Content-Type' => (@options[:content_type] || 'text/html') }.merge(env['response.headers'] || Hash.new)
         body = render(env)
 
         unless body
