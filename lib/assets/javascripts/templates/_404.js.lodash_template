@@ -6,7 +6,7 @@
     <% } %>
 
     <% if (subtext) { %>
-      <h4 style="text-align:center"><%- subtext %></h4>
+      <h4 class="text-centered"><%- subtext %></h4>
     <% } %>
 
     <% if (text == null) { %>
