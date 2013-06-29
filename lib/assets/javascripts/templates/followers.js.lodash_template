@@ -1,5 +1,5 @@
 <div class="row solid-container followers">
-  <h2>Followers</h2>
+  <h2>Subscribers</h2>
   <table class="table">
     <tbody>
       <% if (followers) { %><%= partials['_follower'].render(context) %><% } %>

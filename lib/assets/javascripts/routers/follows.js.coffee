@@ -1,37 +1,33 @@
 TentStatus.Routers.follows = new class FollowsRouter extends Marbles.Router
   routes: {
-    "following" : "following"
-    ":entity/following" : "following"
-    "followers" : "followers"
-    ":entity/followers" : "followers"
+    "subscriptions"         : "subscriptions"
+    ":entity/subscriptions" : "subscriptions"
+    "subscribers"           : "subscribers"
+    ":entity/subscribers"   : "subscribers"
   }
 
   actions_titles: {
-    'following' : 'Following'
-    'followers' : 'Followers'
+    'subscriptions' : 'Subscriptions'
+    'subscribers' : 'Subscribers'
   }
 
-  following: (params) =>
+  subscriptions: (params) =>
     if TentStatus.Helpers.isAppSubdomain()
       return @navigate('/', {trigger: true, replace: true})
-
-    TentStatus.setPageTitle page: @actions_titles.following
 
     new Marbles.Views.Following entity: (params.entity || TentStatus.config.domain_entity.toString())
 
-    title = @actions_titles.following
+    title = @actions_titles.subscriptions
     title = "#{TentStatus.Helpers.formatUrlWithPath(params.entity)} - #{title}" if params.entity
     TentStatus.setPageTitle page: title
 
-  followers: (params) =>
+  subscribers: (params) =>
     if TentStatus.Helpers.isAppSubdomain()
       return @navigate('/', {trigger: true, replace: true})
 
-    TentStatus.setPageTitle page: @actions_titles.followers
-
     new Marbles.Views.Followers entity: (params.entity || TentStatus.config.domain_entity.toString())
 
-    title = @actions_titles.followers
+    title = @actions_titles.subscribers
     title = "#{TentStatus.Helpers.formatUrlWithPath(params.entity)} - #{title}" if params.entity
     TentStatus.setPageTitle page: title
 
