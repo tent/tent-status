@@ -1,4 +1,0 @@
-<form method="POST follow-button">
-  <input name="entity" type="hidden" value="<%= entity %>" />
-  <input class="btn <% if (is_self) { %>green<% } %><% if (is_following) { %>btn-danger<% } %><% if (is_following == null) { %><% if (is_self == null) { %>btn-primary<% } %><% } %>" <% if (is_self) { %>disabled<% } %> type="submit" value="<% if (is_self) { %>You<% } %><% if (is_following) { %>Unfollow<% } %><% if (is_following == null) { %><% if (is_self == null) { %>Follow<% } %><% } %>" <% if (is_following) { %>data-confirm="Unfollow <%= entity %>?"<% } %> />
-</form>
