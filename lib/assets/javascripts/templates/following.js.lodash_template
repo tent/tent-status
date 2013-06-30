@@ -4,5 +4,7 @@
     <div data-view='NewFollowingForm'></div>
   <% } %>
 
-  <div data-view='SubscriptionsFeed'></div>
+  <div class='row clearfix'>&nbsp;</div>
+
+  <div class='row' data-view='SubscriptionsFeed'></div>
 </div>

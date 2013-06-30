@@ -14,6 +14,13 @@ Marbles.Views.SubscriptionsFeed = class SubscriptionsFeedView extends Marbles.Vi
   shouldAddPostToFeed: (post) =>
     true
 
+  groupSubscriptions: (subscriptions) =>
+    _.inject subscriptions, ((memo, subscription) =>
+      memo[subscription.targetEntity()] ?= []
+      memo[subscription.targetEntity()].push(subscription)
+      memo
+    ), {}
+
   context: (subscriptions = @postsCollection().models()) =>
-    subscriptions: subscriptions
+    subscriptions: @groupSubscriptions(subscriptions)
 

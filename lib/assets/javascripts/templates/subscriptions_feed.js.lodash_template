@@ -1,5 +1,5 @@
 <ul class='unstyled'>
-  <% subscriptions.forEach(function(subscription) { %>
-    <%= partials['subscription'].render({ subscription: subscription }) %>
+  <% _.forEach(subscriptions, function(subscriptions, entity) { %>
+    <%= partials['subscription'].render({ entity: entity, subscriptions: subscriptions }) %>
   <% }) %>
 </ul>
