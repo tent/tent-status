@@ -31,7 +31,7 @@ Marbles.Views.NewFollowingForm = class NewFollowingFormView extends Marbles.View
     @disable()
 
     TentStatus.Models.Following.create entity,
-      error: (res, xhr) =>
+      failure: (res, xhr) =>
         @enable()
         @showErrors([{ entity: "Error: #{res?.error}" }])
       success: (following) =>

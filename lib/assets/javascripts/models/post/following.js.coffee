@@ -5,47 +5,45 @@ TentStatus.Models.Following = class FollowingModel extends TentStatus.Models.Pos
     null
 
   @create: (entity, options) ->
-    options.error(error: "Not implemented")
-
     # TODO:
-    # - create subscription mentioning entity for wildcard status type
-    # - create subscription mentioning entity for status reposts
-    #
     # - show "pending" placeholder in list
     # - poll until relationship# post exists
     # - if delivery failure post exists for relationship, show warning/error
 
-    ##
-    # Create subscription for status posts
-    TentStatus.Models.Subscription.create({
-      type: TentStatus.config.POST_TYPES.STATUS_SUBSCRIPTION
-      content:
-        type: TentStatus.config.POST_TYPES.WILDCARD_STATUS
-      mentions: [{ entity: entity }]
-      permissions:
-        public: true
-        entities: [entity]
-    }, {
-      success: (subscription) =>
-        console.log('subscription created', subscription)
+    num_pending = 0
+    errors = []
+    subscriptions = []
+    completeFn = (subscription, res, xhr) =>
+      num_pending -= 1
 
-      failure: (res, xhr) =>
-    })
+      if xhr.status == 200
+        subscriptions.push(subscription)
+      else
+        errors.push(error: res?.error || "#{xhr.status}: #{JSON.stringify(res)}")
 
-    ##
-    # Create subscription for reposts
-    TentStatus.Models.Subscription.create({
-      type: TentStatus.config.POST_TYPES.REPOST_SUBSCRIPTION
-      content:
-        type: TentStatus.config.POST_TYPES.REPOST
-      mentions: [{ entity: entity }]
-      permissions:
-        public: true
-        entities: [entity]
-    }, {
-      success: (subscription) =>
-        console.log('subscription created', subscription)
+      if num_pending <= 0
+        if errors.length
+          options.failure?(errors)
+        else
+          options.success?(subscriptions)
 
-      failure: (res, xhr) =>
-    })
+    for type in TentStatus.config.subscription_types
+      do (type) =>
+        type = new TentClient.PostType(type)
+        subscription_type = new TentClient.PostType(TentStatus.config.POST_TYPES.SUBSCRIPTION)
+        subscription_type.setFragment(type.toStringWithoutFragment())
+
+        num_pending += 1
+        TentStatus.Models.Subscription.create({
+          type: subscription_type.toString()
+          content:
+            type: type.toString()
+          mentions: [{ entity: entity }]
+          permissions:
+            public: true
+            entities: [entity]
+        }, {
+          complete: (subscription, res, xhr) =>
+            completeFn(subscription, res, xhr)
+        })
 

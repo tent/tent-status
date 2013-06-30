@@ -27,6 +27,7 @@ TentStatus.config = {
     STATUS_REPOST: 'https://tent.io/types/repost/v0#https://tent.io/types/status/v0'
     REPLIES_CURSOR: 'https://tent.io/types/cursor/v0#https://tent.io/rels/status-replies'
     FEED_CURSOR: 'https://tent.io/types/cursor/v0#https://tent.io/rels/status-feed'
+    SUBSCRIPTION: 'https://tent.io/types/subscription/v0#'
     STATUS_SUBSCRIPTION: 'https://tent.io/types/subscription/v0#https://tent.io/types/status/v0'
     REPOST_SUBSCRIPTION: 'https://tent.io/types/subscription/v0#https://tent.io/types/repost/v0'
     WILDCARD_SUBSCRIPTION: 'https://tent.io/types/subscription/v0#all'
@@ -41,16 +42,22 @@ TentStatus.config = {
 TentStatus.config.PLACEHOLDER_AVATAR_URL = TentStatus.config.DEFAULT_AVATAR_URL
 
 TentStatus.config.repost_types = [
-  TentStatus.config.POST_TYPES.STATUS_REPOST
+  TentStatus.config.POST_TYPES.STATUS_REPOST,
 ]
 
 TentStatus.config.feed_types = [
   TentStatus.config.POST_TYPES.STATUS
 ].concat(TentStatus.config.repost_types)
 
-TentStatus.config.subscription_types = [
+TentStatus.config.subscription_feed_types = [
   TentStatus.config.POST_TYPES.STATUS_SUBSCRIPTION,
-  TentStatus.config.POST_TYPES.REPOST_SUBSCRIPTION
+  TentStatus.config.POST_TYPES.REPOST_SUBSCRIPTION,
+  TentStatus.config.POST_TYPES.WILDCARD_SUBSCRIPTION
+]
+
+TentStatus.config.subscription_types = [
+  TentStatus.config.POST_TYPES.WILDCARD_STATUS,
+  TentStatus.config.POST_TYPES.STATUS_REPOST
 ]
 
 json_config_url = Marbles.DOM.attr(document.body, 'data-config-url')
