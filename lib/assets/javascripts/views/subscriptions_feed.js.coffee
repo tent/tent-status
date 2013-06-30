@@ -4,20 +4,24 @@ Marbles.Views.SubscriptionsFeed = class SubscriptionsFeedView extends Marbles.Vi
   @view_name: 'subscriptions_feed'
 
   initialize: (options = {}) =>
-    options.types = TentStatus.config.subscription_types
+    options.types = TentStatus.config.subscription_feed_types
     options.feed_queries = [
       { types: options.types, profiles: 'mentions' }
     ]
 
     super(options)
 
+  shouldAddPostTypeToFeed: (prospect_type, types = @postsCollection().postTypes()) =>
+    console.log(prospect_type, types)
+    super(prospect_type, types)
+
   shouldAddPostToFeed: (post) =>
     true
 
   groupSubscriptions: (subscriptions) =>
     _.inject subscriptions, ((memo, subscription) =>
-      memo[subscription.targetEntity()] ?= []
-      memo[subscription.targetEntity()].push(subscription)
+      memo[subscription.get('target_entity')] ?= []
+      memo[subscription.get('target_entity')].push(subscription)
       memo
     ), {}
 
