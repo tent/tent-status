@@ -3,7 +3,7 @@ TentStatus.UnifiedCollection = class UnifiedCollection extends Marbles.UnifiedCo
   ignore_model_cids: {}
 
   sortModelsBy: (model) =>
-    model.get('received_at') * -1
+    (model.get('received_at') || model.get('published_at')) * -1
 
   fetchPrev: (options = {}) =>
     prev_params = null
