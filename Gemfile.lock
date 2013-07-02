@@ -29,7 +29,7 @@ GIT
 
 GIT
   remote: git://github.com/tent/hawk-ruby.git
-  revision: 7f3cc881dd26aa4d02b3a6d9b72ff6b57e1d6019
+  revision: 427d2ee50dbfe9f728f717298e42b90ebeccd69e
   branch: master
   specs:
     hawk-auth (0.2.0)
@@ -48,7 +48,7 @@ GIT
 
 GIT
   remote: git://github.com/tent/marbles-tent-client-js.git
-  revision: a97912d25b2f8ae66000514943a9dca6f383120f
+  revision: 27ad08da6824782c0b8a650dbb9129276f4ccf35
   branch: master
   specs:
     marbles-tent-client-js (0.0.1)
@@ -81,7 +81,7 @@ GIT
 
 GIT
   remote: git://github.com/tent/tent-client-ruby.git
-  revision: 5bf3ecf17f6a839b60e0daa15d262a9cff974dd7
+  revision: 37095cf2186a182227ac0c522cece27a91c32985
   branch: 0.3
   specs:
     tent-client (0.2.0)
