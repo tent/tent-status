@@ -9,5 +9,8 @@ TentStatus.UnifiedCollectionPool = class UnifiedCollectionPool extends TentStatu
 
   reset: =>
     @shadow_collection.empty()
+
     @interval.reset()
+
+  updatePagination: => # ignore
 

@@ -24,6 +24,7 @@ Marbles.Views.FetchPostsPool = class FetchPostsPoolView extends Marbles.View
 
   poolExpanded: (size) =>
     @size = size
+    @render()
 
   emptyPool: =>
     posts_feed_view = Marbles.View.instances.all[@posts_feed_view_cid]
@@ -32,9 +33,10 @@ Marbles.Views.FetchPostsPool = class FetchPostsPoolView extends Marbles.View
     collection = @pool.shadowCollection()
 
     posts_feed_view.prependRender(collection.models())
-    posts_feed_view.posts_collection.prependIds(collection.model_ids)
+    posts_feed_view.postsCollection.prependIds?(collection.model_ids)
 
     @pool.reset()
+    @size = 0
 
     @render()
 
@@ -52,8 +54,8 @@ Marbles.Views.FetchPostsPool = class FetchPostsPoolView extends Marbles.View
       e.preventDefault()
       @emptyPool()
 
-  render: =>
-    super
+  render: (context = @context()) =>
+    super(context)
 
     if context.posts_count
       TentStatus.setPageTitle prefix: "(#{context.posts_count})"

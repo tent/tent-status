@@ -25,15 +25,12 @@ TentStatus.CollectionPool = class CollectionPool
     collection = @collection()
     shadow_collection = @shadowCollection()
 
-    console.log('collection_cid', @collection_cid, collection)
-    console.log('shadow_collection_cid', @shadow_collection_cid, shadow_collection)
-
     shadow_collection.empty()
 
     shadow_collection.params = collection.params
-    shadow_collection.pagination_params = {}
-    if collection.pagination_params.prev
-      shadow_collection.pagination_params.prev = collection.pagination_params.prev
+    shadow_collection.pagination = {}
+    if collection.pagination.prev
+      shadow_collection.pagination.prev = collection.pagination.prev
     else
       @updatePagination(collection.first())
 
@@ -43,11 +40,11 @@ TentStatus.CollectionPool = class CollectionPool
     shadow_collection = @shadowCollection()
 
     if latest_post
-      shadow_collection.pagination_params.prev = {
+      shadow_collection.pagination.prev = {
         since: (latest_post.get('received_at') || latest_post.get('published_at')) + " " + latest_post.get('version.id')
       }
     else
-      shadow_collection.pagination_params.prev = {
+      shadow_collection.pagination.prev = {
         since: (new Date) * 1
       }
 
