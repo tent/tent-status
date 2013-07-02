@@ -7,6 +7,10 @@ namespace :assets do
     # Git red of old assets
     %x{rm -rf ./public/assets}
 
+    # Load configuration
+    require 'tent-status'
+    TentStatus.configure
+
     # Setup Sprockets Environment
     require 'rack-putty'
     require 'tent-status/app/middleware'

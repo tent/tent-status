@@ -3,22 +3,5 @@
     "credentials": <%= Yajl::Encoder.encode(current_user.auth) %>,
     "entity": <%= current_user.entity.to_s.inspect %>,
     "server_meta_post": <%= Yajl::Encoder.encode(current_user.server_meta_post) %>
-  },
-
-  "domain_entity": <%= current_user.entity.to_s.inspect %>,
-
-  "url": <%= TentStatus.settings[:url].to_s.inspect %>,
-
-  "app_domain": <%= TentStatus.settings[:url].to_s.inspect %>,
-
-  "services": {
-    "avatar_proxy_host": <%= Yajl::Encoder.encode(TentStatus.settings[:avatar_proxy_host]) %>,
-    "entity_search_api_root": <%= Yajl::Encoder.encode(TentStatus.settings[:entity_search_api_root]) %>,
-    "entity_search_api_key": <%= Yajl::Encoder.encode(TentStatus.settings[:entity_search_api_root]) %>,
-    "search_api_root": <%= Yajl::Encoder.encode(TentStatus.settings[:search_api_root]) %>,
-    "search_api_key": <%= Yajl::Encoder.encode(TentStatus.settings[:search_api_key]) %>
-  },
-
-  "DEFAULT_AVATAR_URL": "https://dr49qsqhb5y4j.cloudfront.net/default1.png",
-  "BASE_TITLE": <%= TentStatus.settings[:name].to_s.inspect %>
+  }
 }

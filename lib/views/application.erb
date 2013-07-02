@@ -17,7 +17,7 @@
     <title><%= TentStatus.settings[:name] %></title>
   </head>
 
-  <% if block_given? %><body><% else %><body data-config-url="<%= TentStatus.settings[:json_config_url] %>"><% end %>
+  <body>
     <div class='v-navbar-fixed-left'>
       <ul class='unstyled custom-container' id='global-nav'>
         <li class='nav-selected'>
@@ -33,7 +33,7 @@
         </li>
 
         <li>
-          <a title='Signout' data-view="SignoutButton" data-url="<%= TentStatus.settings[:signout_url] %>" data-redirect_url="<%= TentStatus.settings[:signout_redirect_url] %>">
+          <a title='Signout' data-view="SignoutButton">
             <div class='nav-icon app-icon-signout icon-2x'></div>
           </a>
         </li>

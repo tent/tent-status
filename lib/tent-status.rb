@@ -43,6 +43,7 @@ module TentStatus
       :json_config_url      => settings[:json_config_url]      || ENV['JSON_CONFIG_URL'],
       :signout_url          => settings[:signout_url]          || ENV['SIGNOUT_URL'],
       :signout_redirect_url => settings[:signout_redirect_url] || ENV['SIGNOUT_REDIRECT_URL'],
+      :default_avatar_url   => settings[:default_avatar_url]   || ENV['DEFAULT_AVATAR_URL'],
 
       ##
       # App service settings
