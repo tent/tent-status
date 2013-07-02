@@ -32,6 +32,9 @@ Marbles.Views.NewPostForm = class NewPostFormView extends Marbles.View
   textareaMentionsView: =>
     @childViews('MentionsAutoCompleteTextareaContainer')?[0]?.childViews('MentionsAutoCompleteTextarea')?[0]
 
+  focusTextarea: =>
+    @textareaMentionsView()?.focus()
+
   profileFetchSuccess: =>
     @render()
 
@@ -122,6 +125,7 @@ Marbles.Views.NewPostForm = class NewPostFormView extends Marbles.View
       success: (post, xhr) =>
         @enable()
         @render()
+        @focusTextarea()
         @hide?()
     )
 
