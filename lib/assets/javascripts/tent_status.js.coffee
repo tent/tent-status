@@ -75,10 +75,6 @@ _.extend TentStatus, Marbles.Events, {
     @_num_running_requests ?= 1
     @_num_running_requests -= 1
     Marbles.Views.loading_indicator.hide() if @_num_running_requests == 0
-
-  redirectToSiteFeed: =>
-    return unless TentStatus.config.app_domain
-    Marbles.history.navigate('/site-feed', {trigger:true})
 }
 
 TentStatus.trigger('config:ready') if TentStatus.config_ready
