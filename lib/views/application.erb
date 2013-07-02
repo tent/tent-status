@@ -33,7 +33,9 @@
         </li>
 
         <li>
-          <a href='https://app.tent.is/signout' title='Signout'><div class='nav-icon app-icon-signout icon-2x'></div></a>
+          <a title='Signout' data-view="SignoutButton" data-url="<%= TentStatus.settings[:signout_url] %>" data-redirect_url="<%= TentStatus.settings[:signout_redirect_url] %>">
+            <div class='nav-icon app-icon-signout icon-2x'></div>
+          </a>
         </li>
       </ul>
     </div>

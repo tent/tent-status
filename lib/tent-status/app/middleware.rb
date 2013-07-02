@@ -4,10 +4,10 @@ module TentStatus
 
       class Halt < StandardError
         attr_accessor :code, :message, :headers, :body
-        def initialize(code, message=nil)
+        def initialize(code, message=nil, headers = {})
           super(message)
           @code, @message = code, message
-          @headers = { 'Content-Type' => 'text/plain' }
+          @headers = { 'Content-Type' => 'text/plain' }.merge(headers)
           @body = message.to_s
         end
 
@@ -31,13 +31,14 @@ module TentStatus
         raise Halt.new(code, message)
       end
 
-      def redirect(location)
-        [302, { 'Location' => location }, []]
+      def redirect(location, env = {})
+        [302, { 'Location' => location }.merge(env['response.headers'] || {}), []]
       end
 
-      def redirect!(location)
-        halt = Halt.new(302)
-        halt.headers = { 'Location' => location.to_s }
+      def redirect!(location, env = {})
+        halt = Halt.new(302, nil, {
+          'Location' => location.to_s
+        }.merge(env['response.headers'] || {}))
         raise halt
       end
 

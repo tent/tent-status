@@ -63,11 +63,16 @@ TentStatus.config.subscription_types = [
 json_config_url = Marbles.DOM.attr(document.body, 'data-config-url')
 unless json_config_url
 	throw "data-config-url must be set on <body> and point to a valid json config file"
+TentStatus.config.json_config_url = json_config_url
 
 new Marbles.HTTP(
-	method: 'GET'
-	url: json_config_url
-	callback: (res, xhr) ->
+  method: 'GET'
+  url: json_config_url
+  middleware: [{
+    processRequest: (request) ->
+      request.request.xmlhttp.withCredentials = true
+  }]
+  callback: (res, xhr) ->
     if xhr.status != 200
       throw "failed to load json config via GET #{json_config_url}: #{xhr.status} #{JSON.stringify(res)}"
 

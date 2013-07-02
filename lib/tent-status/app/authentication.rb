@@ -5,7 +5,7 @@ module TentStatus
         if current_user(env) && current_user(env).app_exists?
           env
         else
-          redirect('/auth/tent')
+          redirect('/auth/tent', env)
         end
       end
     end
@@ -15,7 +15,7 @@ module TentStatus
         env['rack.session'].delete('current_user_id')
         env.delete('current_user')
 
-        redirect('/')
+        redirect('/', env)
       end
     end
 
@@ -46,10 +46,10 @@ module TentStatus
 
           user.update_authorization(env['omniauth.auth'].extra.credentials)
 
-          redirect('/')
+          redirect('/', env)
         else
           # something went wrong
-          redirect('/auth/tent')
+          redirect('/auth/tent', env)
         end
       end
 

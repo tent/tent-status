@@ -31,6 +31,16 @@ module TentStatus
       end
     end
 
+    class CacheControl < Middleware
+      def action(env)
+        env['response.headers'] ||= {}
+        env['response.headers'] = {
+          'Cache-Control' => @options[:value].to_s
+        }
+        env
+      end
+    end
+
     get '/assets/*' do |b|
       b.use AssetServer
     end
@@ -60,7 +70,7 @@ module TentStatus
       b.use OmniAuthCallback
     end
 
-    get '/signout' do |b|
+    post '/signout' do |b|
       b.use Signout
     end
 
@@ -69,7 +79,9 @@ module TentStatus
     end
 
     get '/config.json' do |b|
+      b.use CacheControl, :value => 'no-cache'
       b.use Authentication
+      b.use CacheControl, :value => 'private, max-age=600'
       b.use RenderView, :view => :'config.json', :content_type => "application/json"
     end
 

@@ -35,12 +35,14 @@ module TentStatus
 
       ##
       # App settings
-      :cdn_url          => settings[:cdn_url]          || ENV['TENT_STATUS_CDN_URL'],
-      :asset_manifest   => settings[:asset_manifest]   || (Yajl::Parser.parse(File.read(ENV['TENT_STATUS_ASSET_MANIFEST'])) if ENV['TENT_STATUS_ASSET_MANIFEST']),
-      :database_url     => settings[:database_url]     || ENV['DATABASE_URL'],
-      :database_logfile => settings[:database_logfile] || ENV['DATABASE_LOGFILE'] || STDOUT,
-      :public_dir       => settings[:public_dir]       || File.expand_path('../../public/assets', __FILE__), # lib/../public/assets
-      :json_config_url  => settings[:json_config_url]  || ENV['JSON_CONFIG_URL'],
+      :cdn_url              => settings[:cdn_url]              || ENV['TENT_STATUS_CDN_URL'],
+      :asset_manifest       => settings[:asset_manifest]       || (Yajl::Parser.parse(File.read(ENV['TENT_STATUS_ASSET_MANIFEST'])) if ENV['TENT_STATUS_ASSET_MANIFEST']),
+      :database_url         => settings[:database_url]         || ENV['DATABASE_URL'],
+      :database_logfile     => settings[:database_logfile]     || ENV['DATABASE_LOGFILE'] || STDOUT,
+      :public_dir           => settings[:public_dir]           || File.expand_path('../../public/assets', __FILE__), # lib/../public/assets
+      :json_config_url      => settings[:json_config_url]      || ENV['JSON_CONFIG_URL'],
+      :signout_url          => settings[:signout_url]          || ENV['SIGNOUT_URL'],
+      :signout_redirect_url => settings[:signout_redirect_url] || ENV['SIGNOUT_REDIRECT_URL'],
 
       ##
       # App service settings
