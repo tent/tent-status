@@ -1,5 +1,6 @@
 TentStatus.UnifiedCollection = class UnifiedCollection extends Marbles.UnifiedCollection
   pagination: {}
+  ignore_model_cids: {}
 
   sortModelsBy: (model) =>
     model.get('received_at') * -1
@@ -21,6 +22,9 @@ TentStatus.UnifiedCollection = class UnifiedCollection extends Marbles.UnifiedCo
       next_params[cid] = Marbles.History::parseQueryParams(_pagination.next)
     return false unless next_params
     @fetch(next_params, _.extend({ prepend: true }, options))
+
+  ignoreModelId: (cid) =>
+    @ignore_model_cids[cid] = true
 
   postTypes: =>
     types = []
@@ -50,3 +54,11 @@ TentStatus.UnifiedCollection = class UnifiedCollection extends Marbles.UnifiedCo
             @pagination[cid].prev = "?since=#{since}"
 
     super(params, options)
+
+  fetchSuccess: (new_models, options) =>
+    _new_models = []
+    for model in new_models
+      continue if @ignore_model_cids[model.cid]
+      _new_models.push(model)
+    super(_new_models, options)
+
