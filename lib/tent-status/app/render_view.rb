@@ -25,6 +25,7 @@ module TentStatus
         end
 
         def current_user
+          return unless (env['rack.session'] || {})['current_user_id']
           env['current_user'] ||= Model::User.first(:id => env['rack.session']['current_user_id'])
         end
 

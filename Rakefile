@@ -88,3 +88,38 @@ namespace :assets do
   # deploy assets when deploying to heroku
   task :precompile => :deploy
 end
+
+namespace :layout do
+  task :compile do
+    puts "Compiling layout..."
+
+    require 'tent-status'
+    TentStatus.configure
+
+    require 'tent-status/app'
+    status, headers, body = TentStatus::App::RenderView.new(lambda {}).call(
+      'response.view' => 'application'
+    )
+
+    require 'fileutils'
+    output_dir = File.join(File.expand_path(File.dirname(__FILE__)), 'public')
+    FileUtils.mkdir_p(output_dir)
+
+    output_path = File.join(output_dir, 'index.html')
+    FileUtils.rm(output_path) if File.exists?(output_path)
+    File.open(output_path, "w") do |file|
+      file.write(body.first)
+    end
+
+    puts "Layout compiled to #{output_path}"
+  end
+
+  task :gzip => :compile do
+    require 'fileutils'
+    Dir['public/index.html'].each do |f|
+      path = "#{f}.gz"
+      FileUtils.rm(path) if File.exists?(path)
+      sh "gzip -c #{f} > #{path}"
+    end
+  end
+end

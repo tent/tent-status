@@ -24,7 +24,7 @@ module TentStatus
     }
   end
 
-  def self.new(settings = {})
+  def self.configure(settings = {})
     self.settings.merge!(
       ##
       # App registration settings
@@ -53,6 +53,10 @@ module TentStatus
 
     # App registration, oauth callback uri
     self.settings[:redirect_uri] ||= "#{self.settings[:url].sub(%r{/\Z}, '')}/auth/tent/callback"
+  end
+
+  def self.new(settings = {})
+    self.configure(settings)
 
     require 'tent-status/app'
     require 'tent-status/model'
