@@ -3,7 +3,7 @@ require 'bundler/gem_tasks'
 require 'rake/sprocketstask'
 
 namespace :assets do
-  Rake::SprocketsTask.new do |t|
+  Rake::SprocketsTask.new(:compile) do |t|
     # Git red of old assets
     %x{rm -rf ./public/assets}
 
@@ -72,13 +72,13 @@ namespace :assets do
     )
   end
 
-  task :gzip_assets => :assets do
+  task :gzip => :compile do
     Dir['public/assets/**/*.*'].reject { |f| f =~ /\.gz\z/ }.each do |f|
       sh "gzip -c #{f} > #{f}.gz" unless File.exist?("#{f}.gz")
     end
   end
 
-  task :deploy_assets => :gzip_assets do
+  task :deploy => :gzip do
     if ENV['S3_BUCKET'] && ENV['AWS_ACCESS_KEY_ID'] && ENV['AWS_SECRET_ACCESS_KEY']
       require './config/asset_sync'
       AssetSync.sync
@@ -86,5 +86,5 @@ namespace :assets do
   end
 
   # deploy assets when deploying to heroku
-  task :precompile => :deploy_assets
+  task :precompile => :deploy
 end
