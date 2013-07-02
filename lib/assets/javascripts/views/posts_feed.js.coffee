@@ -118,7 +118,7 @@ Marbles.Views.PostsFeed = class PostsFeedView extends Marbles.View
   prependRender: (posts) =>
     fragment = document.createDocumentFragment()
     for post in posts
-      Marbles.DOM.prependHTML(fragment, @renderPostHTML(post))
+      Marbles.DOM.appendHTML(fragment, @renderPostHTML(post))
 
     @bindViews(fragment)
     Marbles.DOM.prependChild(@el, fragment)
