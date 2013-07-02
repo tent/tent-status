@@ -19,7 +19,7 @@
 
   <% if block_given? %><body><% else %><body data-config-url="<%= TentStatus.settings[:json_config_url] %>"><% end %>
     <div class='v-navbar-fixed-left'>
-      <ul class='unstyled custom-container'>
+      <ul class='unstyled custom-container' id='global-nav'>
         <li class='nav-selected'>
           <a href='https://tent.is'><div class='nav-icon app-icon-tentstatus icon-2x'></div></a>
         </li>
