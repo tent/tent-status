@@ -13,7 +13,6 @@ gem 'marbles-tent-client-js', :git => 'git://github.com/tent/marbles-tent-client
 gem 'lodash-assets', :git => 'git://github.com/jvatic/lodash-assets.git', :branch => 'master'
 gem 'icing', :git => 'git://github.com/tent/icing.git', :branch => 'master'
 gem 'sequel-json', :git => 'git://github.com/tent/sequel-json.git', :branch => 'master'
-gem 'sprockets', :git => 'git://github.com/jvaill/sprockets.git', :branch => 'master'
 
 gem 'marbles-js', :git => 'git://github.com/jvatic/marbles-js.git', :branch => 'master'
 

@@ -1,15 +1,4 @@
 GIT
-  remote: git://github.com/jvaill/sprockets.git
-  revision: 6327a13e77609991509c8cf3d3c1e571f6a4b23d
-  branch: master
-  specs:
-    sprockets (2.9.2)
-      hike (~> 1.2)
-      multi_json (~> 1.0)
-      rack (~> 1.0)
-      tilt (~> 1.1, != 1.3.0)
-
-GIT
   remote: git://github.com/jvatic/lodash-assets.git
   revision: 34bfb392e2407053d6cf28f76c884c6e77df34e8
   branch: master
@@ -36,7 +25,7 @@ GIT
 
 GIT
   remote: git://github.com/tent/icing.git
-  revision: 456c1c8879564a3a56c0ad04987f1c2480b3e950
+  revision: 78dabf64338642e7192c0ebd9f83c41e9776732c
   branch: master
   specs:
     icing (0.0.1)
@@ -72,7 +61,7 @@ GIT
 
 GIT
   remote: git://github.com/tent/sequel-json.git
-  revision: 5899348946cbf0bf338c1358c85294c4e8adb6ee
+  revision: 5412015d8053fc1ec85f220d1974c83436d8f379
   branch: master
   specs:
     sequel-json (0.0.1)
@@ -127,13 +116,17 @@ GEM
       Platform (>= 0.4.0)
       open4
     Platform (0.4.0)
-    activemodel (3.2.13)
-      activesupport (= 3.2.13)
-      builder (~> 3.0.0)
-    activesupport (3.2.13)
-      i18n (= 0.6.1)
-      multi_json (~> 1.0)
-    builder (3.0.4)
+    activemodel (4.0.0)
+      activesupport (= 4.0.0)
+      builder (~> 3.1.0)
+    activesupport (4.0.0)
+      i18n (~> 0.6, >= 0.6.4)
+      minitest (~> 4.2)
+      multi_json (~> 1.3)
+      thread_safe (~> 0.1)
+      tzinfo (~> 0.3.37)
+    atomic (1.1.10)
+    builder (3.1.4)
     chunky_png (1.2.8)
     coffee-script (2.2.0)
       coffee-script-source
@@ -167,11 +160,12 @@ GEM
     fssm (0.2.10)
     hashie (2.0.5)
     hike (1.2.3)
-    i18n (0.6.1)
+    i18n (0.6.4)
     json (1.8.0)
     mime-types (1.23)
     mimetype-fu (0.1.2)
     mini_portile (0.5.0)
+    minitest (4.7.5)
     multi_json (1.7.7)
     multipart-post (1.2.0)
     net-scp (1.1.1)
@@ -184,21 +178,29 @@ GEM
       rack
     open4 (1.3.0)
     pg (0.15.1)
-    puma (2.0.1)
+    puma (2.2.2)
       rack (>= 1.1, < 2.0)
     rack (1.5.2)
     rack-mount (0.8.3)
       rack (>= 1.0.0)
-    rake (10.0.4)
+    rake (10.1.0)
     ruby-hmac (0.4.0)
     sass (3.2.9)
     sequel (3.46.0)
+    sprockets (2.10.0)
+      hike (~> 1.2)
+      multi_json (~> 1.0)
+      rack (~> 1.0)
+      tilt (~> 1.1, != 1.3.0)
     sprockets-helpers (0.9.1)
       sprockets (~> 2.0)
     sprockets-sass (0.9.1)
       sprockets (~> 2.0)
       tilt (~> 1.1)
+    thread_safe (0.1.0)
+      atomic
     tilt (1.4.1)
+    tzinfo (0.3.37)
     uglifier (2.1.1)
       execjs (>= 0.3.0)
       multi_json (~> 1.0, >= 1.0.2)
@@ -222,7 +224,6 @@ DEPENDENCIES
   rack-putty!
   rake
   sequel-json!
-  sprockets!
   tent-client!
   tent-status!
   uglifier
