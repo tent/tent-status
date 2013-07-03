@@ -15,7 +15,7 @@ Configuration options prefixed with `APP_` are only useful when using the Ruby b
 ENV                    | Key                       | Required                                | Description
 ---                    | ---                       | --------                                | -----------
 APP_NAME               | `:name`                   | Required                                | Name to be registered with and display in title bar.
-APP_ICON               | `:icon`                   | Optional                                | URL of app icon (used in app registration).
+APP_ICON_URL_BASE      | `:icon_url_base`          | Optional                                | Base URL for `appicon57.png` (57x57), `appicon72.png` (72x72), `appicon114.png` (114x114), and `favicon.png` (16x16).
 APP_URL                | `:url`                    | Required if running Ruby backend        | URL app is being served from.
 APP_DESCRIPTION        | `:description`            | Optional                                | Description of app (used for app registration).
 APP_CDN_URL            | `:cdn_url`                | Optional                                | URL of CDN containing compiled assets.
