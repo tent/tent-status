@@ -1,5 +1,7 @@
 # Status
 
+**NOTE:** For a Tent v0.2 compatible version, see the [0.2](https://github.com/tent/tent-status/tree/0.2) branch.
+
 Status is a Tent app written in JavaScript/CoffeeScript using the [Marbles.js](https://github.com/jvatic/marbles-js) framework. It supports publishing and consuming status posts.
 
 There is an additional Ruby backend which handles authentication and serving up assets, and compiling a static version of the app.

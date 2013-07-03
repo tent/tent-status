@@ -2,7 +2,7 @@
 
 ### Views
 
-There are two places to find views. The main layout, navigation, and authentication views are found in `lib/tent-status/views` (html/erb). Everything else is found in `assets/javascripts/templates` (html/mustache).
+There are two places to find views. The main layout, navigation, and authentication views are found in `lib/tent-status/views` (html/erb). Everything else is found in `assets/javascripts/templates` (html/lo-dash).
 
 Here are a few things you need to know:
 
