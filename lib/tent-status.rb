@@ -35,6 +35,7 @@ module TentStatus
 
       ##
       # App settings
+      :admin_url            => settings[:admin_url]            || ENV['ADMIN_URL'],
       :cdn_url              => settings[:cdn_url]              || ENV['APP_CDN_URL'],
       :asset_manifest       => settings[:asset_manifest]       || (Yajl::Parser.parse(File.read(ENV['APP_ASSET_MANIFEST'])) if ENV['APP_ASSET_MANIFEST']),
       :database_url         => settings[:database_url]         || ENV['DATABASE_URL'],
