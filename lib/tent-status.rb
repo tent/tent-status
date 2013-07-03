@@ -28,15 +28,15 @@ module TentStatus
     self.settings.merge!(
       ##
       # App registration settings
-      :name        => settings[:name]        || ENV['TENT_STATUS_NAME'],
-      :icon        => settings[:icon]        || ENV['TENT_STATUS_ICON'],
-      :url         => settings[:url]         || ENV['TENT_STATUS_URL'],
-      :description => settings[:description] || ENV['TENT_STATUS_DESCRIPTION'],
+      :name        => settings[:name]        || ENV['APP_NAME'],
+      :icon        => settings[:icon]        || ENV['APP_ICON'],
+      :url         => settings[:url]         || ENV['APP_URL'],
+      :description => settings[:description] || ENV['APP_DESCRIPTION'],
 
       ##
       # App settings
-      :cdn_url              => settings[:cdn_url]              || ENV['TENT_STATUS_CDN_URL'],
-      :asset_manifest       => settings[:asset_manifest]       || (Yajl::Parser.parse(File.read(ENV['TENT_STATUS_ASSET_MANIFEST'])) if ENV['TENT_STATUS_ASSET_MANIFEST']),
+      :cdn_url              => settings[:cdn_url]              || ENV['APP_CDN_URL'],
+      :asset_manifest       => settings[:asset_manifest]       || (Yajl::Parser.parse(File.read(ENV['APP_ASSET_MANIFEST'])) if ENV['APP_ASSET_MANIFEST']),
       :database_url         => settings[:database_url]         || ENV['DATABASE_URL'],
       :database_logfile     => settings[:database_logfile]     || ENV['DATABASE_LOGFILE'] || STDOUT,
       :public_dir           => settings[:public_dir]           || File.expand_path('../../public/assets', __FILE__), # lib/../public/assets
@@ -56,6 +56,12 @@ module TentStatus
 
     # App registration, oauth callback uri
     self.settings[:redirect_uri] ||= "#{self.settings[:url].sub(%r{/\Z}, '')}/auth/tent/callback"
+
+    # Default config.json url
+    self.settings[:json_config_url] ||= "#{self.settings[:url].sub(%r{/\Z}, '')}/config.json"
+
+    # Default signout url
+    self.settings[:json_config_url] ||= "#{self.settings[:url].sub(%r{/\Z}, '')}/signout"
   end
 
   def self.new(settings = {})
