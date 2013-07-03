@@ -1,4 +1,15 @@
 GIT
+  remote: git://github.com/jvaill/sprockets.git
+  revision: 6327a13e77609991509c8cf3d3c1e571f6a4b23d
+  branch: master
+  specs:
+    sprockets (2.9.2)
+      hike (~> 1.2)
+      multi_json (~> 1.0)
+      rack (~> 1.0)
+      tilt (~> 1.1, != 1.3.0)
+
+GIT
   remote: git://github.com/jvatic/lodash-assets.git
   revision: 34bfb392e2407053d6cf28f76c884c6e77df34e8
   branch: master
@@ -187,11 +198,6 @@ GEM
     ruby-hmac (0.4.0)
     sass (3.2.9)
     sequel (3.46.0)
-    sprockets (2.10.0)
-      hike (~> 1.2)
-      multi_json (~> 1.0)
-      rack (~> 1.0)
-      tilt (~> 1.1, != 1.3.0)
     sprockets-helpers (0.9.1)
       sprockets (~> 2.0)
     sprockets-sass (0.9.1)
@@ -224,6 +230,7 @@ DEPENDENCIES
   rack-putty!
   rake
   sequel-json!
+  sprockets!
   tent-client!
   tent-status!
   uglifier
