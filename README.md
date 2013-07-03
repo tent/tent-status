@@ -16,10 +16,11 @@ ENV                    | Key                       | Required                   
 ---                    | ---                       | --------                                | -----------
 APP_NAME               | `:name`                   | Required                                | Name to be registered with and display in title bar.
 APP_ICON_URL_BASE      | `:icon_url_base`          | Optional                                | Base URL for `appicon57.png` (57x57), `appicon72.png` (72x72), `appicon114.png` (114x114), and `favicon.png` (16x16).
-APP_URL                | `:url`                    | Required if running Ruby backend        | URL app is being served from.
+APP_URL                | `:url`                    | Required if running Ruby backend        | URL app is being served from (Also required if static app isn't being served from the domain root).
 APP_DESCRIPTION        | `:description`            | Optional                                | Description of app (used for app registration).
 APP_CDN_URL            | `:cdn_url`                | Optional                                | URL of CDN containing compiled assets.
 APP_ASSET_MANIFEST     | `:asset_manifest`         | Optional                                | Path to asset manifest JSON file (required if using a CDN).
+ADMIN_URL              | `:admin_url`              | Optional                                | URL of admin app.
 DATABASE_URL           | `:database_url`           | Required if running Ruby backend        | URL of postgres database.
 DATABASE_LOGFILE       | `:database_logfile`       | Optional                                | Path to file for database logging.
 SESSION_SECRET         |                           | Required                                | Random string for session cookie secret.
