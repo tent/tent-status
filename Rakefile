@@ -4,9 +4,6 @@ require 'rake/sprocketstask'
 
 namespace :assets do
   Rake::SprocketsTask.new(:compile) do |t|
-    # Git red of old assets
-    %x{rm -rf ./public/assets}
-
     # Load configuration
     require 'tent-status'
     TentStatus.configure
