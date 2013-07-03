@@ -49,6 +49,8 @@ module TentStatus
           MarblesTentClientJS::Sprockets.setup(environment)
           Icing::Sprockets.setup(environment)
 
+          Sprockets::Sass.options[:load_paths] = environment.paths
+
           environment
         end
       end
