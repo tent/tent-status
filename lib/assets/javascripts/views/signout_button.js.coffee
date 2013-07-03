@@ -2,8 +2,6 @@ Marbles.Views.SignoutButton = class SignoutButtonView extends Marbles.View
   @view_name: 'signout_button'
 
   initialize: =>
-    @signout_url = Marbles.DOM.attr(@el, 'data-url')
-    @signout_redirect_url = Marbles.DOM.attr(@el, 'data-redirect_url')
     Marbles.DOM.on @el, 'click', @performSignout
 
   performSignout: (e) =>
@@ -11,7 +9,7 @@ Marbles.Views.SignoutButton = class SignoutButtonView extends Marbles.View
 
     new Marbles.HTTP {
       method: 'POST'
-      url: @signout_url
+      url: TentStatus.config.SIGNOUT_URL
       middleware: [{
         processRequest: (request) ->
           request.request.xmlhttp.withCredentials = true
@@ -23,7 +21,7 @@ Marbles.Views.SignoutButton = class SignoutButtonView extends Marbles.View
   refreshConfigJSON: =>
     new Marbles.HTTP {
       method: 'GET'
-      url: TentStatus.config.json_config_url
+      url: TentStatus.config.SIGNOUT_REDIRECT_URL
       middleware: [{
         processRequest: (request) ->
           request.request.xmlhttp.withCredentials = true
