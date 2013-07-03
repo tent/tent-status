@@ -6,13 +6,16 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="<%= TentStatus.settings[:name] %>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-    <link rel="apple-touch-icon" sizes="57x57" href="https://dr49qsqhb5y4j.cloudfront.net/appicon57.png" />
-    <link rel="apple-touch-icon" sizes="72x72" href="https://dr49qsqhb5y4j.cloudfront.net/appicon72.png" />
-    <link rel="apple-touch-icon" sizes="114x114" href="https://dr49qsqhb5y4j.cloudfront.net/appicon114.png" />
+
+    <% if TentStatus.settings[:icon_url_base] %>
+      <link rel="apple-touch-icon" sizes="57x57"   href="<%= TentStatus.settings[:icon_url_base] %>/appicon57.png" />
+      <link rel="apple-touch-icon" sizes="72x72"   href="<%= TentStatus.settings[:icon_url_base] %>/appicon72.png" />
+      <link rel="apple-touch-icon" sizes="114x114" href="<%= TentStatus.settings[:icon_url_base] %>/appicon114.png" />
+      <link rel="shortcut icon"                    href="<%= TentStatus.settings[:icon_url_base] %>/favicon.png" />
+    <% end %>
 
     <link rel="stylesheet" type="text/css" href="<%= asset_path("icing.css") %>" />
     <link rel="stylesheet" type="text/css" href="<%= asset_path("application.css") %>" />
-    <link rel="shortcut icon" href="https://dr49qsqhb5y4j.cloudfront.net/favicon.png" />
 
     <title><%= TentStatus.settings[:name] %></title>
   </head>

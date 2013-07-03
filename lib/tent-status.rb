@@ -28,10 +28,10 @@ module TentStatus
     self.settings.merge!(
       ##
       # App registration settings
-      :name        => settings[:name]        || ENV['APP_NAME'],
-      :icon        => settings[:icon]        || ENV['APP_ICON'],
-      :url         => settings[:url]         || ENV['APP_URL'],
-      :description => settings[:description] || ENV['APP_DESCRIPTION'],
+      :name          => settings[:name]          || ENV['APP_NAME'],
+      :icon_url_base => settings[:icon_url_base] || ENV['APP_ICON_URL_BASE'],
+      :url           => settings[:url]           || ENV['APP_URL'],
+      :description   => settings[:description]   || ENV['APP_DESCRIPTION'],
 
       ##
       # App settings
