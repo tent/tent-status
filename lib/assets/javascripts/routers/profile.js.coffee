@@ -14,9 +14,6 @@ TentStatus.Routers.profile = new class ProfileRouter extends Marbles.Router
       el: document.getElementById('author-info')
 
   currentProfile: (params) =>
-    if TentStatus.Helpers.isAppSubdomain()
-      return @navigate('/global', {trigger:true, replace: true})
-
     new Marbles.Views.Profile entity: TentStatus.config.domain_entity.toString()
     @_initMiniProfileView()
     TentStatus.setPageTitle page: @actions_titles.currentProfile
@@ -25,9 +22,6 @@ TentStatus.Routers.profile = new class ProfileRouter extends Marbles.Router
     TentStatus.initBackgroundMentionsUnreadCount()
 
   profile: (params) =>
-    if TentStatus.Helpers.isAppSubdomain()
-      return @navigate('/global', {trigger:true, replace: true})
-
     new Marbles.Views.Profile entity: params.entity
     @_initMiniProfileView()
 
