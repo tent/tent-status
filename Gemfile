@@ -20,3 +20,8 @@ gem 'marbles-js', :git => 'git://github.com/jvatic/marbles-js.git', :branch => '
 group :development do
   gem 'asset_sync', :git => 'git://github.com/titanous/asset_sync.git', :branch => 'fix-mime'
 end
+
+group :assets do
+  gem 'uglifier'
+  gem 'yui-compressor'
+end

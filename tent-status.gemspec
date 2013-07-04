@@ -39,6 +39,4 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'asset_sync'
   gem.add_development_dependency 'mime-types'
-  gem.add_development_dependency 'uglifier'
-  gem.add_development_dependency 'yui-compressor'
 end
