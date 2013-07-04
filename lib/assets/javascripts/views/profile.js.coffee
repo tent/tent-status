@@ -10,9 +10,19 @@ Marbles.Views.Profile = class ProfileView extends Marbles.View
 
   fetchMetaProfile: (entity) =>
     model = TentStatus.Models.MetaProfile.find(entity: entity, fetch: false)
-    return console.warn("No MetaProfile for #{JSON.stringify(entity)}!") unless model
-    @profile_cid = model.cid
-    @render(@context(model))
+
+    if model
+      @profile_cid = model.cid
+      @render(@context(model))
+    else
+      TentStatus.Models.MetaProfile.fetch(entity,
+        success: (model) =>
+          @profile_cid = model.cid
+          @render(@context(model))
+
+        failure: (res, xhr) =>
+          console.warn("No profile found for #{JSON.stringify(entity)}! #{xhr.status} #{res}")
+      )
 
   profile: =>
     TentStatus.Models.MetaProfile.find(cid: @profile_cid, fetch: false)
