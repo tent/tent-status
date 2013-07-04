@@ -26,7 +26,6 @@ ADMIN_URL              | `:admin_url`              | Optional                   
 DATABASE_URL           | `:database_url`           | Required if running Ruby backend        | URL of postgres database.
 DATABASE_LOGFILE       | `:database_logfile`       | Optional                                | Path to file for database logging.
 SESSION_SECRET         |                           | Required                                | Random string for session cookie secret.
-                       | `:public_dir`             | Optional                                | Path to directory containing compiled assets (defaults to `./public/assets`).
 JSON_CONFIG_URL        | `:json_config_url`        | Required if running the app statically. | URL of `config.json`.
 SIGNOUT_URL            | `:signout_url`            | Required if running the app statically. | URL accepting a `POST` request to revoke access to `config.json`.
 SIGNOUT_REDIRECT_URL   | `:signout_redirect_url`   | Required if running the app statically. | URL for app to redirect to after signing out.
