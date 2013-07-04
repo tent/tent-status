@@ -4,7 +4,7 @@ module TentStatus
   class App
     class RenderView < Middleware
 
-      class TempalteContext
+      class TemplateContext
         AssetNotFoundError = AssetServer::SprocketsHelpers::AssetNotFoundError
 
         attr_reader :env
@@ -111,7 +111,7 @@ module TentStatus
       end
 
       def template_binding(env, &block)
-        TempalteContext.new(env, self, &block).instance_eval { binding }
+        TemplateContext.new(env, self, &block).instance_eval { binding }
       end
 
     end
