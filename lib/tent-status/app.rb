@@ -34,9 +34,26 @@ module TentStatus
     class CacheControl < Middleware
       def action(env)
         env['response.headers'] ||= {}
-        env['response.headers'] = {
-          'Cache-Control' => @options[:value].to_s
-        }
+        env['response.headers'].merge!(
+          'Cache-Control' => @options[:value].to_s,
+          'Vary' => 'Cookie'
+        )
+        env
+      end
+    end
+
+    class AccessControl < Middleware
+      def action(env)
+        env['response.headers'] ||= {}
+        if @options[:allow_credentials]
+          env['response.headers']['Access-Control-Allow-Credentials'] = 'true'
+        end
+        env['response.headers'].merge!(
+          'Access-Control-Allow-Origin' => 'self',
+          'Access-Control-Allow-Methods' => 'DELETE, GET, HEAD, PATCH, POST, PUT',
+          'Access-Control-Allow-Headers' => 'Cache-Control, Pragma',
+          'Access-Control-Max-Age' => '10000'
+        )
         env
       end
     end
@@ -79,8 +96,9 @@ module TentStatus
     end
 
     get '/config.json' do |b|
+      b.use AccessControl, :allow_credentials => true
       b.use CacheControl, :value => 'no-cache'
-      b.use Authentication
+      b.use Authentication, :redirect => false
       b.use CacheControl, :value => 'private, max-age=600'
       b.use RenderView, :view => :'config.json', :content_type => "application/json"
     end

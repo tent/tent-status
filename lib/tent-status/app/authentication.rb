@@ -5,7 +5,11 @@ module TentStatus
         if current_user(env) && current_user(env).app_exists?
           env
         else
-          redirect('/auth/tent', env)
+          if @options[:redirect] == false
+            [404, env['response.headers'] || {}, []]
+          else
+            redirect('/auth/tent', env)
+          end
         end
       end
     end
@@ -15,7 +19,7 @@ module TentStatus
         env['rack.session'].delete('current_user_id')
         env.delete('current_user')
 
-        redirect('/', env)
+        [200, {}, []]
       end
     end
 

@@ -15,25 +15,9 @@ Marbles.Views.SignoutButton = class SignoutButtonView extends Marbles.View
           request.request.xmlhttp.withCredentials = true
       }]
       callback: (res, xhr) =>
-        @refreshConfigJSON()
-    }
-
-  refreshConfigJSON: =>
-    new Marbles.HTTP {
-      method: 'GET'
-      url: TentStatus.config.SIGNOUT_REDIRECT_URL
-      middleware: [{
-        processRequest: (request) ->
-          request.request.xmlhttp.withCredentials = true
-      }]
-      headers: {
-        'Cache-Control': 'no-cache'
-        'Pragma': 'no-cache'
-      }
-      callback: (res, xhr) =>
         @signoutRedirect()
     }
 
   signoutRedirect: =>
-    window.location.href = @signout_redirect_url
+    window.location.href = TentStatus.config.SIGNOUT_REDIRECT_URL
 
