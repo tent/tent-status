@@ -38,7 +38,6 @@ module TentStatus
       # App settings
       :admin_url            => settings[:admin_url]            || ENV['ADMIN_URL'],
       :cdn_url              => settings[:cdn_url]              || ENV['APP_CDN_URL'],
-      :asset_manifest       => settings[:asset_manifest]       || (Yajl::Parser.parse(File.read(ENV['APP_ASSET_MANIFEST'])) if ENV['APP_ASSET_MANIFEST']),
       :database_url         => settings[:database_url]         || ENV['DATABASE_URL'],
       :database_logfile     => settings[:database_logfile]     || ENV['DATABASE_LOGFILE'] || STDOUT,
       :public_dir           => settings[:public_dir]           || File.expand_path('../../public/assets', __FILE__), # lib/../public/assets
@@ -55,6 +54,8 @@ module TentStatus
       :entity_search_api_root => settings[:entity_search_api_root] || ENV['ENTITY_SEARCH_API_ROOT'],
       :entity_search_api_key  => settings[:entity_search_api_key]  || ENV['ENTITY_SEARCH_API_KEY']
     )
+
+    self.settings[:asset_manifest] = Yajl::Parser.parse(File.read(ENV['APP_ASSET_MANIFEST'])) if ENV['APP_ASSET_MANIFEST'] && File.exists?(ENV['APP_ASSET_MANIFEST'])
 
     # App registration, oauth callback uri
     self.settings[:redirect_uri] ||= "#{self.settings[:url].to_s.sub(%r{/\Z}, '')}/auth/tent/callback"
