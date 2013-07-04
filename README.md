@@ -75,6 +75,7 @@ Property                                  | Required | Type   | Description
 heroku create --addons heroku-postgresql:dev
 heroku pg:promote $(heroku pg | head -1 | cut -f2 -d" ")
 heroku config:add APP_NAME='Status' APP_ASSET_MANIFEST='./public/assets/manifest.json' SESSION_SECRET=$(openssl rand -hex 16 | tr -d '\r\n')
+heroku labs:enable user-env-compile
 git push heroku master
 heroku open
 ```
