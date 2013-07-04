@@ -59,8 +59,6 @@ module TentStatus
         super
 
         @public_dir = @options[:public_dir] || TentStatus.settings[:public_dir]
-
-        @sprockets_environment = self.class.sprockets_environment
       end
 
       def action(env)
@@ -72,11 +70,19 @@ module TentStatus
         else
           new_env = env.clone
           new_env["PATH_INFO"] = env["REQUEST_PATH"].sub(%r{\A/assets}, '')
-          @sprockets_environment.call(new_env)
+          sprockets_environment.call(new_env)
         end
       end
 
       private
+
+      def sprockets_environment
+        @sprockets_environment ||= self.class.sprockets_environment
+      end
+
+      def asset_manifest_path(asset_name)
+        self.class.asset_manifest_path(asset_name)
+      end
 
       def asset_mime_type(asset_name)
         mime = File.mime_type?(asset_name)

@@ -25,6 +25,7 @@ namespace :assets do
 
     t.output = "./public/assets"
     t.assets = %w(
+      icing.css
       application.css
       SourceSansPro-Bold-webfont.eot
       appicons.eot

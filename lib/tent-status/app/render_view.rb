@@ -33,9 +33,24 @@ module TentStatus
           AssetServer.sprockets_environment
         end
 
-        def asset_path(source)
-          asset = sprockets_environment.find_asset(source)
-          raise AssetNotFoundError.new("#{source.inspect} does not exist within #{sprockets_environment.paths.inspect}!") unless asset
+        def asset_manifest_path(asset_name)
+          return unless manifest = TentStatus.settings[:asset_manifest]
+          return unless Hash === manifest && Hash === manifest['files']
+          compiled_name = manifest['files'].find { |k,v|
+            v['logical_path'] == asset_name
+          }.to_a[0]
+
+          return unless compiled_name
+
+          full_path("assets/#{compiled_name}")
+        end
+
+        def asset_path(name)
+          path = asset_manifest_path(name)
+          return path if path
+
+          asset = sprockets_environment.find_asset(name)
+          raise AssetNotFoundError.new("#{name.inspect} does not exist within #{sprockets_environment.paths.inspect}!") unless asset
           full_path("/assets/#{asset.digest_path}")
         end
 
