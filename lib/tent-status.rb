@@ -1,4 +1,5 @@
 require 'tent-status/version'
+require 'yajl'
 
 module TentStatus
   require 'tent-status/utils'
