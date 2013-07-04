@@ -56,7 +56,7 @@ module TentStatus
     )
 
     # App registration, oauth callback uri
-    self.settings[:redirect_uri] ||= "#{self.settings[:url].sub(%r{/\Z}, '')}/auth/tent/callback"
+    self.settings[:redirect_uri] ||= "#{self.settings[:url].to_s.sub(%r{/\Z}, '')}/auth/tent/callback"
 
     # Default config.json url
     self.settings[:json_config_url] ||= "#{self.settings[:url].to_s.sub(%r{/\Z}, '')}/config.json"
@@ -65,7 +65,7 @@ module TentStatus
     self.settings[:signout_url] ||= "#{self.settings[:url].to_s.sub(%r{/\Z}, '')}/signout"
 
     # Default signout redirect url
-    self.settings[:signout_redirect_url] ||= self.settings[:url].to_s.sub(%r{/?\Z/, '/'})
+    self.settings[:signout_redirect_url] ||= self.settings[:url].to_s.sub(%r{/?\Z}, '/')
   end
 
   def self.new(settings = {})
