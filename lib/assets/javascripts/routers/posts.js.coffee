@@ -2,7 +2,7 @@ TentStatus.Routers.posts = new class PostsRouter extends Marbles.Router
   routes: {
     ""                   : "root"
     "posts"              : "index"
-    "global"             : "siteFeed"
+    "site-feed"          : "siteFeed"
     "replies"            : "replies"
     "reposts"            : "reposts"
     "posts/:id"          : "post"
