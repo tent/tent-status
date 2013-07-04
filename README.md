@@ -12,12 +12,11 @@ There is an additional Ruby backend which handles authentication and serving up 
 
 All configuration options can either be set through environment variables or in a `Hash` to `TentStatus.configure`.
 
-Configuration options prefixed with `APP_` are only useful when using the Ruby backend (with the exception of `APP_NAME`).
-
 ENV                    | Key                       | Required                                | Description
 ---                    | ---                       | --------                                | -----------
 APP_NAME               | `:name`                   | Required                                | Name to be registered with and display in title bar.
 APP_ICON_URL_BASE      | `:icon_url_base`          | Optional                                | Base URL for `appicon57.png` (57x57), `appicon72.png` (72x72), `appicon114.png` (114x114), and `favicon.png` (16x16).
+APP_DISPLAY_URL        | `:display_url`            | Optional                                | Public URL for app (used for app registration and your server will tag posts with it). Defaults to the github url.
 APP_URL                | `:url`                    | Required if running Ruby backend        | URL app is being served from (Also required if static app isn't being served from the domain root).
 APP_DESCRIPTION        | `:description`            | Optional                                | Description of app (used for app registration).
 APP_CDN_URL            | `:cdn_url`                | Optional                                | URL of CDN containing compiled assets.

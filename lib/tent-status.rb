@@ -30,12 +30,13 @@ module TentStatus
       ##
       # App registration settings
       :name          => settings[:name]          || ENV['APP_NAME'],
-      :icon_url_base => settings[:icon_url_base] || ENV['APP_ICON_URL_BASE'],
-      :url           => settings[:url]           || ENV['APP_URL'],
       :description   => settings[:description]   || ENV['APP_DESCRIPTION'],
+      :display_url   => settings[:display_url]   || ENV['APP_DISPLAY_URL'],
 
       ##
       # App settings
+      :url                  => settings[:url]                  || ENV['APP_URL'],
+      :icon_url_base        => settings[:icon_url_base]        || ENV['APP_ICON_URL_BASE'],
       :admin_url            => settings[:admin_url]            || ENV['ADMIN_URL'],
       :cdn_url              => settings[:cdn_url]              || ENV['APP_CDN_URL'],
       :database_url         => settings[:database_url]         || ENV['DATABASE_URL'],
@@ -59,6 +60,9 @@ module TentStatus
 
     # App registration, oauth callback uri
     self.settings[:redirect_uri] ||= "#{self.settings[:url].to_s.sub(%r{/\Z}, '')}/auth/tent/callback"
+
+    # App registration, display url
+    self.settings[:display_url] ||= "https://github.com/tent/tent-status"
 
     # Default config.json url
     self.settings[:json_config_url] ||= "#{self.settings[:url].to_s.sub(%r{/\Z}, '')}/config.json"
