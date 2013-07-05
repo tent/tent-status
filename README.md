@@ -21,6 +21,7 @@ APP_URL                | `:url`                    | Required if running Ruby ba
 APP_DESCRIPTION        | `:description`            | Optional                                | Description of app (used for app registration).
 APP_CDN_URL            | `:cdn_url`                | Optional                                | URL of CDN containing compiled assets.
 APP_ASSET_MANIFEST     | `:asset_manifest`         | Optional                                | Path to asset manifest JSON file (required if using a CDN).
+PATH_PREFIX            | `:path_prefix`            | Optional                                | Path prefix for when app is mounted somewhere other than the domain root.
 ADMIN_URL              | `:admin_url`              | Optional                                | URL of admin app.
 DATABASE_URL           | `:database_url`           | Required if running Ruby backend        | URL of postgres database.
 DATABASE_LOGFILE       | `:database_logfile`       | Optional                                | Path to file for database logging.
