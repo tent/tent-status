@@ -53,7 +53,7 @@ module TentStatus
       SourceSansPro-Semibold-webfont.woff
     ).freeze
 
-    attr_accessor :sprockets_environment, :assets_dir, :layout_dir
+    attr_accessor :sprockets_environment, :assets_dir, :layout_dir, :layout_path, :layout_env
 
     def configure_app
       return if @app_configured
@@ -99,8 +99,13 @@ module TentStatus
 
       configure_sprockets
 
-      self.layout_dir = File.expand_path(File.join(assets_dir, '..'))
+      self.layout_dir ||= File.expand_path(File.join(assets_dir, '..'))
+      self.layout_path ||= File.join(layout_dir, layout_path)
       system  "mkdir -p #{layout_dir}"
+
+      self.layout_env ||= {
+        'response.view' => 'application'
+      }
 
       @layout_configured = true
     end
@@ -131,17 +136,14 @@ module TentStatus
       configure_layout
 
       require 'tent-status/app'
-      status, headers, body = TentStatus::App::RenderView.new(lambda {}).call(
-        'response.view' => 'application'
-      )
+      status, headers, body = TentStatus::App::RenderView.new(lambda {}).call(layout_env)
 
-      output_path = File.join(layout_dir, 'index.html')
-      system "rm #{output_path}" if File.exists?(output_path)
-      File.open(output_path, "w") do |file|
+      system "rm #{layout_path}" if File.exists?(layout_path)
+      File.open(layout_path, "w") do |file|
         file.write(body.first)
       end
 
-      puts "Layout compiled to #{output_path}"
+      puts "Layout compiled to #{layout_path}"
     end
   end
 end
