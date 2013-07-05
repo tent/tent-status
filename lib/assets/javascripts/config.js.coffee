@@ -16,7 +16,7 @@ new Marbles.HTTP(
   callback: (res, xhr) ->
     if xhr.status != 200
       return setImmediate =>
-        throw "failed to load json config via GET #{json_config_url}: #{xhr.status} #{JSON.stringify(res)}"
+        throw "failed to load json config via GET #{TentStatus.config.JSON_CONFIG_URL}: #{xhr.status} #{JSON.stringify(res)}"
 
     TentStatus.config ?= {}
     for key, val of JSON.parse(res)
