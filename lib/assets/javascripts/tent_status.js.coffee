@@ -65,7 +65,7 @@ _.extend TentStatus, Marbles.Events, {
     _body_view = new Marbles.View el: document.body
     _body_view.trigger('ready')
 
-    Marbles.history.start()
+    Marbles.history.start(root: (TentStatus.config.PATH_PREFIX || '') + '/')
 
     @ready = true
     @trigger 'ready'

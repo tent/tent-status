@@ -36,6 +36,7 @@ module TentStatus
       ##
       # App settings
       :url                  => settings[:url]                  || ENV['APP_URL'],
+      :path_prefix          => settings[:path_prefix]          || ENV['PATH_PREFIX'],
       :icon_url_base        => settings[:icon_url_base]        || ENV['APP_ICON_URL_BASE'],
       :admin_url            => settings[:admin_url]            || ENV['ADMIN_URL'],
       :cdn_url              => settings[:cdn_url]              || ENV['APP_CDN_URL'],

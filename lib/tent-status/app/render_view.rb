@@ -55,7 +55,7 @@ module TentStatus
         end
 
         def path_prefix
-          ENV['PATH_PREFIX'].to_s
+          TentStatus.settings[:path_prefix].to_s
         end
 
         def full_path(path)
