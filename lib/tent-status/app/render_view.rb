@@ -61,10 +61,6 @@ module TentStatus
         def full_path(path)
           "#{path_prefix}/#{path}".gsub(%r{/+}, '/')
         end
-
-        def nav_selected_class(path)
-          env['REQUEST_PATH'] == full_path(path) ? 'active' : ''
-        end
       end
 
       class << self

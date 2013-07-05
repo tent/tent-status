@@ -1,29 +1,29 @@
-<ul class="unstyled app-nav-list">
-  <a href="<%= full_path('/') %>" class='<%= nav_selected_class('/') %>'>
+<ul class="unstyled app-nav-list" data-view="AppNavigation NavigationActive" data-active-class="active" data-active-selector="a">
+  <a href="<%= full_path('/') %>" data-match-url="/">
     <li>
       <i class="icon-list"></i>Timeline
     </li>
   </a>
 
-  <a href="<%= full_path('/replies') %>" class='<%= nav_selected_class('/replies') %>'>
+  <a href="<%= full_path('/replies') %>" data-match-url="/replies">
     <li>
       <i class="icon-pushpin"></i>Replies <span data-view="RepliesUnreadCount"></span>
     </li>
   </a>
 
-  <a href="<%= full_path('/reposts') %>" class='<%= nav_selected_class('/reposts') %>'>
+  <a href="<%= full_path('/reposts') %>" data-match-url="/reposts">
     <li>
       <i class="icon-retweet"></i>Reposts <span data-view="RepostsUnreadCount"></span>
     </li>
   </a>
 
-  <a href="<%= full_path('/profile') %>" class='<%= nav_selected_class('/profile') %>'>
+  <a href="<%= full_path('/profile') %>" data-match-url="/profile">
     <li>
       <i class="icon-user"></i>Profile
     </li>
   </a>
 
-  <a href="<%= full_path('/site-feed') %>" class='<%= nav_selected_class('/site-feed') %>'>
+  <a href="<%= full_path('/site-feed') %>" data-match-url="/site-feed">
     <li>
       <i class="icon-globe"></i>Site Feed
     </li>

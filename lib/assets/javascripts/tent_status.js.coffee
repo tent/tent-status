@@ -61,6 +61,10 @@ _.extend TentStatus, Marbles.Events, {
     Marbles.DOM.on window, 'scroll', (e) => @trigger 'window:scroll', e
     Marbles.DOM.on window, 'resize', (e) => @trigger 'window:resize', e
 
+    # load top level data-view bindings
+    _body_view = new Marbles.View el: document.body
+    _body_view.trigger('ready')
+
     Marbles.history.start()
 
     @ready = true

@@ -1,4 +1,4 @@
-class AppNavigationView extends Marbles.View
+Marbles.Views.AppNavigation = class AppNavigationView extends Marbles.View
   @view_name: 'app_navigation'
 
   elements: {}
@@ -30,4 +30,3 @@ class AppNavigationView extends Marbles.View
     Marbles.DOM.removeClass @elements.app_nav_list, 'show'
     @menu_visible = false
 
-Marbles.Views.app_navigation = new AppNavigationView el: document.getElementById('main-nav')
