@@ -55,16 +55,16 @@ module TentStatus
 
     attr_accessor :sprockets_environment, :assets_dir, :layout_dir, :layout_path, :layout_env
 
-    def configure_app
+    def configure_app(options = {})
       return if @app_configured
 
       # Load configuration
-      TentStatus.configure
+      TentStatus.configure(options)
 
       @app_configured = true
     end
 
-    def configure_sprockets
+    def configure_sprockets(options = {})
       return if @sprockets_configured
 
       configure_app
@@ -83,11 +83,13 @@ module TentStatus
 
       self.sprockets_environment = TentStatus::App::AssetServer.sprockets_environment
 
-      # Setup asset compression
-      require 'uglifier'
-      require 'yui/compressor'
-      sprockets_environment.js_compressor = Uglifier.new
-      sprockets_environment.css_compressor = YUI::CssCompressor.new
+      if options[:compress]
+        # Setup asset compression
+        require 'uglifier'
+        require 'yui/compressor'
+        sprockets_environment.js_compressor = Uglifier.new
+        sprockets_environment.css_compressor = YUI::CssCompressor.new
+      end
 
       self.assets_dir ||= TentStatus.settings[:public_dir]
 
@@ -110,8 +112,8 @@ module TentStatus
       @layout_configured = true
     end
 
-    def compile_assets
-      configure_sprockets
+    def compile_assets(options = {})
+      configure_sprockets(options)
 
       manifest = Sprockets::Manifest.new(
         sprockets_environment,
@@ -122,8 +124,12 @@ module TentStatus
       manifest.compile(ASSET_NAMES)
     end
 
+    def compress_assets
+      compile_assets(:compress => true)
+    end
+
     def gzip_assets
-      compile_assets
+      compress_assets
 
       Dir["#{assets_dir}/**/*.*"].reject { |f| f =~ /\.gz\z/ }.each do |f|
         system "gzip -c #{f} > #{f}.gz" unless File.exist?("#{f}.gz")
