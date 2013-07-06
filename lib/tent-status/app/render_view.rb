@@ -42,7 +42,7 @@ module TentStatus
 
           return unless compiled_name
 
-          full_path("assets/#{compiled_name}")
+          full_asset_path(compiled_name)
         end
 
         def asset_path(name)
@@ -51,15 +51,23 @@ module TentStatus
 
           asset = sprockets_environment.find_asset(name)
           raise AssetNotFoundError.new("#{name.inspect} does not exist within #{sprockets_environment.paths.inspect}!") unless asset
-          full_path("/assets/#{asset.digest_path}")
+          full_asset_path(asset.digest_path)
         end
 
         def path_prefix
           TentStatus.settings[:path_prefix].to_s
         end
 
+        def asset_root
+          TentStatus.settings[:asset_root].to_s
+        end
+
         def full_path(path)
           "#{path_prefix}/#{path}".gsub(%r{/+}, '/')
+        end
+
+        def full_asset_path(path)
+          "#{asset_root}/#{path}".gsub(%r{/+}, '/')
         end
       end
 

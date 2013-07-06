@@ -37,6 +37,7 @@ module TentStatus
       # App settings
       :url                  => settings[:url]                  || ENV['APP_URL'],
       :path_prefix          => settings[:path_prefix]          || ENV['PATH_PREFIX'],
+      :asset_root           => settings[:asset_root]           || ENV['ASSET_ROOT'],
       :icon_url_base        => settings[:icon_url_base]        || ENV['APP_ICON_URL_BASE'],
       :admin_url            => settings[:admin_url]            || ENV['ADMIN_URL'],
       :cdn_url              => settings[:cdn_url]              || ENV['APP_CDN_URL'],
@@ -64,6 +65,9 @@ module TentStatus
 
     # App registration, display url
     self.settings[:display_url] ||= "https://github.com/tent/tent-status"
+
+    # Default asset_root
+    self.settings[:asset_root] ||= "/assets"
 
     # Default config.json url
     self.settings[:json_config_url] ||= "#{self.settings[:url].to_s.sub(%r{/\Z}, '')}/config.json"
