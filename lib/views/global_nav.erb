@@ -3,7 +3,7 @@
     <a href='<%= TentStatus.settings[:url] || "/" %>'><div class='nav-icon app-icon-tentstatus icon-2x'></div></a>
   </li>
 
-  <% if TentStatus.settings[:search_api_root] && TentStatus.settings[:search_api_key] %>
+  <% if TentStatus.settings[:search_enabled] %>
     <li data-match-url='/search'>
       <a href='/search' title='Search'><div class='nav-icon app-icon-search icon-2x'></div></a>
     </li>

@@ -58,6 +58,8 @@ module TentStatus
       :entity_search_api_key  => settings[:entity_search_api_key]  || ENV['ENTITY_SEARCH_API_KEY']
     )
 
+    self.settings[:search_enabled] = self.settings[:search_api_root] && self.settings[:search_api_key]
+
     self.settings[:asset_manifest] = Yajl::Parser.parse(File.read(ENV['APP_ASSET_MANIFEST'])) if ENV['APP_ASSET_MANIFEST'] && File.exists?(ENV['APP_ASSET_MANIFEST'])
 
     # App registration, oauth callback uri
