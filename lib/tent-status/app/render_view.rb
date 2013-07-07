@@ -81,7 +81,6 @@ module TentStatus
 
         status = env['response.status'] || 200
         headers = { 'Content-Type' => (@options[:content_type] || 'text/html') }.merge(env['response.headers'] || Hash.new)
-        headers["Content-Security-Policy"] = "default-src 'self'; object-src 'none'; img-src *; connect-src *"
         body = render(env)
 
         unless body
