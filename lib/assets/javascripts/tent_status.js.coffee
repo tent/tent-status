@@ -2,9 +2,9 @@
 #= require moment
 #= require lodash
 #= require marbles
+#= require tent-client
 #= require ./config
 #= require sjcl
-#= require tent-client
 #= require tent-markdown
 #= require textarea_cursor_position
 #= require ./cache
