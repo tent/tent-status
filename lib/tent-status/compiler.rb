@@ -102,7 +102,7 @@ module TentStatus
       configure_sprockets
 
       self.layout_dir ||= File.expand_path(File.join(assets_dir, '..'))
-      self.layout_path ||= File.join(layout_dir, layout_path)
+      self.layout_path ||= File.join(layout_dir, 'status.html')
       system  "mkdir -p #{layout_dir}"
 
       self.layout_env ||= {
