@@ -2,7 +2,7 @@ Marbles.Views.NavigationActive = class NavigationActiveView extends Marbles.View
   @view_name: 'navigation_active'
 
   @buildMappingRegexp: (mapping) ->
-    new RegExp("#{mapping.replace("*", ".*?")}")
+    new RegExp("^#{mapping.replace("*", ".*?")}$")
 
   initialize: ->
     @active_class = Marbles.DOM.attr(@el, 'data-active-class')
