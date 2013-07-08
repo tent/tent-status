@@ -11,9 +11,12 @@ Marbles.Views.SubscriptionsFeed = class SubscriptionsFeedView extends Marbles.Vi
 
     super(options)
 
-  shouldAddPostTypeToFeed: (prospect_type, types = @postsCollection().postTypes()) =>
-    console.log(prospect_type, types)
-    super(prospect_type, types)
+    TentStatus.Models.Subscription.on 'create:success', (post, xhr) =>
+      return unless @shouldAddPostToFeed(post)
+      collection = @postsCollection()
+      return unless @shouldAddPostTypeToFeed(post.get('type'), collection.postTypes())
+      collection.unshift(post)
+      @render()
 
   shouldAddPostToFeed: (post) =>
     true
