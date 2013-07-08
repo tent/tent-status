@@ -16,15 +16,43 @@ Marbles.Views.SubscriptionToggle = class SubscriptionToggleView extends Marbles.
       memo
     ), [])
 
-    # TODO: query for subscriptions
-
     if @subscription_cids.length
       @subscribed = true
     else
       @subscribed = false
 
-    Marbles.DOM.on @el, 'click', @toggle
+    if options.lookup == true
+      params = {
+        types: TentStatus.config.subscription_feed_types,
+        mentions: @entity
+      }
+      _collection_context = TentStatus.Collections.Posts.generateContext('subscription', params)
+      collection = TentStatus.Collections.Posts.find(entity: TentStatus.config.current_user.entity, context: _collection_context)
+      collection = new TentStatus.Collections.Posts(entity: TentStatus.config.current_user.entity, context: _collection_context)
+      collection.options.params = params
 
+      collection.fetch({},
+        success: (posts, xhr) =>
+          if posts.length
+            @subscription_cids = _.map(posts, (post) => post.cid)
+            console.log @subscription_cids
+            @subscribed = true
+          else
+            @subscribed = false
+
+          @finalize()
+
+        failure: (res, xhr) =>
+          @subscribed = false
+
+          @finalize()
+      )
+    else
+      @finalize()
+
+  finalize: =>
+    Marbles.DOM.removeClass(@el, 'disabled')
+    Marbles.DOM.on @el, 'click', @toggle
 
   toggle: =>
     if @subscribed
