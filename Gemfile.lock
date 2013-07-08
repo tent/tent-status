@@ -22,7 +22,7 @@ GIT
 
 GIT
   remote: git://github.com/jvatic/marbles-js.git
-  revision: 1bb68da1a3fb9fbce67850242108ee7d50555517
+  revision: 7d8a3f66a06318fa5af1e4d5f471373c13df7be5
   branch: master
   specs:
     marbles-js (0.0.3)
@@ -36,7 +36,7 @@ GIT
 
 GIT
   remote: git://github.com/tent/icing.git
-  revision: 78dabf64338642e7192c0ebd9f83c41e9776732c
+  revision: fde984d037393cecc78a8f867699d03511625995
   branch: master
   specs:
     icing (0.0.1)
@@ -55,8 +55,8 @@ GIT
 
 GIT
   remote: git://github.com/tent/omniauth-tent.git
-  revision: 44055df0a940ac53d978ee1803f6134117a2f32e
-  branch: 0.3
+  revision: cc7a638f3e240e7d0cf581ecdc91b5a3a18d967a
+  branch: master
   specs:
     omniauth-tent (0.2.0)
       omniauth (~> 1.1.1)
@@ -81,8 +81,8 @@ GIT
 
 GIT
   remote: git://github.com/tent/tent-client-ruby.git
-  revision: 9150fcd8e0fb1f4472b1a7c94f7201ac9288f3bf
-  branch: 0.3
+  revision: 2f08bbfa05cb1a44889b5672dec19f53f3a38c2d
+  branch: master
   specs:
     tent-client (0.2.0)
       faraday (= 0.8.4)
@@ -114,7 +114,7 @@ PATH
       omniauth-tent
       pg
       rack-putty
-      sequel (= 3.46)
+      sequel (= 3.48)
       sequel-json
       sprockets (~> 2.0)
       sprockets-sass (~> 0.5)
@@ -197,7 +197,7 @@ GEM
     rake (10.1.0)
     ruby-hmac (0.4.0)
     sass (3.2.9)
-    sequel (3.46.0)
+    sequel (3.48.0)
     sprockets-helpers (0.9.1)
       sprockets (~> 2.0)
     sprockets-sass (0.9.1)

@@ -33,7 +33,7 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency 'icing'
 
   gem.add_runtime_dependency 'pg'
-  gem.add_runtime_dependency 'sequel', '3.46'
+  gem.add_runtime_dependency 'sequel', '3.48'
   gem.add_runtime_dependency 'sequel-json'
 
   gem.add_development_dependency 'rake'
