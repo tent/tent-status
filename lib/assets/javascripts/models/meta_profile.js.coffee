@@ -5,7 +5,10 @@ TentStatus.Models.MetaProfile = class  MetaProfileModel extends Marbles.Model
   @post_type: new TentClient.PostType(TentStatus.config.POST_TYPES.META)
 
   @fetch: (entity, options = {}) ->
-    params = {entity:entity}
+    if entity.hasOwnProperty?('entity')
+      params = entity
+    else
+      params = {entity:entity}
 
     completeFn = (res, xhr) =>
       if xhr.status != 200
