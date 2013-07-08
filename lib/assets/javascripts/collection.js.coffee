@@ -30,7 +30,7 @@ TentStatus.Collection = class Collection extends Marbles.Collection
 
   fetch: (params = {}, options = {}) =>
     params = _.extend {
-      entity: TentStatus.config.current_user.entity
+      entities: @options.entity || TentStatus.config.current_user.entity
       types: [@constructor.model.post_type]
       limit: TentStatus.config.PER_PAGE
     }, @options.params, params
@@ -38,7 +38,9 @@ TentStatus.Collection = class Collection extends Marbles.Collection
     params.types = [params.types] unless _.isArray(params.types)
     params.types = _.map params.types, (type) => (new TentClient.PostType type).toURIString()
 
-    TentStatus.tent_client.post.list(params: params, callback: ((res, xhr) => @fetchComplete(params, options, res, xhr)))
+    headers = _.extend {}, @options.headers, options.headers
+
+    TentStatus.tent_client.post.list(params: params, headers: headers, callback: ((res, xhr) => @fetchComplete(params, options, res, xhr)))
 
   fetchComplete: (params, options, res, xhr) =>
     models = null

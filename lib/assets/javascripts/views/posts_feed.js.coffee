@@ -12,11 +12,12 @@ Marbles.Views.PostsFeed = class PostsFeedView extends Marbles.View
   initialize: (options = {}) =>
     @entity = options.entity || TentStatus.config.current_user.entity
     @types = options.types || TentStatus.config.feed_types
+    @feed_headers = options.headers || {}
 
     default_queries = [{ profiles: 'entity' }, { types: [TentStatus.config.POST_TYPES.STATUS_REPLY], mentions: 'subscribing', profiles: 'entity' }]
     @feed_queries = _.map options.feed_queries || default_queries, (q) => q.types ?= @types; q
     @collection_contexts = _.map @feed_queries, (feed_params) =>
-      TentStatus.Collections.Posts.generateContext('feed', feed_params)
+      TentStatus.Collections.Posts.generateContext('feed', { params: feed_params, headers: @feed_headers })
 
     # fire focus event for first post view in feed (caught by author info view)
     # TODO: find a better way to do this!
@@ -58,6 +59,7 @@ Marbles.Views.PostsFeed = class PostsFeedView extends Marbles.View
       _collection = TentStatus.Collections.Posts.find(entity: @entity, context: _collection_context)
       _collection ?= new TentStatus.Collections.Posts(entity: @entity, context: _collection_context)
       _collection.options.params = feed_params
+      _collection.options.headers = @feed_headers
 
       collections.push(_collection)
 

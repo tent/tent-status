@@ -3,6 +3,9 @@ Marbles.Views.ProfilePostsFeed = class ProfilePostsFeedView extends Marbles.View
 
   initialize: (options = {}) =>
     options.entity = @findParentView('profile').profile().get('entity')
+    options.headers = {
+      'Cache-Control': 'no-cache'
+    }
     super(options)
 
   shouldAddPostToFeed: (post) =>
