@@ -18,18 +18,14 @@ Marbles.Views.MiniProfile = class MiniProfileView extends Marbles.View
   fetchProfile: (entity) =>
     return unless entity
     return if entity == @profile()?.get('entity')
-    if profile = TentStatus.Models.MetaProfile.find(entity: entity)
-      @current_profile_cid = profile.cid
-      @render(@context(profile))
-    else
-      TentStatus.Models.MetaProfile.fetch({ entity: entity},
-        failure: (res, xhr) =>
-          @render()
+    TentStatus.Models.MetaProfile.find({entity: entity},
+      success: (profile) =>
+        @current_profile_cid = profile.cid
+        @render(@context(profile))
 
-        success: (profile, xhr) =>
-          @current_profile_cid = profile.cid
-          @render(@context(profile))
-      )
+      failure: =>
+        @render()
+    )
 
   profile: =>
     TentStatus.Models.MetaProfile.find(cid: @current_profile_cid)
