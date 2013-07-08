@@ -84,14 +84,6 @@ Marbles.Views.NewFollowingForm = class NewFollowingFormView extends Marbles.View
       rest: m[3] || ""
     }
 
-    if TentStatus.config.tent_host_domain
-      if parts.domain.match /^[a-z0-9]{2,30}$/
-        # valid host username
-        parts.shceme = TentStatus.config.tent_host_scheme
-        parts.domain += ".#{TentStatus.config.tent_host_domain}"
-      else if parts.domain.match(new RegExp(RegExp.escape(TentStatus.config.tent_host_domain) + "$"))
-        parts.scheme = TentStatus.config.tent_host_scheme
-
     parts.scheme ?= 'http://'
     entity = parts.scheme + parts.domain + parts.rest
 
