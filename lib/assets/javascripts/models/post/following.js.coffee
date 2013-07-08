@@ -4,12 +4,24 @@ TentStatus.Models.Following = class FollowingModel extends TentStatus.Models.Pos
   @validate: (entity) ->
     null
 
+  @discover: (entity, options) ->
+    TentStatus.Models.MetaProfile.find({entity: entity}, options)
+
   @create: (entity, options) ->
     # TODO:
     # - show "pending" placeholder in list
     # - poll until relationship# post exists
     # - if delivery failure post exists for relationship, show warning/error
 
+    @discover(entity,
+      success: (meta_profile, xhr) =>
+        @createSubscriptions(entity, options)
+
+      failure: (res, xhr) =>
+        options.failure?({error: "Discovery Failed"}, xhr)
+    )
+
+  @createSubscriptions: (entity, options) ->
     num_pending = 0
     errors = []
     subscriptions = []
