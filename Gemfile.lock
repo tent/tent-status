@@ -55,7 +55,7 @@ GIT
 
 GIT
   remote: git://github.com/tent/omniauth-tent.git
-  revision: cc7a638f3e240e7d0cf581ecdc91b5a3a18d967a
+  revision: 03a26e96db40554d783c6d12a79054f81991afd8
   branch: master
   specs:
     omniauth-tent (0.2.0)
@@ -81,7 +81,7 @@ GIT
 
 GIT
   remote: git://github.com/tent/tent-client-ruby.git
-  revision: 2f08bbfa05cb1a44889b5672dec19f53f3a38c2d
+  revision: 367a56f44cd4f0ed64a056b7d2cfc40b5848b028
   branch: master
   specs:
     tent-client (0.2.0)
@@ -142,7 +142,7 @@ GEM
     coffee-script (2.2.0)
       coffee-script-source
       execjs
-    coffee-script-source (1.6.2)
+    coffee-script-source (1.6.3)
     compass (0.12.2)
       chunky_png (~> 1.2)
       fssm (>= 0.2.7)
