@@ -32,7 +32,7 @@
           <td data-view='ProfileSubscriberCount'></td>
           <td data-view='ProfilePostCount'></td>
           <% if (TentStatus.Helpers.isCurrentUserEntity(profile.get('entity')) !== true) { %>
-            <td data-view='FollowButton'></td>
+            <td data-view='SubscriptionToggle' data-entity='<%- profile.get('entity') %>'></td>
           <% } %>
         </tr>
       </table>
