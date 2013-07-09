@@ -7,7 +7,7 @@ Marbles.Views.SubscribersFeed = class SubscribersFeedView extends Marbles.Views.
     options.types = [TentStatus.config.POST_TYPES.RELATIONSHIP]
     options.entity = options.parent_view.entity
     options.headers = {
-      'Cache-Control': 'no-cache'
+      'Cache-Control': 'proxy'
     }
     options.feed_queries = [
       { types: options.types, profiles: 'mentions', entities: options.entity }

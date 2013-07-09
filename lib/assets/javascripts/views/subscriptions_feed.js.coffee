@@ -7,7 +7,7 @@ Marbles.Views.SubscriptionsFeed = class SubscriptionsFeedView extends Marbles.Vi
     options.types = TentStatus.config.subscription_feed_types
     options.entity = options.parent_view.entity
     options.headers = {
-      'Cache-Control': 'no-cache'
+      'Cache-Control': 'proxy'
     }
     options.feed_queries = [
       { types: options.types, profiles: 'mentions' }
