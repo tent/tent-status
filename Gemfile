@@ -23,5 +23,5 @@ end
 
 group :assets do
   gem 'uglifier'
-  gem 'yui-compressor'
+  gem 'sprockets-rainpress'
 end
