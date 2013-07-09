@@ -25,7 +25,7 @@ TentStatus.Routers.follows = new class FollowsRouter extends Marbles.Router
     if TentStatus.Helpers.isAppSubdomain()
       return @navigate('/', {trigger: true, replace: true})
 
-    new Marbles.Views.Followers entity: (params.entity || TentStatus.config.domain_entity.toString())
+    new Marbles.Views.Subscribers entity: (params.entity || TentStatus.config.domain_entity.toString())
 
     title = @actions_titles.subscribers
     title = "#{TentStatus.Helpers.formatUrlWithPath(params.entity)} - #{title}" if params.entity

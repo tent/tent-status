@@ -1,0 +1,17 @@
+<% entity = ((relationship.get('mentions') || [])[0] || {}).entity %>
+<% if (entity) { %>
+<li class="post subscription clearfix" data-view='Relationship'>
+  <div class="row">
+    <div class="avatar-container">
+      <div data-view='ProfileAvatar' data-entity='<%- entity %>'></div>
+    </div>
+
+    <div class='post-container no-offset pull-left'>
+      <h5>
+        <span class='post-profile-name' data-view='ProfileName' data-entity='<%- entity %>'></span>
+        <a class='btn btn-small btn-primary pull-right disabled' data-view="SubscriptionToggle" data-entity='<%- entity %>'>...</a>
+      </h5>
+    </div>
+  </div>
+</li>
+<% } %>

@@ -33,7 +33,7 @@ Marbles.Views.SubscriptionToggle = class SubscriptionToggleView extends Marbles.
     else
       @subscribed = false
 
-    @my_feed = @parentView().getEntity() == TentStatus.config.current_user.entity
+    @my_feed = @parentView().getEntity() == TentStatus.config.current_user.entity && @parentView().constructor.view_name == 'subscriptions_feed'
 
     unless @my_feed
       params = {

@@ -1,0 +1,11 @@
+<div class="row solid-container">
+  <% if (TentStatus.config.authenticated && TentStatus.config.current_user.entity == entity) { %>
+    <h2>Subscribers</h2>
+  <% } else {  %>
+  <h2>Subscribers <small><%- entity %></small></h2>
+  <% } %>
+
+  <div class='row clearfix'>&nbsp;</div>
+
+  <div class='row' data-view='SubscribersFeed'></div>
+</div>
