@@ -27,9 +27,6 @@ TentStatus.Routers.posts = new class PostsRouter extends Marbles.Router
 
     @feed(arguments...)
 
-    TentStatus.initBackgroundMentionsCursor()
-    TentStatus.initBackgroundMentionsUnreadCount()
-
   root: =>
     @index(arguments...)
 
@@ -45,9 +42,6 @@ TentStatus.Routers.posts = new class PostsRouter extends Marbles.Router
     @_initMiniProfileView()
     TentStatus.setPageTitle page: @actions_titles.siteFeed
 
-    TentStatus.initBackgroundMentionsCursor()
-    TentStatus.initBackgroundMentionsUnreadCount()
-
   post: (params) =>
     if TentStatus.Helpers.isAppSubdomain()
       return @navigate('/', {trigger: true, replace: true})
@@ -55,9 +49,6 @@ TentStatus.Routers.posts = new class PostsRouter extends Marbles.Router
     new Marbles.Views.SinglePost entity: entity, id: params.id
     @_initMiniProfileView(entity: entity)
     TentStatus.setPageTitle page: @actions_titles.post
-
-    TentStatus.initBackgroundMentionsCursor()
-    TentStatus.initBackgroundMentionsUnreadCount()
 
   replies: (params) =>
     if TentStatus.Helpers.isAppSubdomain()
