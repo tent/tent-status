@@ -1,6 +1,6 @@
-Marbles.Views.Following = class FollowingView extends Marbles.View
-  @template_name: 'following'
-  @view_name: 'following'
+Marbles.Views.Subscriptions = class SubscriptionsView extends Marbles.View
+  @template_name: 'subscriptions'
+  @view_name: 'subscriptions'
 
   constructor: (options = {}) ->
     @container = Marbles.Views.container
