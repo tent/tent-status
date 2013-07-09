@@ -15,5 +15,5 @@
 
   <a href='<%- TentStatus.Helpers.ensureUrlHasScheme(profile.get('website')) %>'><%- formatted.website %></a>
 
-  <div data-view='FollowButton'></div>
+  <div data-view='SubscriptionToggle' data-entity='<%- entity %>'></div>
 <% } %>
