@@ -18,7 +18,7 @@ Marbles.Views.ProfileResourceCount = class FollowersCountView extends Marbles.Vi
   context: (count) =>
     profile = @profile()
 
-    url: TentStatus.Helpers.entityResourceUrl(profile.get('entity'), @constructor.path)
+    url: TentStatus.Helpers.route(@constructor.route, {entity: profile.get('entity')})
     count: count
     pluralized_resource_name: TentStatus.Helpers.capitalize TentStatus.Helpers.pluralize(@constructor.resource_name.singular, count, @constructor.resource_name.plural)
 
