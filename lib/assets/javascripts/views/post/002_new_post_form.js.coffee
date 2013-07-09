@@ -171,7 +171,7 @@ Marbles.Views.NewPostForm = class NewPostFormView extends Marbles.View
 
   updateCharCounter: =>
     return if @frozen
-    char_count = TentStatus.Helpers.byteLength(@elements.textarea.value) || 0
+    char_count = TentStatus.Helpers.numChars(@elements.textarea.value) || 0
     delta = @max_chars - char_count
 
     Marbles.DOM.setInnerText(@elements.char_counter, delta)

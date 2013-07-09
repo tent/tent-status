@@ -83,17 +83,7 @@ _.extend TentStatus.Helpers,
     return unless url.match(/^https?:\/\//)
     url
 
-  truncateBytes: (text, length, elipses='...') ->
-    return text unless @byteLength(text) > length
-    elipses_length = @byteLength(elipses)
-    truncated_length = length - elipses_length
-    text = text.slice(0, truncated_length)
-    while @byteLength(text) > truncated_length
-      text = text.substr(0, text.length-1)
-    text + elipses
-
   truncate: (text, length, elipses='...', options = {}) ->
-    return @truncateBytes(text, length, elipses) if options.bytes
     return text unless text
     if text.length > length
       _truncated = text.substr(0, length-elipses.length)
