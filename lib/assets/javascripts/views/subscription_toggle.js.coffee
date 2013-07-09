@@ -2,8 +2,20 @@ Marbles.Views.SubscriptionToggle = class SubscriptionToggleView extends Marbles.
   @template_name: 'subscription_toggle'
   @view_name: 'subscription_toggle'
 
+  constructor: (options = {}) ->
+    options.render_method = 'replace'
+    super(options)
+
   initialize: (options = {}) ->
     @entity = Marbles.DOM.attr(@el, 'data-entity')
+    @reset()
+
+  reset: =>
+    if @entity == TentStatus.config.current_user.entity
+      @subscribed = true
+      @me = true
+      @finalize()
+      return
 
     @subscription_cids = _.inject(TentStatus.config.subscription_types, ((memo, type) =>
       _model = TentStatus.Models.Subscription.find(
@@ -21,7 +33,9 @@ Marbles.Views.SubscriptionToggle = class SubscriptionToggleView extends Marbles.
     else
       @subscribed = false
 
-    if options.lookup == true
+    @my_feed = @parentView().getEntity() == TentStatus.config.current_user.entity
+
+    unless @my_feed
       params = {
         types: TentStatus.config.subscription_feed_types,
         mentions: @entity
@@ -50,7 +64,16 @@ Marbles.Views.SubscriptionToggle = class SubscriptionToggleView extends Marbles.
     else
       @finalize()
 
+
   finalize: =>
+    @render()
+
+    return if @me
+
+    @on 'ready', @bindEl
+    @bindEl()
+
+  bindEl: =>
     Marbles.DOM.removeClass(@el, 'disabled')
     Marbles.DOM.on @el, 'click', @toggle
 
@@ -61,18 +84,36 @@ Marbles.Views.SubscriptionToggle = class SubscriptionToggleView extends Marbles.
     else
       @createSubscriptions()
 
+  createSubscriptions: =>
+    Marbles.DOM.addClass(@el, 'disabled')
+    @el.innerText = '...'
+
+    TentStatus.Models.Following.create @entity,
+      failure: (res, xhr) =>
+        @render()
+
+      success: (following) =>
+        @reset()
+
   deleteSubscriptions: =>
     el = @parentView().el
-    Marbles.DOM.hide(el)
+    Marbles.DOM.hide(el) if @my_feed
 
     for cid in @subscription_cids
       model = TentStatus.Models.Subscription.find(cid: cid)
       continue unless model
       model.delete(
         success: =>
-          Marbles.DOM.removeNode(el)
+          if @my_feed
+            Marbles.DOM.removeNode(el)
+          else
+            @reset()
 
         failure: =>
           Marbles.DOM.show(el)
       )
+
+  context: =>
+    subscribed: @subscribed
+    me: !!@me
 

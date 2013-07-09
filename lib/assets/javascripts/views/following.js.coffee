@@ -4,7 +4,11 @@ Marbles.Views.Following = class FollowingView extends Marbles.View
 
   constructor: (options = {}) ->
     @container = Marbles.Views.container
+    @entity = options.entity
     super
 
     @render()
+
+  context: =>
+    entity: @entity
 

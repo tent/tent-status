@@ -1,7 +1,9 @@
 <div class="row solid-container followings">
-  <h2>Subscriptions</h2>
-  <% if (TentStatus.config.authenticated) { %>
+  <% if (TentStatus.config.authenticated && TentStatus.config.current_user.entity == entity) { %>
+    <h2>Subscriptions</h2>
     <div data-view='NewFollowingForm'></div>
+  <% } else {  %>
+  <h2>Subscriptions <small><%- entity %></small></h2>
   <% } %>
 
   <div class='row clearfix'>&nbsp;</div>

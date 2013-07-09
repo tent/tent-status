@@ -5,18 +5,26 @@ Marbles.Views.SubscriptionsFeed = class SubscriptionsFeedView extends Marbles.Vi
 
   initialize: (options = {}) =>
     options.types = TentStatus.config.subscription_feed_types
+    options.entity = options.parent_view.entity
+    options.headers = {
+      'Cache-Control': 'no-cache'
+    }
     options.feed_queries = [
       { types: options.types, profiles: 'mentions' }
     ]
 
     super(options)
 
-    TentStatus.Models.Subscription.on 'create:success', (post, xhr) =>
-      return unless @shouldAddPostToFeed(post)
-      collection = @postsCollection()
-      return unless @shouldAddPostTypeToFeed(post.get('type'), collection.postTypes())
-      collection.unshift(post)
-      @render()
+    if TentStatus.config.current_user.entity == options.parent_view.entity
+      TentStatus.Models.Subscription.on 'create:success', (post, xhr) =>
+        return unless @shouldAddPostToFeed(post)
+        collection = @postsCollection()
+        return unless @shouldAddPostTypeToFeed(post.get('type'), collection.postTypes())
+        collection.unshift(post)
+        @render()
+
+  getEntity: =>
+    @parentView()?.entity
 
   shouldAddPostToFeed: (post) =>
     true
