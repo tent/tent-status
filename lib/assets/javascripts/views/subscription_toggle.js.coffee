@@ -49,7 +49,6 @@ Marbles.Views.SubscriptionToggle = class SubscriptionToggleView extends Marbles.
         success: (posts, xhr) =>
           if posts.length
             @subscription_cids = _.map(posts, (post) => post.cid)
-            console.log @subscription_cids
             @subscribed = true
           else
             @subscribed = false
