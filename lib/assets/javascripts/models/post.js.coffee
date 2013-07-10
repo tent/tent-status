@@ -125,9 +125,9 @@ TentStatus.Models.Post = class PostModel extends Marbles.Model
   updateRepostFlag: (type) =>
     type = new TentClient.PostType(type) if type
     if type && type.base && type.base == (new TentClient.PostType(TentStatus.config.POST_TYPES.REPOST)).base
-      @set('is_repost', true)
+      @is_repost = true
     else
-      @set('is_repost', false)
+      @is_repost = false
 
   updateMentionedPosts: (mentions) =>
     if mentions && mentions.length
@@ -135,9 +135,9 @@ TentStatus.Models.Post = class PostModel extends Marbles.Model
         m.entity ?= @get('entity')
         m
       )
-      @set('mentioned_posts', mentioned_posts)
+      @mentioned_posts = mentioned_posts
     else
-      @set('mentioned_posts', [])
+      @mentioned_posts = []
 
   updateConversationEntities: (mentions) =>
     _entities = []
@@ -146,7 +146,7 @@ TentStatus.Models.Post = class PostModel extends Marbles.Model
       continue if TentStatus.Helpers.isCurrentUserEntity(m.entity)
       _entity = m.entity
       _entities.push(_entity) if _entities.indexOf(_entity) == -1
-    @set('conversation_entities', _entities)
+    @conversation_entities = _entities
 
   fetch: (options = {}) =>
     @constructor.fetch({
