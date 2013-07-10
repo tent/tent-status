@@ -166,6 +166,19 @@ TentStatus.Models.Post = class PostModel extends Marbles.Model
   update: (data, options = {}) =>
     @constructor.update(@, data, options)
 
+  saveVersion: (options = {}) =>
+    data = @toJSON()
+    if @get('id')
+      data.version = {
+        parents: [{
+          version: @get('version.id')
+        }]
+      }
+      @update(data, options)
+    else
+      options.cid = @cid
+      @constructor.create(data, options)
+
   delete: (options = {}) =>
     @constructor.delete(@, options)
 
