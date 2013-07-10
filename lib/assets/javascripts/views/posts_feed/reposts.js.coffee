@@ -10,6 +10,16 @@ Marbles.Views.RepostsPostsFeed = class RepostsPostsFeedView extends Marbles.View
     }]
     super(options)
 
+    collection = @postsCollection()
+    collection.on 'reset', @clearRepostsUnreadCount
+    collection.on 'prepend', @clearRepostsUnreadCount
+
   shouldAddPostToFeed: (post) =>
     super && post.isEntityMentioned(@entity)
+
+  clearRepostsUnreadCount: =>
+    ref = @postsCollection().first()
+    for cid in Marbles.View.instances.reposts_unread_count
+      continue unless v = Marbles.View.instances.all[cid]
+      v.clearCount(ref)
 

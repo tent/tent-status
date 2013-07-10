@@ -50,3 +50,14 @@
 form.follow-button {
   display: inline;
 }
+
+// nav.erb
+.count-badge-container {
+  position: relative;
+
+  .count-badge {
+    position: absolute;
+    top: 12px;
+    margin-left: 4px;
+  }
+}

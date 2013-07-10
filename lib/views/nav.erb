@@ -6,14 +6,14 @@
   </a>
 
   <a href="<%= full_path('/replies') %>" data-match-url="/replies">
-    <li>
-      <i class="icon-pushpin"></i>Replies <span data-view="RepliesUnreadCount"></span>
+    <li class='count-badge-container'>
+      <i class="icon-pushpin"></i>Replies <span data-view="RepliesUnreadCount" class='badge badge-important hidden count-badge'></span>
     </li>
   </a>
 
   <a href="<%= full_path('/reposts') %>" data-match-url="/reposts">
-    <li>
-      <i class="icon-retweet"></i>Reposts <span data-view="RepostsUnreadCount"></span>
+    <li class='count-badge-container'>
+      <i class="icon-retweet"></i>Reposts <span data-view="RepostsUnreadCount" class='badge hidden count-badge'></span>
     </li>
   </a>
 
