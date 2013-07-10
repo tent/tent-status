@@ -31,13 +31,15 @@ TentStatus.Models.Post = class PostModel extends Marbles.Model
       unless xhr.status == 200
         post.trigger('update:failure', res, xhr)
         options.failure?(res, xhr)
+        options.complete?(res, xhr)
         return
 
       post.parseAttributes(res.post)
       post.trigger('update:success', post, xhr)
       options.success?(post, xhr)
+      options.complete?(res, xhr)
 
-    data.versions ?= { parents: [{ version: post.get('version.id') }] }
+    data.version ?= { parents: [{ version: post.get('version.id') }] }
 
     TentStatus.tent_client.post.update(
       params:
