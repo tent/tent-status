@@ -5,7 +5,13 @@ TentStatus.Models.Post = class PostModel extends Marbles.Model
   @create: (data, options = {}) ->
     completeFn = (res, xhr) =>
       if xhr.status == 200
-        post = new @(res.post)
+        if options.cid
+          if post = @find(cid: options.cid)
+            post.parseAttributes(res.post)
+          else
+            post = new @(res.post, cid: options.cid)
+        else
+          post = new @(res.post)
         @trigger('create:success', post, xhr)
         options.success?(post, xhr)
       else
