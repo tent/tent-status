@@ -2,6 +2,8 @@ Marbles.Views.UnreadCount = class UnreadCountView extends Marbles.View
   @view_name: 'unread_count'
 
   initialize: ->
+    @interval = new TentStatus.FetchInterval fetch_callback: @fetchCount
+
     # find or fetch existing cursor post
     TentStatus.Models.CursorPost.find(
       {
@@ -52,7 +54,7 @@ Marbles.Views.UnreadCount = class UnreadCountView extends Marbles.View
   fetchSuccess: (post) =>
     @post_cid = post.cid
 
-    @fetchCount()
+    @reset()
 
   fetchFailure: =>
     post = new TentStatus.Models.CursorPost(
@@ -61,7 +63,10 @@ Marbles.Views.UnreadCount = class UnreadCountView extends Marbles.View
     )
     @post_cid = post.cid
 
-    @fetchCount()
+    @reset()
+
+  reset: =>
+    @interval.reset()
 
   fetchParams: =>
     params = {
@@ -98,12 +103,15 @@ Marbles.Views.UnreadCount = class UnreadCountView extends Marbles.View
 
     count = parseInt(xhr.getResponseHeader('Count'))
     return @fetchCountFailure(res, xhr) if _.isNaN(count)
-    return if count == @count
+    return @interval.increaseDelay() if count == @count
 
     @count = count
     @render()
 
+    @interval.reset()
+
   fetchCountFailure: (res, xhr) =>
+    @interval.increaseDelay()
     console.log('fetchCountFailure', res, xhr)
 
   render: =>
