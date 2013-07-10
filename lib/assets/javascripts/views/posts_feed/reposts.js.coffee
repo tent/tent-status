@@ -6,6 +6,7 @@ Marbles.Views.RepostsPostsFeed = class RepostsPostsFeedView extends Marbles.View
     options.types = TentStatus.config.repost_types
     options.feed_queries = [{
       mentions: options.entity
+      entities: false
     }]
     super(options)
 
