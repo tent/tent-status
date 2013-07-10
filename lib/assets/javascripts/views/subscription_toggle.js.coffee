@@ -85,7 +85,7 @@ Marbles.Views.SubscriptionToggle = class SubscriptionToggleView extends Marbles.
 
   createSubscriptions: =>
     Marbles.DOM.addClass(@el, 'disabled')
-    @el.innerText = '...'
+    Marbles.DOM.setInnerText(@el, '...')
 
     TentStatus.Models.Following.create @entity,
       failure: (res, xhr) =>
