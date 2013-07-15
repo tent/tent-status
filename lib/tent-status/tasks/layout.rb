@@ -5,13 +5,7 @@ namespace :layout do
     TentStatus::Compiler.compile_layout
   end
 
-  task :gzip => :compile do
-    output_dir = TentStatus::Compiler.layout_dir
-
-    Dir["#{output_dir}/index.html"].each do |f|
-      path = "#{f}.gz"
-      sh "rm #{path}" if File.exists?(path)
-      sh "gzip -c #{f} > #{path}"
-    end
+  task :gzip do
+    TentStatus::Compiler.gzip_layout
   end
 end

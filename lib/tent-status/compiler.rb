@@ -103,7 +103,7 @@ module TentStatus
       end
     end
 
-    def compile_layout
+    def compile_layout(options = {})
       puts "Compiling layout..."
 
       configure_layout
@@ -116,7 +116,15 @@ module TentStatus
         file.write(body.first)
       end
 
+      if options[:gzip]
+        system "gzip -c #{layout_path} > #{layout_path}.gz"
+      end
+
       puts "Layout compiled to #{layout_path}"
+    end
+
+    def gzip_layout
+      compile_layout(:gzip => true)
     end
   end
 end
