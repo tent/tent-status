@@ -52,8 +52,8 @@ TentStatus.once 'config:ready', ->
   meta = TentStatus.config.meta
   TentStatus.meta_profile = new MetaProfileModel(_.extend(
     {
-      entity: meta.entity,
-      avatar_digest: meta.profile?.avatar_digest
+      entity: meta.content.entity,
+      avatar_digest: meta.attachments?[0]?.digest
     },
-    meta.profile || {}
+    meta.content.profile || {}
   ))

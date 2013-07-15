@@ -30,7 +30,7 @@ TentStatus.Collection = class Collection extends Marbles.Collection
 
   fetch: (params = {}, options = {}) =>
     params = _.extend {
-      entities: @options.entity || TentStatus.config.meta.entity
+      entities: @options.entity || TentStatus.config.meta.content.entity
       types: [@constructor.model.post_type]
       limit: TentStatus.config.PER_PAGE
     }, @options.params, params

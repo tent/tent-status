@@ -11,7 +11,7 @@ Marbles.Views.NewPostForm = class NewPostFormView extends Marbles.View
 
     @mentions = []
 
-    @entity = TentStatus.config.meta.entity
+    @entity = TentStatus.config.meta.content.entity
 
     @on 'ready', => @ready = !!@el.childNodes.length
     @on 'ready', @init

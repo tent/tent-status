@@ -10,6 +10,6 @@ TentStatus.Collections.Posts = class PostsCollection extends TentStatus.Collecti
     super
 
     # id mapping
-    @set('entity', @options.entity || TentStatus.config.meta.entity)
+    @set('entity', @options.entity || TentStatus.config.meta.content.entity)
     @set('context', @options.context || 'default')
 

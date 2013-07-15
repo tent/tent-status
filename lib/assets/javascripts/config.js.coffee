@@ -28,9 +28,9 @@ new Marbles.HTTP(
     TentStatus.config.domain_entity ?= TentStatus.config.meta?.entity
 
     TentStatus.tent_client = new TentClient(
-      TentStatus.config.meta.entity,
+      TentStatus.config.meta.content.entity,
       credentials: TentStatus.config.credentials
-      server_meta_post: { content: TentStatus.config.meta }
+      server_meta_post: TentStatus.config.meta
     )
 
     TentStatus.config_ready = true

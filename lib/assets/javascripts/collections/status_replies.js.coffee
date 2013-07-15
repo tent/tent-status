@@ -7,5 +7,5 @@ TentStatus.Collections.StatusReplies = class StatusRepliesCollection extends Ten
     super
 
     # id mapping
-    @set('entity', @options.entity || TentStatus.config.meta.entity)
+    @set('entity', @options.entity || TentStatus.config.meta.content.entity)
     @set('post_id', @options.post_id)
