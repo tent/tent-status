@@ -10,7 +10,7 @@ Marbles.Views.PostsFeed = class PostsFeedView extends Marbles.View
     TentStatus.trigger 'loading:stop'
 
   initialize: (options = {}) =>
-    @entity = options.entity || TentStatus.config.current_user.entity
+    @entity = options.entity || TentStatus.config.meta.entity
     @types = options.types || TentStatus.config.feed_types
     @feed_headers = options.headers || {}
 

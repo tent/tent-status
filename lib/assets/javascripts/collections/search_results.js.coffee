@@ -9,7 +9,7 @@ TentStatus.Collections.SearchResults = class SearchResultsCollection extends Ten
     super
 
     # id mapping
-    @set('entity', @options.entity || TentStatus.config.current_user.entity)
+    @set('entity', @options.entity || TentStatus.config.meta.entity)
     @set('context', @options.context || 'default')
 
   fetch: (params = {}, options = {}) =>

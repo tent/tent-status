@@ -11,7 +11,7 @@ Marbles.Views.SubscriptionToggle = class SubscriptionToggleView extends Marbles.
     @reset()
 
   reset: =>
-    if @entity == TentStatus.config.current_user.entity
+    if @entity == TentStatus.config.meta.entity
       @subscribed = true
       @me = true
       @finalize()
@@ -19,7 +19,7 @@ Marbles.Views.SubscriptionToggle = class SubscriptionToggleView extends Marbles.
 
     @subscription_cids = _.inject(TentStatus.config.subscription_types, ((memo, type) =>
       _model = TentStatus.Models.Subscription.find(
-        entity: TentStatus.config.current_user.entity,
+        entity: TentStatus.config.meta.entity,
         target_entity: @entity,
         'content.type': type
         fetch: false
@@ -33,7 +33,7 @@ Marbles.Views.SubscriptionToggle = class SubscriptionToggleView extends Marbles.
     else
       @subscribed = false
 
-    @my_feed = @parentView().getEntity?() == TentStatus.config.current_user.entity && @parentView().constructor.view_name == 'subscriptions_feed'
+    @my_feed = @parentView().getEntity?() == TentStatus.config.meta.entity && @parentView().constructor.view_name == 'subscriptions_feed'
 
     unless @my_feed
       params = {
@@ -41,8 +41,8 @@ Marbles.Views.SubscriptionToggle = class SubscriptionToggleView extends Marbles.
         mentions: @entity
       }
       _collection_context = TentStatus.Collections.Posts.generateContext('subscription', params)
-      collection = TentStatus.Collections.Posts.find(entity: TentStatus.config.current_user.entity, context: _collection_context)
-      collection = new TentStatus.Collections.Posts(entity: TentStatus.config.current_user.entity, context: _collection_context)
+      collection = TentStatus.Collections.Posts.find(entity: TentStatus.config.meta.entity, context: _collection_context)
+      collection = new TentStatus.Collections.Posts(entity: TentStatus.config.meta.entity, context: _collection_context)
       collection.options.params = params
 
       collection.fetch({},

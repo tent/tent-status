@@ -5,6 +5,6 @@ Marbles.Views.RepliesUnreadCount = class RepliesUnreadCountView extends Marbles.
 
   fetchParams: =>
     params = super
-    params.mentions = TentStatus.config.current_user.entity
+    params.mentions = TentStatus.config.meta.entity
     params
 

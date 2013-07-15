@@ -1,5 +1,5 @@
 <div class="row solid-container followings">
-  <% if (TentStatus.config.authenticated && TentStatus.config.current_user.entity == entity) { %>
+  <% if (TentStatus.config.authenticated && TentStatus.config.meta.entity == entity) { %>
     <h2>Subscriptions</h2>
     <div data-view='NewFollowingForm'></div>
   <% } else {  %>

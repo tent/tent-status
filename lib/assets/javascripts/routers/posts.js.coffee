@@ -32,7 +32,7 @@ TentStatus.Routers.posts = new class PostsRouter extends Marbles.Router
 
   feed: (params) =>
     new Marbles.Views.Feed
-    @_initMiniProfileView(entity: TentStatus.config.current_user.entity)
+    @_initMiniProfileView(entity: TentStatus.config.meta.entity)
     TentStatus.setPageTitle page: @actions_titles.feed
 
   siteFeed: (params) =>

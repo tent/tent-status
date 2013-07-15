@@ -1,7 +1,1 @@
-{
-  "current_user": {
-    "credentials": <%= Yajl::Encoder.encode(current_user.auth) %>,
-    "entity": <%= current_user.entity.to_s.inspect %>,
-    "server_meta_post": <%= Yajl::Encoder.encode(current_user.server_meta_post) %>
-  }
-}
+<%= Yajl::Encoder.encode(current_user.json_config) %>

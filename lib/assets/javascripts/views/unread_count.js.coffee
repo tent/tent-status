@@ -8,7 +8,7 @@ Marbles.Views.UnreadCount = class UnreadCountView extends Marbles.View
     TentStatus.Models.CursorPost.find(
       {
         type: @constructor.cursor_post_type
-        entity: TentStatus.config.current_user.entity
+        entity: TentStatus.config.meta.entity
       },
 
       success: @fetchSuccess
@@ -59,7 +59,7 @@ Marbles.Views.UnreadCount = class UnreadCountView extends Marbles.View
   fetchFailure: =>
     post = new TentStatus.Models.CursorPost(
       type: @constructor.cursor_post_type
-      entity: TentStatus.config.current_user.entity
+      entity: TentStatus.config.meta.entity
     )
     @post_cid = post.cid
 

@@ -7,7 +7,7 @@ TentStatus.Collections.Reposts = class RepostsCollection extends TentStatus.Coll
     super
 
     # id mapping
-    @set('entity', @options.entity || TentStatus.config.current_user.entity)
+    @set('entity', @options.entity || TentStatus.config.meta.entity)
     @set('post_id', @options.post_id)
     @set('context', @options.context || 'default')
 

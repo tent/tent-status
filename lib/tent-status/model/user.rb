@@ -61,6 +61,19 @@ module TentStatus
           post
         end
       end
+
+      def json_config
+        config = {
+          :credentials => auth,
+          :meta => server_meta_post['content']
+        }
+
+        if Hash === config[:meta]['profile'] && Hash === server_meta_post['attachments'].to_a.first
+          config[:meta]['profile']['avatar_digest'] = server_meta_post['attachments'][0]['digest']
+        end
+
+        config
+      end
     end
 
   end

@@ -15,7 +15,7 @@ Marbles.Views.SubscriptionsFeed = class SubscriptionsFeedView extends Marbles.Vi
 
     super(options)
 
-    if TentStatus.config.current_user.entity == options.parent_view.entity
+    if TentStatus.config.meta.entity == options.parent_view.entity
       TentStatus.Models.Subscription.on 'create:success', (post, xhr) =>
         return unless @shouldAddPostToFeed(post)
         collection = @postsCollection()

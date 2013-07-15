@@ -41,28 +41,30 @@ ENTITY_SEARCH_API_ROOT | `:entity_search_api_root` | Optional                   
 
 #### config.json
 
-Property                                  | Required | Type   | Description
------------------------------------------ | -------- | ------ | -----------
-`current_user`                            | Required | Object | User data.
-`current_user.credentials`                | Required | Object | App authorization credentials.
-`current_user.credentials.id`             | Required | String | App authorization credentials identifier.
-`current_user.credentials.hawk_key`       | Required | String | App authorization hawk key.
-`current_user.credentials.hawk_algorithm` | Required | String | Hash algorithm.
-`current_user.entity`                     | Required | String | Entity URI.
-`current_user.server_meta_post`           | Required | Object | Meta post for entity.
-`services.entity_search_api_key`          | Optional | String | User-specific API key for entity autocomplete (`ENTITY_SEARCH_SERVICE_API_ROOT` app configuration option required for this).
+Property                         | Required | Type   | Description
+-------------------------------- | -------- | ------ | -----------
+`credentials`                    | Required | Object | App authorization credentials.
+`credentials.id`                 | Required | String | App authorization credentials identifier.
+`credentials.hawk_key`           | Required | String | App authorization hawk key.
+`credentials.hawk_algorithm`     | Required | String | Hash algorithm.
+`meta`                           | Required | Object | Meta post content for entity.
+`services.entity_search_api_key` | Optional | String | User-specific API key for entity autocomplete (`ENTITY_SEARCH_SERVICE_API_ROOT` app configuration option required for this).
 
 **Example:**
 ```json
 {
-  "current_user": {
-    "credentials": {
-      "id": "HAWK-ID",
-      "hawk_key": "HAWK-KEY",
-      "hawk_algorithm": "sha256"
-    },
+  "credentials": {
+    "id": "HAWK-ID",
+    "hawk_key": "HAWK-KEY",
+    "hawk_algorithm": "sha256"
+  },
+  "meta": {
     "entity": "https://example.org",
-    "server_meta_post": {}
+    "servers": [ ... ],
+    "profile": {
+      "avatar_digest": "...",
+      ...
+    }
   }
 }
 ```
