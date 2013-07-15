@@ -80,10 +80,6 @@ module TentStatus
         @sprockets_environment ||= self.class.sprockets_environment
       end
 
-      def asset_manifest_path(asset_name)
-        self.class.asset_manifest_path(asset_name)
-      end
-
       def asset_mime_type(asset_name)
         mime = File.mime_type?(asset_name)
         mime == 'unknown/unknown' ? DEFAULT_MIME : mime

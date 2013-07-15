@@ -20,7 +20,7 @@ APP_DISPLAY_URL        | `:display_url`            | Optional                   
 APP_URL                | `:url`                    | Required if running Ruby backend        | URL app is being served from (Also required if static app isn't being served from the domain root).
 APP_DESCRIPTION        | `:description`            | Optional                                | Description of app (used for app registration).
 APP_CDN_URL            | `:cdn_url`                | Optional                                | URL of CDN containing compiled assets.
-APP_ASSET_MANIFEST     | `:asset_manifest`         | Optional                                | Path to asset manifest JSON file (required if using a CDN).
+APP_ASSET_MANIFEST     | `:asset_manifests`        | Optional                                | Comma separated paths to asset manifest JSON file (required if using a CDN).
 PATH_PREFIX            | `:path_prefix`            | Optional                                | Path prefix for when app is mounted somewhere other than the domain root.
 ADMIN_URL              | `:admin_url`              | Optional                                | URL of admin app.
 DATABASE_URL           | `:database_url`           | Required if running Ruby backend        | URL of postgres database.

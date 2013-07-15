@@ -34,11 +34,16 @@ module TentStatus
         end
 
         def asset_manifest_path(asset_name)
-          return unless manifest = TentStatus.settings[:asset_manifest]
-          return unless Hash === manifest && Hash === manifest['files']
-          compiled_name = manifest['files'].find { |k,v|
-            v['logical_path'] == asset_name
-          }.to_a[0]
+          manifests = TentStatus.settings[:asset_manifests].to_a.select { |m| Hash === m && Hash === m['files'] }
+          return if manifests.empty?
+
+          compiled_name = manifests.inject(nil) do |memo, manifest|
+            memo = manifest['files'].find { |k,v|
+              v['logical_path'] == asset_name
+            }.to_a[0]
+
+            break memo if memo
+          end
 
           return unless compiled_name
 

@@ -62,7 +62,11 @@ module TentStatus
 
     self.settings[:search_enabled] = self.settings[:search_api_root] && self.settings[:search_api_key]
 
-    self.settings[:asset_manifest] = Yajl::Parser.parse(File.read(ENV['APP_ASSET_MANIFEST'])) if ENV['APP_ASSET_MANIFEST'] && File.exists?(ENV['APP_ASSET_MANIFEST'])
+    if ENV['APP_ASSET_MANIFEST'] && (_paths = ENV['APP_ASSET_MANIFEST'].to_s.split(',').select { |path| File.exists?(path) }) && _paths.any?
+      self.settings[:asset_manifests] = _paths.map do |path|
+        Yajl::Parser.parse(File.read(path))
+      end
+    end
 
     # App registration, oauth callback uri
     self.settings[:redirect_uri] ||= "#{self.settings[:url].to_s.sub(%r{/\Z}, '')}/auth/tent/callback"
