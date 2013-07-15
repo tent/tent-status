@@ -13,7 +13,7 @@ Marbles.Views.NewPostForm = class NewPostFormView extends Marbles.View
 
     @entity = TentStatus.config.meta.entity
 
-    @on 'ready', => @ready = true
+    @on 'ready', => @ready = !!@el.childNodes.length
     @on 'ready', @init
 
     post = new @constructor.model entity: @entity
@@ -53,6 +53,8 @@ Marbles.Views.NewPostForm = class NewPostFormView extends Marbles.View
       entity: TentStatus.Helpers.formatUrlWithPath(@entity)
 
   init: =>
+    return unless @el.childNodes.length
+
     @elements.submit = Marbles.DOM.querySelector('input[type=submit]', @el)
     @elements.errors = Marbles.DOM.querySelector('[data-errors_container]', @el)
     @elements.form = Marbles.DOM.querySelector('form', @el)
