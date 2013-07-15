@@ -1,7 +1,5 @@
 #= require_tree ./core_ext
 #= require moment
-#= require lodash
-#= require marbles
 #= require tent-client
 #= require ./config
 #= require sjcl

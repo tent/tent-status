@@ -45,6 +45,8 @@
     </div>
 
     <% unless block_given? %>
+      <script type='application/javascript' src='<%= asset_path('lodash.js') %>'></script>
+      <script type='application/javascript' src='<%= asset_path('marbles.js') %>'></script>
       <script type='application/javascript' src='<%= asset_path('application.js') %>'></script>
       <iframe id='iframe-cache' src='<%= full_path('/iframe-cache') %>'></iframe>
     <% end %>
