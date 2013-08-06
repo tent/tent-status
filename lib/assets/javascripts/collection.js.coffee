@@ -42,7 +42,7 @@ TentStatus.Collection = class Collection extends Marbles.Collection
 
     headers = _.extend {}, @options.headers, options.headers
 
-    TentStatus.tent_client.post.list(params: params, headers: headers, callback: ((res, xhr) => @fetchComplete(params, options, res, xhr)))
+    (@options.tent_client || TentStatus.tent_client).post.list(params: params, headers: headers, callback: ((res, xhr) => @fetchComplete(params, options, res, xhr)))
 
   fetchComplete: (params, options, res, xhr) =>
     models = null

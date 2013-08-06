@@ -1,4 +1,4 @@
-<% if (config.authenticated) { %>
+<% if (TentStatus.config.authenticated) { %>
   <div class="row new-post-container">
     <div data-view="NewPostForm"></div>
   </div>

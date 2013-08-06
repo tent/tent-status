@@ -60,6 +60,7 @@ Marbles.Views.PostsFeed = class PostsFeedView extends Marbles.View
       _collection ?= new TentStatus.Collections.Posts(entity: @entity, context: _collection_context)
       _collection.options.params = feed_params
       _collection.options.headers = @feed_headers
+      _collection.options.tent_client = @tent_client if @tent_client
 
       collections.push(_collection)
 

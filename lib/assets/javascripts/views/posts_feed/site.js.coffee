@@ -1,19 +1,27 @@
 Marbles.Views.SitePostsFeed = class SitePostsFeedView extends Marbles.Views.PostsFeed
   @view_name: 'site_posts_feed'
 
-  init: =>
-    @on 'ready', @initPostViews
-    @on 'ready', @initAutoPaginate
-
-    @posts_collection = new TentStatus.Collections.Posts
-    @posts_collection.client = Marbles.HTTP.TentClient.hostClient()
-    @posts_collection.params = {
-      types: TentStatus.config.POST_TYPES.STATUS
-      limit: TentStatus.config.PER_PAGE
+  initialize: (options = {}) =>
+    site_feed_meta_post = {
+      content: {
+        servers: [{
+          urls: {
+            "posts_feed": TentStatus.config.services.site_feed_api_root
+          }
+        }]
+      }
     }
-    @fetch()
 
-    TentStatus.Models.Post.on 'create:success', (post, xhr) =>
-      return unless post.get('permissions.public') == true
-      @posts_collection.unshift(post)
-      @prependRender([post])
+    options.entity = TentStatus.config.meta.content.entity
+    options.types = [TentStatus.config.POST_TYPES.STATUS]
+    options.feed_queries = [{ entities: false }]
+    options.context = 'site-feed'
+
+    @tent_client = new TentClient(TentStatus.config.meta.content.entity,
+      server_meta_post: site_feed_meta_post
+    )
+
+    super(options)
+
+  shouldAddPostToFeed: (post) =>
+    post.get('permissions.public') == true && !post.is_repost
