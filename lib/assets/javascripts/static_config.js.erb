@@ -49,6 +49,7 @@ TentStatus.config = {
   SIGNOUT_URL: <%= Yajl::Encoder.encode(TentStatus.settings[:signout_url]) %>,
   SIGNOUT_REDIRECT_URL: <%= Yajl::Encoder.encode(TentStatus.settings[:signout_redirect_url]) %>,
   PATH_PREFIX: <%= Yajl::Encoder.encode(TentStatus.settings[:path_prefix]) %>,
+  APP_URL: <%= Yajl::Encoder.encode(TentStatus.settings[:url]) %>,
 
   services: {
     avatar_proxy_host: <%= Yajl::Encoder.encode(TentStatus.settings[:avatar_proxy_host]) %>,
