@@ -5,6 +5,8 @@ _.extend TentStatus.Helpers,
 
   route: (route_name, params = {}) ->
     switch route_name
+      when 'root'
+        @fullPath('/')
       when 'subscribers'
         if params.entity == TentStatus.config.meta.content.entity
           @fullPath('/subscribers')

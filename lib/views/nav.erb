@@ -23,9 +23,11 @@
     </li>
   </a>
 
-  <a href="<%= full_path('/site-feed') %>" data-match-url="/site-feed">
-    <li>
-      <i class="icon-globe"></i>Site Feed
-    </li>
-  </a>
+  <% if TentStatus.settings[:site_feed_api_root] %>
+    <a href="<%= full_path('/site-feed') %>" data-match-url="/site-feed">
+      <li>
+        <i class="icon-globe"></i>Site Feed
+      </li>
+    </a>
+  <% end %>
 </ul>

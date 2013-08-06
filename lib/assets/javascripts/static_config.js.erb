@@ -56,7 +56,8 @@ TentStatus.config = {
     entity_search_api_root: <%= Yajl::Encoder.encode(TentStatus.settings[:entity_search_api_root]) %>,
     entity_search_api_key: <%= Yajl::Encoder.encode(TentStatus.settings[:entity_search_api_root]) %>,
     search_api_root: <%= Yajl::Encoder.encode(TentStatus.settings[:search_api_root]) %>,
-    search_api_key: <%= Yajl::Encoder.encode(TentStatus.settings[:search_api_key]) %>
+    search_api_key: <%= Yajl::Encoder.encode(TentStatus.settings[:search_api_key]) %>,
+    site_feed_api_root: <%= Yajl::Encoder.encode(TentStatus.settings[:site_feed_api_root]) %>
   }
 }
 

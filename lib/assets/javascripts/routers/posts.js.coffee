@@ -36,6 +36,9 @@ TentStatus.Routers.posts = new class PostsRouter extends Marbles.Router
     TentStatus.setPageTitle page: @actions_titles.feed
 
   siteFeed: (params) =>
+    unless TentStatus.config.services.site_feed_api_root
+      @navigate(TentStatus.Helpers.route('root'), trigger: true, replace: true)
+
     new Marbles.Views.SiteFeed
     @_initMiniProfileView()
     TentStatus.setPageTitle page: @actions_titles.siteFeed

@@ -58,7 +58,8 @@ module TentStatus
       :search_api_root        => settings[:search_api_root]        || ENV['SEARCH_API_ROOT'],
       :search_api_key         => settings[:search_api_key]         || ENV['SEARCH_API_KEY'],
       :entity_search_api_root => settings[:entity_search_api_root] || ENV['ENTITY_SEARCH_API_ROOT'],
-      :entity_search_api_key  => settings[:entity_search_api_key]  || ENV['ENTITY_SEARCH_API_KEY']
+      :entity_search_api_key  => settings[:entity_search_api_key]  || ENV['ENTITY_SEARCH_API_KEY'],
+      :site_feed_api_root     => settings[:site_feed_api_root]     || ENV['SITE_FEED_API_ROOT']
     )
 
     self.settings[:search_enabled] = self.settings[:search_api_root] && self.settings[:search_api_key]
