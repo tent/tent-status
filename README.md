@@ -34,6 +34,7 @@ AVATAR_PROXY_HOST      | `:avatar_proxy_host`      | Optional                   
 SEARCH_API_ROOT        | `:search_api_root`        | Optional                                | Skate API root.
 SEARCH_API_KEY         | `:search_api_key`         | Optional                                | Skate API key.
 ENTITY_SEARCH_API_ROOT | `:entity_search_api_root` | Optional                                | URL of service to provide entity autocomplete.
+SKIP_AUTHENTICATION    | `:skip_authentication`    | Optional                                | Bypasses OAuth flow when set to `true`. This only works when config.json is loaded from another source.
 
 **TODO:** Entity search service and CDN support are not currently implemented.
 

@@ -2,6 +2,8 @@ module TentStatus
   class App
     class Authentication < Middleware
       def action(env)
+        return env if TentStatus.settings[:skip_authentication]
+
         if current_user(env) && current_user(env).app_exists?
           env
         else

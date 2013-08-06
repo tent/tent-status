@@ -50,6 +50,7 @@ module TentStatus
       :signout_url          => settings[:signout_url]          || ENV['SIGNOUT_URL'],
       :signout_redirect_url => settings[:signout_redirect_url] || ENV['SIGNOUT_REDIRECT_URL'],
       :default_avatar_url   => settings[:default_avatar_url]   || ENV['DEFAULT_AVATAR_URL'],
+      :skip_authentication  => settings[:skip_authentication]  || ENV['SKIP_AUTHENTICATION'],
 
       ##
       # App service settings
@@ -90,10 +91,12 @@ module TentStatus
   def self.new(settings = {})
     self.configure(settings)
 
-    require 'tent-status/app'
-    require 'tent-status/model'
+    unless self.settings[:skip_authentication]
+      require 'tent-status/model'
+      Model.new(self.settings)
+    end
 
-    Model.new(self.settings)
+    require 'tent-status/app'
     App.new
   end
 end
