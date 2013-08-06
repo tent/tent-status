@@ -7,14 +7,14 @@ Marbles.Views.SinglePost = class SinglePostView extends Marbles.View
     @container = Marbles.Views.container
     super
 
-    TentStatus.Models.Post.fetch {entity: options.entity, id: options.id},
+    TentStatus.Models.StatusPost.fetch {entity: options.entity, id: options.id},
       error: =>
       success: (post) =>
         @post_cid = post
         @render(@context(post))
 
   post: =>
-    TentStatus.Models.Post.find(cid: @post_cid)
+    TentStatus.Models.StatusPost.find(cid: @post_cid)
 
   context: (post = @post()) =>
     Marbles.Views.Post::context(post)
