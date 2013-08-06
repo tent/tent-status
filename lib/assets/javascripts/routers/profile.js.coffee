@@ -14,7 +14,7 @@ TentStatus.Routers.profile = new class ProfileRouter extends Marbles.Router
       el: document.getElementById('author-info')
 
   currentProfile: (params) =>
-    new Marbles.Views.Profile entity: TentStatus.config.domain_entity.toString()
+    new Marbles.Views.Profile entity: TentStatus.config.meta.content.entity
     @_initMiniProfileView()
     TentStatus.setPageTitle page: @actions_titles.currentProfile
 

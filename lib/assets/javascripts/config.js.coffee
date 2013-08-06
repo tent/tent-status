@@ -24,9 +24,6 @@ new Marbles.HTTP(
 
     TentStatus.config.authenticated = !!TentStatus.config.credentials
 
-    # TODO: handle subdomains for hosted version via window.location.href
-    TentStatus.config.domain_entity ?= TentStatus.config.meta?.entity
-
     TentStatus.tent_client = new TentClient(
       TentStatus.config.meta.content.entity,
       credentials: TentStatus.config.credentials

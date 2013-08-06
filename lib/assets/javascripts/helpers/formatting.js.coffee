@@ -1,15 +1,4 @@
 _.extend TentStatus.Helpers,
-  formatTime: (timestamp_int) ->
-    now = moment()
-    time = moment(timestamp_int)
-
-    formatted_time = if time.format('YYYY-MM-DD') == now.format('YYYY-MM-DD')
-      time.format('HH:mm') # time only
-    else
-      time.format('DD-MMM-YY') # date and time
-
-    "#{formatted_time}"
-
   formatRelativeTime: (timestamp_int) ->
     now = moment()
     time = moment(timestamp_int)
@@ -25,18 +14,12 @@ _.extend TentStatus.Helpers,
     return count unless options.max && count > options.max
     "#{options.max}+"
 
-  shortType: (type_uri) ->
-    type_uri?.match(/([^\/]+)\/v[\d.]+/)?[1]
-
   minimalEntity: (entity) ->
     return unless entity
     if TentStatus.config.tent_host_domain && entity.match(new RegExp("([a-z0-9]{2,})\.#{TentStatus.config.tent_host_domain}"))
       RegExp.$1
     else
       entity
-
-  formatUrl: (url='') ->
-    url.replace(/^\w+:\/\/([^\/]+).*?$/, '$1')
 
   formatUrlWithPath: (url = '') ->
     url.replace(/^\w+:\/\/(.*)$/, '$1')
@@ -50,9 +33,6 @@ _.extend TentStatus.Helpers,
     else
       plural
 
-  replaceIndexRange: (start_index, end_index, string, replacement) ->
-    string.substr(0, start_index) + replacement + string.substr(end_index, string.length-1)
-
   # HTML escaping
   HTML_ENTITIES: {
     '&': '&amp;',
@@ -65,11 +45,6 @@ _.extend TentStatus.Helpers,
     return unless text
     text.replace /[&"'><]/g, (character) -> TentStatus.Helpers.HTML_ENTITIES[character]
 
-  htmlUnescapeText: (text) ->
-    for char, entities of HTML_ENTITIES
-      text = text.replace(entities, char)
-    text
-
   extractTrailingHtmlEntitiesFromText: (text) ->
     trailing_text = ""
     for char, entities of TentStatus.Helpers.HTML_ENTITIES
@@ -78,10 +53,6 @@ _.extend TentStatus.Helpers,
         trailing_text = text.match(regex)[1] + trailing_text
         text = text.replace(regex, "")
     [text, trailing_text]
-
-  sanitizeAvatarUrl: (url='') ->
-    return unless url.match(/^https?:\/\//)
-    url
 
   truncate: (text, length, elipses='...', options = {}) ->
     return text unless text

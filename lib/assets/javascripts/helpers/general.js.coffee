@@ -1,14 +1,4 @@
 _.extend TentStatus.Helpers,
-  isCurrentUserEntity: (entity) ->
-    return false unless TentStatus.config.meta
-    uri = new Marbles.HTTP.URI(TentStatus.config.meta.content.entity)
-    uri.assertEqual( new Marbles.HTTP.URI entity )
-
-  isDomainEntity: (entity) ->
-    return false unless TentStatus.config.domain_entity
-    uri = new Marbles.HTTP.URI(TentStatus.config.domain_entity)
-    uri.assertEqual( new Marbles.HTTP.URI entity )
-
   # Taken from http://mths.be/punycode
   decodeUCS: (string) ->
     chars = []
@@ -35,3 +25,27 @@ _.extend TentStatus.Helpers,
   numChars: (string) ->
     return 0 unless string
     @decodeUCS(string).length
+
+  replaceIndexRange: (start_index, end_index, string, replacement) ->
+    string.substr(0, start_index) + replacement + string.substr(end_index, string.length-1)
+
+  substringIndices: (string, substring, invalid_after) ->
+    return [] unless string and substring
+
+    _indices = []
+    _length = substring.length
+    _offset = 0
+    while string.length
+      i = string.substr(_offset, string.length).indexOf(substring)
+      break if i == -1
+      _start_index = i + _offset
+      _end_index = _start_index + _length
+      break if string.substr(_end_index, 1).match(invalid_after) if invalid_after
+      _offset += i + _length
+      _indices.push _start_index, _end_index
+
+    _indices
+
+  escapeRegExChars: (string) ->
+    string ?= ""
+    string.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&")

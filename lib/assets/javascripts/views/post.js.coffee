@@ -27,7 +27,7 @@ Marbles.Views.Post = class PostView extends Marbles.View
     return unless mention && mention.entity && mention.post
     {
       name: TentStatus.Helpers.formatUrlWithPath(mention.entity),
-      url: TentStatus.Helpers.entityPostUrl(mention.entity, mention.post)
+      url: TentStatus.Helpers.route('post', entity: mention.entity, post_id: mention.post)
     }
 
   getPermissibleEntities: (post, should_trim=true) =>
@@ -42,7 +42,7 @@ Marbles.Views.Post = class PostView extends Marbles.View
 
     post: post
     in_reply_to: @inReplyToJSON(post.get('mentioned_posts')[0])
-    url: TentStatus.Helpers.postUrl(post)
+    url: TentStatus.Helpers.route('post', entity: post.get('entity'), post_id: post.get('id'))
     only_me: !post.get('permissions.public') && !permissible_entities.length && TentStatus.Helpers.isCurrentUserEntity(post.get('entity'))
     current_user_owns_post: TentStatus.Helpers.isCurrentUserEntity(post.get('entity'))
     formatted:

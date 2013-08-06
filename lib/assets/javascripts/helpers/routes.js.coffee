@@ -1,4 +1,8 @@
 _.extend TentStatus.Helpers,
+  entityProfileUrl: (entity) ->
+    return unless entity
+    @route('profile', entity: entity)
+
   route: (route_name, params = {}) ->
     switch route_name
       when 'subscribers'
@@ -12,10 +16,18 @@ _.extend TentStatus.Helpers,
         else
           @fullPath('/' + encodeURIComponent(params.entity) + '/subscriptions')
       when 'profile'
-        if params.entity == TentStatus.config.meta.content.entity
-          @fullPath('/profile')
+        if @isAppDomain()
+          if params.entity == TentStatus.config.meta.content.entity
+            @fullPath("/profile")
+          else
+            @fullPath("/#{encodeURIComponent params.entity}/profile")
         else
-          @fullPath('/' + encodeURIComponent(params.entity) + '/profile')
+          params.entity
+      when 'post'
+        if params.entity == TentStatus.config.meta.content.entity
+          "/posts/#{encodeURIComponent params.post_id}"
+        else
+          "/posts/#{encodeURIComponent params.entity}/#{encodeURIComponent params.post_id}"
 
   fullPath: (path) ->
     (TentStatus.config.PATH_PREFIX || '').replace(/\/$/, '') + path
