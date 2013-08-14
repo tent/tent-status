@@ -14,12 +14,17 @@ Marbles.Views.SitePostsFeed = class SitePostsFeedView extends Marbles.Views.Post
 
     options.entity = TentStatus.config.meta.content.entity
     options.types = [TentStatus.config.POST_TYPES.STATUS]
-    options.feed_queries = [{ entities: false }]
+    options.feed_queries = [{ entities: false, profiles: 'entity' }]
     options.context = 'site-feed'
 
     @tent_client = new TentClient(TentStatus.config.meta.content.entity,
       server_meta_post: site_feed_meta_post
     )
+
+    @tent_client.middleware = [{ # reset middleware to remove auth header
+      processRequest: (request) ->
+        request.request.xmlhttp.withCredentials = true
+    }]
 
     super(options)
 
