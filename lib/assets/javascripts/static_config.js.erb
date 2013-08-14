@@ -52,7 +52,6 @@ TentStatus.config = {
   APP_URL: <%= Yajl::Encoder.encode(TentStatus.settings[:url]) %>,
 
   services: {
-    avatar_proxy_host: <%= Yajl::Encoder.encode(TentStatus.settings[:avatar_proxy_host]) %>,
     entity_search_api_root: <%= Yajl::Encoder.encode(TentStatus.settings[:entity_search_api_root]) %>,
     entity_search_api_key: <%= Yajl::Encoder.encode(TentStatus.settings[:entity_search_api_root]) %>,
     search_api_root: <%= Yajl::Encoder.encode(TentStatus.settings[:search_api_root]) %>,
