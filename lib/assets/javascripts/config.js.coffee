@@ -15,6 +15,9 @@ new Marbles.HTTP(
   }]
   callback: (res, xhr) ->
     if xhr.status != 200
+      if xhr.status == 401
+        return window.location.href = TentStatus.config.SIGNOUT_REDIRECT_URL
+
       return setImmediate =>
         throw "failed to load json config via GET #{TentStatus.config.JSON_CONFIG_URL}: #{xhr.status} #{JSON.stringify(res)}"
 
