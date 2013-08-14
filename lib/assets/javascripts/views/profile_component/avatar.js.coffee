@@ -5,5 +5,16 @@ Marbles.Views.ProfileAvatar = class ProfileAvatarView extends Marbles.Views.Prof
   constructor: ->
     super
 
+    @on 'ready', @checkImageMortality
+
     @fetch()
+
+  checkImageMortality: =>
+    img = Marbles.DOM.querySelector('img', @el)
+    unless img.complete
+      return setTimeout @checkImageMortality, 10
+
+    # Fallback to default avatar if image fails to load
+    if img.naturalHeight == 0 && TentStatus.config.DEFAULT_AVATAR_URL
+      img.src = TentStatus.config.DEFAULT_AVATAR_URL
 
