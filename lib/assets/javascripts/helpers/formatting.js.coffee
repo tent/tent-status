@@ -15,11 +15,7 @@ _.extend TentStatus.Helpers,
     "#{options.max}+"
 
   minimalEntity: (entity) ->
-    return unless entity
-    if TentStatus.config.tent_host_domain && entity.match(new RegExp("([a-z0-9]{2,})\.#{TentStatus.config.tent_host_domain}"))
-      RegExp.$1
-    else
-      entity
+    @formatUrlWithPath(entity)
 
   formatUrlWithPath: (url = '') ->
     url.replace(/^\w+:\/\/(.*)$/, '$1')
