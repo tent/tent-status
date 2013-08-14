@@ -7,6 +7,7 @@ Marbles.Views.RepostsPostsFeed = class RepostsPostsFeedView extends Marbles.View
     options.feed_queries = [{
       mentions: options.entity
       entities: false
+      profiles: 'entity'
     }]
     super(options)
 
