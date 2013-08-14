@@ -68,6 +68,18 @@ Marbles.Views.NewPostForm = class NewPostFormView extends Marbles.View
 
     Marbles.DOM.on(@elements.form, 'submit', @submitWithValidation)
 
+    if @parentView().constructor.view_name == 'profile'
+      profile = @parentView().profile()
+      unless profile.get('entity') == TentStatus.config.meta.content.entity
+        textarea_view = @textareaMentionsView()
+
+        inline_mention = new TentStatus.InlineMentionsManager.InlineMention(
+          entity: profile.get('entity')
+          display_text: profile.get('name') || TentStatus.Helpers.minimalEntity(profile.get('entity'))
+        )
+
+        textarea_view.el.value = inline_mention.toExpandedMarkdownString() + " "
+
   initHotkeys: =>
     ## cmd/ctr enter to submit
     Marbles.DOM.on @elements.textarea, 'keydown', (e) =>
