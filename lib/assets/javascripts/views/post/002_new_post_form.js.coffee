@@ -82,10 +82,15 @@ Marbles.Views.NewPostForm = class NewPostFormView extends Marbles.View
     @elements.char_counter = Marbles.DOM.querySelector('.char-limit', @el)
     @max_chars = TentStatus.config.MAX_STATUS_LENGTH
 
+    @excess_char_count = 0
+    @textareaMentionsView().inline_mentions_manager.on 'change:excess_char_count', (@excess_char_count) =>
+      clearTimeout @_updateCharCounterTimeout
+      @_updateCharCounterTimeout = setTimeout @updateCharCounter, 20
+
     Marbles.DOM.on @elements.textarea, 'keydown', (e) =>
       clearTimeout @_updateCharCounterTimeout
       return true if @frozen
-      setTimeout @updateCharCounter, 20
+      @_updateCharCounterTimeout = setTimeout @updateCharCounter, 20
       true
 
   initValidation: =>
@@ -99,12 +104,6 @@ Marbles.Views.NewPostForm = class NewPostFormView extends Marbles.View
       null
 
     @updateCharCounter()
-
-  addMention: (entity) =>
-    index = @mentionIndex(entity)
-    return index unless index is -1
-    @mentions.push(entity)
-    @mentions.length-1
 
   mentionIndex: (entity) =>
     @mentions.indexOf(entity)
@@ -174,6 +173,7 @@ Marbles.Views.NewPostForm = class NewPostFormView extends Marbles.View
   updateCharCounter: =>
     return if @frozen
     char_count = TentStatus.Helpers.numChars(@elements.textarea.value) || 0
+    char_count -= @excess_char_count # see inline_mentions_manager
     delta = @max_chars - char_count
 
     Marbles.DOM.setInnerText(@elements.char_counter, delta)
@@ -197,7 +197,7 @@ Marbles.Views.NewPostForm = class NewPostFormView extends Marbles.View
     attrs = _.extend attrs, {
       type: @constructor.model.post_type.toString()
     }
-    attrs.content = { text: attrs.text }
+    attrs.content = { text: @textareaMentionsView().inline_mentions_manager.processedMarkdown() }
     delete attrs.text
     attrs
 

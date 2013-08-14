@@ -37,7 +37,7 @@ Marbles.Views.MentionsAutoCompleteTextareaContainer = class MentionsAutoComplete
       @_mode = 'preview'
       Marbles.DOM.removeChildren(@elements.preview)
       mentions = _.map @textareaView().inline_mentions_manager.entities, (e) => { entity: e }
-      html = TentStatus.Helpers.formatTentMarkdown(@elements.textarea.value, mentions)
+      html = TentStatus.Helpers.formatTentMarkdown(@textareaView().inline_mentions_manager.processedMarkdown(), mentions)
       Marbles.DOM.appendHTML(@elements.preview, html)
       Marbles.DOM.hide(@elements.textarea)
       Marbles.DOM.show(@elements.preview)

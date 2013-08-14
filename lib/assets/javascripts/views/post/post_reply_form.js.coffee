@@ -8,6 +8,28 @@ Marbles.Views.PostReplyForm = class PostReplyFormView extends Marbles.Views.NewP
   constructor: ->
     super
 
+    @on 'ready', @initInlineMentions
+
+  initInlineMentions: =>
+    textarea_view = @textareaMentionsView()
+    return unless textarea_view
+
+    text = ""
+
+    for entity in @post().conversation_entities
+      profile = TentStatus.Models.MetaProfile.find(entity: entity)
+
+      inline_mention = new TentStatus.InlineMentionsManager.InlineMention(
+        entity: entity
+        display_text: profile?.get('name') || TentStatus.Helpers.minimalEntity(entity)
+      )
+
+      text += inline_mention.toExpandedMarkdownString() + " "
+
+    textarea_view.el.value = text
+    textarea_view.inline_mentions_manager.updateMentions()
+
+  # no initial render
   initialRender: =>
 
   profileFetchSuccess: =>
@@ -26,9 +48,7 @@ Marbles.Views.PostReplyForm = class PostReplyFormView extends Marbles.Views.NewP
   show: =>
     @visible = true
 
-    # Focus textarea
-    setImmediate =>
-      @childViews('MentionsAutoCompleteTextareaContainer')?[0]?.childViews('MentionsAutoCompleteTextarea')?[0]?.focus()
+    setImmediate @focusTextarea
 
     if @ready
       Marbles.DOM.show(@el)
