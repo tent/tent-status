@@ -10,10 +10,7 @@ Marbles.Views.SignoutButton = class SignoutButtonView extends Marbles.View
     new Marbles.HTTP {
       method: 'POST'
       url: TentStatus.config.SIGNOUT_URL
-      middleware: [{
-        processRequest: (request) ->
-          request.request.xmlhttp.withCredentials = true
-      }]
+      middleware: [Marbles.HTTP.Middleware.WithCredentials]
       callback: (res, xhr) =>
         @signoutRedirect()
     }

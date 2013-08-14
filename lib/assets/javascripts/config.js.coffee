@@ -9,10 +9,7 @@ unless TentStatus.config.JSON_CONFIG_URL
 new Marbles.HTTP(
   method: 'GET'
   url: TentStatus.config.JSON_CONFIG_URL
-  middleware: [{
-    processRequest: (request) ->
-      request.request.xmlhttp.withCredentials = true
-  }]
+  middleware: [Marbles.HTTP.Middleware.WithCredentials]
   callback: (res, xhr) ->
     if xhr.status != 200
       if xhr.status == 401

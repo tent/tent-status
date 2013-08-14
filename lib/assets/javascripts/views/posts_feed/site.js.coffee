@@ -21,10 +21,8 @@ Marbles.Views.SitePostsFeed = class SitePostsFeedView extends Marbles.Views.Post
       server_meta_post: site_feed_meta_post
     )
 
-    @tent_client.middleware = [{ # reset middleware to remove auth header
-      processRequest: (request) ->
-        request.request.xmlhttp.withCredentials = true
-    }]
+    # WithCredentials replaces Hawk middleware
+    @tent_client.middleware = [Marbles.HTTP.Middleware.WithCredentials]
 
     super(options)
 
