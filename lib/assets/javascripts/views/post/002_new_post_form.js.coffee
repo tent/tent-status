@@ -216,6 +216,11 @@ Marbles.Views.NewPostForm = class NewPostFormView extends Marbles.View
 
     # in reply to mention
     if attrs.mentions_post_entity && attrs.mentions_post_id
+      attrs.refs = [{
+        post: attrs.mentions_post_id
+        entity: attrs.mentions_post_entity
+      }]
+
       existing = false
       for m in mentions
         if m.entity == attrs.mentions_post_entity
