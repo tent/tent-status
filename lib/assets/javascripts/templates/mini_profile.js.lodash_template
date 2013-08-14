@@ -2,9 +2,9 @@
   <span class="author-info-triangle"></span>
   <div class="author-info-top-container">
     <% entity = profile.get('entity') %>
-    <a href='<%= profile_url %>' class="pull-left"><img src='<%= profile.get('avatar_url') %>' class='avatar avatar-large' /></a>
+    <span data-view='ProfileAvatar' data-entity='<%- entity %>' data-class='avatar-large' class='pull-left'></span>
     <ul class="unstyled author-count-infos pull-left">
-      <li><h3><a href='<%= profile_url %>' title='<%= profile.get('name') || entity %>'><%= formatted.name %></a></h3></li>
+      <li><h3 data-view='ProfileName' data-entity='<%- entity %>'></h3></li>
       <li><a href='<%- TentStatus.Helpers.route('subscribers', {entity: entity}) %>'>Subscribers</a></li>
       <li><a href='<%- TentStatus.Helpers.route('subscriptions', {entity: entity}) %>'>Subscriptions</a></li>
       <li><a href='<%- TentStatus.Helpers.route('profile', {entity: entity}) %>'>Posts</a></li>

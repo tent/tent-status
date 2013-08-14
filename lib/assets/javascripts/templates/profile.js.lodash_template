@@ -1,7 +1,7 @@
 <div class="row">
   <div class="page-header">
     <div class="row">
-      <img class="avatar avatar-large profile-avatar" src="<%= profile.get('avatar_url') %>" />
+      <span data-view='ProfileAvatar' data-entity='<%- profile.get('entity') %>' data-class='avatar-large' class='pull-left'></span>
 
       <div class="pull-left profile-right">
         <h2 class="profile-name">
