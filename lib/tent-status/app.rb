@@ -110,10 +110,6 @@ module TentStatus
       end
     end
 
-    get '/iframe-cache' do |b|
-      b.use RenderView, :view => :iframe_cache
-    end
-
     get '/config.json' do |b|
       b.use AccessControl, :allow_credentials => true
       b.use CacheControl, :value => 'no-cache'

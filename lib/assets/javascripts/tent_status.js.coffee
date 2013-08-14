@@ -5,7 +5,6 @@
 #= require sjcl
 #= require tent-markdown
 #= require textarea_cursor_position
-#= require ./cache
 #= require_tree ./templates
 #= require_self
 #= require ./fetch_interval

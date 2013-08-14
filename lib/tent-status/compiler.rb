@@ -6,7 +6,6 @@ module TentStatus
 
     ASSET_NAMES = %w(
       application.css
-      iframe-cache.js
       application.js
       repost.png
       edit.png
