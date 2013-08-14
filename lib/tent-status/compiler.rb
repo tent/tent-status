@@ -7,16 +7,6 @@ module TentStatus
     ASSET_NAMES = %w(
       application.css
       application.js
-      repost.png
-      edit.png
-      reply.png
-      site_feed.png
-      search.png
-      conversation.png
-      timeline.png
-      gears.png
-      mentions.png
-      profile.png
     ).freeze
 
     attr_accessor :sprockets_environment, :assets_dir, :layout_dir, :layout_path, :layout_env
