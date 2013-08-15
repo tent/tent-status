@@ -1,5 +1,18 @@
 //= require ./permissions
 
+// disabled app nav items
+@import 'icing/settings';
+.app-nav-list {
+  a.disabled {
+    color: lighten($grayTextColor, 20%);
+    cursor: default;
+
+    &:hover {
+      color: lighten($grayTextColor, 20%);
+    }
+  }
+}
+
 .mentions-autocomplete {
   .markdown-preview {
     width: 100%;

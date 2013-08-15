@@ -64,6 +64,10 @@ _.extend TentStatus, Marbles.Events, {
 
     Marbles.history.start(root: (TentStatus.config.PATH_PREFIX || '') + '/')
 
+    if !TentStatus.config.authenticated
+      Marbles.Views.AppNavigationItem.disableAllExcept('profile')
+      Marbles.history.navigate('profile', { trigger: true, replace: true })
+
     @ready = true
     @trigger 'ready'
 
