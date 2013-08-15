@@ -37,6 +37,7 @@ module TentStatus
       :database_url         => settings[:database_url]         || ENV['DATABASE_URL'],
       :database_logfile     => settings[:database_logfile]     || ENV['DATABASE_LOGFILE'] || STDOUT,
       :public_dir           => settings[:public_dir]           || ENV['ASSETS_DIR'] || File.expand_path('../../public/assets', __FILE__), # lib/../public/assets
+      :layout_dir           => settings[:layout_dir]           || ENV['LAYOUT_DIR'],
       :json_config_url      => settings[:json_config_url]      || ENV['JSON_CONFIG_URL'],
       :signout_url          => settings[:signout_url]          || ENV['SIGNOUT_URL'],
       :signout_redirect_url => settings[:signout_redirect_url] || ENV['SIGNOUT_REDIRECT_URL'],
