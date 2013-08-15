@@ -3,15 +3,10 @@ TentStatus.Models.Post = class PostModel extends Marbles.Model
   @id_mapping_scope: ['id', 'entity']
 
   @constructorForType: (type) ->
-    type = new TentClient.PostType(type)
-
-    if type.base == 'https://tent.io/types/status'
-      if type.fragment == 'reply'
-        TentStatus.Models.StatusReplyPost
-      else
-        TentStatus.Models.StatusPost
-    else
-      TentStatus.Models.Post
+    constructorFn = _.find [TentStatus.Models.StatusPost, TentStatus.Models.StatusReplyPost], (c) =>
+      c.post_type.assertMatch(new TentClient.PostType type)
+    constructorFn ?= @
+    constructorFn
 
   @create: (data, options = {}) ->
     completeFn = (res, xhr) =>
@@ -108,9 +103,7 @@ TentStatus.Models.Post = class PostModel extends Marbles.Model
         options.complete?(res, xhr)
         return
 
-      constructorFn = _.find [TentStatus.Models.StatusPost, TentStatus.Models.StatusReplyPost], (c) =>
-        c.post_type.assertMatch(new TentClient.PostType res.type)
-      constructorFn ?= @
+      constructorFn = @constructorForType(res.type)
 
       if params.cid
         if post = @instances.all[params.cid]
