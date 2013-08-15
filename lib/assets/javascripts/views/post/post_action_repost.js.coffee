@@ -8,6 +8,7 @@ Marbles.Views.PostActionRepost = class PostActionRepostView extends Marbles.View
         public: true
       type: "https://tent.io/types/repost/v0##{(new TentClient.PostType post.get('type')).toStringWithoutFragment()}"
       mentions: [{ entity: post.get('entity'), post: post.get('id') }]
+      refs: [{ entity: post.get('entity'), post: post.get('id') }]
       content:
         entity: post.get('entity')
         post: post.get('id')
