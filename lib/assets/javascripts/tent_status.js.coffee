@@ -18,7 +18,7 @@
 #= require_tree ./helpers
 #= require helpers/extract-urls
 #= require_tree ./views
-#= require_tree ./routers
+#= require ./router
 
 Marbles.View.templates = LoDashTemplates
 
