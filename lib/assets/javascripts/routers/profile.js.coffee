@@ -20,7 +20,6 @@ TentStatus.Routers.profile = new class ProfileRouter extends Marbles.Router
 
   profile: (params) =>
     new Marbles.Views.Profile entity: params.entity
-    @_initMiniProfileView()
 
     title = @actions_titles.profile
     title = "#{TentStatus.Helpers.formatUrlWithPath(params.entity)} - #{title}" if params.entity
