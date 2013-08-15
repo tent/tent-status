@@ -1,30 +1,35 @@
 require 'tent-status/compiler'
 
-namespace :icing do
-  require 'icing/tasks/assets'
+def configure_tent_status
+  return if @tent_status_configured
+  @tent_status_configured = true
+  TentStatus.configure
+end
 
+namespace :icing do
   task :configure do
-    TentStatus.configure
-    Icing.settings[:public_dir] = TentStatus.settings[:public_dir]
+    configure_tent_status
+    TentStatus::Compiler.compile_icing = true
   end
 end
 
 namespace :marbles do
-  require 'marbles-js/tasks/assets'
-
   task :configure do
-    TentStatus.configure
-    MarblesJS.settings[:public_dir] = TentStatus.settings[:public_dir]
-    MarblesJS::Compiler.compile_vendor = true
+    configure_tent_status
+    TentStatus::Compiler.compile_marbles = true
   end
 end
 
 namespace :assets do
-  task :compile do
+  task :configure do
+    configure_tent_status
+  end
+
+  task :compile => :configure do
     TentStatus::Compiler.compile_assets
   end
 
-  task :gzip do
+  task :gzip => :configure do
     TentStatus::Compiler.gzip_assets
   end
 
@@ -36,5 +41,5 @@ namespace :assets do
   end
 
   # deploy assets when deploying to heroku
-  task :precompile => [:deploy, 'icing:configure', 'icing:assets:precompile', 'marbles:configure', 'marbles:assets:precompile']
+  task :precompile => ['icing:configure', 'marbles:configure', :deploy]
 end

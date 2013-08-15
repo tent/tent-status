@@ -13,7 +13,7 @@ module TentStatus
       appicon114.png
     ).freeze
 
-    attr_accessor :sprockets_environment, :assets_dir, :layout_dir, :layout_path, :layout_env
+    attr_accessor :sprockets_environment, :assets_dir, :layout_dir, :layout_path, :layout_env, :compile_icing, :compile_marbles
 
     def configure_app(options = {})
       return if @app_configured
@@ -81,7 +81,18 @@ module TentStatus
         File.join(assets_dir, "manifest.json")
       )
 
-      manifest.compile(ASSET_NAMES)
+      others = []
+      if self.compile_icing
+        require 'icing/compiler'
+        others += Icing::Compiler::ASSET_NAMES
+      end
+
+      if self.compile_marbles
+        require 'marbles-js/compiler'
+        others += MarblesJS::Compiler::ASSET_NAMES + MarblesJS::Compiler::VENDOR_ASSET_NAMES
+      end
+
+      manifest.compile(ASSET_NAMES + others)
     end
 
     def compress_assets
