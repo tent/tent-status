@@ -241,8 +241,9 @@ Marbles.Views.NewPostForm = class NewPostFormView extends Marbles.View
           break
       unless existing
         mentions.push { entity: attrs.mentions_post_entity, post: attrs.mentions_post_id }
-        delete attrs.mentions_post_entity
-        delete attrs.mentions_post_id
+
+    delete attrs.mentions_post_entity
+    delete attrs.mentions_post_id
 
     attrs.mentions = mentions if mentions.length
 
