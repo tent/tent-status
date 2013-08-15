@@ -59,12 +59,7 @@ Property                         | Required | Type   | Description
     "hawk_algorithm": "sha256"
   },
   "meta": {
-    "entity": "https://example.org",
-    "servers": [ ... ],
-    "profile": {
-      "avatar_digest": "...",
-      ...
-    }
+    // full meta post json
   }
 }
 ```
