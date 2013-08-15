@@ -2,6 +2,17 @@ TentStatus.Models.Post = class PostModel extends Marbles.Model
   @model_name: 'post'
   @id_mapping_scope: ['id', 'entity']
 
+  @constructorForType: (type) ->
+    type = new TentClient.PostType(type)
+
+    if type.base == 'https://tent.io/types/status'
+      if type.fragment == 'reply'
+        TentStatus.Models.StatusReplyPost
+      else
+        TentStatus.Models.StatusPost
+    else
+      TentStatus.Models.Post
+
   @create: (data, options = {}) ->
     completeFn = (res, xhr) =>
       if xhr.status == 200
