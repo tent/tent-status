@@ -6,6 +6,9 @@ Marbles.Views.MiniProfile = class MiniProfileView extends Marbles.View
   constructor: (options = {}) ->
     super
 
+    # Don't show the mini profile when not authenticated
+    return unless TentStatus.config.authenticated
+
     @fetchProfile(options.entity) if options.entity
 
     Marbles.Views.Post.on 'focus', (view, e) =>

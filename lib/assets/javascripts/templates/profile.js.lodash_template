@@ -25,18 +25,20 @@
         <% } %>
       </div>
     </div>
-    <div class="row">
-      <table class="profile-count-infos">
-        <tr>
-          <td data-view='ProfileSubscriptionCount'></td>
-          <td data-view='ProfileSubscriberCount'></td>
-          <td data-view='ProfilePostCount'></td>
-          <% if (TentStatus.Helpers.isCurrentUserEntity(profile.get('entity')) !== true) { %>
-            <td data-view='SubscriptionToggle' data-entity='<%- profile.get('entity') %>'></td>
-          <% } %>
-        </tr>
-      </table>
-    </div>
+    <% if (TentStatus.config.authenticated === true) { %>
+      <div class="row">
+        <table class="profile-count-infos">
+          <tr>
+            <td data-view='ProfileSubscriptionCount'></td>
+            <td data-view='ProfileSubscriberCount'></td>
+            <td data-view='ProfilePostCount'></td>
+            <% if (TentStatus.Helpers.isCurrentUserEntity(profile.get('entity')) !== true) { %>
+              <td data-view='SubscriptionToggle' data-entity='<%- profile.get('entity') %>'></td>
+            <% } %>
+          </tr>
+        </table>
+      </div>
+    <% } %>
   </div>
 </div>
 
