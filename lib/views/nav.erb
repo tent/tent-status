@@ -1,30 +1,30 @@
 <ul class="unstyled app-nav-list" data-view="AppNavigation NavigationActive" data-active-class="active" data-active-selector="a">
-  <a href="<%= full_path('/') %>" data-match-url="/">
+  <a href="<%= full_path('/') %>" data-fragment="" data-match-url="/" data-view="AppNavigationItem">
     <li>
       <i class="icon-list"></i>Timeline
     </li>
   </a>
 
-  <a href="<%= full_path('/replies') %>" data-match-url="/replies">
+  <a href="<%= full_path('/replies') %>" data-fragment="replies" data-match-url="/replies" data-view="AppNavigationItem">
     <li class='count-badge-container'>
       <i class="icon-pushpin"></i>Replies <span data-view="RepliesUnreadCount" class='badge badge-important hidden count-badge'></span>
     </li>
   </a>
 
-  <a href="<%= full_path('/reposts') %>" data-match-url="/reposts">
+  <a href="<%= full_path('/reposts') %>" data-fragment="reposts" data-match-url="/reposts" data-view="AppNavigationItem">
     <li class='count-badge-container'>
       <i class="icon-retweet"></i>Reposts <span data-view="RepostsUnreadCount" class='badge hidden count-badge'></span>
     </li>
   </a>
 
-  <a href="<%= full_path('/profile') %>" data-match-url="/profile">
+  <a href="<%= full_path('/profile') %>" data-fragment="profile" data-match-url="/profile" data-view="AppNavigationItem">
     <li>
       <i class="icon-user"></i>Profile
     </li>
   </a>
 
   <% if TentStatus.settings[:site_feed_api_root] %>
-    <a href="<%= full_path('/site-feed') %>" data-match-url="/site-feed">
+    <a href="<%= full_path('/site-feed') %>" data-fragment="site-feed" data-match-url="/site-feed" data-view="AppNavigationItem">
       <li>
         <i class="icon-globe"></i>Site Feed
       </li>
