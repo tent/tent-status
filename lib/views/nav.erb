@@ -6,14 +6,14 @@
   </a>
 
   <a href="<%= full_path('/mentions') %>" data-fragment="mentions" data-match-url="/mentions" data-view="AppNavigationItem">
-    <li class='count-badge-container'>
-      <i class="icon-pushpin"></i>Mentions <span data-view="RepliesUnreadCount" class='badge badge-important hidden count-badge'></span>
+    <li>
+      <i class="icon-pushpin"></i>Mentions <span class='count-badge-container'><span data-view="MentionsUnreadCount" class='badge badge-important hidden count-badge'></span></span>
     </li>
   </a>
 
   <a href="<%= full_path('/reposts') %>" data-fragment="reposts" data-match-url="/reposts" data-view="AppNavigationItem">
-    <li class='count-badge-container'>
-      <i class="icon-retweet"></i>Reposts <span data-view="RepostsUnreadCount" class='badge hidden count-badge'></span>
+    <li>
+      <i class="icon-retweet"></i>Reposts <span class='count-badge-container'><span data-view="RepostsUnreadCount" class='badge hidden count-badge'></span></span>
     </li>
   </a>
 

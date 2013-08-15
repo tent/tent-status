@@ -67,10 +67,10 @@ form.follow-button {
 // nav.erb
 .count-badge-container {
   position: relative;
+  display: inline-block;
 
   .count-badge {
     position: absolute;
-    top: 12px;
-    margin-left: 4px;
+    top: -12px;
   }
 }
