@@ -3,7 +3,7 @@ TentStatus.Routers.posts = new class PostsRouter extends Marbles.Router
     ""                   : "root"
     "posts"              : "index"
     "site-feed"          : "siteFeed"
-    "replies"            : "replies"
+    "mentions"           : "mentions"
     "reposts"            : "reposts"
     "posts/:id"          : "post"
     "posts/:entity/:id"  : "post"
@@ -13,7 +13,7 @@ TentStatus.Routers.posts = new class PostsRouter extends Marbles.Router
     'feed'      : 'My Feed'
     'siteFeed'  : 'Site Feed'
     'post'      : 'Conversation'
-    'replies'   : 'Replies'
+    'mentions'  : 'Mentions'
     'reposts'   : 'Reposts'
   }
 
@@ -49,11 +49,11 @@ TentStatus.Routers.posts = new class PostsRouter extends Marbles.Router
     @_initMiniProfileView(entity: entity)
     TentStatus.setPageTitle page: @actions_titles.post
 
-  replies: (params) =>
+  mentions: (params) =>
     params.entity ?= TentStatus.config.meta.content.entity
-    new Marbles.Views.Replies(entity: params.entity)
+    new Marbles.Views.Mentions(entity: params.entity)
     @_initMiniProfileView(entity: params.entity)
-    TentStatus.setPageTitle page: @actions_titles.replies
+    TentStatus.setPageTitle page: @actions_titles.mentions
 
   reposts: (params) =>
     params.entity ?= TentStatus.config.meta.content.entity

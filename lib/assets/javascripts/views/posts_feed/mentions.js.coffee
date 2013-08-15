@@ -1,9 +1,9 @@
-Marbles.Views.RepliesPostsFeed = class RepliesPostsFeedView extends Marbles.Views.PostsFeed
-  @view_name: 'replies_posts_feed'
+Marbles.Views.MentionsPostsFeed = class MentionsPostsFeedView extends Marbles.Views.PostsFeed
+  @view_name: 'mentions_posts_feed'
 
   initialize: (options = {}) =>
     options.entity = options.parent_view.entity
-    options.types = [TentStatus.config.POST_TYPES.STATUS_REPLY]
+    options.types = [TentStatus.config.POST_TYPES.STATUS_REPLY, TentStatus.config.POST_TYPES.STATUS]
     options.feed_queries = [{
       mentions: options.entity
       entities: false
@@ -20,7 +20,7 @@ Marbles.Views.RepliesPostsFeed = class RepliesPostsFeedView extends Marbles.View
 
   clearRepliesUnreadCount: =>
     ref = @postsCollection().first()
-    for cid in Marbles.View.instances.replies_unread_count
+    for cid in Marbles.View.instances.mentions_unread_count
       continue unless v = Marbles.View.instances.all[cid]
       v.clearCount(ref)
 
