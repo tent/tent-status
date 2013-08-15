@@ -15,12 +15,12 @@ All configuration options can either be set through environment variables or in 
 ENV                    | Key                       | Required                                | Description
 ---                    | ---                       | --------                                | -----------
 APP_NAME               | `:name`                   | Required                                | Name to be registered with and display in title bar.
-APP_ICON_URL_BASE      | `:icon_url_base`          | Optional                                | Base URL for `appicon57.png` (57x57), `appicon72.png` (72x72), `appicon114.png` (114x114), and `favicon.png` (16x16).
 APP_DISPLAY_URL        | `:display_url`            | Optional                                | Public URL for app (used for app registration and your server will tag posts with it). Defaults to the github url.
 APP_URL                | `:url`                    | Required if running Ruby backend        | URL app is being served from (Also required if static app isn't being served from the domain root).
 APP_DESCRIPTION        | `:description`            | Optional                                | Description of app (used for app registration).
 APP_CDN_URL            | `:cdn_url`                | Optional                                | URL of CDN containing compiled assets.
 APP_ASSET_MANIFEST     | `:asset_manifests`        | Optional                                | Comma separated paths to asset manifest JSON file (required if using a CDN).
+ASSET_ROOT             | `:asset_root`             | Optional                                | Root URL or path for serving assets. Defaults to `/assets`.
 PATH_PREFIX            | `:path_prefix`            | Optional                                | Path prefix for when app is mounted somewhere other than the domain root.
 ADMIN_URL              | `:admin_url`              | Optional                                | URL of admin app.
 DATABASE_URL           | `:database_url`           | Required if running Ruby backend        | URL of postgres database.
@@ -29,7 +29,6 @@ SESSION_SECRET         |                           | Required                   
 JSON_CONFIG_URL        | `:json_config_url`        | Required if running the app statically. | URL of `config.json`.
 SIGNOUT_URL            | `:signout_url`            | Required if running the app statically. | URL accepting a `POST` request to revoke access to `config.json`.
 SIGNOUT_REDIRECT_URL   | `:signout_redirect_url`   | Required if running the app statically. | URL for app to redirect to after signing out.
-DEFAULT_AVATAR_URL     | `:default_avatar_url`     | Required                                | URL of image to display when avatar for an entity is unavailable.
 SEARCH_API_ROOT        | `:search_api_root`        | Optional                                | Skate API root.
 SEARCH_API_KEY         | `:search_api_key`         | Optional                                | Skate API key.
 ENTITY_SEARCH_API_ROOT | `:entity_search_api_root` | Optional                                | URL of service to provide entity autocomplete.

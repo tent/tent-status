@@ -32,7 +32,6 @@ module TentStatus
       :url                  => settings[:url]                  || ENV['APP_URL'],
       :path_prefix          => settings[:path_prefix]          || ENV['PATH_PREFIX'],
       :asset_root           => settings[:asset_root]           || ENV['ASSET_ROOT'],
-      :icon_url_base        => settings[:icon_url_base]        || ENV['APP_ICON_URL_BASE'],
       :admin_url            => settings[:admin_url]            || ENV['ADMIN_URL'],
       :cdn_url              => settings[:cdn_url]              || ENV['APP_CDN_URL'],
       :database_url         => settings[:database_url]         || ENV['DATABASE_URL'],
@@ -41,7 +40,6 @@ module TentStatus
       :json_config_url      => settings[:json_config_url]      || ENV['JSON_CONFIG_URL'],
       :signout_url          => settings[:signout_url]          || ENV['SIGNOUT_URL'],
       :signout_redirect_url => settings[:signout_redirect_url] || ENV['SIGNOUT_REDIRECT_URL'],
-      :default_avatar_url   => settings[:default_avatar_url]   || ENV['DEFAULT_AVATAR_URL'],
       :skip_authentication  => settings[:skip_authentication]  || ENV['SKIP_AUTHENTICATION'],
 
       ##
