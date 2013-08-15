@@ -25,10 +25,12 @@
       <%= erb :global_nav %>
     </div>
 
-    <div id='main-nav'>
-      <a class="menu-switch js-menu-switch">Menu</a>
-      <%= erb :nav %>
-    </div>
+    <% if TentStatus.settings[:render_app_nav] %>
+      <div id='main-nav'>
+        <a class="menu-switch js-menu-switch">Menu</a>
+          <%= erb :nav %>
+      </div>
+    <% end %>
 
     <div id='main-container' class='container'>
       <% unless block_given? %>
