@@ -10,5 +10,7 @@ Marbles.Views.MentionsAutoCompleteTextarea = class MentionsAutoCompleteTextareaV
     @inline_mentions_manager = new TentStatus.InlineMentionsManager(el: @el)
 
   focus: =>
-    @el.focus()
+    selection = new Marbles.DOM.InputSelection(@el)
+    end = @el.value.length
+    selection.setSelectionRange(end, end)
 
