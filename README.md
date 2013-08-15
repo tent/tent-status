@@ -33,6 +33,7 @@ SEARCH_API_ROOT        | `:search_api_root`        | Optional                   
 SEARCH_API_KEY         | `:search_api_key`         | Optional                                | Skate API key.
 ENTITY_SEARCH_API_ROOT | `:entity_search_api_root` | Optional                                | URL of service to provide entity autocomplete.
 SKIP_AUTHENTICATION    | `:skip_authentication`    | Optional                                | Bypasses OAuth flow when set to `true`. This only works when config.json is loaded from another source.
+ASSETS_DIR             | `:public_dir`             | Optional                                | Defaults to `public/assets`.
 
 **TODO:** Entity search service and CDN support are not currently implemented.
 
