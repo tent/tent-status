@@ -1,5 +1,5 @@
 TentStatus.Models.StatusPost = class StatusPostModel extends TentStatus.Models.Post
-  @model_name: 'status_post'
+  @model_name: 'post'
   @post_type: new TentClient.PostType(TentStatus.config.POST_TYPES.STATUS)
 
   @validate: (attrs, options = {}) ->
