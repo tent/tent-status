@@ -14,7 +14,7 @@ Marbles.Views.PostsFeed = class PostsFeedView extends Marbles.View
     @types = options.types || TentStatus.config.feed_types
     @feed_headers = options.headers || {}
 
-    default_queries = [{ profiles: 'entity', max_refs: 1 }, { types: [TentStatus.config.POST_TYPES.STATUS_REPLY], mentions: 'subscribing', profiles: 'entity' }]
+    default_queries = [{ profiles: 'entity,refs', max_refs: 1 }, { types: [TentStatus.config.POST_TYPES.STATUS_REPLY], mentions: 'subscribing', profiles: 'entity,refs' }]
     @feed_queries = _.map options.feed_queries || default_queries, (q) => q.types ?= @types; q
     @collection_contexts = _.map @feed_queries, (feed_params) =>
       TentStatus.Collections.Posts.generateContext('feed', { params: feed_params, headers: @feed_headers })
