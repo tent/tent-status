@@ -18,7 +18,7 @@ Marbles.Views.ConversationChildren = class ConversationChildrenView extends Marb
 
   fetchPosts: (options = {}) =>
     reference_post = @post()
-    reference_post.fetchReplies(_.extend(
+    reference_post.fetchReplies?(_.extend(
       success: (posts) =>
         @render(posts)
     , options))
