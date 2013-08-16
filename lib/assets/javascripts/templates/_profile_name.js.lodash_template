@@ -1,7 +1,23 @@
 <% if (has_name) { %>
-  <a href="<%= profile_url %>" class="post-name" title="<%= formatted.entity %>"><%- profile.get('name') %></a>
+  <% if (!no_link) { %>
+    <a href="<%= profile_url %>" class="post-name" title="<%= formatted.entity %>">
+  <% } %>
+
+  <%- profile.get('name') %>
+
+  <% if (!no_link) { %>
+    </a>
+  <% } %>
 <% } %>
 
 <% if (!has_name) { %>
-  <a href="<%= profile_url %>" class="post-name"><%= formatted.entity %></a>
+  <% if (!no_link) { %>
+    <a href="<%= profile_url %>" class="post-name">
+  <% } %>
+
+  <%= formatted.entity %>
+
+  <% if (!no_link) { %>
+    </a>
+  <% } %>
 <% } %>

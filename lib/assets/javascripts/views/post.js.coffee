@@ -26,7 +26,8 @@ Marbles.Views.Post = class PostView extends Marbles.View
   inReplyToJSON: (mention) =>
     return unless mention && mention.entity && mention.post
     {
-      name: TentStatus.Helpers.formatUrlWithPath(mention.entity),
+      entity: mention.entity
+      name: TentStatus.Helpers.formatUrlWithPath(mention.entity)
       url: TentStatus.Helpers.route('post', entity: mention.entity, post_id: mention.post)
     }
 

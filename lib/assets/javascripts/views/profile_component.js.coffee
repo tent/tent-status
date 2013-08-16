@@ -3,6 +3,7 @@ Marbles.Views.ProfileComponent = class ProfileComponentView extends Marbles.View
     super
     @entity = Marbles.DOM.attr(@el, 'data-entity')
     @add_title = Marbles.DOM.hasAttr(@el, 'data-title')
+    @no_link = Marbles.DOM.hasAttr(@el, 'data-no_link')
     @css_class = Marbles.DOM.attr(@el, 'data-class')
 
   profileModel: =>
@@ -23,6 +24,7 @@ Marbles.Views.ProfileComponent = class ProfileComponentView extends Marbles.View
     profile_url: TentStatus.Helpers.entityProfileUrl(@entity)
     css_class: @css_class
     title: if @add_title then profile?.get('name') || TentStatus.Helpers.formatUrlWithPath(@entity) else null
+    no_link: @no_link
     formatted:
       entity: TentStatus.Helpers.formatUrlWithPath(@entity)
 
