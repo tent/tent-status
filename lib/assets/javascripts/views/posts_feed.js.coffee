@@ -90,6 +90,7 @@ Marbles.Views.PostsFeed = class PostsFeedView extends Marbles.View
       failure: @fetchError
       complete: @hideLoading
     ) is false
+    @hideLoading() if @last_page
 
   fetchSuccess: (posts, res, xhr, params, options) =>
     if options.append
