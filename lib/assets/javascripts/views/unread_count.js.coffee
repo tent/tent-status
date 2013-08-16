@@ -69,6 +69,7 @@ Marbles.Views.UnreadCount = class UnreadCountView extends Marbles.View
 
   fetchSuccess: (post) =>
     @post_cid = post.cid
+    @cursor_interval.reset()
 
     @reset()
 
