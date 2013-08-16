@@ -9,6 +9,34 @@ Marbles.Views.PermissionsFields = class PermissionsFieldsView extends Marbles.Vi
     @on 'init:PermissionsFieldsOptions', @initOptions
     @render()
 
+    setImmediate @subscribeToMentions
+
+  mentionsView: =>
+    unless @mentions_view_cid && mentions_view = Marbles.View.find(cid: @mentions_view_cid)
+      return unless mentions_container_view = @findSiblingViews('MentionsAutoCompleteTextareaContainer')?[0]
+      return unless mentions_view = mentions_container_view.childViews('MentionsAutoCompleteTextarea')?[0]
+      @mentions_view_cid = mentions_view.cid
+    mentions_view
+
+  subscribeToMentions: =>
+    return unless mentions_view = @mentionsView()
+    return unless mentions_manager = mentions_view.inline_mentions_manager
+
+    mentions_manager.on 'change:inline_mentions', @inlineMentionsChanged
+
+  inlineMentionsChanged: (inline_mentions) =>
+    mentions_view = @mentionsView()
+
+    for entity, items of inline_mentions
+      continue if @options_view.optionsInclude(value: entity)
+      continue unless items.length
+      @options_view.addOption(
+        value: entity
+        text: items[0].display_text
+        group: false
+      )
+      mentions_view.focus()
+
   optionsInclude: (option) =>
     @options_view.optionsInclude(option)
 
