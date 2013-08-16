@@ -1,4 +1,4 @@
-AVATAR_TTL = 1376669460 + 3154000000 # 100 years from 2013-08-16 -0400
+AVATAR_EXP_TIMESTAMP = 1376669460 + 3154000000 # 100 years from 2013-08-16 -0400
 
 TentStatus.Models.MetaProfile = class  MetaProfileModel extends Marbles.Model
   @model_name: 'meta_profile'
