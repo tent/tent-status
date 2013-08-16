@@ -15,8 +15,8 @@ Marbles.Views.PostsFeed = class PostsFeedView extends Marbles.View
     @feed_headers = options.headers || {}
 
     default_queries = [
-      { profiles: 'entity,refs', max_refs: 1 },
-      { types: [TentStatus.config.POST_TYPES.STATUS_REPLY], mentions: 'subscribing', profiles: 'entity,refs' },
+      { profiles: 'entity,refs', max_refs: 1, entities: false },
+      { types: [TentStatus.config.POST_TYPES.STATUS_REPLY], mentions: 'subscribing', profiles: 'entity,refs', entities: false },
       { types: [TentStatus.config.POST_TYPES.STATUS_REPLY], entities: @entity, profiles: 'entity' }
     ]
     @feed_queries = _.map options.feed_queries || default_queries, (q) => q.types ?= @types; q
