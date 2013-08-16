@@ -6,23 +6,28 @@ Marbles.Views.Repost = class RepostView extends Marbles.Views.Post
   constructor: ->
     super
 
+    @parent_post_cid = Marbles.DOM.attr(@el, 'data-parent_post_cid')
+
     @fetchPost()
 
   parentPost: =>
-    TentStatus.Models.Post.instances.all[@parentView().post_cid]
+    TentStatus.Models.Post.instances.all[@parent_post_cid]
 
   conversationView: => @findParentView('conversation')
 
   fetchPost: (parent_post = @parentPost()) =>
     TentStatus.Models.Post.find { id: parent_post.get('content.post'), entity: parent_post.get('content.entity') }, {
-      success: (post) =>
-        return @fetchPost(post) if post.get('is_repost')
-        @post_cid = post.cid
-        @render(@context(post))
-
-      failure: (res, xhr) =>
-        @parentView().hide()
+      success: @fetchSuccess
+      failure: @fetchFailure
     }
+
+  fetchSuccess: (post) =>
+    return (setImmediate => @fetchPost(post)) if post.get('is_repost')
+    @post_cid = post.cid
+    @render(@context(post))
+
+  fetchFailure: =>
+    @parentView().hide()
 
   post: =>
     TentStatus.Models.Post.instances.all[@post_cid]

@@ -29,5 +29,5 @@
     </div>
   </div>
 <% } else { %>
-  <div class="repost post" data-view='Repost'></div>
+  <div class="repost post" data-view='Repost' data-parent_post_cid='<%- post.cid %>'></div>
 <% } %>

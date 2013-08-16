@@ -9,6 +9,6 @@
 
 <div class='clearfix mention-avatars'>
   <% entities.forEach(function(entity) { %>
-    <div class='pull-left' data-view='ProfileAvatar' data-entity='<%= entity %>' title='<%= TentStatus.Helpers.formatUrlWithPath(entity) %>'></div>
+    <div class='pull-left' data-view='ProfileAvatar' data-entity='<%= entity %>' data-title></div>
   <% }) %>
 </div>
