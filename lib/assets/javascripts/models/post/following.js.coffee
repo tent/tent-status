@@ -23,7 +23,7 @@ TentStatus.Models.Following = class FollowingModel extends TentStatus.Models.Pos
 
   @fetchCount: (params, options = {}) ->
     params = _.extend(params, {
-      types: TentStatus.config.subscription_feed_types
+      types: TentStatus.config.subscription_count_types,
     })
 
     super(params, options)
