@@ -7,7 +7,7 @@ Marbles.Views.ProfileResourceCount = class FollowersCountView extends Marbles.Vi
     @render()
 
     return unless profile = @profile()
-    @constructor.model.fetchCount {entity: profile.get('entity')},
+    @constructor.model.fetchCount {entities: profile.get('entity')},
       failure: (res, xhr) =>
 
       success: (count) =>
