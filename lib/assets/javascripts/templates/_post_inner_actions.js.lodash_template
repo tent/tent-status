@@ -1,5 +1,5 @@
-<% if (TentStatus.config.authenticated) { %>
-  <div class='actions'>
+<div class='actions'>
+  <% if (TentStatus.config.authenticated) { %>
     <span class='action' data-view='PostActionReply'><i class='icon-reply' title='Reply'></i> Reply</span>
 
     <% if (!current_user_owns_post) { %>
@@ -33,5 +33,7 @@
       <span class='action' data-view='PostActionDelete' data-confirm="Delete this post? You're sure about that?"><i class='icon-trash' title='Delete'></i> Delete</span>
     <% } %>
 
-  </div>
-<% } %>
+  <% } else { %>
+  &nbsp;
+  <% } %>
+</div>
