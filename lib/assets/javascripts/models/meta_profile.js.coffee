@@ -1,3 +1,5 @@
+AVATAR_TTL = 1376669460 + 3154000000 # 100 years from 2013-08-16 -0400
+
 TentStatus.Models.MetaProfile = class  MetaProfileModel extends Marbles.Model
   @model_name: 'meta_profile'
   @id_mapping_scope: ['entity']
@@ -36,7 +38,7 @@ TentStatus.Models.MetaProfile = class  MetaProfileModel extends Marbles.Model
   constructor: ->
     @on 'change:avatar_digest', (digest) =>
       if digest
-        @set('avatar_url', TentStatus.tent_client.getSignedUrl('attachment', entity: @get('entity'), digest: digest))
+        @set('avatar_url', TentStatus.tent_client.getSignedUrl('attachment', entity: @get('entity'), digest: digest, exp: AVATAR_EXP_TIMESTAMP))
       else
         @set('avatar_url', TentStatus.config.DEFAULT_AVATAR_URL)
 
