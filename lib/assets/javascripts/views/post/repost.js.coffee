@@ -30,7 +30,7 @@ Marbles.Views.Repost = class RepostView extends Marbles.Views.Post
     @parentView().hide()
 
   post: =>
-    TentStatus.Models.Post.instances.all[@post_cid]
+    TentStatus.Models.Post.find(cid: @post_cid)
 
   context: (post) =>
     parent_post = @parentPost()
