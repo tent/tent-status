@@ -74,8 +74,6 @@ TentStatus.Models.Post = class PostModel extends Marbles.Model
     )
 
   @fetchCount: (params, options = {}) ->
-    return unless params.entity && @post_type
-
     completeFn = (data, xhr) =>
       unless xhr.status == 200
         options.failure?(res, xhr)
@@ -87,11 +85,13 @@ TentStatus.Models.Post = class PostModel extends Marbles.Model
 
       options.success?(count, xhr)
 
+    if !params.types
+      return unless @post_type
+      params.types = [@post_type.toString()]
+
     TentStatus.tent_client.post.list(
       method: 'HEAD'
-      params: _.extend({
-        types: [@post_type.toString()]
-      }, params)
+      params: params
       callback: completeFn
     )
 

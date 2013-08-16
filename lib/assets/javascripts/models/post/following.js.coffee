@@ -21,6 +21,13 @@ TentStatus.Models.Following = class FollowingModel extends TentStatus.Models.Pos
         options.failure?({error: "Discovery Failed"}, xhr)
     )
 
+  @fetchCount: (params, options = {}) ->
+    params = _.extend(params, {
+      types: TentStatus.config.subscription_feed_types
+    })
+
+    super(params, options)
+
   @createSubscriptions: (entity, options) ->
     num_pending = 0
     errors = []
