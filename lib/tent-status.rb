@@ -6,7 +6,9 @@ module TentStatus
 
   def self.settings
     @settings ||= {
-      :read_types => %w(),
+      :read_types => %w(
+        https://tent.io/types/relationship/v0
+      ),
       :write_types => %w(
         https://tent.io/types/status/v0
         https://tent.io/types/repost/v0
