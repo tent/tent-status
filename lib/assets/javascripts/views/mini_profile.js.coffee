@@ -15,7 +15,7 @@ Marbles.Views.MiniProfile = class MiniProfileView extends Marbles.View
       return @render() unless view
       Marbles.DOM.setStyle(@el, 'top', "#{Marbles.DOM.offsetTop view.el}px")
       post = view.post()
-      entity = if post.get('is_repost') then post.get('entity') else post.get('entity')
+      entity = if post.get('is_repost') then post.get('content.entity') else post.get('entity')
       @fetchProfile(entity)
 
   fetchProfile: (entity) =>
