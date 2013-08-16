@@ -7,7 +7,7 @@ Marbles.Views.AppNavigationItem = class AppNavigationItemView extends Marbles.Vi
     null
 
   @allItems: ->
-    for cid in Marbles.View.instances.app_navigation_item
+    for cid in Marbles.View.instances.app_navigation_item || []
       Marbles.View.instances.all[cid]
 
   @disableAllExcept: (whitelist...) ->
