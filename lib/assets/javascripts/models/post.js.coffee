@@ -103,7 +103,7 @@ TentStatus.Models.Post = class PostModel extends Marbles.Model
         options.complete?(res, xhr)
         return
 
-      constructorFn = @constructorForType(res.type)
+      constructorFn = @constructorForType(res.post.type)
 
       if params.cid
         if post = @instances.all[params.cid]
