@@ -1,4 +1,10 @@
 TentStatus.Models.Follower = class FollowerModel extends TentStatus.Models.Post
   @model_name: 'follower'
-  @post_type: new TentClient.PostType(TentStatus.config.POST_TYPES.FOLLOWER)
+
+  @fetchCount: (params, options = {}) ->
+    params = _.extend(params, {
+      types: TentStatus.config.subscriber_feed_types
+    })
+
+    super(params, options)
 

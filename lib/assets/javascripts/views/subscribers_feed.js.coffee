@@ -4,7 +4,7 @@ Marbles.Views.SubscribersFeed = class SubscribersFeedView extends Marbles.Views.
   @view_name: 'subscribers_feed'
 
   initialize: (options = {}) =>
-    options.types = [TentStatus.config.POST_TYPES.RELATIONSHIP + '#subscriber', TentStatus.config.POST_TYPES.RELATIONSHIP + '#mutual']
+    options.types = TentStatus.config.subscriber_feed_types
     options.entity = options.parent_view.entity
     options.headers = {
       'Cache-Control': 'proxy'
