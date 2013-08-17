@@ -53,7 +53,7 @@ Marbles.Views.RepostVisibility = class RepostVisibilityView extends Marbles.View
 
         @render() if Object.keys(@reposter_profile_cids).length
 
-        if res.pages.next
+        if res.pages?.next
           _.extend(params, Marbles.history.deserializeParams(res.pages.next))
           @fetchReposters(params)
     )
