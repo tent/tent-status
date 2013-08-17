@@ -55,6 +55,36 @@ TentStatus.UnifiedCollection = class UnifiedCollection extends Marbles.UnifiedCo
 
     super(params, options)
 
+  fetchCount: (params = {}, options = {}) =>
+    num_pending = @collection_ids.length
+    count = 0
+    is_success = false
+    xhrs = []
+    completeFn = (_count, xhr) =>
+      num_pending -= 1
+      xhrs.push(xhr)
+
+      if xhr.status == 200
+        is_success = true
+        count += _count
+
+      return unless num_pending <= 0
+
+      if is_success
+        options.success?(count, xhrs)
+        options.complete?(count, xhrs)
+      else
+        options.failure?(count, xhrs)
+        options.complete?(count, xhrs)
+
+    for cid in @collection_ids
+      collection = @constructor.collection.find(cid: cid)
+      unless collection
+        num_pending -= 1
+        continue
+
+      collection.fetchCount(params, complete: completeFn)
+
   fetchSuccess: (new_models, options) =>
     _new_models = []
     for model in new_models

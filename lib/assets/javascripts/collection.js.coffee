@@ -44,6 +44,34 @@ TentStatus.Collection = class Collection extends Marbles.Collection
 
     (@options.tent_client || TentStatus.tent_client).post.list(params: params, headers: headers, callback: ((res, xhr) => @fetchComplete(params, options, res, xhr)))
 
+  fetchCount: (params = {}, options = {}) =>
+    params = _.extend {
+      entities: @options.entity || TentStatus.config.meta.content.entity
+      types: [@constructor.model.post_type]
+      limit: TentStatus.config.PER_PAGE
+    }, @options.params, params
+
+    delete params.entities if params.entities == false
+
+    params.types = [params.types] unless _.isArray(params.types)
+    params.types = _.map params.types, (type) => (new TentClient.PostType type).toURIString()
+
+    headers = _.extend {}, @options.headers, options.headers
+
+    failureFn = (res, xhr) =>
+      options.failure?(res, xhr)
+      options.complete?(res, xhr)
+
+    completeFn = (res, xhr) =>
+      count = parseInt(xhr.getResponseHeader('Count'))
+      return failureFn(res, xhr) unless typeof count is 'number'
+      return failureFn(res, xhr) if count.toString() is 'NaN'
+
+      options.success?(count, xhr)
+      options.complete?(count, xhr)
+
+    (@options.tent_client || TentStatus.tent_client).post.list(method: 'HEAD', params: params, headers: headers, callback: completeFn)
+
   fetchComplete: (params, options, res, xhr) =>
     models = null
     if xhr.status == 200
