@@ -1,5 +1,6 @@
 Marbles.Views.SitePostsFeed = class SitePostsFeedView extends Marbles.Views.PostsFeed
   @view_name: 'site_posts_feed'
+  @last_post_selector: "ul[data-view=SitePostsFeed]>li.post:last-of-type"
 
   initialize: (options = {}) =>
     site_feed_meta_post = {

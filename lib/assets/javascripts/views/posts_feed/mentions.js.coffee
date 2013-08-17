@@ -1,5 +1,6 @@
 Marbles.Views.MentionsPostsFeed = class MentionsPostsFeedView extends Marbles.Views.PostsFeed
   @view_name: 'mentions_posts_feed'
+  @last_post_selector: "ul[data-view=MentionsPostsFeed]>li.post:last-of-type"
 
   initialize: (options = {}) =>
     options.entity = options.parent_view.entity

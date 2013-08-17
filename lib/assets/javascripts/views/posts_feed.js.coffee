@@ -2,6 +2,7 @@ Marbles.Views.PostsFeed = class PostsFeedView extends Marbles.View
   @template_name: 'posts_feed'
   @partial_names: ['_post_reply_form', '_post', '_post_inner', '_post_inner_actions']
   @view_name: 'posts_feed'
+  @last_post_selector: "ul[data-view=PostsFeed]>li.post:last-of-type"
 
   showLoading: =>
     TentStatus.trigger 'loading:start'
@@ -137,7 +138,7 @@ Marbles.Views.PostsFeed = class PostsFeedView extends Marbles.View
 
   shouldFetchNextPage: =>
     return false if @pagination_frozen || @last_page
-    last_post = Marbles.DOM.querySelector('ul[data-view=PostsFeed]>li.post:last-of-type', @el)
+    last_post = Marbles.DOM.querySelector(@constructor.last_post_selector, @el)
     return false unless last_post
     last_post_offset_top = last_post.offsetTop || 0
     last_post_offset_top += last_post.offsetHeight || 0
