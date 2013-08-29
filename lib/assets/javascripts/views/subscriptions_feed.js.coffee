@@ -30,6 +30,22 @@ Marbles.Views.SubscriptionsFeed = class SubscriptionsFeedView extends Marbles.Vi
   shouldAddPostToFeed: (post) =>
     true
 
+  appendRender: (posts) =>
+    fragment = document.createDocumentFragment()
+    for entity, subscriptions of @groupSubscriptions(posts)
+      Marbles.DOM.appendHTML(fragment, @renderSubscriptionHTML(entity: entity, subscriptions: subscriptions))
+
+    @bindViews(fragment)
+    @el.appendChild(fragment)
+
+  prependRender: (posts) =>
+    fragment = document.createDocumentFragment()
+    for entity, subscriptions of @groupSubscriptions(posts)
+      Marbles.DOM.appendHTML(fragment, @renderSubscriptionHTML(entity: entity, subscriptions: subscriptions))
+
+    @bindViews(fragment)
+    Marbles.DOM.prependChild(@el, fragment)
+
   groupSubscriptions: (subscriptions) =>
     _.inject subscriptions, ((memo, subscription) =>
       memo[subscription.get('target_entity')] ?= []
@@ -39,4 +55,7 @@ Marbles.Views.SubscriptionsFeed = class SubscriptionsFeedView extends Marbles.Vi
 
   context: (subscriptions = @postsCollection().models()) =>
     subscriptions: @groupSubscriptions(subscriptions)
+
+  renderSubscriptionHTML: (context) =>
+    @constructor.partials['subscription'].render(context, @constructor.partials)
 
