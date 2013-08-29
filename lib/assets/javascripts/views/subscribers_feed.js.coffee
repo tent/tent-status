@@ -14,6 +14,8 @@ Marbles.Views.SubscribersFeed = class SubscribersFeedView extends Marbles.Views.
       { types: options.types, profiles: 'mentions', entities: options.entity }
     ]
 
+    @ul_el = Marbles.DOM.querySelector('ul', @el)
+
     super(options)
 
   getEntity: =>
@@ -22,9 +24,25 @@ Marbles.Views.SubscribersFeed = class SubscribersFeedView extends Marbles.Views.
   shouldAddPostToFeed: (post) =>
     true
 
+  appendRender: (posts) =>
+    fragment = document.createDocumentFragment()
+    for post in posts
+      Marbles.DOM.appendHTML(fragment, @renderSubscriberHTML(post))
+
+    @bindViews(fragment)
+    @ul_el.appendChild(fragment)
+
+  prependRender: (posts) =>
+    fragment = document.createDocumentFragment()
+    for post in posts
+      Marbles.DOM.appendHTML(fragment, @renderSubscriberHTML(post))
+
+    @bindViews(fragment)
+    Marbles.DOM.prependChild(@ul_el, fragment)
+
   context: (relationships = @postsCollection().models()) =>
     relationships: relationships
 
-  renderPostHTML: (post) =>
+  renderSubscriberHTML: (post) =>
     @constructor.partials['relationship'].render({ relationship: post }, @constructor.partials)
 

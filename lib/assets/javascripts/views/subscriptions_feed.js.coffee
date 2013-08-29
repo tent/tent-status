@@ -14,6 +14,8 @@ Marbles.Views.SubscriptionsFeed = class SubscriptionsFeedView extends Marbles.Vi
       { types: options.types, profiles: 'mentions' }
     ]
 
+    @ul_el = Marbles.DOM.querySelector('ul', @el)
+
     super(options)
 
     if TentStatus.config.meta.content.entity == options.parent_view.entity
@@ -36,7 +38,7 @@ Marbles.Views.SubscriptionsFeed = class SubscriptionsFeedView extends Marbles.Vi
       Marbles.DOM.appendHTML(fragment, @renderSubscriptionHTML(entity: entity, subscriptions: subscriptions))
 
     @bindViews(fragment)
-    @el.appendChild(fragment)
+    @ul_el.appendChild(fragment)
 
   prependRender: (posts) =>
     fragment = document.createDocumentFragment()
@@ -44,7 +46,7 @@ Marbles.Views.SubscriptionsFeed = class SubscriptionsFeedView extends Marbles.Vi
       Marbles.DOM.appendHTML(fragment, @renderSubscriptionHTML(entity: entity, subscriptions: subscriptions))
 
     @bindViews(fragment)
-    Marbles.DOM.prependChild(@el, fragment)
+    Marbles.DOM.prependChild(@ul_el, fragment)
 
   groupSubscriptions: (subscriptions) =>
     _.inject subscriptions, ((memo, subscription) =>
