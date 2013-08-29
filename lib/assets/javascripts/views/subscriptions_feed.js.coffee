@@ -2,6 +2,7 @@ Marbles.Views.SubscriptionsFeed = class SubscriptionsFeedView extends Marbles.Vi
   @template_name: 'subscriptions_feed'
   @partial_names: ['subscription']
   @view_name: 'subscriptions_feed'
+  @last_post_selector: "[data-view=SubscriptionsFeed] li.post:last-of-type"
 
   initialize: (options = {}) =>
     options.types = TentStatus.config.subscription_feed_types

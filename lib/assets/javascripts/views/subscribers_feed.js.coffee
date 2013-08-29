@@ -2,6 +2,7 @@ Marbles.Views.SubscribersFeed = class SubscribersFeedView extends Marbles.Views.
   @template_name: 'relationships_feed'
   @partial_names: ['relationship']
   @view_name: 'subscribers_feed'
+  @last_post_selector: "[data-view=SubscribersFeed] li.post:last-of-type"
 
   initialize: (options = {}) =>
     options.types = TentStatus.config.subscriber_feed_types
