@@ -26,5 +26,5 @@ Marbles.Views.SubscribersFeed = class SubscribersFeedView extends Marbles.Views.
     relationships: relationships
 
   renderPostHTML: (post) =>
-    @constructor.partials['_relationship'].render({ relationship: post }, @constructor.partials)
+    @constructor.partials['relationship'].render({ relationship: post }, @constructor.partials)
 
