@@ -17,7 +17,7 @@ module TentStatus
         https://tent.io/types/cursor/v0#https://tent.io/rels/status-feed
         https://tent.io/types/subscription/v0
       ),
-      :scopes => %w()
+      :scopes => %w( permissions )
     }
   end
 
