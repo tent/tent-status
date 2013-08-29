@@ -1,0 +1,23 @@
+<h2 class='page-header'>Sign in</h2>
+
+<form class='signin-form' data-view='SigninForm'>
+  <div class='alert alert-success hidden'></div>
+
+  <div class='control-group'>
+    <label>Username</label>
+    <div class='input-append'>
+      <input name='username' type='text'>
+      <span class='add-on'><i></i></span>
+    </div>
+  </div>
+
+  <div class='control-group'>
+    <label>Password</label>
+    <div class='input-append'>
+      <input name='passphrase' type='password'>
+      <span class='add-on'><i></i></span>
+    </div>
+  </div>
+
+  <button class='btn btn-primary' type='submit'>Sign in</button>
+</form>

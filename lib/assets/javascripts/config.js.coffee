@@ -12,11 +12,21 @@ new Marbles.HTTP(
   middleware: [Marbles.HTTP.Middleware.WithCredentials]
   callback: (res, xhr) ->
     if xhr.status != 200
-      if xhr.status == 401
-        return window.location.href = TentStatus.config.SIGNOUT_REDIRECT_URL
+      # Redirect to signin
 
-      return setImmediate =>
-        throw "failed to load json config via GET #{TentStatus.config.JSON_CONFIG_URL}: #{xhr.status} #{JSON.stringify(res)}"
+      setImmediate ->
+        TentStatus.run(history: { silent: true })
+
+        fragment = Marbles.history.getFragment()
+        if fragment.match /^signin/
+          Marbles.history.navigate(fragment, trigger: true, replace: true)
+        else
+          if fragment == ""
+            Marbles.history.navigate("/signin", trigger: true)
+          else
+            Marbles.history.navigate("/signin?redirect=#{encodeURIComponent(Marbles.history.getFragment())}", trigger: true)
+
+      return
 
     TentStatus.config ?= {}
     for key, val of JSON.parse(res)

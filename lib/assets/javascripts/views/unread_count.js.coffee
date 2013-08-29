@@ -2,6 +2,8 @@ Marbles.Views.UnreadCount = class UnreadCountView extends Marbles.View
   @view_name: 'unread_count'
 
   initialize: ->
+    return unless TentStatus.config.authenticated
+
     @interval = new TentStatus.FetchInterval fetch_callback: @fetchCount
     @cursor_interval = new TentStatus.FetchInterval fetch_callback: @fetchCursor
 

@@ -15,6 +15,8 @@ Marbles.Views.AppNavigationItem = class AppNavigationItemView extends Marbles.Vi
       continue if whitelist.indexOf(item.fragment) != -1
       item.disable()
 
+  @disableAll: @disableAllExcept
+
   initialize: =>
     @fragment = Marbles.DOM.attr(@el, 'data-fragment')
     Marbles.DOM.on(@el, 'click', @navigate)

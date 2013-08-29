@@ -44,6 +44,7 @@ module TentStatus
       :json_config_url      => settings[:json_config_url]      || ENV['JSON_CONFIG_URL'],
       :signout_url          => settings[:signout_url]          || ENV['SIGNOUT_URL'],
       :signout_redirect_url => settings[:signout_redirect_url] || ENV['SIGNOUT_REDIRECT_URL'],
+      :signin_url           => settings[:signin_url]           || ENV['SIGNIN_URL'],
       :skip_authentication  => settings[:skip_authentication]  || ENV['SKIP_AUTHENTICATION'],
 
       ##

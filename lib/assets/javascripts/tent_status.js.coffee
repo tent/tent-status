@@ -46,7 +46,7 @@ _.extend TentStatus, Marbles.Events, {
     title = title.join(" ")
     document.title = title
 
-  run: ->
+  run: (options = {}) ->
     return if Marbles.history.started
 
     @showLoadingIndicator()
@@ -62,9 +62,9 @@ _.extend TentStatus, Marbles.Events, {
     _body_view = new Marbles.View el: document.body
     _body_view.trigger('ready')
 
-    Marbles.history.start(root: (TentStatus.config.PATH_PREFIX || '') + '/')
+    Marbles.history.start(_.extend({ root: (TentStatus.config.PATH_PREFIX || '') + '/' }, options.history || {}))
 
-    if !TentStatus.config.authenticated
+    if !TentStatus.config.authenticated && !TentStatus.config.SIGNIN_URL
       Marbles.Views.AppNavigationItem.disableAllExcept('profile')
       Marbles.history.navigate('profile', { trigger: true, replace: true })
 

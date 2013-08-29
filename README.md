@@ -30,6 +30,7 @@ SESSION_SECRET         |                           | Required                   
 JSON_CONFIG_URL        | `:json_config_url`        | Required if running the app statically. | URL of `config.json`.
 SIGNOUT_URL            | `:signout_url`            | Required if running the app statically. | URL accepting a `POST` request to revoke access to `config.json`.
 SIGNOUT_REDIRECT_URL   | `:signout_redirect_url`   | Required if running the app statically. | URL for app to redirect to after signing out.
+SIGNIN_URL             | `:signin_url`             | Optional                                | URL accepting a `POST` request with `username` and `passphrase` to grant access to `config.json`. (User is redirected to `SIGNOUT_REDIRECT_URL` instead of displaying an auth form if not specified.)
 SEARCH_API_ROOT        | `:search_api_root`        | Optional                                | Skate API root.
 SEARCH_API_KEY         | `:search_api_key`         | Optional                                | Skate API key.
 ENTITY_SEARCH_API_ROOT | `:entity_search_api_root` | Optional                                | URL of service to provide entity autocomplete.
