@@ -60,7 +60,7 @@ Marbles.Views.SigninForm = class SigninFormView extends Marbles.View
   handleFailure: (res) =>
     @showError(res.error || 'Something went wrong')
 
-    for name in res.fields
+    for name in (res.fields || Object.keys(@fields))
       @fields[name]?.markInvalid()
 
   showError: (msg) =>
