@@ -21,7 +21,7 @@ TentStatus.UnifiedCollection = class UnifiedCollection extends Marbles.UnifiedCo
       next_params ?= {}
       next_params[cid] = Marbles.History::parseQueryParams(_pagination.next)
     return false unless next_params
-    @fetch(next_params, _.extend({ prepend: true }, options))
+    @fetch(next_params, _.extend({ append: true }, options))
 
   ignoreModelId: (cid) =>
     @ignore_model_cids[cid] = true
