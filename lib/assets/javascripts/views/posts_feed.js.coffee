@@ -139,7 +139,7 @@ Marbles.Views.PostsFeed = class PostsFeedView extends Marbles.View
   shouldFetchNextPage: =>
     return false if @pagination_frozen || @last_page
     last_post = Marbles.DOM.querySelector(@constructor.last_post_selector, @el)
-    return false unless last_post
+    return false unless last_post && Marbles.DOM.exists(last_post)
     last_post_offset_top = last_post.offsetTop || 0
     last_post_offset_top += last_post.offsetHeight || 0
     bottom_position = window.scrollY + Marbles.DOM.windowHeight()
