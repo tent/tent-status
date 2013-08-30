@@ -27,7 +27,7 @@ Marbles.Views.Repost = class RepostView extends Marbles.Views.Post
     @render(@context(post))
 
   fetchFailure: =>
-    @parentView().hide()
+    @parentView().detach()
 
   post: =>
     TentStatus.Models.Post.find(cid: @post_cid)

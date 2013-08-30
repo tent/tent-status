@@ -23,6 +23,10 @@ Marbles.Views.Post = class PostView extends Marbles.View
   hide: =>
     Marbles.DOM.hide(@el)
 
+  detach: =>
+    Marbles.DOM.removeNode(@el)
+    super
+
   inReplyToJSON: (mention) =>
     return unless mention && mention.entity && mention.post
     {
