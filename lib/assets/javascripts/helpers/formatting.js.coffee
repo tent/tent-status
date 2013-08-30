@@ -76,23 +76,24 @@ _.extend TentStatus.Helpers,
       return jsonml unless jsonml[0] is 'para'
 
       jsonml = parsePara jsonml, (item) ->
+        return item if item is 'para'
         urls = TentStatus.Helpers.extractUrlsWithIndices(String(item))
         return item unless urls.length
-        new_item = []
+
+        new_item = item.split('')
+        index_offset = 0
         for u in urls
-          before = item.slice(0, u.indices[0])
-          after = item.slice(u.indices[1], item.length)
+          before = new_item.slice(0, u.indices[0] - index_offset)
+          after = new_item.slice(u.indices[1] - index_offset)
+
           link = ['link', { href: u.url }, TentStatus.Helpers.truncate(TentStatus.Helpers.formatUrlWithPath(item.slice(u.indices[0], u.indices[1])), TentStatus.config.URL_TRIM_LENGTH)]
-          if before || after
-            new_item.push(
-              'span',
-              before,
-              link
-              after
-            )
-          else
-            new_item.push(link...)
-        new_item
+
+          before.push(link)
+          new_item = before.concat(after)
+
+          index_offset += u.indices[1] - u.indices[0] - 1
+
+        ['span'].concat(new_item)
 
       jsonml
 
