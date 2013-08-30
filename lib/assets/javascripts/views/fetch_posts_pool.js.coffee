@@ -17,7 +17,8 @@ Marbles.Views.FetchPostsPool = class FetchPostsPoolView extends Marbles.View
     @posts_feed_view_cid = view.cid
 
     posts_feed_collection = view.postsCollection() # UnifiedCollection
-    @pool = new TentStatus.UnifiedCollectionPool posts_feed_collection
+    collection = new TentStatus.UnifiedCollection(posts_feed_collection.collections())
+    @pool = new TentStatus.UnifiedCollectionPool collection
 
     @pool.on 'pool:expand', @poolExpanded
     @pool.on 'pool:overflow', @poolExpanded
