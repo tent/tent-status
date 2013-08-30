@@ -92,6 +92,9 @@ TentStatus.Models.Post = class PostModel extends Marbles.Model
     TentStatus.tent_client.post.list(
       method: 'HEAD'
       params: params
+      headers: {
+        'Cache-Control': 'proxy'
+      }
       callback: completeFn
     )
 
