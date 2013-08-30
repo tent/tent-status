@@ -14,8 +14,6 @@ Marbles.Views.SubscriptionsFeed = class SubscriptionsFeedView extends Marbles.Vi
       { types: options.types, profiles: 'mentions' }
     ]
 
-    @ul_el = Marbles.DOM.querySelector('ul', @el)
-
     super(options)
 
     if TentStatus.config.meta.content.entity == options.parent_view.entity
@@ -25,6 +23,9 @@ Marbles.Views.SubscriptionsFeed = class SubscriptionsFeedView extends Marbles.Vi
         return unless @shouldAddPostTypeToFeed(post.get('type'), collection.postTypes())
         collection.unshift(post)
         @render()
+
+    @on 'ready', =>
+      @ul_el = Marbles.DOM.querySelector('ul', @el)
 
   getEntity: =>
     @parentView()?.entity

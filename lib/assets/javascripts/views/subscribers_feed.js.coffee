@@ -14,9 +14,10 @@ Marbles.Views.SubscribersFeed = class SubscribersFeedView extends Marbles.Views.
       { types: options.types, profiles: 'mentions', entities: options.entity }
     ]
 
-    @ul_el = Marbles.DOM.querySelector('ul', @el)
-
     super(options)
+
+    @on 'ready', =>
+      @ul_el = Marbles.DOM.querySelector('ul', @el)
 
   getEntity: =>
     @parentView()?.entity
