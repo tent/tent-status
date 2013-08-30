@@ -100,6 +100,7 @@ _.extend TentStatus.Helpers,
     externalLinkPreprocessor = (jsonml) ->
       return jsonml unless jsonml[0] is 'link'
       return jsonml unless TentStatus.Helpers.isURLExternal(jsonml[1]?.href)
+      jsonml[1].href = TentStatus.Helpers.ensureUrlHasScheme(jsonml[1].href)
       jsonml[1]['data-view'] = 'ExternalLink'
       jsonml
 
