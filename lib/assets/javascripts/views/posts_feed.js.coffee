@@ -13,6 +13,11 @@ Marbles.Views.PostsFeed = class PostsFeedView extends Marbles.View
   initialize: (options = {}) =>
     @entity = options.entity || TentStatus.config.meta.content.entity
     @types = options.types || TentStatus.config.feed_types
+
+    unless TentStatus.config.authenticated
+      @types = _.reject @types, (type) =>
+        TentStatus.config.repost_types.indexOf(type) != -1
+
     @feed_headers = options.headers || {}
 
     default_queries = [
