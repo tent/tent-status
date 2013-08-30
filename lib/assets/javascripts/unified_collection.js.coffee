@@ -41,10 +41,16 @@ TentStatus.UnifiedCollection = class UnifiedCollection extends Marbles.UnifiedCo
           _completeFn?.apply?(null, arguments)
 
           return unless xhr.status == 200
-          @pagination[cid] = _.extend({
+
+          _pagination = _.extend({
             first: @pagination[cid]?.first
             last: @pagination[cid]?.last
           }, _.clone(res.pages))
+
+          if options.prepend # fetchPrev
+            _pagination.next = @pagination[cid]?.next
+
+          @pagination[cid] = _pagination
 
           unless @pagination[cid].prev
             model = @constructor.collection.find(cid: cid)?.first()
