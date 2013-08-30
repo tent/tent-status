@@ -21,6 +21,7 @@ APP_DESCRIPTION        | `:description`            | Optional                   
 APP_CDN_URL            | `:cdn_url`                | Optional                                | URL of CDN containing compiled assets.
 APP_ASSET_MANIFEST     | `:asset_manifests`        | Optional                                | Comma separated paths to asset manifest JSON file (required if using a CDN).
 ASSET_ROOT             | `:asset_root`             | Optional                                | Root URL or path for serving assets. Defaults to `/assets`.
+ASSET_CACHE_DIR        | `:asset_cache_dir`        | Optional                                | Filesystem path for sprockets asset cache directory.
 PATH_PREFIX            | `:path_prefix`            | Optional                                | Path prefix for when app is mounted somewhere other than the domain root.
 ADMIN_URL              | `:admin_url`              | Optional                                | URL of admin app.
 DATABASE_URL           | `:database_url`           | Required if running Ruby backend        | URL of postgres database.
