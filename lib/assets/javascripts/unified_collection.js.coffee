@@ -44,7 +44,7 @@ TentStatus.UnifiedCollection = class UnifiedCollection extends Marbles.UnifiedCo
           @pagination[cid] = _.extend({
             first: @pagination[cid]?.first
             last: @pagination[cid]?.last
-          }, res.pages)
+          }, _.clone(res.pages))
 
           unless @pagination[cid].prev
             model = @constructor.collection.find(cid: cid)?.first()
