@@ -27,10 +27,10 @@ TentStatus.Models.MetaProfile = class  MetaProfileModel extends Marbles.Model
         avatar_digest: server_meta_post.attachments?[0]?.digest
       }, server_meta_post.content.profile || {})
 
-      existing_model = constructorFn.find(entity, fetch: false)
+      model = constructorFn.find(entity, fetch: false)
 
-      if existing_model
-        existing_model.parseAttributes(attrs)
+      if model
+        model.parseAttributes(attrs)
       else
         model = new constructorFn(attrs)
 
