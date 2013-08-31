@@ -14,6 +14,13 @@ TentStatus.Models.StatusPost = class StatusPostModel extends TentStatus.Models.P
     return errors if errors.length
     null
 
+  @fetchCount: (params, options = {}) ->
+    params.types ?= [
+      @post_type.toStringWithoutFragment()
+    ]
+
+    super(params, options)
+
   fetchReplies: (options = {}) =>
     collection = TentStatus.Collections.StatusReplies.find(entity: @get('entity'), post_id: @get('id'))
 
