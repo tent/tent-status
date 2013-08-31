@@ -72,31 +72,6 @@ _.extend TentStatus.Helpers,
           item
       new_para
 
-    autoLinkPreprocessor = (jsonml) ->
-      return jsonml unless jsonml[0] is 'para'
-
-      jsonml = parsePara jsonml, (item) ->
-        return item if item is 'para'
-        urls = TentStatus.Helpers.extractUrlsWithIndices(String(item))
-        return item unless urls.length
-
-        new_item = item.split('')
-        index_offset = 0
-        for u in urls
-          before = new_item.slice(0, u.indices[0] - index_offset)
-          after = new_item.slice(u.indices[1] - index_offset)
-
-          link = ['link', { href: u.url }, TentStatus.Helpers.truncate(TentStatus.Helpers.formatUrlWithPath(item.slice(u.indices[0], u.indices[1])), TentStatus.config.URL_TRIM_LENGTH)]
-
-          before.push(link)
-          new_item = before.concat(after)
-
-          index_offset += u.indices[1] - u.indices[0] - 1
-
-        ['span'].concat(new_item)
-
-      jsonml
-
     externalLinkPreprocessor = (jsonml) ->
       return jsonml unless jsonml[0] is 'link'
       return jsonml unless TentStatus.Helpers.isURLExternal(jsonml[1]?.href)
@@ -104,5 +79,5 @@ _.extend TentStatus.Helpers,
       jsonml[1]['data-view'] = 'ExternalLink'
       jsonml
 
-    markdown.toHTML(text, 'Tent', { footnotes: inline_mention_urls, preprocessors: [autoLinkPreprocessor, externalLinkPreprocessor] })
+    markdown.toHTML(text, 'Tent', { footnotes: inline_mention_urls, preprocessors: [externalLinkPreprocessor] })
 

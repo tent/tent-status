@@ -16,7 +16,6 @@
 #= require ./unified_collection_pool
 #= require_tree ./collections
 #= require_tree ./helpers
-#= require helpers/extract-urls
 #= require_tree ./views
 #= require ./router
 
