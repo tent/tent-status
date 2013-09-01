@@ -33,7 +33,7 @@ Marbles.Views.FetchPostsPool = class FetchPostsPoolView extends Marbles.View
     collection = @pool.shadowCollection()
 
     posts_feed_view.prependRender(collection.models())
-    posts_feed_view.postsCollection().prependIds?(collection.model_ids)
+    posts_feed_view.postsCollection().prependIds?(collection.model_ids...)
 
     @pool.reset()
     @size = 0
