@@ -845,6 +845,11 @@ function merge_text_nodes( jsonml ) {
               continue;
             }
 
+            if ( block.slice(item.indices[0] - 1, block.length).match(/^\[[^\]]+\]\([^\)]+\)/) ) {
+              // url inside markdown link display text, don't autolink
+              continue;
+            }
+
             if ( block.match('`') ) {
               // check if the url is inside code backticks
 
