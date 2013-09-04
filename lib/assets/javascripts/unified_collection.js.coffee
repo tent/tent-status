@@ -104,6 +104,7 @@ TentStatus.UnifiedCollection = class UnifiedCollection extends Marbles.UnifiedCo
       collection.fetchCount(params, complete: completeFn)
 
   fetchSuccess: (new_models, options) =>
+    new_models = _.uniq(new_models, is_sorted = true)
     _new_models = []
     for model in new_models
       continue if @ignore_model_cids[model.cid]
