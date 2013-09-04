@@ -47,6 +47,18 @@ TentStatus.UnifiedCollection = class UnifiedCollection extends Marbles.UnifiedCo
             last: @pagination[cid]?.last
           }, _.clone(res.pages))
 
+          if _pagination.next && models.length != res.posts.length
+            if models.length
+              # sometimes not all the results are used
+              # in this case we need to create our own `next` query
+              _last_model = _.last(models)
+              _before = "#{_last_model.get('received_at') || _last_model.get('published_at')} #{_last_model.get('version.id')}"
+              _pagination.next = _pagination.next.replace(/before=[^&]+/, _before)
+            else
+              # in the case that no models are returned,
+              # just use the same next query as last time
+              _pagination.next = @pagination[cid]?.next
+
           if options.prepend # fetchPrev
             _pagination.next = @pagination[cid]?.next
 
