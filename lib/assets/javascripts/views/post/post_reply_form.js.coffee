@@ -10,24 +10,52 @@ Marbles.Views.PostReplyForm = class PostReplyFormView extends Marbles.Views.NewP
 
     @on 'ready', @initInlineMentions
 
+  fetchProfile: (entity, callback) =>
+    profile = TentStatus.Models.MetaProfile.find(entity: entity)
+    profile ?= new TentStatus.Models.MetaProfile(entity: entity)
+
+    if profile.get('id')
+      callback(profile)
+    else
+      profile.fetch(
+        complete: =>
+          callback(profile)
+      )
+
   initInlineMentions: =>
     textarea_view = @textareaMentionsView()
     return unless textarea_view
 
+    Marbles.DOM.setAttr(textarea_view.el, 'disabled', 'disabled')
+
     text = ""
 
-    for entity in @post().conversation_entities
-      profile = TentStatus.Models.MetaProfile.find(entity: entity)
+    entities = @post().conversation_entities
+    entities_display_text = {}
+    num_pending_profiles = entities.length
 
+    entityCompleteFn = (entity, profile) =>
       inline_mention = new TentStatus.InlineMentionsManager.InlineMention(
         entity: entity
         display_text: profile?.get('name') || TentStatus.Helpers.minimalEntity(entity)
       )
 
-      text += inline_mention.toExpandedMarkdownString() + " "
+      entities_display_text[entity] = inline_mention.toExpandedMarkdownString()
 
-    textarea_view.el.value = text
-    textarea_view.inline_mentions_manager.updateMentions()
+      num_pending_profiles -= 1
+      if num_pending_profiles <= 0
+        for entity in entities
+          text += entities_display_text[entity] + " "
+
+        textarea_view.el.value = text
+        Marbles.DOM.removeAttr(textarea_view.el, 'disabled')
+
+        textarea_view.inline_mentions_manager.updateMentions()
+
+    for entity in entities
+      do (entity) =>
+        @fetchProfile entity, (profile) =>
+          entityCompleteFn(entity, profile)
 
   # no initial render
   initialRender: =>
