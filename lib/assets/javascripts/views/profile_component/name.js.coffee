@@ -5,5 +5,5 @@ Marbles.Views.ProfileName = class ProfileNameView extends Marbles.Views.ProfileC
   constructor: ->
     super
 
-    @fetch()
+    @render()
 

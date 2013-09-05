@@ -1,21 +1,26 @@
 Marbles.Views.ProfileComponent = class ProfileComponentView extends Marbles.View
   constructor: ->
     super
+
     @entity = Marbles.DOM.attr(@el, 'data-entity')
     @add_title = Marbles.DOM.hasAttr(@el, 'data-title')
     @no_link = Marbles.DOM.hasAttr(@el, 'data-no_link')
     @css_class = Marbles.DOM.attr(@el, 'data-class')
 
-  profileModel: =>
-    TentStatus.Models.MetaProfile.find(entity: @entity, fetch: false)
+    TentStatus.Models.MetaProfile.on("#{@entity}:fetch:success", @render, null, args: false)
 
-  fetch: =>
-    if model = @profileModel()
-      @render(@context(model))
-    else
-      model = new TentStatus.Models.MetaProfile(entity: @entity)
-      model.on 'change:avatar_url change:name', @render, null, args: false
-      @render()
+    model = @profileModel()
+    model.on 'change:avatar_url change:name', @render, null, args: false
+    model.fetch() unless model.get('id')
+
+  createProfileModel: =>
+    new TentStatus.Models.MetaProfile(entity: @entity)
+
+  profileModel: =>
+    TentStatus.Models.MetaProfile.find(entity: @entity, fetch: false) || @createProfileModel()
+
+  fetchSuccess: (model) =>
+    @render(@context(model))
 
   context: (profile = @profileModel()) =>
     profile: profile

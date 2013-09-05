@@ -36,6 +36,7 @@ TentStatus.Models.MetaProfile = class  MetaProfileModel extends Marbles.Model
         model = new constructorFn(attrs)
 
       @trigger("fetch:success", model, xhr)
+      @trigger("#{entity}:fetch:success", model, xhr)
       options.success?(model, xhr)
       options.complete?(res, xhr)
 
@@ -58,6 +59,9 @@ TentStatus.Models.MetaProfile = class  MetaProfileModel extends Marbles.Model
 
     unless @get('avatar_url')
       @set('avatar_url', TentStatus.config.DEFAULT_AVATAR_URL)
+
+  fetch: (options = {}) =>
+    @constructor.fetch(@get('entity'), options)
 
 TentStatus.once 'config:ready', ->
   meta = TentStatus.config.meta

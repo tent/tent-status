@@ -7,7 +7,7 @@ Marbles.Views.ProfileAvatar = class ProfileAvatarView extends Marbles.Views.Prof
 
     @on 'ready', @checkImageMortality
 
-    @fetch()
+    @render()
 
   checkImageMortality: =>
     img = Marbles.DOM.querySelector('img', @el)
