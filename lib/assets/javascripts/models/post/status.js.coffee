@@ -43,8 +43,6 @@ TentStatus.Models.StatusPost = class StatusPostModel extends TentStatus.Models.P
           continue unless _model
           _models.push(_model)
 
-        console.log 'fetchReplies complete', models, _models
-
         options.success?(_models)
 
     fetchPostFromMention = (mention) =>
