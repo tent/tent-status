@@ -23,6 +23,7 @@ TentStatus.Models.MetaProfile = class  MetaProfileModel extends Marbles.Model
       server_meta_post = res.post
 
       attrs = _.extend({
+        id: server_meta_post.id
         entity: server_meta_post.content.entity
         avatar_digest: server_meta_post.attachments?[0]?.digest
       }, server_meta_post.content.profile || {})
