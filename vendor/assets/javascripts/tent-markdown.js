@@ -845,7 +845,7 @@ function merge_text_nodes( jsonml ) {
               continue;
             }
 
-            if ( (_m = block.match(/\[[^\]]+\]\([^\)]+\)$/)) && (_m.index < item.indices[0]) && (_m.index + _m[0].length > item.indices[0]) ) {
+            if ( (_m = block.match(/\[[^\]]+\]\([^\)]+\)/)) && (_m.index < item.indices[0]) && (_m.index + _m[0].length > item.indices[0]) ) {
               // markdown link syntax, don't autolink
               continue;
             }
