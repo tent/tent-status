@@ -11,6 +11,7 @@ module TentStatus
       appicon57.png
       appicon72.png
       appicon114.png
+      favicon.png
     ).freeze
 
     attr_accessor :sprockets_environment, :assets_dir, :layout_dir, :layout_path, :layout_env, :compile_icing, :compile_marbles
