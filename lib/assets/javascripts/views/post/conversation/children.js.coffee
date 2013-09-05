@@ -14,7 +14,7 @@ Marbles.Views.ConversationChildren = class ConversationChildrenView extends Marb
         conversation_post.get('entity') == m.entity && conversation_post.get('id') == m.post && (!m.version || conversation_post.get('version.id') == m.version)
       @prependRender([post])
 
-    @fetchPosts()
+    setImmediate @fetchPosts
 
   fetchPosts: (options = {}) =>
     reference_post = @post()

@@ -22,30 +22,69 @@ TentStatus.Models.StatusPost = class StatusPostModel extends TentStatus.Models.P
     super(params, options)
 
   fetchReplies: (options = {}) =>
-    collection = TentStatus.Collections.StatusReplies.find(entity: @get('entity'), post_id: @get('id'))
+    num_pending_posts = 0
+    models = {}
+    mentions = []
 
-    unless collection
-      collection = new TentStatus.Collections.StatusReplies(entity: @get('entity'), post_id: @get('id'))
+    keyForMention = (mention) =>
+      mention.entity + ' ' + mention.post
 
-      # Handle updating collection when replying to the post
-      TentStatus.Models.StatusPost.on 'create:success', (post, xhr) =>
-        return unless post.get('type') is TentStatus.config.POST_TYPES.STATUS_REPLY
-        return unless _.any post.get('mentions') || [], (m) =>
-          @get('entity') == m.entity && @get('id') == m.post && (!m.version || @get('version.id') == m.version)
-        collection.prependModels([post])
+    fetchPostComplete = (mention, res, xhr) =>
+      num_pending_posts -= 1
 
-    limit = TentStatus.config.CONVERSATION_PER_PAGE
+      if xhr.status == 200
+        postConstructor = TentStatus.Models.Post.constructorForType(res.post.type)
+        models[keyForMention(mention)] = new postConstructor(res.post)
 
-    collection.options.params = {
-      mentions: @get('entity') + ' ' + @get('id')
-      types: [TentStatus.config.POST_TYPES.STATUS_REPLY]
-      limit: limit
-    }
+      if num_pending_posts <= 0
+        _models = []
+        for mention in mentions
+          _model = models[keyForMention(mention)]
+          continue unless _model
+          _models.push(_model)
 
-    if collection.model_ids.length
-      options.success?(collection.models(collection.model_ids.slice(0, limit)))
-    else
-      collection.fetch null, options
+        console.log 'fetchReplies complete', models, _models
+
+        options.success?(_models)
+
+    fetchPostFromMention = (mention) =>
+      TentStatus.tent_client.post.get(
+        params: {
+          entity: mention.entity
+          post: mention.post
+        }
+
+        headers: {
+          'Cache-Control': 'proxy-if-miss'
+        }
+
+        callback: (res, xhr) =>
+          fetchPostComplete(mention, res, xhr)
+      )
+
+    mentionsMompleteFn = (res, xhr) =>
+      if xhr.status == 200
+        num_pending_posts = res.mentions.length
+        for mention in res.mentions
+          continue unless mention.type == TentStatus.config.POST_TYPES.STATUS_REPLY
+          mentions.push(mention)
+          fetchPostFromMention(mention)
+      else
+        options.failure?(res, xhr)
+
+    TentStatus.tent_client.post.mentions(
+      params: {
+        entity: @get('entity')
+        post: @get('id')
+        limit: TentStatus.config.CONVERSATION_PER_PAGE
+      }
+
+      headers: {
+        'Cache-Control': 'proxy'
+      }
+
+      callback: mentionsMompleteFn
+    )
 
     null
 
