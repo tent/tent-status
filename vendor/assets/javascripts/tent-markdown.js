@@ -845,6 +845,11 @@ function merge_text_nodes( jsonml ) {
               continue;
             }
 
+            if ( (_m = block.match(/\[[^\]]+\]\([^\)]+\)$/)) && (_m.index < item.indices[0]) && (_m.index + _m[0].length > item.indices[0]) ) {
+              // markdown link syntax, don't autolink
+              continue;
+            }
+
             if ( block.slice(item.indices[0] - 1, block.length).match(/^\[[^\]]+\]\([^\)]+\)/) ) {
               // url inside markdown link display text, don't autolink
               continue;
@@ -864,7 +869,7 @@ function merge_text_nodes( jsonml ) {
                   _last_index = null;
               if ( _indices.length && (_indices.length % 2 === 0) ) {
                 for (var j = 0; j < _indices.length; j += 2) {
-                  if ( (_indices[j] < item.indices[0]) && (_indices[j+1] > item.indices[1]) ) {
+                  if ( (_indices[j] < item.indices[0]) && (_indices[j+1] >= item.indices[1]) ) {
                     // matched url is inside code backticks, ignore
                     _last_index = _indices[j+1];
                     skip = true;
@@ -1038,16 +1043,19 @@ function merge_text_nodes( jsonml ) {
           return [consumed, ["em"].concat(children)]
         },
 
-        "~": function italic( text ) {
-          // Inline content is possible inside `bold text`
+        "~": function strikethrough( text ) {
+          // Inline content is possible inside `deleted text`
           var res = Markdown.DialectHelpers.inline_until_char.call( this, text.substr(1), "~" );
 
-          // Not bold
+          // Not deleted text
           if ( !res ) return [ 1, "~" ];
 
           var consumed = 1 + res[ 0 ],
               children = res[ 1 ];
 
+          // Ignore since there is whitespace before the closing `~`
+          var last_child = children[ children.length-1 ];
+          if ( typeof last_child === 'string' && last_child.substr(last_child.length - 2).match(/[\s\r\n]/) ) return [ 1, "~"];
 
           return [consumed, ["del"].concat(children)]
         },
