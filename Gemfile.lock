@@ -81,10 +81,10 @@ GIT
 
 GIT
   remote: git://github.com/tent/tent-client-ruby.git
-  revision: 69a8279652919755aa7a24444373fbc10896e53b
+  revision: 84f66e6ed4ba40778e07725b26194cabe2859e66
   branch: master
   specs:
-    tent-client (0.2.0)
+    tent-client (0.2.1)
       faraday (= 0.8.4)
       faraday_middleware (= 0.8.8)
       faraday_middleware-multi_json
