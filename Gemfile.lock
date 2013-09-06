@@ -55,7 +55,7 @@ GIT
 
 GIT
   remote: git://github.com/tent/omniauth-tent.git
-  revision: 40163488481534c1572bc1a818fddf0cc0071b3a
+  revision: 4143813b2b8848acc2c289a28c2f2d1ef7a28c4a
   branch: master
   specs:
     omniauth-tent (0.2.1)
