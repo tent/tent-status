@@ -8,5 +8,5 @@
   <div class="span6 fetch-pool" data-view="FetchPostsPool"></div>
 </div>
 <div class="row">
-  <ul class="unstyled posts span6" data-view="SitePostsFeed"></ul>
+  <ul class="unstyled posts" data-view="SitePostsFeed"></ul>
 </div>
