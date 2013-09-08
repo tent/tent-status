@@ -22,7 +22,7 @@ GIT
 
 GIT
   remote: git://github.com/jvatic/marbles-js.git
-  revision: 35d07009d16cc0945cc63dd939959d71070004dc
+  revision: 3e0d877866784d46a47ec0955ce2fc242225533b
   branch: master
   specs:
     marbles-js (0.0.3)
