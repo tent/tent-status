@@ -26,10 +26,7 @@ _.extend TentStatus.Helpers,
         else
           params.entity
       when 'post'
-        if params.entity == TentStatus.config.meta.content.entity
-          "/posts/#{encodeURIComponent params.post_id}"
-        else
-          "/posts/#{encodeURIComponent params.entity}/#{encodeURIComponent params.post_id}"
+        "/posts/#{encodeURIComponent params.entity}/#{encodeURIComponent params.post_id}"
 
   fullPath: (path) ->
     (TentStatus.config.PATH_PREFIX || '').replace(/\/$/, '') + path
