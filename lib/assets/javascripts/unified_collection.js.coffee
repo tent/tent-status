@@ -37,7 +37,7 @@ TentStatus.UnifiedCollection = class UnifiedCollection extends Marbles.UnifiedCo
       do (cid) =>
         _completeFn = options[cid]?.complete
         options[cid] ?= {}
-        options[cid].complete = (models, res, xhr) =>
+        options[cid].complete = (models, res, xhr, _params) =>
           _completeFn?.apply?(null, arguments)
 
           return unless xhr.status == 200
@@ -52,12 +52,16 @@ TentStatus.UnifiedCollection = class UnifiedCollection extends Marbles.UnifiedCo
               # sometimes not all the results are used
               # in this case we need to create our own `next` query
               _last_model = _.last(models)
-              _before = "#{_last_model.get('received_at') || _last_model.get('published_at')} #{_last_model.get('version.id')}"
+              _before = "before=#{_last_model.get('received_at') || _last_model.get('published_at')} #{_last_model.get('version.id')}"
               _pagination.next = _pagination.next.replace(/before=[^&]+/, _before)
             else
               # in the case that no models are returned,
-              # just use the same next query as last time
-              _pagination.next = @pagination[cid]?.next
+              # just use the same query as last time
+              _pagination.next = @pagination[cid]?.next || Marbles.history.serializeParams(_params)
+          else if models.length != res.posts.length
+            # in the case that no models are returned
+            # and there is only a single, non-empty page
+            _pagination.next = Marbles.history.serializeParams(_params)
 
           if options.prepend # fetchPrev
             _pagination.next = @pagination[cid]?.next
