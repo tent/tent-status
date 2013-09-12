@@ -36,7 +36,7 @@ SEARCH_API_KEY         | `:search_api_key`         | Optional                   
 ENTITY_SEARCH_API_ROOT | `:entity_search_api_root` | Optional                                | URL of service to provide entity autocomplete.
 SKIP_AUTHENTICATION    | `:skip_authentication`    | Optional                                | Bypasses OAuth flow when set to `true`. This only works when config.json is loaded from another source.
 ASSETS_DIR             | `:public_dir`             | Optional                                | Defaults to `public/assets`.
-DEFAULT_AVATAR_ROOT    | `:default_avatar_root`    | Optional                                | Defaults to a static avatar. If set, appending `"/" + encodeURIComponent(entity)` should point to a unique avatar for that entity.
+DEFAULT_AVATAR_ROOT    | `:default_avatar_root`    | Optional                                | Defaults to a static avatar. If set, appending `"/" + encodeURIComponent(entity)` should point to a unique avatar for that entity (see [Sigil](https://github.com/cupcake/sigil) for more information).
 
 **TODO:** Entity search service and CDN support are not currently implemented.
 
