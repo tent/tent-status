@@ -49,6 +49,7 @@ module TentStatus
 
       ##
       # App service settings
+      :default_avatar_root    => settings[:default_avatar_root]    || ENV['DEFAULT_AVATAR_ROOT'],
       :search_api_root        => settings[:search_api_root]        || ENV['SEARCH_API_ROOT'],
       :search_api_key         => settings[:search_api_key]         || ENV['SEARCH_API_KEY'],
       :entity_search_api_root => settings[:entity_search_api_root] || ENV['ENTITY_SEARCH_API_ROOT'],

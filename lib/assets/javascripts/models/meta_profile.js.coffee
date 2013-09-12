@@ -50,7 +50,7 @@ TentStatus.Models.MetaProfile = class  MetaProfileModel extends Marbles.Model
       if digest
         @set('avatar_url', TentStatus.tent_client.getSignedUrl('attachment', entity: @get('entity'), digest: digest, exp: AVATAR_EXP_TIMESTAMP))
       else
-        @set('avatar_url', TentStatus.config.DEFAULT_AVATAR_URL)
+        @set('avatar_url', TentStatus.config.defaultAvatarURL(@get('entity')))
 
     super
 
@@ -58,7 +58,7 @@ TentStatus.Models.MetaProfile = class  MetaProfileModel extends Marbles.Model
     super
 
     unless @get('avatar_url')
-      @set('avatar_url', TentStatus.config.DEFAULT_AVATAR_URL)
+      @set('avatar_url', TentStatus.config.defaultAvatarURL(@get('entity')))
 
   fetch: (options = {}) =>
     @constructor.fetch(@get('entity'), options)

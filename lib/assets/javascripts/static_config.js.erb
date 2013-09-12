@@ -53,6 +53,7 @@ TentStatus.config = {
   APP_URL: <%= Yajl::Encoder.encode(TentStatus.settings[:url]) %>,
 
   services: {
+    default_avatar_root: <%= Yajl::Encoder.encode(TentStatus.settings[:default_avatar_root]) %>,
     entity_search_api_root: <%= Yajl::Encoder.encode(TentStatus.settings[:entity_search_api_root]) %>,
     entity_search_api_key: <%= Yajl::Encoder.encode(TentStatus.settings[:entity_search_api_root]) %>,
     search_api_root: <%= Yajl::Encoder.encode(TentStatus.settings[:search_api_root]) %>,
@@ -89,3 +90,15 @@ TentStatus.config.subscriber_feed_types = [
   TentStatus.config.POST_TYPES.RELATIONSHIP + '#subscriber',
   TentStatus.config.POST_TYPES.RELATIONSHIP + '#mutual'
 ]
+
+TentStatus.config.defaultAvatarURL = function (entity_uri) {
+  if (!TentStatus.config.DEFAULT_AVATAR_URL && !TentStatus.config.services.default_avatar_root) {
+    return;
+  }
+
+  if (!TentStatus.config.services.default_avatar_root) {
+    return TentStatus.config.DEFAULT_AVATAR_URL;
+  }
+
+  return TentStatus.config.services.default_avatar_root + '/' + encodeURIComponent(entity_uri) + '?w=288';
+}
