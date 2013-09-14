@@ -26,13 +26,15 @@ Marbles.Views.PostReplyForm = class PostReplyFormView extends Marbles.Views.NewP
     textarea_view = @textareaMentionsView()
     return unless textarea_view
 
-    Marbles.DOM.setAttr(textarea_view.el, 'disabled', 'disabled')
-
     text = ""
 
     entities = @post().conversation_entities
     entities_display_text = {}
     num_pending_profiles = entities.length
+
+    return unless entities.length
+
+    Marbles.DOM.setAttr(textarea_view.el, 'disabled', 'disabled')
 
     entityCompleteFn = (entity, profile) =>
       inline_mention = new TentStatus.InlineMentionsManager.InlineMention(
