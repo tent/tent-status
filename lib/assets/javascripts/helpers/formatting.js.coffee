@@ -62,6 +62,8 @@ _.extend TentStatus.Helpers,
   formatTentMarkdown: (text = '', mentions = []) ->
     inline_mention_urls = _.map mentions, (m) => TentStatus.Helpers.entityProfileUrl(m.entity)
 
+    preprocessors = []
+
     parsePara = (para, callback) ->
       new_para = for item in para
         if _.isArray(item) && item[0] in ['para', 'strong', 'em', 'del']
@@ -79,9 +81,21 @@ _.extend TentStatus.Helpers,
       jsonml[1]['data-view'] = 'ExternalLink'
       jsonml
 
+    preprocessors.push(externalLinkPreprocessor)
+
+    # Disable hashtag autolinking when search isn't enabled
+    unless TentStatus.config.services.search_api_root
+      disableHashtagAutolinking = (jsonml) ->
+        return jsonml unless jsonml[0] is 'link'
+        return jsonml unless jsonml[1]?.rel is 'hashtag'
+
+        ['span', jsonml[2]]
+
+      preprocessors.push(disableHashtagAutolinking)
+
     markdown.toHTML(text, 'Tent', {
       footnotes: inline_mention_urls
       hashtagURITemplate: @fullPath('/search') + '?q=%23{hashtag}'
-      preprocessors: [externalLinkPreprocessor]
+      preprocessors: preprocessors
     })
 
