@@ -80,6 +80,125 @@
   twttr.txt.regexen.invalid_chars_group = regexSupplant(INVALID_CHARS.join(""));
   twttr.txt.regexen.punct = /\!'#%&'\(\)*\+,\\\-\.\/:;<=>\?@\[\]\^_{|}~\$/;
 
+  function addCharsToCharClass(charClass, start, end) {
+    var s = String.fromCharCode(start);
+    if (end !== start) {
+      s += "-" + String.fromCharCode(end);
+    }
+    charClass.push(s);
+    return charClass;
+  }
+
+  twttr.txt.addCharsToCharClass = addCharsToCharClass;
+
+  var nonLatinHashtagChars = [];
+  // Cyrillic
+  addCharsToCharClass(nonLatinHashtagChars, 0x0400, 0x04ff); // Cyrillic
+  addCharsToCharClass(nonLatinHashtagChars, 0x0500, 0x0527); // Cyrillic Supplement
+  addCharsToCharClass(nonLatinHashtagChars, 0x2de0, 0x2dff); // Cyrillic Extended A
+  addCharsToCharClass(nonLatinHashtagChars, 0xa640, 0xa69f); // Cyrillic Extended B
+  // Hebrew
+  addCharsToCharClass(nonLatinHashtagChars, 0x0591, 0x05bf); // Hebrew
+  addCharsToCharClass(nonLatinHashtagChars, 0x05c1, 0x05c2);
+  addCharsToCharClass(nonLatinHashtagChars, 0x05c4, 0x05c5);
+  addCharsToCharClass(nonLatinHashtagChars, 0x05c7, 0x05c7);
+  addCharsToCharClass(nonLatinHashtagChars, 0x05d0, 0x05ea);
+  addCharsToCharClass(nonLatinHashtagChars, 0x05f0, 0x05f4);
+  addCharsToCharClass(nonLatinHashtagChars, 0xfb12, 0xfb28); // Hebrew Presentation Forms
+  addCharsToCharClass(nonLatinHashtagChars, 0xfb2a, 0xfb36);
+  addCharsToCharClass(nonLatinHashtagChars, 0xfb38, 0xfb3c);
+  addCharsToCharClass(nonLatinHashtagChars, 0xfb3e, 0xfb3e);
+  addCharsToCharClass(nonLatinHashtagChars, 0xfb40, 0xfb41);
+  addCharsToCharClass(nonLatinHashtagChars, 0xfb43, 0xfb44);
+  addCharsToCharClass(nonLatinHashtagChars, 0xfb46, 0xfb4f);
+  // Arabic
+  addCharsToCharClass(nonLatinHashtagChars, 0x0610, 0x061a); // Arabic
+  addCharsToCharClass(nonLatinHashtagChars, 0x0620, 0x065f);
+  addCharsToCharClass(nonLatinHashtagChars, 0x066e, 0x06d3);
+  addCharsToCharClass(nonLatinHashtagChars, 0x06d5, 0x06dc);
+  addCharsToCharClass(nonLatinHashtagChars, 0x06de, 0x06e8);
+  addCharsToCharClass(nonLatinHashtagChars, 0x06ea, 0x06ef);
+  addCharsToCharClass(nonLatinHashtagChars, 0x06fa, 0x06fc);
+  addCharsToCharClass(nonLatinHashtagChars, 0x06ff, 0x06ff);
+  addCharsToCharClass(nonLatinHashtagChars, 0x0750, 0x077f); // Arabic Supplement
+  addCharsToCharClass(nonLatinHashtagChars, 0x08a0, 0x08a0); // Arabic Extended A
+  addCharsToCharClass(nonLatinHashtagChars, 0x08a2, 0x08ac);
+  addCharsToCharClass(nonLatinHashtagChars, 0x08e4, 0x08fe);
+  addCharsToCharClass(nonLatinHashtagChars, 0xfb50, 0xfbb1); // Arabic Pres. Forms A
+  addCharsToCharClass(nonLatinHashtagChars, 0xfbd3, 0xfd3d);
+  addCharsToCharClass(nonLatinHashtagChars, 0xfd50, 0xfd8f);
+  addCharsToCharClass(nonLatinHashtagChars, 0xfd92, 0xfdc7);
+  addCharsToCharClass(nonLatinHashtagChars, 0xfdf0, 0xfdfb);
+  addCharsToCharClass(nonLatinHashtagChars, 0xfe70, 0xfe74); // Arabic Pres. Forms B
+  addCharsToCharClass(nonLatinHashtagChars, 0xfe76, 0xfefc);
+  addCharsToCharClass(nonLatinHashtagChars, 0x200c, 0x200c); // Zero-Width Non-Joiner
+  // Thai
+  addCharsToCharClass(nonLatinHashtagChars, 0x0e01, 0x0e3a);
+  addCharsToCharClass(nonLatinHashtagChars, 0x0e40, 0x0e4e);
+  // Hangul (Korean)
+  addCharsToCharClass(nonLatinHashtagChars, 0x1100, 0x11ff); // Hangul Jamo
+  addCharsToCharClass(nonLatinHashtagChars, 0x3130, 0x3185); // Hangul Compatibility Jamo
+  addCharsToCharClass(nonLatinHashtagChars, 0xA960, 0xA97F); // Hangul Jamo Extended-A
+  addCharsToCharClass(nonLatinHashtagChars, 0xAC00, 0xD7AF); // Hangul Syllables
+  addCharsToCharClass(nonLatinHashtagChars, 0xD7B0, 0xD7FF); // Hangul Jamo Extended-B
+  addCharsToCharClass(nonLatinHashtagChars, 0xFFA1, 0xFFDC); // half-width Hangul
+  // Japanese and Chinese
+  addCharsToCharClass(nonLatinHashtagChars, 0x30A1, 0x30FA); // Katakana (full-width)
+  addCharsToCharClass(nonLatinHashtagChars, 0x30FC, 0x30FE); // Katakana Chouon and iteration marks (full-width)
+  addCharsToCharClass(nonLatinHashtagChars, 0xFF66, 0xFF9F); // Katakana (half-width)
+  addCharsToCharClass(nonLatinHashtagChars, 0xFF70, 0xFF70); // Katakana Chouon (half-width)
+  addCharsToCharClass(nonLatinHashtagChars, 0xFF10, 0xFF19); // \
+  addCharsToCharClass(nonLatinHashtagChars, 0xFF21, 0xFF3A); // - Latin (full-width)
+  addCharsToCharClass(nonLatinHashtagChars, 0xFF41, 0xFF5A); // /
+  addCharsToCharClass(nonLatinHashtagChars, 0x3041, 0x3096); // Hiragana
+  addCharsToCharClass(nonLatinHashtagChars, 0x3099, 0x309E); // Hiragana voicing and iteration mark
+  addCharsToCharClass(nonLatinHashtagChars, 0x3400, 0x4DBF); // Kanji (CJK Extension A)
+  addCharsToCharClass(nonLatinHashtagChars, 0x4E00, 0x9FFF); // Kanji (Unified)
+  // -- Disabled as it breaks the Regex.
+  //addCharsToCharClass(nonLatinHashtagChars, 0x20000, 0x2A6DF); // Kanji (CJK Extension B)
+  addCharsToCharClass(nonLatinHashtagChars, 0x2A700, 0x2B73F); // Kanji (CJK Extension C)
+  addCharsToCharClass(nonLatinHashtagChars, 0x2B740, 0x2B81F); // Kanji (CJK Extension D)
+  addCharsToCharClass(nonLatinHashtagChars, 0x2F800, 0x2FA1F); // Kanji (CJK supplement)
+  addCharsToCharClass(nonLatinHashtagChars, 0x3003, 0x3003); // Kanji iteration mark
+  addCharsToCharClass(nonLatinHashtagChars, 0x3005, 0x3005); // Kanji iteration mark
+  addCharsToCharClass(nonLatinHashtagChars, 0x303B, 0x303B); // Han iteration mark
+
+  twttr.txt.regexen.nonLatinHashtagChars = regexSupplant(nonLatinHashtagChars.join(""));
+
+  var latinAccentChars = [];
+  // Latin accented characters (subtracted 0xD7 from the range, it's a confusable multiplication sign. Looks like "x")
+  addCharsToCharClass(latinAccentChars, 0x00c0, 0x00d6);
+  addCharsToCharClass(latinAccentChars, 0x00d8, 0x00f6);
+  addCharsToCharClass(latinAccentChars, 0x00f8, 0x00ff);
+  // Latin Extended A and B
+  addCharsToCharClass(latinAccentChars, 0x0100, 0x024f);
+  // assorted IPA Extensions
+  addCharsToCharClass(latinAccentChars, 0x0253, 0x0254);
+  addCharsToCharClass(latinAccentChars, 0x0256, 0x0257);
+  addCharsToCharClass(latinAccentChars, 0x0259, 0x0259);
+  addCharsToCharClass(latinAccentChars, 0x025b, 0x025b);
+  addCharsToCharClass(latinAccentChars, 0x0263, 0x0263);
+  addCharsToCharClass(latinAccentChars, 0x0268, 0x0268);
+  addCharsToCharClass(latinAccentChars, 0x026f, 0x026f);
+  addCharsToCharClass(latinAccentChars, 0x0272, 0x0272);
+  addCharsToCharClass(latinAccentChars, 0x0289, 0x0289);
+  addCharsToCharClass(latinAccentChars, 0x028b, 0x028b);
+  // Okina for Hawaiian (it *is* a letter character)
+  addCharsToCharClass(latinAccentChars, 0x02bb, 0x02bb);
+  // Combining diacritics
+  addCharsToCharClass(latinAccentChars, 0x0300, 0x036f);
+  // Latin Extended Additional
+  addCharsToCharClass(latinAccentChars, 0x1e00, 0x1eff);
+  twttr.txt.regexen.latinAccentChars = regexSupplant(latinAccentChars.join(""));
+
+  // A hashtag must contain characters, numbers and underscores, but not all numbers.
+  twttr.txt.regexen.hashSigns = /[#＃]/;
+  twttr.txt.regexen.hashtagAlpha = regexSupplant(/[a-z_#{latinAccentChars}#{nonLatinHashtagChars}]/i);
+  twttr.txt.regexen.hashtagAlphaNumeric = regexSupplant(/[a-z0-9_#{latinAccentChars}#{nonLatinHashtagChars}]/i);
+  twttr.txt.regexen.endHashtagMatch = regexSupplant(/^(?:#{hashSigns}|:\/\/)/);
+  twttr.txt.regexen.hashtagBoundary = regexSupplant(/(?:^|$|[^&a-z0-9_#{latinAccentChars}#{nonLatinHashtagChars}])/);
+  twttr.txt.regexen.validHashtag = regexSupplant(/(#{hashtagBoundary})(#{hashSigns})(#{hashtagAlphaNumeric}*#{hashtagAlpha}#{hashtagAlphaNumeric}*)/gi);
+
   // URL related regex collection
   twttr.txt.regexen.validUrlPrecedingChars = regexSupplant(/(?:[^A-Za-z0-9@＠$#＃#{invalid_chars_group}]|^)/);
   twttr.txt.regexen.invalidUrlWithoutProtocolPrecedingChars = /[-_.\/]$/;
@@ -129,6 +248,28 @@
   , 'gi');
 
   twttr.txt.regexen.validTcoUrl = /^https?:\/\/t\.co\/[a-z0-9]+/i;
+
+  twttr.extractHashtagsWithIndices = function(text, options) {
+    if (!text || !text.match(twttr.txt.regexen.hashSigns)) {
+      return [];
+    }
+
+    var tags = [];
+
+    text.replace(twttr.txt.regexen.validHashtag, function(match, before, hash, hashText, offset, chunk) {
+      var after = chunk.slice(offset + match.length);
+      if (after.match(twttr.txt.regexen.endHashtagMatch))
+        return;
+      var startPosition = offset + before.length;
+      var endPosition = startPosition + hashText.length + 1;
+      tags.push({
+        hashtag: hashText,
+        indices: [startPosition, endPosition]
+      });
+    });
+
+    return tags;
+  };
 
   twttr.extractUrlsWithIndices = function(text, options) {
     if (!options) {
@@ -201,6 +342,7 @@
   };
 
   expose.extractUrlsWithIndices = twttr.extractUrlsWithIndices;
+  expose.extractHashtagsWithIndices = twttr.extractHashtagsWithIndices;
 
 })((function() {
   if (typeof exports === "undefined") {
@@ -829,6 +971,14 @@ function merge_text_nodes( jsonml ) {
         autolink: function autolink( block, next ) {
           var urls = expose.extractUrlsWithIndices(block);
 
+          var nextBlock = function (block, next) {
+            var _block = [].concat(this.dialect.block.hashtags.call(this, block, next, false));
+            if (_block.length == 1) {
+              _block = _block[0];
+            }
+            return _block;
+          }
+
           if (!urls.length) {
             // no urls matched
             return;
@@ -906,11 +1056,116 @@ function merge_text_nodes( jsonml ) {
             // process text before url
             before = _block.slice(0, item.indices[0] + index_offset);
             if (before.length) {
-              jsonml = jsonml.concat( this.processInline(before) );
+              jsonml = jsonml.concat(nextBlock.call(this, before, []) || [] );
             }
 
             // linkify url
             jsonml.push(["link", { href: item.url }, item.url]);
+
+            // discard processed text
+            // and update index offset
+            _block = _block.slice(item.indices[1] + index_offset, _block.length)
+            index_offset -= before.length + (item.indices[1] - item.indices[0])
+          }
+
+          // process remaining text
+          jsonml = jsonml.concat(nextBlock.call(this, _block, next) || [] );
+
+          return [jsonml];
+        },
+
+        hashtags: function (block, next, wrapInPara) {
+          if (wrapInPara == null) wrapInPara = true;
+
+          var hashtags = expose.extractHashtagsWithIndices(block);
+
+          var nextBlock = function () {
+            var _block = this.dialect.block.para.call(this, block, next);
+            return wrapInPara ? _block : _block[0].slice(1);
+          }
+
+          if (!hashtags.length) {
+            // no hashtags here, moving along
+            return nextBlock.call(this);
+          }
+
+          var autolink_items = [];
+
+          var item;
+          for (var i = 0; i < hashtags.length; i++) {
+            item = hashtags[i];
+
+            if ( block.slice(0, item.indices[1] + 1).match(/\[[^\]]+\]\([^\)]+\)$/) ) {
+              // markdown link syntax, don't autolink
+              continue;
+            }
+
+            if ( (_m = block.match(/\[[^\]]+\]\([^\)]+\)/)) && (_m.index < item.indices[0]) && (_m.index + _m[0].length > item.indices[0]) ) {
+              // markdown link syntax, don't autolink
+              continue;
+            }
+
+            if ( block.slice(item.indices[0] - 1, block.length).match(/^\[[^\]]+\]\([^\)]+\)/) ) {
+              // hashtag inside markdown link display text, don't autolink
+              continue;
+            }
+
+            if ( block.match('`') ) {
+              // check if the hashtag is inside code backticks
+
+              var _indices = [],
+                  _regex = /`/g,
+                  m = null;
+              while ( m = _regex.exec(block) ) {
+                _indices.push(m.index);
+              }
+
+              var skip = false,
+                  _last_index = null;
+              if ( _indices.length && (_indices.length % 2 === 0) ) {
+                for (var j = 0; j < _indices.length; j += 2) {
+                  if ( (_indices[j] < item.indices[0]) && (_indices[j+1] >= item.indices[1]) ) {
+                    // matched hashtag is inside code backticks, ignore
+                    _last_index = _indices[j+1];
+                    skip = true;
+                  }
+                }
+              }
+
+              if (skip === true) {
+                // don't autolink
+                continue;
+              }
+            }
+
+            // we're good to process this hashtag
+            autolink_items.push(item)
+          }
+
+          if (!autolink_items.length) {
+            // there's nothing to autolink
+            return nextBlock.call(this);
+          }
+
+          // wrap matched hashtags in links
+
+          var jsonml = wrapInPara ? ["para"] : [],
+              _block = block,
+              item = null,
+              index_offset = 0,
+              before = null;
+
+          for (var i = 0; i < autolink_items.length; i++) {
+            item = autolink_items[i];
+
+            // process text before hashtag
+            before = _block.slice(0, item.indices[0] + index_offset);
+            if (before.length) {
+              jsonml = jsonml.concat( this.processInline(before) );
+            }
+
+            // linkify hashtag
+            jsonml.push(["link", { href: '#' + item.hashtag, rel: "hashtag" }, '#' + item.hashtag]);
 
             // discard processed text
             // and update index offset
@@ -1164,7 +1419,8 @@ function merge_text_nodes( jsonml ) {
 
   Preprocesser = function ( options ) {
     this.footnotes = options.footnotes || [];
-    this.preprocessors = [this.expandFootnoteLinkHrefs].concat(options.preprocessors || []);
+    this.hashtagURITemplate = options.hashtagURITemplate || '?hashtag={hashtag}';
+    this.preprocessors = [this.expandFootnoteLinkHrefs, this.expandHashtagHrefs].concat(options.preprocessors || []);
   }
 
   Preprocesser.prototype.expandFootnoteLinkHrefs = function ( jsonml ) {
@@ -1182,6 +1438,21 @@ function merge_text_nodes( jsonml ) {
     if (!jsonml[1].href) {
       return [null].concat(jsonml.slice(2));
     }
+
+    return jsonml;
+  }
+
+  Preprocesser.prototype.expandHashtagHrefs = function ( jsonml ) {
+    // Skip over anything that isn't a link
+    if (jsonml[0] !== 'link') return jsonml;
+
+    // Skip over links that aren't hashtags
+    if (!jsonml[1].rel || jsonml[1].rel !== 'hashtag') return jsonml;
+
+    // remove # prefix
+    var hashtag = decodeURIComponent(jsonml[1].href).substr(1);
+
+    jsonml[1].href = this.hashtagURITemplate.replace('{hashtag}', encodeURIComponent(hashtag));
 
     return jsonml;
   }
@@ -1214,11 +1485,13 @@ function merge_text_nodes( jsonml ) {
 })(function () {
   if ( typeof exports === "undefined" ) {
     window.markdown.extractUrlsWithIndices = window.twttr.extractUrlsWithIndices;
+    window.markdown.extractHashtagsWithIndices = window.twttr.extractHashtagsWithIndices;
     return window.markdown;
   }
   else {
     exports.markdown = require('markdown').markdown;
     exports.markdown.extractUrlsWithIndices = require('./link-matcher').extractUrlsWithIndices;
+    exports.markdown.extractHashtagsWithIndices = require('./link-matcher').extractHashtagsWithIndices;
 
     return exports.markdown;
   }
