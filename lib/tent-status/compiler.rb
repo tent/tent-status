@@ -113,16 +113,28 @@ module TentStatus
 
       configure_layout
 
-      # compile 2 versions of the layout
+      # compile 3 versions of the layout
       # the first (default) with the app nav
-      # and the second (public facing) without
-      [false, true].each do |is_public|
-        if is_public
+      # the second (public facing) without
+      # and the thrid is search which has a different nav
+      [false, true, :search].each do |is_public|
+        case is_public
+        when true
+          TentStatus.settings[:render_app_nav] = false
+
           layout_path = self.layout_path.sub(/(.+)\.html/) { "#{$1}_public.html" }
+        when :search
+          next unless TentStatus.settings[:search_api_root]
+
+          TentStatus.settings[:render_app_nav] = true
+          TentStatus.settings[:app_nav_key] = 'search'
+
+          layout_path = self.layout_path.sub(/(.+)\.html/) { "#{$1}_search.html" }
         else
+          TentStatus.settings[:render_app_nav] = true
+
           layout_path = self.layout_path
         end
-        TentStatus.settings[:render_app_nav] = !is_public
 
         require 'tent-status/app'
         status, headers, body = TentStatus::App::RenderView.new(lambda {}).call(layout_env)

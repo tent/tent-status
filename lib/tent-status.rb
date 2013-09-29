@@ -67,6 +67,8 @@ module TentStatus
 
     self.settings[:render_app_nav] = settings.has_key?(:render_app_nav) ? settings[:render_app_nav] : ENV['RENDER_APP_NAV'] != 'false'
 
+    self.settings[:app_nav_key] = settings[:app_nav_key] || ENV['RENDER_APP_NAV'] || 'status'
+
     # App registration, oauth callback uri
     self.settings[:redirect_uri] ||= "#{self.settings[:url].to_s.sub(%r{/\Z}, '')}/auth/tent/callback"
 
