@@ -8,6 +8,7 @@ Marbles.Views.SearchFetchPool = class SearchFetchPoolView extends Marbles.View
     @on 'ready', @bindLink
 
     @fetch_interval = new TentStatus.FetchInterval fetch_callback: @fetchResults
+
     options.parent_view.on 'init-view', (view_class_name, view) =>
       switch view_class_name
         when 'SearchResults'
@@ -36,9 +37,10 @@ Marbles.Views.SearchFetchPool = class SearchFetchPoolView extends Marbles.View
 
   fetchResults: =>
     return if @frozen
+    return unless @params.q
 
     params = _.extend {}, @params, {
-      since: @latest_published_at
+      until: @latest_published_at
     }
     delete params.max_time
 
