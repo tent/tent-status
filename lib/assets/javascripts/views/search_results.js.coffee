@@ -1,5 +1,6 @@
 Marbles.Views.SearchResults = class SearchResultsView extends Marbles.Views.PostsFeed
   @view_name: 'search_results'
+  @last_post_selector: "ul[data-view=SearchResults]>li.post:last-of-type"
 
   initialize: (options = {}) =>
     @types = options.types || TentStatus.config.feed_types
@@ -14,6 +15,9 @@ Marbles.Views.SearchResults = class SearchResultsView extends Marbles.Views.Post
     @on 'ready', @initAutoPaginate
 
     @params = options.parent_view.params
+
+    return unless @params.q
+
     setImmediate => @fetch(@params)
 
   postsCollection: =>
