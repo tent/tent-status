@@ -17,5 +17,5 @@ Marbles.Views.SearchHits = class SearchHitsView extends Marbles.View
     @render()
 
   context: (res = {}) =>
-    total_hits: res.total_hits
-    no_results: res.total_hits == 0
+    total_hits: res.search?.hits
+    no_results: res.search?.hits == 0
