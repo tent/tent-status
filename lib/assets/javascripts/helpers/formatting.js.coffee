@@ -79,5 +79,9 @@ _.extend TentStatus.Helpers,
       jsonml[1]['data-view'] = 'ExternalLink'
       jsonml
 
-    markdown.toHTML(text, 'Tent', { footnotes: inline_mention_urls, preprocessors: [externalLinkPreprocessor] })
+    markdown.toHTML(text, 'Tent', {
+      footnotes: inline_mention_urls
+      hashtagURITemplate: @fullPath('/search') + '?q=%23{hashtag}'
+      preprocessors: [externalLinkPreprocessor]
+    })
 
