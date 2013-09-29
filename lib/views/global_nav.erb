@@ -5,7 +5,7 @@
 
   <% if TentStatus.settings[:search_enabled] %>
     <li data-match-url='/search'>
-      <a href='/search' title='Search'><div class='nav-icon app-icon-search icon-2x'></div></a>
+      <a href='<%= TentStatus.settings[:path_prefix].to_s %>/search' title='Search'><div class='nav-icon app-icon-search icon-2x'></div></a>
     </li>
   <% end %>
 
