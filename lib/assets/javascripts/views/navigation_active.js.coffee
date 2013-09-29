@@ -23,7 +23,8 @@ Marbles.Views.NavigationActive = class NavigationActiveView extends Marbles.View
     @active_mapping = _.sortBy(@active_mapping, ( (item) => item[0].source.length * -1 ))
 
   markActiveItem: =>
-    path = window.location.pathname
+    path = window.location.pathname.replace(new RegExp("^#{TentStatus.config.PATH_PREFIX || ''}"), '')
+    path = path.replace(/^\/?/, '/') # ensure path begins with a /
     matched = false
     for item in @active_mapping
       [reg, el] = item
