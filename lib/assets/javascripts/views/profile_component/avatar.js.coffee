@@ -9,6 +9,7 @@ Marbles.Views.ProfileAvatar = class ProfileAvatarView extends Marbles.Views.Prof
 
   checkImageMortality: =>
     img = Marbles.DOM.querySelector('img', @el)
+    return unless img
     unless img.complete
       return setTimeout @checkImageMortality, 10
 
