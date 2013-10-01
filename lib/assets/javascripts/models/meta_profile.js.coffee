@@ -15,6 +15,7 @@ TentStatus.Models.MetaProfile = class  MetaProfileModel extends Marbles.Model
     completeFn = (res, xhr) =>
       if xhr.status != 200
         @trigger("fetch:failure", params, res, xhr)
+        @trigger("#{entity}:fetch:failure", params, res, xhr)
         options.failure?(res, xhr)
         options.complete?(res, xhr)
         return
