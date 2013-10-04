@@ -49,7 +49,7 @@ Marbles.Views.RepostVisibility = class RepostVisibilityView extends Marbles.View
           if !profile && _profile_attrs = res.profiles[mention.entity]
             profile = new TentStatus.Models.MetaProfile(_profile_attrs)
 
-          @reposter_profile_cids[mention.entity] = profile?.cid
+          @reposter_profile_cids[mention.entity || params.entity] = profile?.cid
 
         @render() if Object.keys(@reposter_profile_cids).length
 
