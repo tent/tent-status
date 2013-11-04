@@ -1056,7 +1056,10 @@ function merge_text_nodes( jsonml ) {
             // process text before url
             before = _block.slice(0, item.indices[0] + index_offset);
             if (before.length) {
-              jsonml = jsonml.concat(nextBlock.call(this, before, []) || [] );
+              var before_jsonml = nextBlock.call(this, before, []) || [];
+              before_jsonml = before_jsonml.length == 1 ? [before_jsonml] : before_jsonml;
+
+              jsonml = jsonml.concat(before_jsonml);
             }
 
             // linkify url
