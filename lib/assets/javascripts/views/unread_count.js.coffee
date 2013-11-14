@@ -5,7 +5,7 @@ Marbles.Views.UnreadCount = class UnreadCountView extends Marbles.View
     return unless TentStatus.config.authenticated
 
     @interval = new TentStatus.FetchInterval fetch_callback: @fetchCount
-    @cursor_interval = new TentStatus.FetchInterval fetch_callback: @fetchCursor
+    @cursor_interval = new TentStatus.FetchInterval fetch_callback: @fetchCursor, delay_increment: 30000 # fetch cursor post every 30 seconds
 
     # find or fetch existing cursor post
     TentStatus.Models.CursorPost.find(
@@ -22,17 +22,16 @@ Marbles.Views.UnreadCount = class UnreadCountView extends Marbles.View
 
   fetchCursor: =>
     return unless cursor_post = TentStatus.Models.CursorPost.find(cid: @post_cid)
+
+    _version_id = cursor_post.get('version.id')
+
     cursor_post.fetch(
       params: {
         since: cursor_post.get('received_at') + ' ' + cursor_post.get('version.id')
       }
 
-      success: =>
-        @cursor_interval.reset()
-        @reset()
-
-      failure: =>
-        @cursor_interval.increaseDelay()
+      success: (post) =>
+        @reset() if _version_id != post.get('version.id')
     )
 
   hide: =>
@@ -71,7 +70,8 @@ Marbles.Views.UnreadCount = class UnreadCountView extends Marbles.View
 
   fetchSuccess: (post) =>
     @post_cid = post.cid
-    @cursor_interval.reset()
+
+    @cursor_interval.start()
 
     @reset()
 
