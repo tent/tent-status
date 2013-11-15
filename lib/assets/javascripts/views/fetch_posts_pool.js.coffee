@@ -7,10 +7,12 @@ Marbles.Views.FetchPostsPool = class FetchPostsPoolView extends Marbles.View
 
     @on 'ready', @bindLink
 
-    @parentView().once('init-view', @parentViewInit)
+    @parentView().on('init-view', @parentViewInit)
 
   parentViewInit: (view_class_name, view) =>
     return unless view_class_name.match /PostsFeed$/
+
+    @parentView().off('init-view', @parentViewInit)
 
     @posts_feed_view_cid = view.cid
 
