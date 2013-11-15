@@ -137,6 +137,8 @@ Marbles.Views.PostsFeed = class PostsFeedView extends Marbles.View
     @bindViews(fragment)
     Marbles.DOM.prependChild(@el, fragment)
 
+    Marbles.Views.PostsFeed.trigger('prepend')
+
   initAutoPaginate: =>
     TentStatus.on 'window:scroll',  => @windowScrolled()
     setTimeout @windowScrolled, 100

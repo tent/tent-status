@@ -11,12 +11,33 @@ Marbles.Views.MiniProfile = class MiniProfileView extends Marbles.View
 
     @fetchProfile(options.entity) if options.entity
 
+    @current_post_view = null
+
     Marbles.Views.Post.on 'focus', (view, e) =>
       return @render() unless view
-      Marbles.DOM.setStyle(@el, 'top', "#{Marbles.DOM.offsetTop view.el}px")
-      post = view.post()
-      entity = if post.get('is_repost') then post.get('content.entity') else post.get('entity')
-      @fetchProfile(entity)
+
+      @setCurrentPostView(view)
+
+    Marbles.Views.PostsFeed.on 'prepend', => setImmediate(@adjustPosition)
+
+    Marbles.Views.FetchPostsPool.on 'render', => setImmediate(@adjustPosition)
+
+  setCurrentPostView: (view) =>
+    @current_post_view = view
+
+    @adjustPosition()
+
+    post = view.post()
+
+    if post.get('is_repost')
+      @fetchProfile(post.get('content.entity'))
+    else
+      @fetchProfile(post.get('entity'))
+
+  adjustPosition: =>
+    return unless @current_post_view
+
+    Marbles.DOM.setStyle(@el, 'top', "#{Marbles.DOM.offsetTop(@current_post_view.el)}px")
 
   fetchProfile: (entity) =>
     return unless entity

@@ -57,6 +57,8 @@ Marbles.Views.FetchPostsPool = class FetchPostsPoolView extends Marbles.View
   render: (context = @context()) =>
     super(context)
 
+    Marbles.Views.FetchPostsPool.trigger('render')
+
     if context.posts_count
       TentStatus.setPageTitle prefix: "(#{context.posts_count})"
     else
