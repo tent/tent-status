@@ -52,7 +52,7 @@ TentStatus.Models.Post = class PostModel extends Marbles.Model
         post: post.get('id')
         entity: post.get('entity')
       body: data
-      complete: completeFn
+      callback: completeFn
     )
 
   @delete: (post, options = {}) ->

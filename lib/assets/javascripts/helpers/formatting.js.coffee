@@ -99,3 +99,9 @@ _.extend TentStatus.Helpers,
       preprocessors: preprocessors
     })
 
+  expandTentMarkdown: (text, mentions = []) ->
+    # Replace mention indices with entity URI
+    text.replace(/(\^\[[^\]]+\])\((\d+)\)/, (match, m1, m2) ->
+      m1 + "(" + (mentions[m2]?.entity || '') + ")"
+    )
+
