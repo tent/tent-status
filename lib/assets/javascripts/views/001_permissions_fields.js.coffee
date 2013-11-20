@@ -30,7 +30,6 @@ Marbles.Views.PermissionsFields = class PermissionsFieldsView extends Marbles.Vi
     mentions_view.setCursorPosition()
 
     for entity, items of inline_mentions
-      continue if @options_view.optionsInclude(value: entity)
       continue unless items.length
       @options_view.addOption(
         value: entity

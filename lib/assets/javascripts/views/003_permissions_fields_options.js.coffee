@@ -43,10 +43,19 @@ Marbles.Views.PermissionsFieldsOptions = class PermissionsFieldsOptionsView exte
     false
 
   addOption: (option) =>
+    should_push = true
     for item in @options
-      return if item.value == option.value
+      if item.value == option.value
+        item.text = option.text
+        should_push = false
+        break
 
-    @options.push(option)
+      if item.text == option.text
+        item.value = option.value
+        should_push = false
+        break
+
+    @options.push(option) if should_push
     @trigger 'change:options'
 
   removeOption: (option) =>
