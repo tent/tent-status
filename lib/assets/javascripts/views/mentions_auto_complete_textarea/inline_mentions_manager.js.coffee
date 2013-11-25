@@ -12,7 +12,6 @@ class TentStatus.InlineMentionsManager extends Marbles.Object
 
   bindInputEvents: =>
     Marbles.DOM.on @elements.textarea, 'keydown', @processKeyDown
-    Marbles.DOM.on @elements.textarea, 'keyup', @processKeyUp
 
   processedMarkdown: =>
     @updateMentions()

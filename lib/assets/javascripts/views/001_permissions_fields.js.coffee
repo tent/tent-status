@@ -27,8 +27,6 @@ Marbles.Views.PermissionsFields = class PermissionsFieldsView extends Marbles.Vi
   inlineMentionsChanged: (inline_mentions) =>
     mentions_view = @mentionsView()
 
-    mentions_view.setCursorPosition()
-
     for entity, items of inline_mentions
       continue unless items.length
       @options_view.addOption(
@@ -36,7 +34,6 @@ Marbles.Views.PermissionsFields = class PermissionsFieldsView extends Marbles.Vi
         text: items[0].display_text
         group: false
       )
-      mentions_view.focus()
 
   optionsInclude: (option) =>
     @options_view.optionsInclude(option)
@@ -48,7 +45,7 @@ Marbles.Views.PermissionsFields = class PermissionsFieldsView extends Marbles.Vi
     value = @picker_view.input?.getValue() || ''
     @picker_view.initInput Marbles.DOM.querySelector('.picker-input', @el)
     @picker_view.input.clear()
-    @picker_view.input.focusAtEnd() unless Marbles.DOM.match(@parentView().textarea, ':focus')
+    @picker_view.input.focusAtEnd() unless @mentionsView().hasFocus()
 
   initOptions: (@options_view) =>
     @options_view.on 'ready', (=> @initInput()), @
