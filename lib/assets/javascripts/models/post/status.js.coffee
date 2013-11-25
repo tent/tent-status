@@ -48,7 +48,7 @@ TentStatus.Models.StatusPost = class StatusPostModel extends TentStatus.Models.P
     fetchPostFromMention = (mention) =>
       TentStatus.tent_client.post.get(
         params: {
-          entity: mention.entity
+          entity: mention.entity || @get('entity')
           post: mention.post
         }
 
