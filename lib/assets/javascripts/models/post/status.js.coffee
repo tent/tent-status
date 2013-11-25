@@ -60,7 +60,7 @@ TentStatus.Models.StatusPost = class StatusPostModel extends TentStatus.Models.P
           fetchPostComplete(mention, res, xhr)
       )
 
-    mentionsMompleteFn = (res, xhr) =>
+    mentionsCompleteFn = (res, xhr) =>
       if xhr.status == 200
         num_pending_posts = res.mentions.length
         for mention in res.mentions
@@ -81,7 +81,7 @@ TentStatus.Models.StatusPost = class StatusPostModel extends TentStatus.Models.P
         'Cache-Control': 'proxy'
       }
 
-      callback: mentionsMompleteFn
+      callback: mentionsCompleteFn
     )
 
     null
