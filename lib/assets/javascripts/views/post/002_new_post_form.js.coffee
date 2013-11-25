@@ -131,7 +131,7 @@ Marbles.Views.NewPostForm = class NewPostFormView extends Marbles.View
     @disableWith(@text.disable_with)
     data ?= @buildPostAttributes()
     TentStatus.Models.StatusPost.create(data,
-      error: (res, xhr) =>
+      failure: (res, xhr) =>
         @enable()
         @showErrors([{ text: "Error: #{JSON.parse(xhr.responseText)?.error}" }])
 
