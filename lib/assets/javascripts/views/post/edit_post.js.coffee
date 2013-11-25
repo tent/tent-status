@@ -39,6 +39,9 @@ Marbles.Views.EditPost = class EditPostView extends Marbles.View
     @on 'ready', @initPostMarkdown
     @on 'ready', @focusTextarea
     @on 'ready', @init
+    @on 'ready', =>
+      @permissionsFieldsView().subscribeToMentions()
+      @textareaMentionsView().inline_mentions_manager.updateMentions()
 
   bindCancel: =>
     @elements.cancel_el = @el.querySelector('[data-action=cancel]')

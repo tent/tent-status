@@ -19,10 +19,12 @@ Marbles.Views.PermissionsFields = class PermissionsFieldsView extends Marbles.Vi
     mentions_view
 
   subscribeToMentions: =>
+    return if @_subscribed_to_mentions
     return unless mentions_view = @mentionsView()
     return unless mentions_manager = mentions_view.inline_mentions_manager
 
     mentions_manager.on 'change:inline_mentions', @inlineMentionsChanged
+    @_subscribed_to_mentions = true
 
   inlineMentionsChanged: (inline_mentions) =>
     mentions_view = @mentionsView()
