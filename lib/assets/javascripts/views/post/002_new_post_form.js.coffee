@@ -109,6 +109,7 @@ Marbles.Views.NewPostForm = class NewPostFormView extends Marbles.View
     Marbles.DOM.on @elements.textarea, 'keyup', (e) =>
       clearTimeout @_validateTimeout
       return if @frozen
+      return if e.keyCode in [224, 17, 13] # ctrl/cmd + enter
       setTimeout @validate, 300
 
       @updateCharCounter()
