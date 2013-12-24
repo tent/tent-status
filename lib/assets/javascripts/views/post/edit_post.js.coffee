@@ -71,10 +71,17 @@ Marbles.Views.EditPost = class EditPostView extends Marbles.View
 
   buildPostAttributes: =>
     attrs = Marbles.DOM.serializeForm(@elements.form)
+    post = @post()
+
+    in_reply_to_mention = post.get('mentioned_posts')[0]
+    if in_reply_to_mention
+      attrs.mentions_post_entity = in_reply_to_mention.entity || post.get('entity')
+      attrs.mentions_post_id = in_reply_to_mention.post
+
     @buildPostMentionsAttributes(attrs)
     @buildPostPermissionsAttributes(attrs)
     attrs = _.extend attrs, {
-      type: @post().get('type').toString()
+      type: post.get('type').toString()
     }
     attrs.content = { text: @textareaMentionsView().inline_mentions_manager.processedMarkdown() }
     delete attrs.text
