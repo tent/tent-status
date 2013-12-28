@@ -1,15 +1,15 @@
-<li class="post clearfix" data-view='Post' data-post_cid="<%= post.cid %>">
+<li class="post clearfix" data-view='Post' data-post_cid="<%- post.cid %>">
   <div class="row">
-    <div class="avatar-container" data-view='ProfileAvatar' data-entity='<%= post.get('entity') %>'>
-      <a href="<%= profileUrl %>"><img class="avatar" src="<%= profile.get('avatar_url') %>" /></a>
+    <div class="avatar-container" data-view='ProfileAvatar' data-entity='<%- post.get('entity') %>'>
+      <a href="<%- profileUrl %>"><img class="avatar" src="<%- profile.get('avatar_url') %>" /></a>
     </div>
 
     <div class='post-container span5 no-offset'>
       <h5>
         <a class='post-date'>now</a>
 
-        <span data-view='ProfileName' data-entity='<%= post.get('entity') %>' class='post-profile-name'>
-          <a href="<%= profileUrl %>"><%= formatted.entity %></a>
+        <span data-view='ProfileName' data-entity='<%- post.get('entity') %>' class='post-profile-name'>
+          <a href="<%- profileUrl %>"><%- formatted.entity %></a>
         </span>
       </h5>
 
@@ -17,7 +17,7 @@
         <div data-errors_container class="alert alert-error hide">&nbsp;</div>
         <div class='mentions-autocomplete' data-view='MentionsAutoCompleteTextareaContainer'></div>
         <input class="btn btn-primary pull-right post-button" type="submit" data-disable_with="Posting..." value="Post" />
-        <span class="char-limit pull-right"><%= max_chars %></span>
+        <span class="char-limit pull-right"><%- max_chars %></span>
         <span class="pull-right btn btn-link" data-action="cancel">Cancel</span>
 
         <div class='show-option-picker' data-hide-text='Visibility' data-view="PermissionsFieldsToggle"></div>

@@ -2,7 +2,7 @@
   <div class="span2">&nbsp</div>
   <div class="span6 well not-found">
     <% if (text) { %>
-      <h3><%= text %> <small>404</small></h3>
+      <h3><%- text %> <small>404</small></h3>
     <% } %>
 
     <% if (subtext) { %>

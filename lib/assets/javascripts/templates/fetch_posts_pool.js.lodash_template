@@ -1,7 +1,7 @@
 <% if (posts_count) { %>
 <a href="#" class='fetch-posts-pool'>
   <div class="alert alert-info text-centered">
-    <span class="num_new_posts"><%= posts_count %></span><span>&nbsp; New Posts</span>
+    <span class="num_new_posts"><%- posts_count %></span><span>&nbsp; New Posts</span>
   </div>
 </a>
 <% } %>

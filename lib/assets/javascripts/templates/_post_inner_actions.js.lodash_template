@@ -13,7 +13,7 @@
           Conversation
         <% } else { %>
           <span>
-            in reply to <span data-view="ProfileName" data-entity="<%- context.in_reply_to.entity %>" data-no_link><%= context.in_reply_to.name %></span>
+            in reply to <span data-view="ProfileName" data-entity="<%- context.in_reply_to.entity %>" data-no_link><%- context.in_reply_to.name %></span>
           </span>
         <% } %>
       </span>
@@ -23,7 +23,7 @@
       <% if (in_reply_to) { %>
         <span class='action' data-view='PostActionConversation'><i class='icon-comments' title='Conversation'></i>
           <span>
-            in reply to <span data-view="ProfileName" data-entity="<%- context.in_reply_to.entity %>" data-no_link><%= context.in_reply_to.name %></span>
+            in reply to <span data-view="ProfileName" data-entity="<%- context.in_reply_to.entity %>" data-no_link><%- context.in_reply_to.name %></span>
           </span>
         </span>
       <% } %>

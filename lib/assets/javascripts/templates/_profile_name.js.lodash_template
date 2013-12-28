@@ -1,6 +1,6 @@
 <% if (has_name) { %>
   <% if (!no_link) { %>
-    <a href="<%= profile_url %>" class="post-name" title="<%= formatted.entity %>">
+    <a href="<%- profile_url %>" class="post-name" title="<%- formatted.entity %>">
   <% } %>
 
   <%- profile.get('name') %>
@@ -12,10 +12,10 @@
 
 <% if (!has_name) { %>
   <% if (!no_link) { %>
-    <a href="<%= profile_url %>" class="post-name">
+    <a href="<%- profile_url %>" class="post-name">
   <% } %>
 
-  <%= formatted.entity %>
+  <%- formatted.entity %>
 
   <% if (!no_link) { %>
     </a>

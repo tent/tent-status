@@ -12,7 +12,7 @@
 
         <% if (!post.get('permissions.public')) { %>&nbsp;<span class='label <% if (only_me) { %>label-inverse<% } else { %>label-info<% } %>' title='<% if (only_me) { %>Only Me<% } else { %><%- formatted.permissible_entities %><% } %>'><% if (only_me) { %>Private<% } else { %>Limited<% } %></span><% } %>
       </h5>
-      
+
       <div class="post-body has-overflow">
         <p><%= formatted.content %></p>
 
