@@ -11,7 +11,7 @@
     </ul>
   </div>
 
-  <p class='author-info-bio'><%= formatted.bio %></p>
+  <p class='author-info-bio'><%- formatted.bio %></p>
 
   <a href='<%- TentStatus.Helpers.ensureUrlHasScheme(profile.get('website')) %>'><%- formatted.website %></a>
 
