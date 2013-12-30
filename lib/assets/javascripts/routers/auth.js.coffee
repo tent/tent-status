@@ -8,6 +8,7 @@ TentStatus.Routers.posts = new class PostsRouter extends Marbles.Router
   }
 
   signin: (params) =>
+    params.redirect = null if params.redirect && params.redirect.indexOf('://') < params.redirect.indexOf('/')
     params.redirect ?= TentStatus.config.PATH_PREFIX || '/'
 
     if TentStatus.config.authenticated
