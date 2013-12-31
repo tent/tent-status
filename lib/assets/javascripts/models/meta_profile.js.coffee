@@ -12,12 +12,19 @@ TentStatus.Models.MetaProfile = class  MetaProfileModel extends Marbles.Model
     else
       params = {entity:entity}
 
+    failureFn = (res, xhr) =>
+      @trigger("fetch:failure", params, res, xhr)
+      @trigger("#{entity}:fetch:failure", params, res, xhr)
+      options.failure?(res, xhr)
+      options.complete?(res, xhr)
+
+    if !TentStatus.tent_client.credentials
+      failureFn()
+      return
+
     completeFn = (res, xhr) =>
       if xhr.status != 200
-        @trigger("fetch:failure", params, res, xhr)
-        @trigger("#{entity}:fetch:failure", params, res, xhr)
-        options.failure?(res, xhr)
-        options.complete?(res, xhr)
+        failureFn(res, xhr)
         return
 
       constructorFn = @
