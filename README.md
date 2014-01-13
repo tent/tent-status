@@ -23,7 +23,6 @@ APP_ASSET_MANIFEST     | `:asset_manifests`        | Optional                   
 ASSET_ROOT             | `:asset_root`             | Optional                                | Root URL or path for serving assets. Defaults to `/assets`.
 ASSET_CACHE_DIR        | `:asset_cache_dir`        | Optional                                | Filesystem path for sprockets asset cache directory.
 PATH_PREFIX            | `:path_prefix`            | Optional                                | Path prefix for when app is mounted somewhere other than the domain root.
-ADMIN_URL              | `:admin_url`              | Optional                                | URL of admin app.
 DATABASE_URL           | `:database_url`           | Required if running Ruby backend        | URL of postgres database.
 DATABASE_LOGFILE       | `:database_logfile`       | Optional                                | Path to file for database logging.
 SESSION_SECRET         |                           | Required                                | Random string for session cookie secret.
