@@ -28,6 +28,7 @@ DATABASE_URL           | `:database_url`           | Required if running Ruby ba
 DATABASE_LOGFILE       | `:database_logfile`       | Optional                                | Path to file for database logging.
 SESSION_SECRET         |                           | Required                                | Random string for session cookie secret.
 JSON_CONFIG_URL        | `:json_config_url`        | Required if running the app statically. | URL of `config.json`.
+GLOBAL_NAV_CONFIG      | `:global_nav_config`      | Optional                                | Filesystem path to global nav config as descripbed below.
 SIGNOUT_URL            | `:signout_url`            | Required if running the app statically. | URL accepting a `POST` request to revoke access to `config.json`.
 SIGNOUT_REDIRECT_URL   | `:signout_redirect_url`   | Required if running the app statically. | URL for app to redirect to after signing out.
 SIGNIN_URL             | `:signin_url`             | Optional                                | URL accepting a `POST` request with `username` and `passphrase` to grant access to `config.json`. (User is redirected to `SIGNOUT_REDIRECT_URL` instead of displaying an auth form if not specified.)
@@ -39,6 +40,16 @@ ASSETS_DIR             | `:public_dir`             | Optional                   
 DEFAULT_AVATAR_ROOT    | `:default_avatar_root`    | Optional                                | Defaults to a static avatar. If set, appending `"/" + encodeURIComponent(entity)` should point to a unique avatar for that entity (see [Sigil](https://github.com/cupcake/sigil) for more information).
 
 **TODO:** Entity search service and CDN support are not currently implemented.
+
+### Global nav config
+
+```json
+{
+	"items": [
+		{ "name": "Tent Status", "icon_class": "app-icon-tentstatus", "url": "http://localhost:9292", "selected": true }
+	]
+}
+```
 
 ### Running Statically
 

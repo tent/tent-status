@@ -59,10 +59,27 @@ module TentStatus
 
     self.settings[:search_enabled] = self.settings[:search_api_root] && self.settings[:search_api_key]
 
+    if self.settings[:search_enabled]
+      self.settings[:search_path] = "#{self.settings[:path_prefix].to_s}/search"
+    end
+
     if ENV['APP_ASSET_MANIFEST'] && (_paths = ENV['APP_ASSET_MANIFEST'].to_s.split(',').select { |path| File.exists?(path) }) && _paths.any?
       self.settings[:asset_manifests] = _paths.map do |path|
         Yajl::Parser.parse(File.read(path))
       end
+    end
+
+    self.settings[:global_nav_config] ||= Yajl::Parser.parse(File.read(ENV['GLOBAL_NAV_CONFIG'])) if ENV['GLOBAL_NAV_CONFIG'] && File.exists?(ENV['GLOBAL_NAV_CONFIG'])
+
+    if self.settings[:global_nav_config].nil?
+      global_nav_items = [
+        { "name" => "Tent Status", "url" => TentStatus.settings[:url], "icon_class" => "app-icon-tentstatus", "selected" => true }
+      ]
+      global_nav_items.push(
+        { "name" => "Search", "url" => TentStatus.settings[:search_path], "icon_class" => "app-icon-search", "selected" => false }
+      ) if self.settings[:search_enabled]
+
+      self.settings[:global_nav_config] = { 'items' => global_nav_items }
     end
 
     self.settings[:render_app_nav] = settings.has_key?(:render_app_nav) ? settings[:render_app_nav] : ENV['RENDER_APP_NAV'] != 'false'
