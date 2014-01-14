@@ -36,7 +36,7 @@ GIT
 
 GIT
   remote: git://github.com/tent/icing.git
-  revision: 90c29ef38406cbed8d86d1cfc951a40727a38db1
+  revision: d693d3756f62511319dc58760cbb8cd627a3ba5b
   branch: master
   specs:
     icing (0.0.1)
