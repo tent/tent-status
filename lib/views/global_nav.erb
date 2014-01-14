@@ -1,6 +1,6 @@
 <ul class='unstyled custom-container' data-view="GlobalNavigation NavigationActive" data-active-class="nav-selected" data-active-selector="li">
   <% TentStatus.settings[:global_nav_config]['items'].to_a.each do |item| %>
-    <li <% if item['selected'] %>class='nav-selected'<% end %> <% if item['url'] === TentStatus.settings[:url] %>data-match-url='/*'<% elsif item['url'] === TentStatus.settings[:search_path] %>data-match-url='/search'<% end %>>
+    <li <% if item['selected'] %>class='nav-selected'<% end %> <% if item['url'] === TentStatus.settings[:url] %>data-match-url='/*'<% end %> <% if item['url'].match(/\/search\Z/) %>data-match-url='/search'<% end %>>
       <a href='<%= item['url'] %>' title='<%= item['name'] %>'><div class='nav-icon icon-2x <%= item['icon_class'] %>'></div></a>
     </li>
   <% end %>
