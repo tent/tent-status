@@ -12,13 +12,13 @@
     color: darken($grayTextColor, 5%);
   }
 
-  .icon-caret-down {
+  .fa-caret-down {
     @include rotate(90deg);
     display: inline-block;
   }
 
   &.visible {
-    .icon-caret-down {
+    .fa-caret-down {
       @include rotate(0deg);
     }
   }

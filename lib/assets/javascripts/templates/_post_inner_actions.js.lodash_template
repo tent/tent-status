@@ -1,13 +1,13 @@
 <div class='actions'>
   <% if (TentStatus.config.authenticated) { %>
-    <span class='action' data-view='PostActionReply'><i class='icon-reply' title='Reply'></i> Reply</span>
+    <span class='action' data-view='PostActionReply'><i class='fa fa-reply' title='Reply'></i> Reply</span>
 
     <% if (!current_user_owns_post) { %>
-    <span class='action' data-view='PostActionRepost' data-confirm="Repost?"><i class='icon-retweet' title='Repost'></i> Repost</span>
+    <span class='action' data-view='PostActionRepost' data-confirm="Repost?"><i class='fa fa-retweet' title='Repost'></i> Repost</span>
     <% } %>
 
     <% if (!context.is_conversation_view) { %>
-      <span class='action' data-view='PostActionConversation'><i class='icon-comments' title='Conversation'></i>
+      <span class='action' data-view='PostActionConversation'><i class='fa fa-comments' title='Conversation'></i>
 
         <% if (!context.in_reply_to) { %>
           Conversation
@@ -21,7 +21,7 @@
 
     <% if (context.is_conversation_view_parent) { %>
       <% if (in_reply_to) { %>
-        <span class='action' data-view='PostActionConversation'><i class='icon-comments' title='Conversation'></i>
+        <span class='action' data-view='PostActionConversation'><i class='fa fa-comments' title='Conversation'></i>
           <span>
             in reply to <span data-view="ProfileName" data-entity="<%- context.in_reply_to.entity %>" data-no_link><%- context.in_reply_to.name %></span>
           </span>
@@ -30,8 +30,8 @@
     <% } %>
 
     <% if (current_user_owns_post) { %>
-      <span class='action' data-view='PostActionEdit'><i class='icon-pencil' title='Edit'></i> Edit</span>
-      <span class='action' data-view='PostActionDelete' data-confirm="Delete this post? You're sure about that?"><i class='icon-trash' title='Delete'></i> Delete</span>
+      <span class='action' data-view='PostActionEdit'><i class='fa fa-pencil' title='Edit'></i> Edit</span>
+      <span class='action' data-view='PostActionDelete' data-confirm="Delete this post? You're sure about that?"><i class='fa fa-trash-o' title='Delete'></i> Delete</span>
     <% } %>
 
   <% } else { %>
