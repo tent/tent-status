@@ -48,7 +48,7 @@ GIT
 
 GIT
   remote: git://github.com/tent/marbles-tent-client-js.git
-  revision: aaba918888a240da8f6adca591ce5af421deb969
+  revision: 5f846d8a41eac1b487f5c99e4e4c38a6812d4804
   branch: master
   specs:
     marbles-tent-client-js (0.0.1)
