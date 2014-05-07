@@ -1,4 +1,0 @@
-<div class='row'>
-  <h1>Not Found <small>404</small></h1>
-  <p>You requested <small><%- window.location.href %></small></p>
-</div>

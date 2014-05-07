@@ -1,3 +1,0 @@
-<% if (posts) { %>
-  <%= partials['_post'].render(context) %>
-<% } %>

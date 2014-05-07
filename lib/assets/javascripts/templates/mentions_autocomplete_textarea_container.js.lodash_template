@@ -1,6 +1,0 @@
-<textarea name="text" rows="3" data-view='MentionsAutoCompleteTextarea FullWidth'></textarea>
-<div class='markdown-preview'>
-</div>
-<div class='markdown-preview-toggles'><span class='btn btn-link' data-action='edit-markdown'>Edit</span> | <span class='btn btn-link' data-action='preview-markdown'>Preview</span></div>
-<div class='option-picker'><ul class='picker-options' data-view='PermissionsFieldsPicker'></ul></div>
-<div class='loading'>&nbsp;</div>

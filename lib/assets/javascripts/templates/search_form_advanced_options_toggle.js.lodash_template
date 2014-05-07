@@ -1,1 +1,0 @@
-<% if (visible == null) { %>More Options<% } %><% if (visible) { %>Less Options<% } %> <i class='fa fa-caret-down'></i>

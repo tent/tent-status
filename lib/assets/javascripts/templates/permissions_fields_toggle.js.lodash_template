@@ -1,7 +1,0 @@
-<% if (permissions.public) { %>
-  <i class="fa fa-globe"></i> Everyone<i class='fa fa-caret-down'></i>
-<% } %>
-
-<% if (!permissions.public) { %>
-  <i class="fa fa-warning"></i> Limited<i class='fa fa-caret-down'></i>
-<% } %>

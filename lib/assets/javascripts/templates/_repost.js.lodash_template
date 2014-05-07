@@ -1,1 +1,0 @@
-<%= partials['_post_inner'].render(context) %>

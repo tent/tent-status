@@ -1,1 +1,0 @@
-<%= Yajl::Encoder.encode(current_user ? current_user.json_config : {}) %>

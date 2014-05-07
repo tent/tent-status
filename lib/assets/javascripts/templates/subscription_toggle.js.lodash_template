@@ -1,5 +1,0 @@
-<a class='btn btn-small <% if (subscribed && !me) { %>btn-danger<% } else { %>btn-primary<% } %> pull-right disabled'>
-  <% if (me) { %>You<% } else { %>
-    <% if (subscribed) { %>Unsubscribe<% } else { %>Subscribe<% } %>
-  <% } %>
-</a>

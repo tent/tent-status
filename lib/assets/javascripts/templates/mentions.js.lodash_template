@@ -1,7 +1,0 @@
-<div class="row">
-  <div data-view="FetchPostsPool"></div>
-</div>
-
-<div class="row">
-  <ul class="unstyled posts pull-left" data-view="MentionsPostsFeed"></ul>
-</div>

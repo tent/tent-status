@@ -1,7 +1,0 @@
-<form class='form-horizontal new-following-form'>
-  <div class='clearfix'>
-    <input class='input input-xlarge' name="entity" placeholder="Entity URI" type="text" />
-    <input class="btn btn-primary pull-right" type="submit" value="+" />
-  </div>
-  <div class="alert alert-error hide"></div>
-</form>

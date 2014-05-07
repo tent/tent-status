@@ -1,7 +1,0 @@
-<% if (total_hits) { %>
-  <h3 class='page-header'>Results <small><%- total_hits %></small></h3>
-<% } %>
-
-<% if (no_results) { %>
-  <h3>No Results</h3>
-<% } %>

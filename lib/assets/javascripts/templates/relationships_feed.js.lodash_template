@@ -1,5 +1,0 @@
-<ul class='unstyled'>
-  <% _.forEach(relationships, function(relationship) { %>
-    <%= partials['relationship'].render({ relationship: relationship }) %>
-  <% }) %>
-</ul>
