@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Micro" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+    <link rel="apple-touch-icon" sizes="57x57"   href="<%= asset_path("appicon57.png") %>" />
+    <link rel="apple-touch-icon" sizes="72x72"   href="<%= asset_path("appicon72.png") %>" />
+    <link rel="apple-touch-icon" sizes="114x114" href="<%= asset_path("appicon114.png") %>" />
+    <link rel="shortcut icon"                    href="<%= asset_path("favicon.png") %>" />
+
+    <link rel="stylesheet" type="text/css" href="<%= asset_path("icing.css") %>" />
+    <link rel="stylesheet" type="text/css" href="<%= asset_path("application.css") %>" />
+
+    <title>Micro</title>
+  </head>
+
+  <body>
+    <div id='main-nav'>
+    </div>
+
+    <div id='main-container' class='container'>
+      <div id='main' class='pull-left'>
+      </div>
+    </div>
+
+    <script type='application/javascript' src='<%= asset_path('react.js') %>'></script>
+    <script type='application/javascript' src='<%= asset_path('marbles.js') %>'></script>
+    <script type='application/javascript' src='<%= asset_path('application.js') %>'></script>
+  </body>
+</html>

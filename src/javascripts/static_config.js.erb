@@ -1,0 +1,13 @@
+Micro.config = {
+  PATH_PREFIX: <%= Yajl::Encoder.encode(ENV['PATH_PREFIX']) %>,
+
+  JSON_CONFIG_URL: <%= Yajl::Encoder.encode(ENV['JSON_CONFIG_URL']) %>,
+  SIGNIN_URL: <%= Yajl::Encoder.encode(ENV['SIGNIN_URL']) %>,
+  SIGNOUT_URL: <%= Yajl::Encoder.encode(ENV['SIGNOUT_URL']) %>,
+  SIGNOUT_REDIRECT_URL: <%= Yajl::Encoder.encode(ENV['SIGNOUT_REDIRECT_URL']) %>,
+
+  DEFAULT_AVATAR_ROOT: <%= Yajl::Encoder.encode(ENV['DEFAULT_AVATAR_ROOT']) %>,
+
+  SEARCH_API_ROOT: <%= Yajl::Encoder.encode(ENV['SEARCH_API_ROOT']) %>,
+  SEARCH_API_KEY: <%= Yajl::Encoder.encode(ENV['SEARCH_API_KEY']) %>
+};

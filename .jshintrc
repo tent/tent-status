@@ -1,0 +1,27 @@
+{
+  "bitwise": true,
+  "curly": true,
+  "eqeqeq": true,
+  "forin": true,
+  "freeze": true,
+  "immed": true,
+  "latedef": true,
+  "undef": true,
+  "unused": true,
+  "newcap": false,
+  "noarg": true,
+  "nonew": false,
+  "strict": true,
+  "trailing": false,
+	"funcscope": true,
+	"validthis": true,
+	"boss": true,
+  "browser": true,
+	"globals": {
+		"Micro": false,
+		"Marbles": false,
+		"React": false,
+		"console": false,
+		"confirm": false
+	}
+}
