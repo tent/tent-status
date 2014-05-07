@@ -10,29 +10,37 @@ GIT
       tilt (~> 1.1, != 1.3.0)
 
 GIT
-  remote: git://github.com/jvatic/lodash-assets.git
-  revision: 34bfb392e2407053d6cf28f76c884c6e77df34e8
+  remote: git://github.com/jvatic/marbles-js.git
+  revision: 57d20db89ca07457626ea7ea12e34db1d5f0fca9
   branch: master
   specs:
-    lodash-assets (0.0.1)
+    marbles-js (0.0.4)
+
+GIT
+  remote: git://github.com/jvatic/react-jsx-sprockets.git
+  revision: c4fc698df52e7ca0634fb49de27f917272f89a31
+  branch: master
+  specs:
+    react-jsx-sprockets (0.0.3)
       execjs (>= 1.2.9)
       sprockets (>= 2.0.3)
       tilt (>= 1.3.3)
       yajl-ruby
 
 GIT
-  remote: git://github.com/jvatic/marbles-js.git
-  revision: a70031241d811317a32451df8a660fceedadb621
+  remote: git://github.com/jvatic/static-sprockets.git
+  revision: 76233c47fef5791899b7a435391174b5ab58e7bb
   branch: master
   specs:
-    marbles-js (0.0.3)
-
-GIT
-  remote: git://github.com/tent/hawk-ruby.git
-  revision: 2e68e397f3853787e7bc6f075d9afee71cef3d2d
-  branch: master
-  specs:
-    hawk-auth (0.2.1)
+    static-sprockets (0.0.1)
+      rack (~> 1.0)
+      rack-putty (= 0.0.1)
+      sass
+      sprockets (~> 2.0)
+      sprockets-helpers
+      sprockets-rainpress
+      sprockets-sass
+      uglifier
 
 GIT
   remote: git://github.com/tent/icing.git
@@ -54,160 +62,34 @@ GIT
     marbles-tent-client-js (0.0.1)
 
 GIT
-  remote: git://github.com/tent/omniauth-tent.git
-  revision: 4143813b2b8848acc2c289a28c2f2d1ef7a28c4a
-  branch: master
-  specs:
-    omniauth-tent (0.2.1)
-      omniauth (~> 1.1.1)
-      tent-client
-
-GIT
   remote: git://github.com/tent/rack-putty.git
-  revision: f5769196226018fc87a9f8dcf1eeddc05c45bd6f
+  revision: ebb5a62dc895ce0b73fa6cd3dda330226f42beb9
   branch: master
   specs:
     rack-putty (0.0.1)
       rack-mount (~> 0.8.3)
 
-GIT
-  remote: git://github.com/tent/sequel-json.git
-  revision: 5412015d8053fc1ec85f220d1974c83436d8f379
-  branch: master
-  specs:
-    sequel-json (0.0.1)
-      sequel
-      yajl-ruby
-
-GIT
-  remote: git://github.com/tent/tent-client-ruby.git
-  revision: 84f66e6ed4ba40778e07725b26194cabe2859e66
-  branch: master
-  specs:
-    tent-client (0.2.1)
-      faraday (= 0.8.4)
-      faraday_middleware (= 0.8.8)
-      faraday_middleware-multi_json
-      hawk-auth
-      nokogiri
-      yajl-ruby
-
-GIT
-  remote: git://github.com/titanous/asset_sync.git
-  revision: 64f86044921b7029cf3be673a1920aa7fdfe8604
-  branch: fix-mime
-  specs:
-    asset_sync (0.5.0)
-      activemodel
-      fog
-
-PATH
-  remote: .
-  specs:
-    tent-status (0.2.0)
-      coffee-script
-      icing
-      lodash-assets
-      marbles-js
-      marbles-tent-client-js
-      mimetype-fu
-      omniauth-tent
-      pg
-      rack-putty
-      sequel (= 3.46)
-      sequel-json
-      sprockets (~> 2.0)
-      sprockets-sass (~> 0.5)
-      tent-client
-
 GEM
   remote: https://rubygems.org/
   specs:
-    activemodel (4.0.0)
-      activesupport (= 4.0.0)
-      builder (~> 3.1.0)
-    activesupport (4.0.0)
-      i18n (~> 0.6, >= 0.6.4)
-      minitest (~> 4.2)
-      multi_json (~> 1.3)
-      thread_safe (~> 0.1)
-      tzinfo (~> 0.3.37)
-    allison (2.0.3)
-    atomic (1.1.10)
-    builder (3.1.4)
-    chunky_png (1.2.8)
-    coffee-script (2.2.0)
-      coffee-script-source
-      execjs
-    coffee-script-source (1.6.3)
-    compass (0.12.2)
+    chunky_png (1.3.1)
+    compass (0.12.6)
       chunky_png (~> 1.2)
       fssm (>= 0.2.7)
-      sass (~> 3.1)
-    echoe (4.6.3)
-      allison (>= 2.0.3)
-      gemcutter (>= 0.7.0)
-      rake (>= 0.9.2)
-      rdoc (>= 3.6.1)
-      rubyforge (>= 2.0.4)
-    excon (0.6.6)
-    execjs (1.4.0)
-      multi_json (~> 1.0)
-    faraday (0.8.4)
-      multipart-post (~> 1.1)
-    faraday_middleware (0.8.8)
-      faraday (>= 0.7.4, < 0.9)
-    faraday_middleware-multi_json (0.0.5)
-      faraday_middleware
-      multi_json
-    fog (0.9.0)
-      builder
-      excon (~> 0.6.1)
-      formatador (>= 0.1.3)
-      json
-      mime-types
-      net-scp (>= 1.0.4)
-      net-ssh (>= 2.1.4)
-      nokogiri (>= 1.4.4)
-      ruby-hmac
-    formatador (0.2.4)
+      sass (~> 3.2.19)
+    execjs (2.0.2)
     fssm (0.2.10)
-    gemcutter (0.7.1)
-    hashie (2.0.5)
     hike (1.2.3)
-    i18n (0.6.4)
-    json (1.8.0)
-    json_pure (1.8.0)
-    mime-types (1.23)
-    mimetype-fu (0.1.2)
-    mini_portile (0.5.0)
-    minitest (4.7.5)
-    multi_json (1.7.9)
-    multipart-post (1.2.0)
-    net-scp (1.1.1)
-      net-ssh (>= 2.6.5)
-    net-ssh (2.6.7)
-    nokogiri (1.6.0)
-      mini_portile (~> 0.5.0)
-    omniauth (1.1.4)
-      hashie (>= 1.2, < 3)
-      rack
-    pg (0.15.1)
-    puma (2.2.2)
+    json (1.8.1)
+    multi_json (1.10.0)
+    puma (2.8.2)
       rack (>= 1.1, < 2.0)
     rack (1.5.2)
     rack-mount (0.8.3)
       rack (>= 1.0.0)
     rainpress (1.0)
-      echoe
-    rake (10.1.0)
-    rdoc (4.0.1)
-      json (~> 1.4)
-    ruby-hmac (0.4.0)
-    rubyforge (2.0.4)
-      json_pure (>= 1.1.7)
-    sass (3.2.10)
-    sequel (3.46.0)
+    rake (10.3.1)
+    sass (3.2.19)
     sprockets-helpers (0.9.1)
       sprockets (~> 2.0)
     sprockets-rainpress (0.0.1)
@@ -216,33 +98,24 @@ GEM
     sprockets-sass (0.9.1)
       sprockets (~> 2.0)
       tilt (~> 1.1)
-    thread_safe (0.1.0)
-      atomic
     tilt (1.4.1)
-    tzinfo (0.3.37)
-    uglifier (2.1.1)
+    uglifier (2.5.0)
       execjs (>= 0.3.0)
-      multi_json (~> 1.0, >= 1.0.2)
-    yajl-ruby (1.1.0)
+      json (>= 1.8.0)
+    yajl-ruby (1.2.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  asset_sync!
-  hawk-auth!
   icing!
-  lodash-assets!
   marbles-js!
   marbles-tent-client-js!
-  mime-types
-  omniauth-tent!
   puma
   rack-putty!
   rake
-  sequel-json!
-  sprockets!
-  sprockets-rainpress
-  tent-client!
-  tent-status!
-  uglifier
+  react-jsx-sprockets!
+  sprockets (~> 2.0)!
+  static-sprockets!
+  tilt (= 1.4.1)
+  yajl-ruby
