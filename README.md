@@ -8,21 +8,21 @@ This is a Tent app for micro blogging. It's built with [React](http://reactjs.or
 
 ### Configuration
 
-ENV                    | Required | Description
----                    | -------- | -----------
-`APP_URL`              | Required | URL app is mounted at.
-`ASSET_ROOT`           | Optional | Root URL or path for serving assets. Defaults to `/assets`.
-`ASSET_CACHE_DIR`      | Optional | Filesystem path for sprockets asset cache directory.
-`ASSETS_DIR`           | Optional | Defaults to `public/assets`.
-`LAYOUT_DIR`           | Optional | Defaults to `public`.
-`PATH_PREFIX`          | Optional | Path prefix for when app is mounted somewhere other than the domain root.
-`JSON_CONFIG_URL`      | Optional | URL of `config.json`.
-`SIGNOUT_URL`          | Optional | URL accepting a `POST` request to revoke access to `config.json`.
-`SIGNOUT_REDIRECT_URL` | Optional | URL for app to redirect to after signing out.
-`SIGNIN_URL`           | Optional | URL accepting a `POST` request with `username` and `passphrase` to grant access to `config.json`. (User is redirected to `SIGNOUT_REDIRECT_URL` instead of displaying an auth form if not specified.)
-`SEARCH_API_ROOT`      | Optional | Skate API root.
-`SEARCH_API_KEY`       | Optional | Skate API key.
-`DEFAULT_AVATAR_ROOT`  | Optional | Defaults to a static avatar. If set, appending `"/" + encodeURIComponent(entity)` should point to a unique avatar for that entity (see [Sigil](https://github.com/cupcake/sigil) for more information).
+ENV                   | Required | Description
+---                   | -------- | -----------
+`APP_URL`             | Required | URL app is mounted at.
+`ASSET_ROOT`          | Optional | Root URL or path for serving assets. Defaults to `/assets`.
+`ASSET_CACHE_DIR`     | Optional | Filesystem path for sprockets asset cache directory.
+`ASSETS_DIR`          | Optional | Defaults to `public/assets`.
+`LAYOUT_DIR`          | Optional | Defaults to `public`.
+`PATH_PREFIX`         | Optional | Path prefix for when app is mounted somewhere other than the domain root.
+`JSON_CONFIG_URL`     | Required | URL of `config.json`.
+`LOGOUT_URL`          | Required | URL accepting a `POST` request to revoke access to `config.json`.
+`LOGOUT_REDIRECT_URL` | Required | URL for app to redirect to after signing out.
+`LOGIN_URL`           | Required | URL accepting a `POST` request with `username` and `passphrase` to grant access to `config.json`. (User is redirected to `SIGNOUT_REDIRECT_URL` instead of displaying an auth form if not specified.)
+`SEARCH_API_ROOT`     | Optional | Skate API root.
+`SEARCH_API_KEY`      | Optional | Skate API key.
+`DEFAULT_AVATAR_ROOT` | Optional | Defaults to a static avatar. If set, appending `"/" + encodeURIComponent(entity)` should point to a unique avatar for that entity (see [Sigil](https://github.com/cupcake/sigil) for more information).
 
 ### Running statically
 
