@@ -56,10 +56,10 @@ GIT
 
 GIT
   remote: git://github.com/tent/marbles-tent-client-js.git
-  revision: 5f846d8a41eac1b487f5c99e4e4c38a6812d4804
+  revision: 9c7550ada0006a8857a235d9f33bad6283f5ad22
   branch: master
   specs:
-    marbles-tent-client-js (0.0.1)
+    marbles-tent-client-js (0.0.2)
 
 GIT
   remote: git://github.com/tent/rack-putty.git
