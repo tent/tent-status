@@ -3,6 +3,7 @@
 //= require_tree ./routers
 //= require_tree ./views
 //= require_tree ./models
+//= require_tree ./collections
 //= require ./config
 //= require ./boot
 
@@ -15,10 +16,16 @@ window.Micro = Micro;
 Marbles.Utils.extend(Micro, {
 	Views: {},
 	Models: {},
+	Collections: {},
 	run: function () {
 		if ( !Marbles.history || Marbles.history.started ) {
 			return;
 		}
+
+		this.client = new TentClient(this.config.meta.get("content.entity"), {
+			credentials: this.config.credentials,
+			serverMetaPost: this.config.meta
+		});
 
 		this.el = document.getElementById("main");
 

@@ -17,9 +17,25 @@ Micro.config.fetch = function () {
 				Micro.config.set("authenticated", false);
 				Micro.trigger("config:ready");
 				return;
-			} else {
-				Micro.config.set("authenticated", true);
 			}
+
+			Marbles.Transaction.transaction.call(Micro.config, function () {
+				Micro.config.set("authenticated", true);
+
+				for (var k in res) {
+					if (res.hasOwnProperty(k)) {
+						switch (k) {
+							case "meta":
+								Micro.config.set(k, Micro.Models.Meta.findOrNew(res[k]));
+								break;
+
+							default:
+								Micro.config.set(k, res[k]);
+						}
+					}
+				}
+			});
+
 			Micro.trigger("config:ready");
 		}
 	});
