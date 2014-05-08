@@ -9,5 +9,24 @@ Micro.config = new Marbles.Object({
   DEFAULT_AVATAR_ROOT: <%= Yajl::Encoder.encode(ENV["DEFAULT_AVATAR_ROOT"]) %>,
 
   SEARCH_API_ROOT: <%= Yajl::Encoder.encode(ENV["SEARCH_API_ROOT"]) %>,
-  SEARCH_API_KEY: <%= Yajl::Encoder.encode(ENV["SEARCH_API_KEY"]) %>
+  SEARCH_API_KEY: <%= Yajl::Encoder.encode(ENV["SEARCH_API_KEY"]) %>,
+
+  POST_TYPES: {
+    META: "https://tent.io/types/meta/v0#",
+    SUBSCRIBER: 'https://tent.io/types/relationship/v0#subscriber',
+    SUBSCRIBING: 'https://tent.io/types/relationship/v0#subscribing',
+    RELATIONSHIP: 'https://tent.io/types/relationship/v0',
+    STATUS: 'https://tent.io/types/status/v0#',
+    STATUS_REPLY: 'https://tent.io/types/status/v0#reply',
+    WILDCARD_STATUS: 'https://tent.io/types/status/v0',
+    REPOST: 'https://tent.io/types/repost/v0',
+    STATUS_REPOST: 'https://tent.io/types/repost/v0#https://tent.io/types/status/v0',
+    MENTIONS_CURSOR: 'https://tent.io/types/cursor/v0#https://tent.io/rels/status-mentions',
+    REPOSTS_CURSOR: 'https://tent.io/types/cursor/v0#https://tent.io/rels/status-reposts',
+    FEED_CURSOR: 'https://tent.io/types/cursor/v0#https://tent.io/rels/status-feed',
+    SUBSCRIPTION: 'https://tent.io/types/subscription/v0#',
+    STATUS_SUBSCRIPTION: 'https://tent.io/types/subscription/v0#https://tent.io/types/status/v0',
+    REPOST_SUBSCRIPTION: 'https://tent.io/types/subscription/v0#https://tent.io/types/repost/v0',
+    WILDCARD_SUBSCRIPTION: 'https://tent.io/types/subscription/v0#all'
+  }
 });
