@@ -5,11 +5,37 @@ var MainRouter = Marbles.Router.createClass({
 	displayName: "MainRouter",
 
 	routes: [
-		{ path: "", handler: "root" }
+		{ path: "", handler: "root" },
+		{ path: "login", handler: "login" }
 	],
 
 	root: function () {
 		console.log("TODO: Do something");
+	},
+
+	login: function (params) {
+		var performRedirect = function () {
+			var redirectPath = decodeURIComponent(params[0].redirect || "");
+			Marbles.history.navigate(redirectPath);
+		};
+
+		if (Micro.config.authenticated) {
+			performRedirect();
+			return;
+		}
+
+		var loginModel = Micro.Models.Login.findOrNew();
+		React.renderComponent(
+			Micro.Views.Login({
+				model: loginModel
+			}),
+			Micro.el
+		);
+
+		Micro.on("login:success", performRedirect);
+		Marbles.history.once("handler:before", function () {
+			Micro.off("login:success", performRedirect);
+		});
 	}
 });
 
