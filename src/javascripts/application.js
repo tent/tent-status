@@ -22,10 +22,8 @@ Marbles.Utils.extend(Micro, {
 			return;
 		}
 
-		this.client = new TentClient(this.config.meta.get("content.entity"), {
-			credentials: this.config.credentials,
-			serverMetaPost: this.config.meta
-		});
+		this.__handleChangeAuthenticated();
+		this.config.on("change:authenticated", this.__handleChangeAuthenticated, this);
 
 		this.el = document.getElementById("main");
 
@@ -86,6 +84,17 @@ Marbles.Utils.extend(Micro, {
 				}
 			}
 		});
+	},
+
+	__handleChangeAuthenticated: function () {
+		if (this.config.authenticated) {
+			this.client = new TentClient(this.config.meta.get("content.entity"), {
+				credentials: this.config.credentials,
+				serverMetaPost: this.config.meta
+			});
+		} else {
+			this.client = null;
+		}
 	}
 }, Marbles.Events);
 
