@@ -20,17 +20,17 @@ Micro.config.fetch = function () {
 			}
 
 			Marbles.Transaction.transaction.call(Micro.config, function () {
-				Micro.config.set("authenticated", true);
+				this.set("authenticated", true);
 
 				for (var k in res) {
 					if (res.hasOwnProperty(k)) {
 						switch (k) {
 							case "meta":
-								Micro.config.set(k, Micro.Models.Meta.findOrNew(res[k]));
+								this.set(k, Micro.Models.Meta.findOrNew(res[k]));
 								break;
 
 							default:
-								Micro.config.set(k, res[k]);
+								this.set(k, res[k]);
 						}
 					}
 				}
