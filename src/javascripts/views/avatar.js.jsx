@@ -6,10 +6,33 @@
 Micro.Views.Avatar = React.createClass({
 	displayName: "Micro.Views.Avatar",
 
+	getInitialState: function () {
+		return {
+			avatarURL: null,
+			name: null
+		};
+	},
+
+	componentWillMount: function () {
+		TentContacts.find(this.props.entity, this.__handleChange);
+		TentContacts.onChange(this.props.entity, this.__handleChange);
+	},
+
+	componentWillUnmount: function () {
+		TentContacts.offChange(this.props.entity, this.__handleChange);
+	},
+
 	render: function () {
 		return (
-			<div />
+			<img className="avatar" src={this.state.avatarURL} title={this.state.name} />
 		);
+	},
+
+	__handleChange: function (profile) {
+		this.setState({
+			avatarURL: Micro.client.getNamedURL("attachment", [{ entity: profile.entity, digest: profile.avatarDigest }]),
+			name: profile.name
+		});
 	}
 });
 
