@@ -114,6 +114,7 @@ $almostBlackColor: #2C2C2C;
 	}
 
 	> .content {
+		margin-left: calc(42px + 1rem);
 		> p {
 			margin: 0;
 		}
