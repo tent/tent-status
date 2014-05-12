@@ -6,14 +6,98 @@
 Micro.Views.AppNav = React.createClass({
 	displayName: "Micro.Views.AppNav",
 
-	getDefaultProps: function () {
+	getInitialState: function () {
 		return {
-			authenticated: false
+			navLinks: []
 		};
 	},
 
+	getDefaultProps: function () {
+		return {
+			authenticated: false,
+			searchNav: false,
+			siteFeedEnabled: false
+		};
+	},
+
+	componentWillMount: function () {
+		this.__initNavLinks(this.props);
+	},
+
+	componentWillReceiveProps: function (props) {
+		this.__initNavLinks(props);
+	},
+
 	render: function () {
-		return <div />;
+		var navLinks = this.state.navLinks;
+		return (
+			<section className="app-nav">
+				<ul>
+					{navLinks.map(function (link, i) {
+						return (
+							<li key={i}>
+								<NavLink link={link} />
+							</li>
+						);
+					}.bind(this))}
+				</ul>
+			</section>
+		);
+	},
+
+	__initNavLinks: function (props) {
+		var navLinks;
+		if (props.searchNav) {
+			navLinks = [{
+				href: "/",
+				name: "Global",
+				iconName: "fa-globe"
+			}];
+		} else {
+			navLinks = [{
+				href: "/",
+				name: "Timeline",
+				iconName: "fa-list"
+			},{
+				href: "/",
+				name: "Mentions",
+				iconName: "fa-thumb-tack"
+			},{
+				href: "/",
+				name: "Reposts",
+				iconName: "fa-retweet"
+			},{
+				href: "/",
+				name: "Profile",
+				iconName: "fa-user"
+			}];
+
+			if (props.siteFeedEnabled) {
+				navLinks.push({
+					href: "/",
+					name: "Site Feed",
+					iconName: "fa-globe"
+				});
+			}
+		}
+
+		this.setState({
+			navLinks: navLinks
+		});
+	}
+});
+
+var NavLink = React.createClass({
+	displayName: "Micro.Views.AppNav NavLink",
+
+	render: function () {
+		var link = this.props.link;
+		return (
+			<a href={link.href}>
+				<i className={"fa " + link.iconName} />
+				{link.name}
+			</a>
+		);
 	}
 });
 
