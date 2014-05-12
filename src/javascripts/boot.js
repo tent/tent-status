@@ -7,7 +7,7 @@
 
 	var appNav = React.renderComponent(
 		Micro.Views.AppNav({}),
-		document.getElementById("main-nav")
+		document.getElementById("app-nav")
 	);
 
 	Micro.config.on("change:authenticated", function (authenticated) {

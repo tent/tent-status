@@ -1,0 +1,24 @@
+@mixin transition($property, $fn, $duration, $delay) {
+  transition-property: $property;
+  transition-duration: $duration;
+  transition-timing-function: $fn;
+  transition-delay: $delay;
+
+  /* Firefox 4 */
+  -moz-transition-property: $property;
+  -moz-transition-duration: $duration;
+  -moz-transition-timing-function: $fn;
+  -moz-transition-delay: $delay;
+
+  /* Safari and Chrome */
+  -webkit-transition-property: $property;
+  -webkit-transition-duration: $duration;
+  -webkit-transition-timing-function: $fn;
+  -webkit-transition-delay: $delay;
+
+  /* Opera */
+  -o-transition-property: $property;
+  -o-transition-duration: $duration;
+  -o-transition-timing-function: $fn;
+  -o-transition-delay: $delay;
+}

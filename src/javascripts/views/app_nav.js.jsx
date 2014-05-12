@@ -31,17 +31,15 @@ Micro.Views.AppNav = React.createClass({
 	render: function () {
 		var navLinks = this.state.navLinks;
 		return (
-			<section className="app-nav">
-				<ul>
-					{navLinks.map(function (link, i) {
-						return (
-							<li key={i}>
-								<NavLink link={link} />
-							</li>
-						);
-					}.bind(this))}
-				</ul>
-			</section>
+			<ul>
+				{navLinks.map(function (link, i) {
+					return (
+						<li key={i} className={link.name === "Timeline" ? "active" : ""}>
+							<NavLink link={link} />
+						</li>
+					);
+				}.bind(this))}
+			</ul>
 		);
 	},
 
