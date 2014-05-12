@@ -15,4 +15,4 @@ gem 'marbles-js', :git => 'git://github.com/jvatic/marbles-js.git', :branch => '
 gem 'react-jsx-sprockets', :git => 'git://github.com/jvatic/react-jsx-sprockets.git', :branch => 'master'
 
 gem 'marbles-tent-client-js', :git => 'git://github.com/tent/marbles-tent-client-js.git', :branch => 'master'
-gem 'icing', :git => 'git://github.com/tent/icing.git', :branch => 'master'
+gem 'icing', :git => 'git://github.com/tent/icing.git', :branch => 'refactor'

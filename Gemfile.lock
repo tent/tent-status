@@ -44,8 +44,8 @@ GIT
 
 GIT
   remote: git://github.com/tent/icing.git
-  revision: a5e0ba48ffd943d25ac66d148d8e0f95105d7267
-  branch: master
+  revision: 6cc1174efae868c5bea74e567931af21a1a2e5a1
+  branch: refactor
   specs:
     icing (0.0.1)
       compass (~> 0.12.2)
