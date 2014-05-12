@@ -1,7 +1,13 @@
 /** @jsx React.DOM */
+//= require ./avatar
+//= require ./name
 
 (function () {
 "use strict";
+
+var Avatar = Micro.Views.Avatar;
+var Name = Micro.Views.Name;
+var markdownToHTML = Micro.ViewHelpers.markdownToHTML;
 
 Micro.Views.Post = React.createClass({
 	displayName: "Micro.Views.Post",
@@ -10,7 +16,14 @@ Micro.Views.Post = React.createClass({
 		var post = this.props.post;
 		return (
 			<section className="post">
-				<pre>{JSON.stringify(post, undefined, 2)}</pre>
+				<Avatar entity={post.entity} />
+				<header>
+					<h2>
+						<Name entity={post.entity} />
+					</h2>
+				</header>
+
+				<p dangerouslySetInnerHTML={{ __html: markdownToHTML(String(post.content.text), post.mentions || []) }} />
 			</section>
 		);
 	}
