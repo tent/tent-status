@@ -23,7 +23,9 @@ Micro.Views.Post = React.createClass({
 					</h2>
 				</header>
 
-				<p dangerouslySetInnerHTML={{ __html: markdownToHTML(String(post.content.text), post.mentions || []) }} />
+				<div className="content">
+					<p dangerouslySetInnerHTML={{ __html: markdownToHTML(String(post.content.text), post.mentions || []) }} />
+				</div>
 			</section>
 		);
 	}
