@@ -11,6 +11,8 @@ Micro.config = new Marbles.Object({
   SEARCH_API_ROOT: <%= Yajl::Encoder.encode(ENV["SEARCH_API_ROOT"]) %>,
   SEARCH_API_KEY: <%= Yajl::Encoder.encode(ENV["SEARCH_API_KEY"]) %>,
 
+  CONTACTS_URL: <%= Yajl::Encoder.encode(ENV["CONTACTS_URL"]) %>,
+
   POST_TYPES: {
     META: "https://tent.io/types/meta/v0#",
     SUBSCRIBER: 'https://tent.io/types/relationship/v0#subscriber',

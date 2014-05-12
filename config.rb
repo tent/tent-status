@@ -2,6 +2,7 @@ require 'static-sprockets'
 require 'marbles-js'
 require 'marbles-tent-client-js'
 require 'icing'
+require 'contacts-service'
 require 'react-jsx-sprockets'
 require 'yajl'
 
@@ -9,6 +10,7 @@ StaticSprockets.sprockets_config do |environment|
   MarblesJS::Sprockets.setup(environment)
   MarblesTentClientJS::Sprockets.setup(environment)
   Icing::Sprockets.setup(environment)
+  ContactsService::Sprockets.setup(environment)
 end
 
 StaticSprockets.configure(

@@ -1,4 +1,11 @@
 GIT
+  remote: git://github.com/cupcake/contacts-service.git
+  revision: 55ef7dd5aead5dc1566d30c6c974eccf94a1f60d
+  branch: master
+  specs:
+    contacts-service (0.0.1)
+
+GIT
   remote: git://github.com/jvaill/sprockets.git
   revision: 6327a13e77609991509c8cf3d3c1e571f6a4b23d
   branch: master
@@ -108,6 +115,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  contacts-service!
   icing!
   marbles-js!
   marbles-tent-client-js!

@@ -23,6 +23,7 @@ ENV                   | Required | Description
 `SEARCH_API_ROOT`     | Optional | Skate API root.
 `SEARCH_API_KEY`      | Optional | Skate API key.
 `DEFAULT_AVATAR_ROOT` | Optional | Defaults to a static avatar. If set, appending `"/" + encodeURIComponent(entity)` should point to a unique avatar for that entity (see [Sigil](https://github.com/cupcake/sigil) for more information).
+`CONTACTS_URL`        | Required | URL of [contacts service](https://github.com/cupcake/contacts-service) instance.
 
 ### Running statically
 

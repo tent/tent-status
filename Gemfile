@@ -16,3 +16,4 @@ gem 'react-jsx-sprockets', :git => 'git://github.com/jvatic/react-jsx-sprockets.
 
 gem 'marbles-tent-client-js', :git => 'git://github.com/tent/marbles-tent-client-js.git', :branch => 'master'
 gem 'icing', :git => 'git://github.com/tent/icing.git', :branch => 'refactor'
+gem 'contacts-service', :git => 'git://github.com/cupcake/contacts-service.git', :branch => 'master'

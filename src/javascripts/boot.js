@@ -14,5 +14,15 @@
 		appNav.setProps({
 			authenticated: authenticated
 		});
+
+		if (authenticated) {
+			TentContacts.daemonURL = Micro.config.CONTACTS_URL;
+			TentContacts.entity = Micro.config.meta.content.entity;
+			TentContacts.serverMetaPost = Micro.config.meta.toJSON();
+			TentContacts.credentials = Micro.config.credentials;
+			TentContacts.run();
+		} else {
+			TentContacts.stop(null);
+		}
 	});
 })();
