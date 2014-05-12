@@ -1,9 +1,9 @@
 //= require_self
 //= require ./static_config
 //= require_tree ./routers
+//= require_tree ./stores
 //= require_tree ./views
 //= require_tree ./models
-//= require_tree ./collections
 //= require ./config
 //= require ./boot
 
@@ -15,8 +15,8 @@ window.Micro = Micro;
 
 Marbles.Utils.extend(Micro, {
 	Views: {},
-	Models: {},
-	Collections: {},
+	Models: {}, // TODO: replace these with Stores
+	Stores: {},
 	run: function () {
 		if ( !Marbles.history || Marbles.history.started ) {
 			return;

@@ -10,21 +10,10 @@ var MainRouter = Marbles.Router.createClass({
 	],
 
 	timeline: function () {
-		var postsCollection = Micro.Collections.Posts.findOrNew({
-			name: "Timeline",
-			params: [{
-				entities: Micro.config.meta.get("content.entity"),
-				types: [Micro.config.POST_TYPES.STATUS]
-			}]
-		});
 		React.renderComponent(
-			Micro.Views.Timeline({
-				postsCollection: postsCollection
-			}),
+			Micro.Views.MainTimeline({}),
 			Micro.el
 		);
-
-		postsCollection.fetch();
 	},
 
 	login: function (params) {
