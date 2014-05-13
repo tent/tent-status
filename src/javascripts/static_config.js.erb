@@ -36,4 +36,4 @@ Micro.config = new Marbles.Object({
   PER_PAGE: 20
 });
 
-Micro.config.SEARCH_ENABLED = Micro.config.SEARCH_API_ROOT && Micro.config.SEARCH_API_KEY;
+Micro.config.SEARCH_ENABLED = !!(Micro.config.SEARCH_API_ROOT && Micro.config.SEARCH_API_KEY);

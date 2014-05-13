@@ -54,7 +54,7 @@ function markdownToHTML(text, mentions) {
 			if (jsonml[0] !== "link") {
 				return jsonml;
 			}
-			if ( !jsonml[1] || jsonml[1].rel !== "hastag") {
+			if ( !jsonml[1] || jsonml[1].rel !== "hashtag") {
 				return jsonml;
 			}
 
