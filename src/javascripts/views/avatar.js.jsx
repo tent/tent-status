@@ -30,7 +30,7 @@ Micro.Views.Avatar = React.createClass({
 
 	__handleChange: function (profile) {
 		this.setState({
-			avatarURL: Micro.client.getNamedURL("attachment", [{ entity: profile.entity, digest: profile.avatarDigest }]),
+			avatarURL: profile.avatarDigest ? Micro.client.getNamedURL("attachment", [{ entity: profile.entity, digest: profile.avatarDigest }]) : null,
 			name: profile.name
 		});
 	}
