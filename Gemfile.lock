@@ -36,7 +36,7 @@ GIT
 
 GIT
   remote: git://github.com/jvatic/static-sprockets.git
-  revision: 76233c47fef5791899b7a435391174b5ab58e7bb
+  revision: 014f2e5f5db60b067e95a2933ce219ba0e01a8d0
   branch: master
   specs:
     static-sprockets (0.0.1)
