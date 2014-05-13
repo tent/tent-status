@@ -11,6 +11,7 @@ Micro.config = new Marbles.Object({
   SEARCH_API_ROOT: <%= Yajl::Encoder.encode(ENV["SEARCH_API_ROOT"]) %>,
   SEARCH_API_KEY: <%= Yajl::Encoder.encode(ENV["SEARCH_API_KEY"]) %>,
 
+  CONTACTS_WORKER_URL: <%= Yajl::Encoder.encode(asset_path("contacts_service.js", :full_path => true)) %>,
   CONTACTS_URL: <%= Yajl::Encoder.encode(ENV["CONTACTS_URL"]) %>,
 
   POST_TYPES: {

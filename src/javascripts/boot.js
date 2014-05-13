@@ -16,6 +16,7 @@
 		});
 
 		if (authenticated) {
+			TentContacts.workerURL = Micro.config.CONTACTS_WORKER_URL;
 			TentContacts.daemonURL = Micro.config.CONTACTS_URL;
 			TentContacts.entity = Micro.config.meta.content.entity;
 			TentContacts.serverMetaPost = Micro.config.meta.toJSON();
