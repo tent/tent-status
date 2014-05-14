@@ -48,13 +48,15 @@ Micro.Stores.MainTimeline = {
 	},
 
 	__fetch: function () {
+		var config = Micro.config;
 		Micro.client.getPostsFeed({
 			params: [{
 				types: [
-					Micro.config.POST_TYPES.STATUS,
-					Micro.config.POST_TYPES.STATUS_REPLY,
-					Micro.config.POST_TYPES.STATUS_REPOST
-				]
+					config.POST_TYPES.STATUS,
+					config.POST_TYPES.STATUS_REPLY,
+					config.POST_TYPES.STATUS_REPOST
+				],
+				limit: config.PER_PAGE
 			}],
 			callback: {
 				success: function (res) {
