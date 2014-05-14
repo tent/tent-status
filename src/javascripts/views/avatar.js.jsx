@@ -13,8 +13,19 @@ Micro.Views.Avatar = React.createClass({
 		};
 	},
 
+	getDefaultProps: function () {
+		return {
+			profiles: {}
+		};
+	},
+
 	componentWillMount: function () {
-		TentContacts.find(this.props.entity, this.__handleChange);
+		var profile = this.props.profiles[this.props.entity];
+		if (profile) {
+			this.__handleChange(profile);
+		} else {
+			TentContacts.find(this.props.entity, this.__handleChange);
+		}
 		TentContacts.onChange(this.props.entity, this.__handleChange);
 	},
 
@@ -29,8 +40,9 @@ Micro.Views.Avatar = React.createClass({
 	},
 
 	__handleChange: function (profile) {
+		var avatarDigest = profile.avatarDigest;
 		this.setState({
-			avatarURL: profile.avatarDigest ? Micro.client.getNamedURL("attachment", [{ entity: profile.entity, digest: profile.avatarDigest }]) : null,
+			avatarURL: avatarDigest ? Micro.client.getNamedURL("attachment", [{ entity: profile.entity, digest: avatarDigest }]) : null,
 			name: profile.name
 		});
 	}

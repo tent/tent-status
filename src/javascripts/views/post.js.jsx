@@ -12,14 +12,21 @@ var markdownToHTML = Micro.ViewHelpers.markdownToHTML;
 Micro.Views.Post = React.createClass({
 	displayName: "Micro.Views.Post",
 
+	getDefaultProps: function () {
+		return {
+			profiles: {}
+		};
+	},
+
 	render: function () {
 		var post = this.props.post;
+		var profiles = this.props.profiles;
 		return (
 			<section className="post">
-				<Avatar entity={post.entity} />
+				<Avatar entity={post.entity} profiles={profiles} />
 				<header>
 					<h2>
-						<Name entity={post.entity} />
+						<Name entity={post.entity} profiles={profiles} />
 					</h2>
 				</header>
 

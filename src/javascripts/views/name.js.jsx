@@ -12,8 +12,19 @@ Micro.Views.Name = React.createClass({
 		};
 	},
 
+	getDefaultProps: function () {
+		return {
+			profiles: {}
+		};
+	},
+
 	componentWillMount: function () {
-		TentContacts.find(this.props.entity, this.__handleChange);
+		var profile = this.props.profiles[this.props.entity];
+		if (profile) {
+			this.__handleChange(profile);
+		} else {
+			TentContacts.find(this.props.entity, this.__handleChange);
+		}
 		TentContacts.onChange(this.props.entity, this.__handleChange);
 	},
 

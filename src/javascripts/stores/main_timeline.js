@@ -8,7 +8,10 @@ Micro.Stores.MainTimeline = {
 			this.__fetch();
 		}
 
-		return this.__state.posts;
+		return {
+			posts: this.__state.posts,
+			profiles: this.__state.profiles
+		};
 	},
 
 	addChangeListener: function (handler) {
@@ -26,7 +29,8 @@ Micro.Stores.MainTimeline = {
 	__cold: true,
 
 	__state: {
-		posts: []
+		posts: [],
+		profiles: {}
 	},
 
 	__setState: function (state) {
@@ -56,12 +60,22 @@ Micro.Stores.MainTimeline = {
 					config.POST_TYPES.STATUS_REPLY,
 					config.POST_TYPES.STATUS_REPOST
 				],
-				limit: config.PER_PAGE
+				limit: config.PER_PAGE,
+				profiles: "entity"
 			}],
 			callback: {
 				success: function (res) {
+					var profiles = res.profiles || {};
+					Object.keys(profiles).forEach(function (entity) {
+						var profile = profiles[entity];
+						profile.avatarDigest = profile.avatar_digest;
+						delete profile.avatar_digest;
+						profile.entity = entity;
+					});
+
 					this.__setState({
-						posts: res.posts
+						posts: res.posts,
+						profiles: profiles
 					});
 				}.bind(this),
 

@@ -14,11 +14,13 @@ Micro.Views.Posts = React.createClass({
 
 	getDefaultProps: function () {
 		return {
-			posts: []
+			posts: [],
+			profiles: {}
 		};
 	},
 
 	render: function () {
+		var profiles = this.props.profiles;
 		return (
 			<section className="posts">
 				<ul>
@@ -29,7 +31,7 @@ Micro.Views.Posts = React.createClass({
 								postView = <Repost post={post} />;
 								break;
 							default:
-								postView = <Post post={post} />;
+								postView = <Post post={post} profiles={profiles} />;
 						}
 						return (
 							<li key={post.id}>

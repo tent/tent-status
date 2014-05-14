@@ -8,8 +8,10 @@ var TimelineStore = Micro.Stores.MainTimeline;
 var Posts = Micro.Views.Posts;
 
 function getTimelineState() {
+	var page = TimelineStore.getFirstPage();
 	return {
-		posts: TimelineStore.getFirstPage()
+		posts: page.posts,
+		profiles: page.profiles
 	};
 }
 
@@ -31,7 +33,7 @@ Micro.Views.MainTimeline = React.createClass({
 	render: function () {
 		return (
 			<div>
-				<Posts posts={this.state.posts} />
+				<Posts posts={this.state.posts} profiles={this.state.profiles} />
 			</div>
 		);
 	},
