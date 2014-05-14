@@ -12,10 +12,12 @@ var MainRouter = Marbles.Router.createClass({
 	],
 
 	timeline: function () {
-		React.renderComponent(
-			Micro.Views.MainTimeline({}),
-			Micro.el
-		);
+		Micro.setImmediate(function () {
+			React.renderComponent(
+				Micro.Views.MainTimeline({}),
+				Micro.el
+			);
+		});
 	},
 
 	login: function (params) {
