@@ -6,7 +6,8 @@ var MainRouter = Marbles.Router.createClass({
 
 	routes: [
 		{ path: "", handler: "timeline" },
-		{ path: "login", handler: "login" }
+		{ path: "login", handler: "login" },
+		{ path: "logout", handler: "logout" }
 	],
 
 	timeline: function () {
@@ -39,6 +40,16 @@ var MainRouter = Marbles.Router.createClass({
 		Marbles.history.once("handler:before", function () {
 			Micro.off("login:success", performRedirect);
 		});
+	},
+
+	logout: function () {
+		if ( !Micro.config.authenticated ) {
+			// already logged out
+			Marbles.history.navigate("");
+			return;
+		}
+
+		Micro.performLogout();
 	}
 });
 

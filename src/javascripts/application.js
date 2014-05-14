@@ -49,8 +49,19 @@ Marbles.Utils.extend(Micro, {
 		return path.substr(0, 5) === "login";
 	},
 
+	isLogoutPath: function (path) {
+		if (path === "") {
+			return false;
+		}
+		return path.substr(0, 6) === "logout";
+	},
+
 	redirectToLogin: function () {
-		var redirectParam = Marbles.history.path ? "?redirect="+ encodeURIComponent(Marbles.history.path) : "";
+		var path = Marbles.history.path;
+		var redirectParam = "";
+		if (path && !this.isLogoutPath(path)) {
+			redirectParam = Marbles.history.path ? "?redirect="+ encodeURIComponent(Marbles.history.path) : "";
+		}
 		Marbles.history.navigate("login"+ redirectParam);
 	},
 
@@ -87,6 +98,23 @@ Marbles.Utils.extend(Micro, {
 		});
 	},
 
+	performLogout: function () {
+		Marbles.HTTP({
+			method: "POST",
+			url: Micro.config.LOGOUT_URL,
+			middleware: [
+				Marbles.HTTP.Middleware.WithCredentials
+			],
+			callback: function () {
+				if (Micro.config.LOGOUT_REDIRECT_URL) {
+					window.location.href = Micro.config.LOGOUT_REDIRECT_URL;
+				} else {
+					Micro.config.fetch();
+				}
+			}
+		});
+	},
+
 	__handleChangeAuthenticated: function () {
 		if (this.config.authenticated) {
 			this.client = new TentClient(this.config.meta.get("content.entity"), {
@@ -95,6 +123,10 @@ Marbles.Utils.extend(Micro, {
 			});
 		} else {
 			this.client = null;
+			var path = Marbles.history.path;
+			if (path && !this.isLoginPath(path)) {
+				this.redirectToLogin();
+			}
 		}
 	}
 }, Marbles.Events);
