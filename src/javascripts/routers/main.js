@@ -5,9 +5,10 @@ var MainRouter = Marbles.Router.createClass({
 	displayName: "MainRouter",
 
 	routes: [
-		{ path: "", handler: "timeline" },
-		{ path: "login", handler: "login" },
-		{ path: "logout", handler: "logout" }
+		{ path: ""       ,  handler: "timeline" },
+		{ path: "login"  ,  handler: "login" },
+		{ path: "logout" ,  handler: "logout" },
+		{ path: "*"      ,  handler: "notFound" }
 	],
 
 	timeline: function () {
@@ -50,6 +51,13 @@ var MainRouter = Marbles.Router.createClass({
 		}
 
 		Micro.performLogout();
+	},
+
+	notFound: function () {
+		React.renderComponent(
+			Micro.Views.NotFound({}),
+			Micro.el
+		);
 	}
 });
 
