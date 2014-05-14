@@ -1,3 +1,4 @@
+//= require es6promise
 //= require_self
 //= require ./static_config
 //= require_tree ./routers

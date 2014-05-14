@@ -23,6 +23,7 @@
 		"React": false,
 		"TentClient": false,
 		"TentContacts": false,
+		"Promise": false,
 		"markdown": false,
 		"console": false,
 		"confirm": false
