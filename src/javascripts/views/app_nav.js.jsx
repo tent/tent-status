@@ -14,9 +14,11 @@ Micro.Views.AppNav = React.createClass({
 
 	getDefaultProps: function () {
 		return {
+			currentPath: null,
 			authenticated: false,
 			searchNav: false,
-			siteFeedEnabled: false
+			siteFeedEnabled: false,
+			showAuth: true
 		};
 	},
 
@@ -30,12 +32,15 @@ Micro.Views.AppNav = React.createClass({
 
 	render: function () {
 		var navLinks = this.state.navLinks;
+		var authenticated = this.props.authenticated;
+		var currentPath = this.props.currentPath;
+		var isPathActive = this.__isPathActive;
 		return (
-			<ul>
+			<ul className={authenticated ? null : "disabled"}>
 				{navLinks.map(function (link, i) {
 					return (
-						<li key={i} className={link.name === "Timeline" ? "active" : ""}>
-							<NavLink link={link} />
+						<li key={i} className={isPathActive(link.path) ? "active" : null}>
+							<NavLink disabled={ !authenticated } currentPath={currentPath} link={link} />
 						</li>
 					);
 				}.bind(this))}
@@ -45,36 +50,54 @@ Micro.Views.AppNav = React.createClass({
 
 	__initNavLinks: function (props) {
 		var navLinks;
+		var authenticated = props.authenticated;
+
 		if (props.searchNav) {
 			navLinks = [{
-				href: "/",
+				path: "search",
 				name: "Global",
 				iconName: "fa-globe"
 			}];
 		} else {
 			navLinks = [{
-				href: "/",
+				path: "",
 				name: "Timeline",
 				iconName: "fa-list"
 			},{
-				href: "/",
+				path: "mentions",
 				name: "Mentions",
 				iconName: "fa-thumb-tack"
 			},{
-				href: "/",
+				path: "reposts",
 				name: "Reposts",
 				iconName: "fa-retweet"
 			},{
-				href: "/",
+				path: "profile",
 				name: "Profile",
 				iconName: "fa-user"
 			}];
 
 			if (props.siteFeedEnabled) {
 				navLinks.push({
-					href: "/",
+					path: "site-feed",
 					name: "Site Feed",
 					iconName: "fa-globe"
+				});
+			}
+		}
+
+		if (props.showAuth) {
+			if (authenticated) {
+				navLinks.push({
+					path: "logout",
+					name: "Log out",
+					iconName: "fa-power-off"
+				});
+			} else {
+				navLinks.push({
+					path: "login",
+					name: "Log in",
+					iconName: "fa-power-off"
 				});
 			}
 		}
@@ -82,6 +105,21 @@ Micro.Views.AppNav = React.createClass({
 		this.setState({
 			navLinks: navLinks
 		});
+	},
+
+	__isPathActive: function (path) {
+		var currentPath = this.props.currentPath;
+		if ( typeof currentPath !== "string" ) {
+			return false;
+		}
+		if (currentPath.substr(0, path.length) !== path) {
+			return false;
+		}
+		var after = currentPath.substr(path.length, 1);
+		if (after && !(after === "?" || after === "/")) {
+			return false;
+		}
+		return true;
 	}
 });
 
@@ -90,12 +128,23 @@ var NavLink = React.createClass({
 
 	render: function () {
 		var link = this.props.link;
+		var fullPath = Marbles.history.pathWithRoot.bind(Marbles.history);
+		var currentPath = this.props.currentPath;
 		return (
-			<a href={link.href}>
+			<a href={typeof currentPath === "string" ? fullPath(link.path) : null} onClick={this.__handleClick}>
 				<i className={"fa " + link.iconName} />
 				{link.name}
 			</a>
 		);
+	},
+
+	__handleClick: function (e) {
+		e.preventDefault();
+		if (this.props.disabled) {
+			return;
+		}
+		var link = this.props.link;
+		Marbles.history.navigate(link.path);
 	}
 });
 

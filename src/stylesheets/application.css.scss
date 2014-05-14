@@ -48,6 +48,18 @@ $almostBlackColor: #2C2C2C;
 		margin: 0;
 		text-align: left;
 
+		&.disabled {
+			opacity: 0.4;
+
+			> li > a {
+				cursor: default;
+			}
+
+			> li > a:hover, > li.active > a {
+				color: $darkGrayColor;
+			}
+		}
+
 		> li {
 			border: 1px solid $lightGrayColor;
 			border-left: 0;
@@ -59,6 +71,7 @@ $almostBlackColor: #2C2C2C;
 				padding: 0.75rem;
 				padding-left: 20px;
 				color: $darkGrayColor;
+				outline: none;
 
 				@include transition(color, ease, 0.2s, 0s);
 

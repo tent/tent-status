@@ -10,6 +10,17 @@
 		document.getElementById("app-nav")
 	);
 
+	Micro.once("config:ready", function () {
+		appNav.setProps({
+			currentPath: Marbles.history.path
+		});
+		Marbles.history.on("route", function () {
+			appNav.setProps({
+				currentPath: Marbles.history.path
+			});
+		});
+	});
+
 	Micro.config.on("change:authenticated", function (authenticated) {
 		appNav.setProps({
 			authenticated: authenticated
