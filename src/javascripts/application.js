@@ -1,5 +1,6 @@
 //= require es6promise
 //= require_self
+//= require ./set_immediate
 //= require ./static_config
 //= require_tree ./routers
 //= require_tree ./stores
