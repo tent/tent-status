@@ -16,6 +16,8 @@ Micro.Views.ScrollPagination = React.createClass({
 	},
 
 	componentWillMount: function () {
+		this.__marginBottom = 0;
+
 		var pageIds = this.props.pageIds;
 		this.__pageDimentions = {};
 		if (pageIds.length > 1) {
@@ -73,6 +75,19 @@ Micro.Views.ScrollPagination = React.createClass({
 				unloadedPageId = renderedPageIds[renderedPageIds.length-1];
 				unloadedPagePosition = "bottom";
 			}
+		}
+
+		// supply extra whitespace to prevent scroll jumping
+		// while loading new page
+		if (newPagePosition === "bottom") {
+			var marginBottom;
+			if (renderedPageIds.length > 0) {
+				marginBottom = this.__pageDimentions[renderedPageIds[renderedPageIds.length-1]].offsetHeight;
+			} else {
+				marginBottom = 500;
+			}
+			this.__marginBottom = marginBottom;
+			this.refs.wrapper.getDOMNode().style.setProperty("margin-bottom", marginBottom +"px");
 		}
 
 		if (unloadedPageId) {
@@ -138,7 +153,7 @@ Micro.Views.ScrollPagination = React.createClass({
 			offsetTop += ref.offsetTop || 0;
 			ref = ref.offsetParent;
 		}
-		var offsetBottom = maxHeight - offsetHeight - offsetTop;
+		var offsetBottom = maxHeight - offsetHeight - offsetTop - this.__marginBottom;
 
 		if (opts.newPageId) {
 			var pagesOffsetHeight = 0;
