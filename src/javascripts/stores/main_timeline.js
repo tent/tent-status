@@ -8,15 +8,21 @@ Micro.Stores.MainTimeline = {
 			this.__fetch();
 		}
 
+		var posts = [];
+		this.__state.pages.forEach(function (page) {
+			posts = posts.concat(page.posts);
+		});
+
 		return {
-			posts: this.__state.posts,
-			profiles: this.__state.profiles
+			posts: posts,
+			profiles: this.__state.profiles,
+			pageIds: this.__state.pageIds
 		};
 	},
 
-	fetchNextPage: function () {
-		var params = Marbles.QueryParams.deserializeParams(this.__pages.next || "");
-		this.__fetch(params);
+	fetchNextPage: function (opts) {
+		var params = Marbles.QueryParams.deserializeParams(this.__pageQueries.next || "");
+		this.__fetch(params, opts);
 	},
 
 	addChangeListener: function (handler) {
@@ -33,11 +39,15 @@ Micro.Stores.MainTimeline = {
 
 	__cold: true,
 
-	__pages: {},
+	__pageQueries: {},
+
+	__pageIdAppendCounter: 0,
+	__pageIdPrependCounter: 0,
 
 	__state: {
-		posts: [],
-		profiles: {}
+		profiles: {},
+		pages: [],
+		pageIds: []
 	},
 
 	__setState: function (state) {
@@ -58,9 +68,10 @@ Micro.Stores.MainTimeline = {
 		});
 	},
 
-	__fetch: function (params) {
+	__fetch: function (params, opts) {
 		var config = Micro.config;
 		params = params || [{}];
+		opts = opts || {};
 		params = Marbles.QueryParams.replaceParams.apply(null, [[{
 			types: [
 				config.POST_TYPES.STATUS,
@@ -82,11 +93,33 @@ Micro.Stores.MainTimeline = {
 						profile.entity = entity;
 					});
 
-					this.__pages = res.pages;
+					this.__pageQueries = res.pages;
+
+					var pageIds = this.__state.pageIds;
+					var pages = this.__state.pages;
+
+					var unloadPageId = opts.unloadPageId;
+					if (unloadPageId) {
+						// TODO: check the other end of the pageIds array if it's a prepend operation
+						if (pageIds[0] === unloadPageId) {
+							pageIds.shift();
+							pages.shift();
+						} else {
+							throw new Error("MainTimeline: Invalid unload request for page id: "+ JSON.stringify(unloadPageId) +". Only "+ JSON.stringify(pageIds[0]) +" may be removed.");
+						}
+					}
+
+					var pageId = String(++this.__pageIdAppendCounter);
+					pageIds.push(pageId);
+					pages.push({
+						id: pageId,
+						posts: res.posts
+					});
 
 					this.__setState({
-						posts: res.posts,
-						profiles: profiles
+						profiles: profiles,
+						pages: pages,
+						pageIds: pageIds
 					});
 				}.bind(this),
 

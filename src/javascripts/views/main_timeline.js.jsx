@@ -10,10 +10,11 @@ var ScrollPagination = Micro.Views.ScrollPagination;
 var Posts = Micro.Views.Posts;
 
 function getTimelineState() {
-	var page = TimelineStore.getPage();
+	var res = TimelineStore.getPage();
 	return {
-		posts: page.posts,
-		profiles: page.profiles
+		posts: res.posts,
+		profiles: res.profiles,
+		pageIds: res.pageIds
 	};
 }
 
@@ -34,7 +35,7 @@ Micro.Views.MainTimeline = React.createClass({
 
 	render: function () {
 		return (
-			<ScrollPagination loadNextPage={this.__loadNextPage}>
+			<ScrollPagination pageIds={this.state.pageIds} loadNextPage={this.__loadNextPage}>
 				<Posts posts={this.state.posts} profiles={this.state.profiles} />
 			</ScrollPagination>
 		);
@@ -44,9 +45,9 @@ Micro.Views.MainTimeline = React.createClass({
 		this.setState(getTimelineState());
 	},
 
-	__loadNextPage: function () {
+	__loadNextPage: function (opts) {
 		if (this.state.posts && this.state.posts.length) {
-			TimelineStore.fetchNextPage();
+			TimelineStore.fetchNextPage(opts);
 		}
 	}
 });
