@@ -18,6 +18,10 @@ var MainRouter = Marbles.Router.createClass({
 				Micro.el
 			);
 		});
+
+		Marbles.history.once("handler:before", function () {
+			Micro.Stores.MainTimeline.setCold();
+		});
 	},
 
 	login: function (params) {

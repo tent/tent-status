@@ -5,6 +5,7 @@ Micro.Stores.MainTimeline = {
 	getPage: function () {
 		if (this.__cold) {
 			this.__cold = false;
+			this.__state = this.__getInitialState();
 			this.__fetch();
 		}
 
@@ -23,6 +24,11 @@ Micro.Stores.MainTimeline = {
 	fetchNextPage: function (opts) {
 		var params = Marbles.QueryParams.deserializeParams(this.__pageQueries.next || "");
 		this.__fetch(params, opts);
+	},
+
+	setCold: function () {
+		this.__cold = true;
+		this.__state = this.__getInitialState();
 	},
 
 	addChangeListener: function (handler) {
@@ -44,10 +50,14 @@ Micro.Stores.MainTimeline = {
 	__pageIdAppendCounter: 0,
 	__pageIdPrependCounter: 0,
 
-	__state: {
-		profiles: {},
-		pages: [],
-		pageIds: []
+	__state: {},
+
+	__getInitialState: function () {
+		return {
+			profiles: {},
+			pages: [],
+			pageIds: []
+		};
 	},
 
 	__setState: function (state) {
