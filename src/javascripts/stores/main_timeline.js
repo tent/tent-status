@@ -2,7 +2,7 @@
 "use strict";
 
 Micro.Stores.MainTimeline = {
-	getFirstPage: function () {
+	getPage: function () {
 		if (this.__cold) {
 			this.__cold = false;
 			this.__fetch();
@@ -12,6 +12,11 @@ Micro.Stores.MainTimeline = {
 			posts: this.__state.posts,
 			profiles: this.__state.profiles
 		};
+	},
+
+	fetchNextPage: function () {
+		var params = Marbles.QueryParams.deserializeParams(this.__pages.next || "");
+		this.__fetch(params);
 	},
 
 	addChangeListener: function (handler) {
@@ -27,6 +32,8 @@ Micro.Stores.MainTimeline = {
 	__changeListeners: [],
 
 	__cold: true,
+
+	__pages: {},
 
 	__state: {
 		posts: [],
@@ -51,18 +58,20 @@ Micro.Stores.MainTimeline = {
 		});
 	},
 
-	__fetch: function () {
+	__fetch: function (params) {
 		var config = Micro.config;
+		params = params || [{}];
+		params = Marbles.QueryParams.replaceParams.apply(null, [[{
+			types: [
+				config.POST_TYPES.STATUS,
+				config.POST_TYPES.STATUS_REPLY,
+				config.POST_TYPES.STATUS_REPOST
+			],
+			limit: Micro.config.PER_PAGE,
+			profiles: "entity"
+		}]].concat(params));
 		Micro.client.getPostsFeed({
-			params: [{
-				types: [
-					config.POST_TYPES.STATUS,
-					config.POST_TYPES.STATUS_REPLY,
-					config.POST_TYPES.STATUS_REPOST
-				],
-				limit: config.PER_PAGE,
-				profiles: "entity"
-			}],
+			params: params,
 			callback: {
 				success: function (res) {
 					var profiles = res.profiles || {};
@@ -72,6 +81,8 @@ Micro.Stores.MainTimeline = {
 						delete profile.avatar_digest;
 						profile.entity = entity;
 					});
+
+					this.__pages = res.pages;
 
 					this.__setState({
 						posts: res.posts,

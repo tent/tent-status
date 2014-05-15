@@ -1,14 +1,16 @@
 /** @jsx React.DOM */
+//= require ./scroll_pagination
 //= require ./posts
 
 (function () {
 "use strict";
 
 var TimelineStore = Micro.Stores.MainTimeline;
+var ScrollPagination = Micro.Views.ScrollPagination;
 var Posts = Micro.Views.Posts;
 
 function getTimelineState() {
-	var page = TimelineStore.getFirstPage();
+	var page = TimelineStore.getPage();
 	return {
 		posts: page.posts,
 		profiles: page.profiles
@@ -32,14 +34,20 @@ Micro.Views.MainTimeline = React.createClass({
 
 	render: function () {
 		return (
-			<div>
+			<ScrollPagination loadNextPage={this.__loadNextPage}>
 				<Posts posts={this.state.posts} profiles={this.state.profiles} />
-			</div>
+			</ScrollPagination>
 		);
 	},
 
 	__handleChange: function () {
 		this.setState(getTimelineState());
+	},
+
+	__loadNextPage: function () {
+		if (this.state.posts && this.state.posts.length) {
+			TimelineStore.fetchNextPage();
+		}
 	}
 });
 

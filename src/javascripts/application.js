@@ -5,6 +5,7 @@
 //= require_tree ./routers
 //= require_tree ./stores
 //= require ./view_helpers
+//= require ./dispatcher
 //= require_tree ./views
 //= require_tree ./models
 //= require ./config

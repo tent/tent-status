@@ -14,7 +14,9 @@
 			var id = e.data.id;
 			var callback = __events[id];
 			delete __events[id];
-			callback();
+			if (callback) {
+				callback();
+			}
 		}
 	}, false);
 
@@ -28,6 +30,17 @@
 			id: id
 		}, origin);
 		return promise;
+	};
+
+	Micro.clearImmediate = function (callback) {
+		for (var id in __events) {
+			if (__events.hasOwnProperty(id)) {
+				if (__events[id] === callback) {
+					delete __events[id];
+					break;
+				}
+			}
+		}
 	};
 
 })();
