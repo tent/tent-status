@@ -8,7 +8,7 @@ Micro.Views.ScrollPagination = React.createClass({
 
 	getDefaultProps: function () {
 		return {
-			threshold: 0, // percent
+			threshold: 60,
 			pageIds: [],
 			loadPrevPage: function () {},
 			loadNextPage: function () {}
@@ -161,6 +161,7 @@ Micro.Views.ScrollPagination = React.createClass({
 	},
 
 	__updateDimensions: function (opts) {
+		opts = opts || {};
 		var documentHeight = document.body.offsetHeight;
 		var viewportHeight = window.innerHeight;
 		var maxHeight = Math.max(documentHeight, viewportHeight);
@@ -198,26 +199,21 @@ Micro.Views.ScrollPagination = React.createClass({
 		if (this.__offsetHeight === 0) {
 			return;
 		}
-		var scrollY = window.scrollY;
-		var scrollHeight = this.__offsetTop + this.__offsetHeight + this.__offsetBottom;
-		var remainingScrollBottom = this.__offsetHeight + this.__offsetBottom - scrollY - this.__viewportHeight;
-		var remainingScrollPercentBottom = 100 - Math.round(((scrollY + this.__viewportHeight) / scrollHeight) * 100);
-		if (remainingScrollBottom < -400) {
+		if (this.__loadingNextPage) {
 			return;
 		}
+		var scrollY = window.scrollY;
+		var remainingScrollBottom = this.__offsetHeight + this.__offsetBottom - scrollY - this.__viewportHeight;
 		var pageDimentions = this.__pageDimentions;
 		var pageIds = this.props.pageIds;
 		var opts = {};
-		if (remainingScrollPercentBottom <= this.props.threshold) {
-			if (scrollY > pageDimentions[pageIds[0]].offsetHeight) {
+		if (remainingScrollBottom <= this.props.threshold) {
+			if (scrollY > (pageDimentions[pageIds[0]].offsetHeight + this.__paddingTop)) {
 				opts.unloadPageId = pageIds[0];
 			}
 			this.__loadNextPage(opts);
 		} else {
-			var remainingScrollPercentTop = Math.round((scrollY / scrollHeight) * 100);
-			if (remainingScrollPercentTop <= this.props.threshold) {
-				this.__loadPrevPage();
-			}
+			// TODO: determine prev page load point
 		}
 	},
 
