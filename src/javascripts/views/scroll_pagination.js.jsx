@@ -202,7 +202,7 @@ Micro.Views.ScrollPagination = React.createClass({
 		this.__offsetTop = offsetTop;
 		this.__offsetHeight = offsetHeight;
 		this.__offsetBottom = offsetBottom;
-		this.__nextPageThreshold = nextPageThreshold;
+		this.__nextPageThreshold = nextPageThreshold || this.__nextPageThreshold;
 	},
 
 	__updateRemainingScrollHeight: function () {
