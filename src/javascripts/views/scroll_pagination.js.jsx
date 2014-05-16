@@ -21,6 +21,7 @@ Micro.Views.ScrollPagination = React.createClass({
 
 		var pageIds = this.props.pageIds;
 		this.__pageDimentions = {};
+		this.__unloadedPageDimentions = {};
 		if (pageIds.length > 1) {
 			throw new Error("ScrollPagination: Must mount with a single page, an attempt was made to mount with "+ pageIds.length +"!");
 		}
@@ -86,22 +87,21 @@ Micro.Views.ScrollPagination = React.createClass({
 				marginBottom = 500;
 			}
 			this.__marginBottom = marginBottom;
-			// this.refs.wrapper.getDOMNode().style.setProperty("margin-bottom", marginBottom +"px");
 		}
 
-		console.log(newPageId, newPagePosition, unloadedPageId, unloadedPagePosition, renderedPageIds, pageIds);
 		if (unloadedPageId) {
 			if (unloadedPagePosition === "top") {
 				var paddingTop = this.__paddingTop || 0;
-				paddingTop += this.__pageDimentions[unloadedPageId].offsetHeight + this.__offsetTop;
+				paddingTop += this.__pageDimentions[unloadedPageId].offsetHeight;
 				this.__paddingTop = paddingTop;
-				// this.refs.wrapper.getDOMNode().style.setProperty("padding-top", paddingTop +"px");
 			} else {
 				var paddingBottom = this.__paddingBottom || 0;
 				paddingBottom += this.__pageDimentions[unloadedPageId].offsetHeight;
 				this.__paddingBottom = paddingBottom;
-				// this.refs.wrapper.getDOMNode().style.setProperty("padding-bottom", paddingBottom +"px");
 			}
+
+			this.__unloadedPageDimentions[unloadedPageId] = this.__pageDimentions[unloadedPageId];
+			delete this.__pageDimentions[unloadedPageId];
 		}
 
 		this.__newPageId = newPageId;
@@ -179,12 +179,17 @@ Micro.Views.ScrollPagination = React.createClass({
 		if (opts.newPageId) {
 			var pagesOffsetHeight = 0;
 			var pageDimentions = this.__pageDimentions;
+			var unloadedPageDimentions = this.__unloadedPageDimentions;
 			Object.keys(pageDimentions).forEach(function (k) {
 				var dimentions = pageDimentions[k];
 				pagesOffsetHeight += dimentions.offsetHeight;
 			});
+			Object.keys(unloadedPageDimentions).forEach(function (k) {
+				var dimentions = unloadedPageDimentions[k];
+				pagesOffsetHeight += dimentions.offsetHeight;
+			});
 			pageDimentions[opts.newPageId] = {
-				offsetHeight: offsetHeight - pagesOffsetHeight
+				offsetHeight: offsetHeight - pagesOffsetHeight + offsetTop
 			};
 		}
 
