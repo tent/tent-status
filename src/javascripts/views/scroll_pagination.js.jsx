@@ -17,6 +17,7 @@ Micro.Views.ScrollPagination = React.createClass({
 
 	componentWillMount: function () {
 		this.__marginBottom = 0;
+		this.__paddingTop = 0;
 
 		var pageIds = this.props.pageIds;
 		this.__pageDimentions = {};
@@ -35,16 +36,14 @@ Micro.Views.ScrollPagination = React.createClass({
 		window.addEventListener("resize", this.__handleResize, false);
 	},
 
-	componentWillUpdate: function () {
+	componentWillUpdate: function (props) {
 		this.__loadingPrevPage = false;
 		this.__loadingNextPage = false;
-	},
 
-	componentDidUpdate: function () {
 		// TODO: when fetching prev page, send page id to be unloaded
 		// TODO: when pageIds excludes a known page, fill the gap with it's height (must always be either top or bottom (start or end of array))
 
-		var pageIds = this.props.pageIds;
+		var pageIds = props.pageIds;
 		var renderedPageIds = Object.keys(this.__pageDimentions);
 
 		// find new page id (if any)
@@ -87,22 +86,33 @@ Micro.Views.ScrollPagination = React.createClass({
 				marginBottom = 500;
 			}
 			this.__marginBottom = marginBottom;
-			this.refs.wrapper.getDOMNode().style.setProperty("margin-bottom", marginBottom +"px");
+			// this.refs.wrapper.getDOMNode().style.setProperty("margin-bottom", marginBottom +"px");
 		}
 
+		console.log(newPageId, newPagePosition, unloadedPageId, unloadedPagePosition, renderedPageIds, pageIds);
 		if (unloadedPageId) {
 			if (unloadedPagePosition === "top") {
 				var paddingTop = this.__paddingTop || 0;
-				paddingTop += this.__pageDimentions[unloadedPageId].offsetHeight;
+				paddingTop += this.__pageDimentions[unloadedPageId].offsetHeight + this.__offsetTop;
 				this.__paddingTop = paddingTop;
-				this.refs.wrapper.getDOMNode().style.setProperty("padding-top", paddingTop +"px");
+				// this.refs.wrapper.getDOMNode().style.setProperty("padding-top", paddingTop +"px");
 			} else {
 				var paddingBottom = this.__paddingBottom || 0;
 				paddingBottom += this.__pageDimentions[unloadedPageId].offsetHeight;
 				this.__paddingBottom = paddingBottom;
-				this.refs.wrapper.getDOMNode().style.setProperty("padding-bottom", paddingBottom +"px");
+				// this.refs.wrapper.getDOMNode().style.setProperty("padding-bottom", paddingBottom +"px");
 			}
 		}
+
+		this.__newPageId = newPageId;
+		this.__newPagePosition = newPagePosition;
+	},
+
+	componentDidUpdate: function () {
+		var newPageId = this.__newPageId;
+		var newPagePosition = this.__newPagePosition;
+		delete this.__newPageId;
+		delete this.__newPagePosition;
 
 		this.__updateDimensions({
 			newPageId: newPageId,
@@ -117,8 +127,18 @@ Micro.Views.ScrollPagination = React.createClass({
 	},
 
 	render: function () {
+		var style = {};
+		if (this.__paddingTop) {
+			style.paddingTop = this.__paddingTop + "px";
+		}
+		if (this.__paddingBottom) {
+			style.paddingBottom = this.__paddingBottom + "px";
+		}
+		if (this.__marginBottom) {
+			style.marginBottom = this.__marginBottom + "px";
+		}
 		return (
-			<div ref="wrapper">
+			<div ref="wrapper" style={style}>
 				{this.props.children}
 			</div>
 		);
