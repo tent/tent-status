@@ -8,7 +8,6 @@ Micro.Views.ScrollPagination = React.createClass({
 
 	getDefaultProps: function () {
 		return {
-			threshold: 60,
 			pageIds: [],
 			loadPrevPage: function () {},
 			loadNextPage: function () {}
@@ -18,6 +17,7 @@ Micro.Views.ScrollPagination = React.createClass({
 	componentWillMount: function () {
 		this.__marginBottom = 0;
 		this.__paddingTop = 0;
+		this.__nextPageThreshold = 0;
 
 		var pageIds = this.props.pageIds;
 		this.__pageDimentions = {};
@@ -176,6 +176,7 @@ Micro.Views.ScrollPagination = React.createClass({
 		}
 		var offsetBottom = maxHeight - offsetHeight - offsetTop - this.__marginBottom;
 
+		var nextPageThreshold;
 		if (opts.newPageId) {
 			var pagesOffsetHeight = 0;
 			var pageDimentions = this.__pageDimentions;
@@ -191,6 +192,9 @@ Micro.Views.ScrollPagination = React.createClass({
 			pageDimentions[opts.newPageId] = {
 				offsetHeight: offsetHeight - pagesOffsetHeight + offsetTop
 			};
+			if (opts.newPagePosition === "bottom") {
+				nextPageThreshold = Math.round(pageDimentions[opts.newPageId].offsetHeight / 2);
+			}
 		}
 
 		this.__maxHeight = maxHeight;
@@ -198,6 +202,7 @@ Micro.Views.ScrollPagination = React.createClass({
 		this.__offsetTop = offsetTop;
 		this.__offsetHeight = offsetHeight;
 		this.__offsetBottom = offsetBottom;
+		this.__nextPageThreshold = nextPageThreshold;
 	},
 
 	__updateRemainingScrollHeight: function () {
@@ -212,7 +217,7 @@ Micro.Views.ScrollPagination = React.createClass({
 		var pageDimentions = this.__pageDimentions;
 		var pageIds = this.props.pageIds;
 		var opts = {};
-		if (remainingScrollBottom <= this.props.threshold) {
+		if (remainingScrollBottom <= this.__nextPageThreshold) {
 			if (scrollY > (pageDimentions[pageIds[0]].offsetHeight + this.__paddingTop)) {
 				opts.unloadPageId = pageIds[0];
 			}
