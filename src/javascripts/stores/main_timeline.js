@@ -21,9 +21,18 @@ Micro.Stores.MainTimeline = {
 		};
 	},
 
+	fetchPrevPage: function (opts) {
+		var params = Marbles.QueryParams.deserializeParams(this.__pageQueries.prev);
+		this.__fetch(params, Marbles.Utils.extend({}, opts, {
+			operation: "prepend"
+		}));
+	},
+
 	fetchNextPage: function (opts) {
-		var params = Marbles.QueryParams.deserializeParams(this.__pageQueries.next || "");
-		this.__fetch(params, opts);
+		var params = Marbles.QueryParams.deserializeParams(this.__pageQueries.next);
+		this.__fetch(params, Marbles.Utils.extend({}, opts, {
+			operation: "append"
+		}));
 	},
 
 	setCold: function () {
@@ -46,9 +55,6 @@ Micro.Stores.MainTimeline = {
 	__cold: true,
 
 	__pageQueries: {},
-
-	__pageIdAppendCounter: 0,
-	__pageIdPrependCounter: 0,
 
 	__state: {},
 
@@ -82,6 +88,10 @@ Micro.Stores.MainTimeline = {
 		var config = Micro.config;
 		params = params || [{}];
 		opts = opts || {};
+		var operation = opts.operation || "append";
+		if (operation !== "append" && operation !== "prepend") {
+			throw new Error("MainTimeline: Invalid operation: "+ JSON.stringify(operation) +". Expected \"append\" or \"prepend\"!");
+		}
 		params = Marbles.QueryParams.replaceParams.apply(null, [[{
 			types: [
 				config.POST_TYPES.STATUS,
@@ -103,28 +113,76 @@ Micro.Stores.MainTimeline = {
 						profile.entity = entity;
 					});
 
-					this.__pageQueries = res.pages;
-
 					var pageIds = this.__state.pageIds;
 					var pages = this.__state.pages;
 
 					var unloadPageId = opts.unloadPageId;
 					if (unloadPageId) {
-						// TODO: check the other end of the pageIds array if it's a prepend operation
-						if (pageIds[0] === unloadPageId) {
-							pageIds.shift();
-							pages.shift();
-						} else {
-							throw new Error("MainTimeline: Invalid unload request for page id: "+ JSON.stringify(unloadPageId) +". Only "+ JSON.stringify(pageIds[0]) +" may be removed.");
+						if (operation === "append") {
+							if (pageIds[0] === unloadPageId) {
+								pageIds.shift();
+								pages.shift();
+							} else {
+								throw new Error("MainTimeline: Invalid unload request for page id: "+ JSON.stringify(unloadPageId) +". Only "+ JSON.stringify(pageIds[0]) +" may be removed.");
+							}
+						} else { // prepend
+							// TODO: unload last page or throw error
 						}
 					}
 
-					var pageId = String(++this.__pageIdAppendCounter);
-					pageIds.push(pageId);
-					pages.push({
-						id: pageId,
-						posts: res.posts
-					});
+					var __firstPost = res.posts[0];
+					var __since;
+					if (__firstPost) {
+						__since = __firstPost.received_at || __firstPost.published_at;
+					} else {
+						__since = Date.now();
+					}
+					var pageQueries = {};
+					if (operation === "append") {
+						if (unloadPageId) {
+							pageQueries.prev = pages[0].pageQueries.prev;
+						} else {
+							pageQueries.prev = this.__pageQueries.prev || "?since="+ __since;
+						}
+						pageQueries.next = res.pages.next || null;
+					} else { // prepend
+						pageQueries.prev = res.pages.prev || this.__pageQueries.prev || "?since="+ __since;
+						if (unloadPageId) {
+							pageQueries.next = pages[pages.length-1].pageQueries.next || null;
+						} else {
+							pageQueries.next = this.__pageQueries.next || null;
+						}
+					}
+					this.__pageQueries = pageQueries;
+
+					// Don't add an empty page
+					if (res.posts.length === 0) {
+						this.__handleChange();
+						return;
+					}
+
+					var page = {
+						posts: res.posts,
+						pageQueries: {
+							prev: res.pages.prev || null,
+							next: res.pages.next || null
+						}
+					};
+					var __post;
+					if (operation === "append") {
+						__post = page.posts[0];
+					} else { // prepend
+						__post = page.posts[page.posts.length-1];
+					}
+					 page.id = String(__post.received_at || __post.published_at);
+
+					if (operation === "append") {
+						pageIds.push(page.id);
+						pages.push(page);
+					} else { // prepend
+						pageIds.unshift(page.id);
+						pages.unshift(page);
+					}
 
 					this.__setState({
 						profiles: profiles,

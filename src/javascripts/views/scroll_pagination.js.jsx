@@ -17,9 +17,11 @@ Micro.Views.ScrollPagination = React.createClass({
 	componentWillMount: function () {
 		this.__marginBottom = 0;
 		this.__paddingTop = 0;
+		this.__prevPageThreshold = 0;
 		this.__nextPageThreshold = 0;
 
 		var pageIds = this.props.pageIds;
+		this.__renderedPageIds = [];
 		this.__pageDimentions = {};
 		this.__unloadedPageDimentions = {};
 		if (pageIds.length > 1) {
@@ -41,11 +43,8 @@ Micro.Views.ScrollPagination = React.createClass({
 		this.__loadingPrevPage = false;
 		this.__loadingNextPage = false;
 
-		// TODO: when fetching prev page, send page id to be unloaded
-		// TODO: when pageIds excludes a known page, fill the gap with it's height (must always be either top or bottom (start or end of array))
-
 		var pageIds = props.pageIds;
-		var renderedPageIds = Object.keys(this.__pageDimentions);
+		var renderedPageIds = this.__renderedPageIds;
 
 		// find new page id (if any)
 		// must be either at beginning or end of list
@@ -58,7 +57,7 @@ Micro.Views.ScrollPagination = React.createClass({
 			newPageId = pageIds[0];
 			newPagePosition = "top";
 		} else if (renderedPageIds.length !== pageIds.length) {
-			throw new Error("ScrollPagination: New pages must be inserted at beginning or end! old("+ renderedPageIds.join(", ") +") new("+ pageIds.join(", ") +")");
+			throw new Error("ScrollPagination: New pages must be inserted at beginning or end!\nold("+ renderedPageIds.join(", ") +")\nnew("+ pageIds.join(", ") +")");
 		}
 
 		// find removed page id
@@ -94,14 +93,24 @@ Micro.Views.ScrollPagination = React.createClass({
 				var paddingTop = this.__paddingTop || 0;
 				paddingTop += this.__pageDimentions[unloadedPageId].offsetHeight;
 				this.__paddingTop = paddingTop;
+				renderedPageIds.shift();
 			} else {
 				var paddingBottom = this.__paddingBottom || 0;
 				paddingBottom += this.__pageDimentions[unloadedPageId].offsetHeight;
 				this.__paddingBottom = paddingBottom;
+				renderedPageIds.pop();
 			}
 
 			this.__unloadedPageDimentions[unloadedPageId] = this.__pageDimentions[unloadedPageId];
 			delete this.__pageDimentions[unloadedPageId];
+		}
+
+		if (newPageId) {
+			if (newPagePosition === "bottom") {
+				renderedPageIds.push(newPageId);
+			} else { // top
+				renderedPageIds.unshift(newPageId);
+			}
 		}
 
 		this.__newPageId = newPageId;
@@ -144,12 +153,12 @@ Micro.Views.ScrollPagination = React.createClass({
 		);
 	},
 
-	__loadPrevPage: function () {
+	__loadPrevPage: function (opts) {
 		if (this.__loadingPrevPage) {
 			return;
 		}
 		this.__loadingPrevPage = true;
-		this.props.loadPrevPage();
+		this.props.loadPrevPage(opts);
 	},
 
 	__loadNextPage: function (opts) {
@@ -176,6 +185,7 @@ Micro.Views.ScrollPagination = React.createClass({
 		}
 		var offsetBottom = maxHeight - offsetHeight - offsetTop - this.__marginBottom;
 
+		var prevPageThreshold;
 		var nextPageThreshold;
 		if (opts.newPageId) {
 			var pagesOffsetHeight = 0;
@@ -192,7 +202,9 @@ Micro.Views.ScrollPagination = React.createClass({
 			pageDimentions[opts.newPageId] = {
 				offsetHeight: offsetHeight - pagesOffsetHeight + offsetTop
 			};
-			if (opts.newPagePosition === "bottom") {
+			if (opts.newPagePosition === "top") {
+				prevPageThreshold = Math.round(pageDimentions[opts.newPageId].offsetHeight / 2);
+			} else if (opts.newPagePosition === "bottom") {
 				nextPageThreshold = Math.round(pageDimentions[opts.newPageId].offsetHeight / 2);
 			}
 		}
@@ -202,6 +214,7 @@ Micro.Views.ScrollPagination = React.createClass({
 		this.__offsetTop = offsetTop;
 		this.__offsetHeight = offsetHeight;
 		this.__offsetBottom = offsetBottom;
+		this.__prevPageThreshold = prevPageThreshold || this.__prevPageThreshold;
 		this.__nextPageThreshold = nextPageThreshold || this.__nextPageThreshold;
 	},
 
@@ -209,7 +222,7 @@ Micro.Views.ScrollPagination = React.createClass({
 		if (this.__offsetHeight === 0) {
 			return;
 		}
-		if (this.__loadingNextPage) {
+		if (this.__loadingNextPage || this.__loadingPrevPage) {
 			return;
 		}
 		var scrollY = window.scrollY;
@@ -223,7 +236,10 @@ Micro.Views.ScrollPagination = React.createClass({
 			}
 			this.__loadNextPage(opts);
 		} else {
-			// TODO: determine prev page load point
+			var remainingScrollTop = scrollY - this.__offsetTop - this.__paddingTop;
+			if (remainingScrollTop <= this.__prevPageThreshold) {
+				this.__loadPrevPage(opts);
+			}
 		}
 	},
 
