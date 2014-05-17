@@ -174,7 +174,7 @@ Micro.Stores.MainTimeline = {
 					} else { // prepend
 						__post = page.posts[page.posts.length-1];
 					}
-					 page.id = String(__post.received_at || __post.published_at);
+					page.id = String(__post.received_at || __post.published_at);
 
 					if (operation === "append") {
 						pageIds.push(page.id);
