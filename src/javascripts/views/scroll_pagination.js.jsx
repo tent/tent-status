@@ -135,7 +135,7 @@ Micro.Views.ScrollPagination = React.createClass({
 			newPageId: newPageId,
 			newPagePosition: newPagePosition
 		});
-		this.__updateRemainingScrollHeight();
+		this.__updateRemainingScrollHeight({ init: true });
 	},
 
 	componentWillUnmount: function () {
@@ -226,7 +226,8 @@ Micro.Views.ScrollPagination = React.createClass({
 		this.__nextPageThreshold = nextPageThreshold || this.__nextPageThreshold;
 	},
 
-	__updateRemainingScrollHeight: function () {
+	__updateRemainingScrollHeight: function (opts) {
+		opts = opts || {};
 		if (this.__offsetHeight === 0) {
 			return;
 		}
@@ -237,16 +238,18 @@ Micro.Views.ScrollPagination = React.createClass({
 		var remainingScrollBottom = this.__offsetHeight + this.__offsetBottom - scrollY - this.__viewportHeight;
 		var pageDimentions = this.__pageDimentions;
 		var pageIds = this.props.pageIds;
-		var opts = {};
+		var pageOpts = {};
 		if (remainingScrollBottom <= this.__nextPageThreshold) {
 			if (scrollY > (pageDimentions[pageIds[0]].offsetHeight + this.__paddingTop)) {
-				opts.unloadPageId = pageIds[0];
+				pageOpts.unloadPageId = pageIds[0];
 			}
-			this.__loadNextPage(opts);
+			this.__loadNextPage(pageOpts);
 		} else {
 			var remainingScrollTop = scrollY - this.__offsetTop - this.__paddingTop;
 			if (remainingScrollTop <= this.__prevPageThreshold) {
-				this.__loadPrevPage(opts);
+				if (opts.init !== true) {
+					this.__loadPrevPage(pageOpts);
+				}
 			}
 		}
 	},
