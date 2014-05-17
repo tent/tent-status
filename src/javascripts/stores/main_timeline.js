@@ -168,13 +168,10 @@ Micro.Stores.MainTimeline = {
 							next: res.pages.next || null
 						}
 					};
-					var __post;
-					if (operation === "append") {
-						__post = page.posts[0];
-					} else { // prepend
-						__post = page.posts[page.posts.length-1];
-					}
-					page.id = String(__post.received_at || __post.published_at);
+					var __lastPost;
+					__firstPost = page.posts[0];
+					__lastPost = page.posts[page.posts.length-1];
+					page.id = String(__firstPost.received_at || __firstPost.published_at) +":"+ String(__lastPost.received_at || __lastPost.published_at);
 
 					if (operation === "append") {
 						pageIds.push(page.id);
