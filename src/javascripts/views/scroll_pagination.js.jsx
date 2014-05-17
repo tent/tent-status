@@ -76,9 +76,9 @@ Micro.Views.ScrollPagination = React.createClass({
 			}
 		}
 
-		// supply extra whitespace to prevent scroll jumping
-		// while loading new page
 		if (newPagePosition === "bottom") {
+			// supply extra whitespace to prevent scroll jumping
+			// while loading new page
 			var marginBottom;
 			if (renderedPageIds.length > 0) {
 				marginBottom = this.__pageDimentions[renderedPageIds[renderedPageIds.length-1]].offsetHeight;
@@ -86,11 +86,19 @@ Micro.Views.ScrollPagination = React.createClass({
 				marginBottom = 500;
 			}
 			this.__marginBottom = marginBottom;
+		} else if (newPagePosition === "top") {
+				var newPageHeight = this.__unloadedPageDimentions[newPageId];
+				if (newPageHeight) {
+					delete this.__unloadedPageDimentions[newPageId];
+					this.__paddingTop = this.__paddingTop - newPageHeight.offsetHeight;
+				} else {
+					// TODO: cause page not to jump while inserting new page
+				}
 		}
 
 		if (unloadedPageId) {
 			if (unloadedPagePosition === "top") {
-				var paddingTop = this.__paddingTop || 0;
+				var paddingTop = this.__paddingTop;
 				paddingTop += this.__pageDimentions[unloadedPageId].offsetHeight;
 				this.__paddingTop = paddingTop;
 				renderedPageIds.shift();
