@@ -126,7 +126,12 @@ Micro.Stores.MainTimeline = {
 								throw new Error("MainTimeline: Invalid unload request for page id: "+ JSON.stringify(unloadPageId) +". Only "+ JSON.stringify(pageIds[0]) +" may be removed.");
 							}
 						} else { // prepend
-							// TODO: unload last page or throw error
+							if (pageIds[pageIds.length-1] === unloadPageId) {
+								pageIds.pop();
+								pages.pop();
+							} else {
+								throw new Error("MainTimeline: Invalid unload request for page id: "+ JSON.stringify(unloadPageId) +". Only "+ JSON.stringify(pageIds[pageIds.length-1]) +" may be removed.");
+							}
 						}
 					}
 
@@ -148,7 +153,7 @@ Micro.Stores.MainTimeline = {
 					} else { // prepend
 						pageQueries.prev = res.pages.prev || this.__pageQueries.prev || "?since="+ __since;
 						if (unloadPageId) {
-							pageQueries.next = pages[pages.length-1].pageQueries.next || null;
+							pageQueries.next = pages.length > 0 ? pages[pages.length-1].pageQueries.next || null : res.pages.next || null;
 						} else {
 							pageQueries.next = this.__pageQueries.next || null;
 						}
