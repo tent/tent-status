@@ -17,14 +17,12 @@ Micro.Views.ScrollPagination = React.createClass({
 	componentWillMount: function () {
 		this.__marginBottom = 0;
 		this.__paddingTop = 0;
-		this.__paddingBottom = 0;
 		this.__prevPageThreshold = 0;
 		this.__nextPageThreshold = 0;
 
 		var pageIds = this.props.pageIds;
 		this.__renderedPageIds = [];
 		this.__pageDimentions = {};
-		this.__unloadedPageDimentions = {};
 		if (pageIds.length > 1) {
 			throw new Error("ScrollPagination: Must mount with a single page, an attempt was made to mount with "+ pageIds.length +"!");
 		}
@@ -77,41 +75,15 @@ Micro.Views.ScrollPagination = React.createClass({
 			}
 		}
 
-		if (newPagePosition === "bottom") {
-			// supply extra whitespace to prevent scroll jumping
-			// while loading new page
-			var marginBottom;
-			if (renderedPageIds.length > 0) {
-				marginBottom = this.__pageDimentions[renderedPageIds[renderedPageIds.length-1]].offsetHeight;
-			} else {
-				marginBottom = 500;
-			}
-			this.__marginBottom = marginBottom;
-		} else if (newPagePosition === "top") {
-				var newPageHeight = this.__unloadedPageDimentions[newPageId];
-				if (newPageHeight) {
-					delete this.__unloadedPageDimentions[newPageId];
-					this.__paddingTop = this.__paddingTop - newPageHeight.offsetHeight;
-				} else {
-					// TODO: cause page not to jump while inserting new page
-				}
-		}
-
 		if (unloadedPageId) {
 			if (unloadedPagePosition === "top") {
 				var paddingTop = this.__paddingTop;
-				paddingTop += this.__pageDimentions[unloadedPageId].offsetHeight;
-				this.__paddingBottom = Math.max(this.__paddingBottom - this.__pageDimentions[unloadedPageId].offsetHeight, 0);
+				paddingTop += this.__pageDimentions[unloadedPageId].height;
 				this.__paddingTop = paddingTop;
 				renderedPageIds.shift();
 			} else {
-				var paddingBottom = this.__paddingBottom || 0;
-				paddingBottom += this.__pageDimentions[unloadedPageId].offsetHeight;
-				this.__paddingBottom = paddingBottom;
 				renderedPageIds.pop();
 			}
-
-			this.__unloadedPageDimentions[unloadedPageId] = this.__pageDimentions[unloadedPageId];
 			delete this.__pageDimentions[unloadedPageId];
 		}
 
@@ -137,6 +109,13 @@ Micro.Views.ScrollPagination = React.createClass({
 			newPageId: newPageId,
 			newPagePosition: newPagePosition
 		});
+
+		if (newPagePosition === "top") {
+			var newPageDimentions = this.__pageDimentions[newPageId];
+			this.__paddingTop = Math.max(this.__paddingTop - newPageDimentions.height, 0);
+			this.refs.wrapper.getDOMNode().style.paddingTop = this.__paddingTop +"px";
+		}
+
 		this.__updateRemainingScrollHeight({ init: true });
 	},
 
@@ -149,9 +128,6 @@ Micro.Views.ScrollPagination = React.createClass({
 		var style = {};
 		if (this.__paddingTop) {
 			style.paddingTop = this.__paddingTop + "px";
-		}
-		if (this.__paddingBottom) {
-			style.paddingBottom = this.__paddingBottom + "px";
 		}
 		if (this.__marginBottom) {
 			style.marginBottom = this.__marginBottom + "px";
@@ -197,46 +173,47 @@ Micro.Views.ScrollPagination = React.createClass({
 
 		var prevPageThreshold;
 		var nextPageThreshold;
+		var newPageId = opts.newPageId;
+		var newPagePosition = opts.newPagePosition;
 		if (opts.newPageId) {
-			var pagesOffsetHeight = 0;
-			var pageDimentions = this.__pageDimentions;
-			var unloadedPageDimentions = this.__unloadedPageDimentions;
-			Object.keys(pageDimentions).forEach(function (k) {
-				var dimentions = pageDimentions[k];
-				pagesOffsetHeight += dimentions.offsetHeight;
-			});
-			Object.keys(unloadedPageDimentions).forEach(function (k) {
-				var dimentions = unloadedPageDimentions[k];
-				pagesOffsetHeight += dimentions.offsetHeight;
-			});
 			var renderedPageIds = this.__renderedPageIds;
-			var pageOffsetTop = this.__paddingTop;
-			var newPageIndex = -1;
-			for (var i = 0, len = renderedPageIds.length; i < len; i++) {
-				if (renderedPageIds[i] === opts.newPageId) {
-					newPageIndex = i;
-					break;
-				}
-				pageOffsetTop += pageDimentions[renderedPageIds[i]].offsetHeight;
-			}
-			pageDimentions[opts.newPageId] = {
-				offsetTop: pageOffsetTop + offsetTop,
-				offsetHeight: offsetHeight - pagesOffsetHeight + offsetTop
+			var pageDimentions = this.__pageDimentions;
+			var paddingTop = this.__paddingTop;
+			var pagesHeightAbove = paddingTop;
+			var pagesHeightBelow = 0;
+
+			var newPageIndex = renderedPageIds.indexOf(newPageId);
+			renderedPageIds.slice(0, newPageIndex).forEach(function (pageId) {
+				var dimentions = pageDimentions[pageId];
+				pagesHeightAbove += dimentions.height;
+			});
+			renderedPageIds.slice(newPageIndex + 1, renderedPageIds.length).forEach(function (pageId) {
+				var dimentions = pageDimentions[pageId];
+				pagesHeightBelow += dimentions.height;
+			});
+
+			var newPageDimentions = {
+				offsetTop: pagesHeightAbove + offsetTop,
+				height: offsetHeight - pagesHeightAbove - pagesHeightBelow
 			};
-			if (newPageIndex < renderedPageIds.length) {
-				// recalculate offsetTop when page inserted above other pages
-				for (i = newPageIndex + 1, len = renderedPageIds.length; i < len; i++) {
-					pageDimentions[renderedPageIds[i]].offsetTop += pageDimentions[opts.newPageId].offsetHeight;
-				}
+			pageDimentions[newPageId] = newPageDimentions;
+
+			var offsetTopDelta = newPageDimentions.height;
+			if (newPagePosition === "top") {
+				offsetTopDelta = offsetTopDelta * -1;
 			}
-			if (opts.newPagePosition === "top") {
-				prevPageThreshold = Math.round(pageDimentions[opts.newPageId].offsetHeight / 2);
-			} else if (opts.newPagePosition === "bottom") {
-				nextPageThreshold = Math.round(pageDimentions[opts.newPageId].offsetHeight / 2);
+			renderedPageIds.slice(newPageIndex + 1, renderedPageIds.length).forEach(function (pageId) {
+				var pageOffsetTop = pageDimentions[pageId].offsetTop;
+				pageDimentions[pageId].offsetTop = Math.max(pageOffsetTop + offsetTopDelta, 0);
+			});
+
+			if (newPagePosition === "top") {
+				prevPageThreshold = Math.round(newPageDimentions.height / 2);
+			} else if (newPagePosition === "bottom") {
+				nextPageThreshold = Math.round(newPageDimentions.height / 2);
 			}
 		}
 
-		this.__maxHeight = maxHeight;
 		this.__viewportHeight = viewportHeight;
 		this.__offsetTop = offsetTop;
 		this.__offsetHeight = offsetHeight;
@@ -245,31 +222,37 @@ Micro.Views.ScrollPagination = React.createClass({
 		this.__nextPageThreshold = nextPageThreshold || this.__nextPageThreshold;
 	},
 
-	__updateRemainingScrollHeight: function (opts) {
+	__updateRemainingScrollHeight: function (opts, e) {
 		opts = opts || {};
 		if (this.__offsetHeight === 0) {
 			return;
 		}
 		if (this.__loadingNextPage || this.__loadingPrevPage) {
+			if (e) {
+				e.preventDefault();
+			}
 			return;
 		}
+
 		var scrollY = window.scrollY;
-		var remainingScrollBottom = this.__offsetHeight + this.__offsetBottom - scrollY - this.__viewportHeight - this.__paddingBottom;
+		var viewportHeight = this.__viewportHeight;
+		var remainingScrollBottom = this.__offsetHeight + this.__offsetBottom - scrollY - viewportHeight;
+
 		var pageDimentions = this.__pageDimentions;
 		var pageIds = this.props.pageIds;
 		var pageOpts = {};
-		var __pageDimentions;
+
 		if (remainingScrollBottom <= this.__nextPageThreshold) {
-			__pageDimentions = pageDimentions[pageIds[0]];
-			if (__pageDimentions && scrollY > (__pageDimentions.offsetHeight + this.__paddingTop)) {
+			var firstPageDimentions = pageDimentions[pageIds[0]];
+			if (firstPageDimentions && scrollY > (firstPageDimentions.height + this.__paddingTop)) {
 				pageOpts.unloadPageId = pageIds[0];
 			}
 			this.__loadNextPage(pageOpts);
 		} else if (opts.init !== true) {
 			var remainingScrollTop = scrollY - this.__offsetTop - this.__paddingTop;
-			__pageDimentions = pageDimentions[pageIds[pageIds.length-1]];
-			if (remainingScrollTop <= this.__prevPageThreshold && __pageDimentions) {
-				if (scrollY + (this.__viewportHeight * 2) < __pageDimentions.offsetTop) {
+			var lastPageDimentions = pageDimentions[pageIds[pageIds.length-1]];
+			if (lastPageDimentions && remainingScrollTop <= this.__prevPageThreshold) {
+				if ((scrollY + viewportHeight) < lastPageDimentions.offsetTop) {
 					pageOpts.unloadPageId = pageIds[pageIds.length-1];
 				}
 				this.__loadPrevPage(pageOpts);
@@ -277,8 +260,8 @@ Micro.Views.ScrollPagination = React.createClass({
 		}
 	},
 
-	__handleScroll: function () {
-		this.__updateRemainingScrollHeight();
+	__handleScroll: function (e) {
+		this.__updateRemainingScrollHeight({}, e);
 	},
 
 	__handleResize: function () {
