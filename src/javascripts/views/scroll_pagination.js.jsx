@@ -220,7 +220,7 @@ Micro.Views.ScrollPagination = React.createClass({
 				pageOffsetTop += pageDimentions[renderedPageIds[i]].offsetHeight;
 			}
 			pageDimentions[opts.newPageId] = {
-				offsetTop: pageOffsetTop,
+				offsetTop: pageOffsetTop + offsetTop,
 				offsetHeight: offsetHeight - pagesOffsetHeight + offsetTop
 			};
 			if (newPageIndex < renderedPageIds.length) {
