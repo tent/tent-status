@@ -101,99 +101,120 @@ Micro.Stores.MainTimeline = {
 			limit: Micro.config.PER_PAGE,
 			profiles: "entity"
 		}]].concat(params));
-		Micro.client.getPostsFeed({
-			params: params,
-			callback: {
-				success: function (res) {
-					var profiles = res.profiles || {};
-					Object.keys(profiles).forEach(function (entity) {
-						var profile = profiles[entity];
-						profile.avatarDigest = profile.avatar_digest;
-						delete profile.avatar_digest;
-						profile.entity = entity;
-					});
-
-					var pageIds = this.__state.pageIds;
-					var pages = this.__state.pages;
-
-					var unloadPageId = opts.unloadPageId;
-					if (unloadPageId) {
-						if (operation === "append") {
-							if (pageIds[0] === unloadPageId) {
-								pageIds.shift();
-								pages.shift();
-							} else {
-								throw new Error("MainTimeline: Invalid unload request for page id: "+ JSON.stringify(unloadPageId) +". Only "+ JSON.stringify(pageIds[0]) +" may be removed.");
-							}
-						} else { // prepend
-							if (pageIds[pageIds.length-1] === unloadPageId) {
-								pageIds.pop();
-								pages.pop();
-							} else {
-								throw new Error("MainTimeline: Invalid unload request for page id: "+ JSON.stringify(unloadPageId) +". Only "+ JSON.stringify(pageIds[pageIds.length-1]) +" may be removed.");
-							}
-						}
+		var getPostsFeed = new Promise(function (resolve, reject) {
+			Micro.client.getPostsFeed({
+				params: params,
+				callback: {
+					success: resolve,
+					failure: function (res, xhr) {
+						reject([res, xhr]);
 					}
+				}
+			});
+		});
+		getPostsFeed.then(
+			this.__handleFetchSuccess.bind(this, opts, operation),
+			this.__handleFetchFailure.bind(this)
+		);
+	},
 
-					var __firstPost = res.posts[0];
-					var __since;
-					if (__firstPost) {
-						__since = __firstPost.received_at || __firstPost.published_at;
-					} else {
-						__since = Date.now();
-					}
-					var pageQueries = {};
-					if (operation === "append") {
-						if (unloadPageId) {
-							pageQueries.prev = pages[0].pageQueries.prev;
-						} else {
-							pageQueries.prev = this.__pageQueries.prev || "?since="+ __since;
-						}
-						pageQueries.next = res.pages.next || null;
-					} else { // prepend
-						pageQueries.prev = res.pages.prev || this.__pageQueries.prev || "?since="+ __since;
-						if (unloadPageId) {
-							pageQueries.next = pages.length > 0 ? pages[pages.length-1].pageQueries.next || null : res.pages.next || null;
-						} else {
-							pageQueries.next = this.__pageQueries.next || null;
-						}
-					}
-					this.__pageQueries = pageQueries;
+	__handleFetchSuccess: function (opts, operation, res) {
+		var profiles = res.profiles || {};
+		Object.keys(profiles).forEach(function (entity) {
+			var profile = profiles[entity];
+			profile.avatarDigest = profile.avatar_digest;
+			delete profile.avatar_digest;
+			profile.entity = entity;
+		});
 
-					// Don't add an empty page
-					if (res.posts.length === 0) {
-						this.__handleChange();
-						return;
-					}
+		var pageIds = this.__state.pageIds;
+		var pages = this.__state.pages;
 
-					var page = {
-						posts: res.posts,
-						pageQueries: {
-							prev: res.pages.prev || null,
-							next: res.pages.next || null
-						}
-					};
-					var __lastPost;
-					__firstPost = page.posts[0];
-					__lastPost = page.posts[page.posts.length-1];
-					page.id = String(__firstPost.received_at || __firstPost.published_at) +":"+ String(__lastPost.received_at || __lastPost.published_at);
+		var unloadPageId = opts.unloadPageId;
+		if (unloadPageId) {
+			if (operation === "append") {
+				if (pageIds[0] === unloadPageId) {
+					pageIds.shift();
+					pages.shift();
+				} else {
+					throw new Error("MainTimeline: Invalid unload request for page id: "+ JSON.stringify(unloadPageId) +". Only "+ JSON.stringify(pageIds[0]) +" may be removed.");
+				}
+			} else { // prepend
+				if (pageIds[pageIds.length-1] === unloadPageId) {
+					pageIds.pop();
+					pages.pop();
+				} else {
+					throw new Error("MainTimeline: Invalid unload request for page id: "+ JSON.stringify(unloadPageId) +". Only "+ JSON.stringify(pageIds[pageIds.length-1]) +" may be removed.");
+				}
+			}
+		}
 
-					if (operation === "append") {
-						pageIds.push(page.id);
-						pages.push(page);
-					} else { // prepend
-						pageIds.unshift(page.id);
-						pages.unshift(page);
-					}
+		var __firstPost = res.posts[0];
+		var __since;
+		if (__firstPost) {
+			__since = __firstPost.received_at || __firstPost.published_at;
+		} else {
+			__since = Date.now();
+		}
+		var pageQueries = {};
+		if (operation === "append") {
+			if (unloadPageId) {
+				pageQueries.prev = pages[0].pageQueries.prev;
+			} else {
+				pageQueries.prev = this.__pageQueries.prev || "?since="+ __since;
+			}
+			pageQueries.next = res.pages.next || null;
+		} else { // prepend
+			pageQueries.prev = res.pages.prev || this.__pageQueries.prev || "?since="+ __since;
+			if (unloadPageId) {
+				pageQueries.next = pages.length > 0 ? pages[pages.length-1].pageQueries.next || null : res.pages.next || null;
+			} else {
+				pageQueries.next = this.__pageQueries.next || null;
+			}
+		}
+		this.__pageQueries = pageQueries;
 
-					this.__setState({
-						profiles: profiles,
-						pages: pages,
-						pageIds: pageIds
-					});
-				}.bind(this),
+		// Don't add an empty page
+		if (res.posts.length === 0) {
+			this.__handleChange();
+			return;
+		}
 
-				failure: function () {}
+		var page = {
+			posts: res.posts,
+			pageQueries: {
+				prev: res.pages.prev || null,
+				next: res.pages.next || null
+			}
+		};
+		var __lastPost;
+		__firstPost = page.posts[0];
+		__lastPost = page.posts[page.posts.length-1];
+		page.id = String(__firstPost.received_at || __firstPost.published_at) +":"+ String(__lastPost.received_at || __lastPost.published_at);
+
+		if (operation === "append") {
+			pageIds.push(page.id);
+			pages.push(page);
+		} else { // prepend
+			pageIds.unshift(page.id);
+			pages.unshift(page);
+		}
+
+		this.__setState({
+			profiles: profiles,
+			pages: pages,
+			pageIds: pageIds
+		});
+	},
+
+	__handleFetchFailure: function (err) {
+		Micro.setImmediate(function () {
+			if (err instanceof Error) {
+				throw err;
+			} else {
+				var res = err[0];
+				var xhr = err[1];
+				throw new Error("Failed to fetch posts feed: "+ xhr.status +" - "+ JSON.stringify(res));
 			}
 		});
 	}
