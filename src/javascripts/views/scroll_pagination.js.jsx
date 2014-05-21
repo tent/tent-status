@@ -237,6 +237,7 @@ Micro.Views.ScrollPagination = React.createClass({
 		var scrollY = window.scrollY;
 		var viewportHeight = this.__viewportHeight;
 		var remainingScrollBottom = this.__offsetHeight + this.__offsetBottom - scrollY - viewportHeight;
+		var paddingTop = this.__paddingTop;
 
 		var pageDimentions = this.__pageDimentions;
 		var pageIds = this.props.pageIds;
@@ -248,8 +249,8 @@ Micro.Views.ScrollPagination = React.createClass({
 				pageOpts.unloadPageId = pageIds[0];
 			}
 			this.__loadNextPage(pageOpts);
-		} else if (opts.init !== true) {
-			var remainingScrollTop = scrollY - this.__offsetTop - this.__paddingTop;
+		} else if (opts.init !== true || scrollY < paddingTop) {
+			var remainingScrollTop = scrollY - this.__offsetTop - paddingTop;
 			var lastPageDimentions = pageDimentions[pageIds[pageIds.length-1]];
 			if (lastPageDimentions && remainingScrollTop <= this.__prevPageThreshold) {
 				if ((scrollY + viewportHeight) < lastPageDimentions.offsetTop) {
