@@ -35,15 +35,28 @@ Micro.Views.Avatar = React.createClass({
 
 	render: function () {
 		return (
-			<img className="avatar" src={this.state.avatarURL} title={this.state.name} />
+			<img className="avatar" src={this.state.avatarURL} title={this.state.name} onError={this.__handleLoadError} />
 		);
 	},
 
 	__handleChange: function (profile) {
 		var avatarDigest = profile.avatarDigest;
 		this.setState({
-			avatarURL: avatarDigest ? Micro.client.getSignedURL("attachment", [{ entity: profile.entity, digest: avatarDigest }]) : null,
-			name: profile.name
+			avatarURL: avatarDigest ? Micro.client.getNamedURL("attachment", [{ entity: profile.entity, digest: avatarDigest }]) : null,
+			name: profile.name,
+			avatarDigest: profile.avatarDigest,
+			entity: profile.entity
+		});
+	},
+
+	__handleLoadError: function () {
+		var profile = this.state;
+		var avatarDigest = profile.avatarDigest;
+		if ( !avatarDigest ) {
+			return;
+		}
+		this.setState({
+			avatarURL: Micro.client.getSignedURL("attachment", [{ entity: profile.entity, digest: avatarDigest }])
 		});
 	}
 });
