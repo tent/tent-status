@@ -35,7 +35,7 @@ Micro.Views.MainTimeline = React.createClass({
 
 	render: function () {
 		return (
-			<ScrollPagination pageIds={this.state.pageIds} loadPrevPage={this.__loadPrevPage} loadNextPage={this.__loadNextPage}>
+			<ScrollPagination pageIds={this.state.pageIds} loadPrevPage={this.__loadPrevPage} loadNextPage={this.__loadNextPage} unloadPage={this.__unloadPage}>
 				<Posts posts={this.state.posts} profiles={this.state.profiles} />
 			</ScrollPagination>
 		);
@@ -43,6 +43,10 @@ Micro.Views.MainTimeline = React.createClass({
 
 	__handleChange: function () {
 		this.setState(getTimelineState());
+	},
+
+	__unloadPage: function (pageId) {
+		TimelineStore.unloadPage(pageId);
 	},
 
 	__loadPrevPage: function (opts) {

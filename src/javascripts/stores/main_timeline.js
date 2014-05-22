@@ -35,6 +35,35 @@ Micro.Stores.MainTimeline = {
 		}));
 	},
 
+	unloadPage: function (unloadPageId) {
+		var pageIds = this.__state.pageIds;
+		var pages = this.__state.pages;
+		var pageQueries = this.__pageQueries;
+
+		if (pageIds.length === 1) {
+			throw new Error("MainTimeline: Invalid unload request for page id: "+ JSON.stringify(unloadPageId) +". Can not remove only loaded page.");
+		}
+
+		if (pageIds[0] === unloadPageId) {
+			pageIds.shift();
+			pages.shift();
+			pageQueries.prev = pages[0].pageQueries.prev;
+		} else {
+			if (pageIds[pageIds.length-1] === unloadPageId) {
+				pageIds.pop();
+				pages.pop();
+				pageQueries.next = pages[pages.length-1].pageQueries.next;
+			} else {
+				throw new Error("MainTimeline: Invalid unload request for page id: "+ JSON.stringify(unloadPageId) +". Only "+ JSON.stringify(pageIds[0]) +" or "+ JSON.stringify(pageIds[pageIds.length-1]) +" may be removed.");
+			}
+		}
+
+		this.__setState({
+			pages: pages,
+			pageIds: pageIds
+		});
+	},
+
 	setCold: function () {
 		this.__cold = true;
 		this.__state = this.__getInitialState();
@@ -130,49 +159,19 @@ Micro.Stores.MainTimeline = {
 		var pageIds = this.__state.pageIds;
 		var pages = this.__state.pages;
 
-		var unloadPageId = opts.unloadPageId;
-		if (unloadPageId) {
-			if (operation === "append") {
-				if (pageIds[0] === unloadPageId) {
-					pageIds.shift();
-					pages.shift();
-				} else {
-					throw new Error("MainTimeline: Invalid unload request for page id: "+ JSON.stringify(unloadPageId) +". Only "+ JSON.stringify(pageIds[0]) +" may be removed.");
-				}
-			} else { // prepend
-				if (pageIds[pageIds.length-1] === unloadPageId) {
-					pageIds.pop();
-					pages.pop();
-				} else {
-					throw new Error("MainTimeline: Invalid unload request for page id: "+ JSON.stringify(unloadPageId) +". Only "+ JSON.stringify(pageIds[pageIds.length-1]) +" may be removed.");
-				}
-			}
-		}
-
-		var __firstPost = res.posts[0];
-		var __since;
-		if (__firstPost) {
-			__since = __firstPost.received_at || __firstPost.published_at;
-		} else {
-			__since = Date.now();
-		}
-		var pageQueries = {};
+		var pageQueries = this.__pageQueries;
 		if (operation === "append") {
-			if (unloadPageId) {
-				pageQueries.prev = pages[0].pageQueries.prev;
-			} else {
-				pageQueries.prev = this.__pageQueries.prev || "?since="+ __since;
-			}
 			pageQueries.next = res.pages.next || null;
 		} else { // prepend
-			pageQueries.prev = res.pages.prev || this.__pageQueries.prev || "?since="+ __since;
-			if (unloadPageId) {
-				pageQueries.next = pages.length > 0 ? pages[pages.length-1].pageQueries.next || null : res.pages.next || null;
+			var since;
+			if (res.posts.length > 0) {
+				var firstPost = res.posts[0];
+				since = (firstPost.received_at || firstPost.published_at) +" "+ firstPost.version.id;
 			} else {
-				pageQueries.next = this.__pageQueries.next || null;
+				since = Date.now();
 			}
+			pageQueries.prev = res.pages.prev || ("?since="+ since);
 		}
-		this.__pageQueries = pageQueries;
 
 		// Don't add an empty page
 		if (res.posts.length === 0) {
@@ -187,9 +186,8 @@ Micro.Stores.MainTimeline = {
 				next: res.pages.next || null
 			}
 		};
-		var __lastPost;
-		__firstPost = page.posts[0];
-		__lastPost = page.posts[page.posts.length-1];
+		var __firstPost = page.posts[0];
+		var __lastPost = page.posts[page.posts.length-1];
 		page.id = String(__firstPost.received_at || __firstPost.published_at) +":"+ String(__lastPost.received_at || __lastPost.published_at);
 
 		if (operation === "append") {

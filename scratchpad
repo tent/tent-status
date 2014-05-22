@@ -1,0 +1,82 @@
+componentWillUpdate
+	- determine newPageId
+	- determine newPagePosition
+	- determine unloadedPageId
+	- determine unloadedPagePosition
+
+	newPagePosition is bottom
+		- add marginBottom (can be removed, there to allow scrolling past loaded page bounds. TODO: should be set to 0 when last page is loaded)
+	newPagePosition is top
+		- if page was previously unloaded
+			- we know it's height, so remove that from paddingTop
+		- else
+			- we don't know it's height, TODO: prevent page from jumping
+			(maybe we can use the same techneque even when we know the page height for a more rebust system?)
+
+	unloadedPagePosition is top
+		- add unloaded page height to paddingTop
+		- remove unloadedPageId from renderedPageIds Array
+	unloadedPagePosition is bottom
+		- add unloaded page height to paddingBottom (do we really want this?)
+		- remove unloadedPageId from renderedPageIds Array
+
+	newPagePosition is bottom
+		- push newPageId to renderedPageIds Array
+	newPagePosition is top
+		- unshift newPageId to renderedPageIds Array
+
+componentDidUpdate
+	- updateDimensions(newPageId, newPagePosition)
+	- updateRemainingScrollHeight({init: true})
+
+render
+	- create paddingTop, paddingBottom, marginBottom style object
+	- return wrapper <div/> with style object and children props as it's children
+
+updateDimensions(newPageId, newPagePosition)
+	- documentHeight
+	- viewPortHeight
+	- max(documentHeight, viewPortHeight) as maxHeight
+	- DOM element as el
+	- offsetHeight
+	- offsetTop
+	- offsetBottom
+
+	if newPageId
+		- set pageDimentions[newPageId].{offsetTop,offsetHeight}
+		(this should change to be height and offsetTop, i.e. height doesn't include the offsetTop)
+		- recalculate offsetTop for pages below it
+
+		newPagePosition top
+			- set prevPageThreshold to half new page height
+		newPagePosition bottom
+			- set nextPageThreshold to half new page height
+
+	save viewPortHeight
+	save offsetTop
+	save offsetHeight
+	save offsetBottom
+	save prevPageThreshold
+	save nextPageThreshold
+
+updateRemainingScrollHeight(opts)
+	- don't do anything if offsetHeight is 0
+	- don't do anything if loading a page
+	- scrollY
+	- remainingScrollBottom
+	- pageDimentions
+	- pageIds
+	- pageOpts
+
+	remainingScrollBottom <= nextPageThreshold
+		- firstPageDimentions = pageDimentions[pageIds[0]]
+		firstPageDimentions && scrollY > (firstPageDimentions.offsetHeight + paddingTop)
+			- pageOpts.unloadedPageId = pageIds[0]
+		loadNextPage(pageOpts)
+	else if not opts.init
+		- remainingScrollTop
+		- lastPageDimentions = pageDimentions[pageIds[pageIds.length-1]]
+		lastPageDimentions && remainingScrollTop <= prevPageThreshold
+			scrollY + (viewPortHeight * 2) < lastPageDimentions.offsetTop
+				- pageOpts.unloadedPageId = lastPageId
+			loadPrevPage(pageOpts)
