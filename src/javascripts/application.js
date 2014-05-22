@@ -3,9 +3,9 @@
 //= require ./set_immediate
 //= require ./static_config
 //= require_tree ./routers
+//= require ./dispatcher
 //= require_tree ./stores
 //= require ./view_helpers
-//= require ./dispatcher
 //= require_tree ./views
 //= require_tree ./models
 //= require ./config
@@ -19,6 +19,7 @@ window.Micro = Micro;
 
 Marbles.Utils.extend(Micro, {
 	Views: {},
+	Actions: {},
 	Models: {}, // TODO: replace these with Stores
 	Stores: {},
 	run: function () {

@@ -78,20 +78,20 @@ Micro.Views.ScrollPagination = React.createClass({
 		this.props.unloadPage(pageId);
 	},
 
-	__loadPrevPage: function (opts) {
+	__loadPrevPage: function () {
 		if (this.__loadingPrevPage) {
 			return;
 		}
 		this.__loadingPrevPage = true;
-		this.props.loadPrevPage(opts);
+		this.props.loadPrevPage();
 	},
 
-	__loadNextPage: function (opts) {
+	__loadNextPage: function () {
 		if (this.__loadingNextPage) {
 			return;
 		}
 		this.__loadingNextPage = true;
-		this.props.loadNextPage(opts);
+		this.props.loadNextPage();
 	},
 
 	__determinePagesDelta: function (pageIds) {

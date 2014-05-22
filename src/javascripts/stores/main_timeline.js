@@ -1,7 +1,27 @@
+//= require ../dispatcher
+
 (function () {
 "use strict";
 
-Micro.Stores.MainTimeline = {
+Micro.Stores.MainTimeline = {};
+
+Marbles.Utils.extend(Micro.Stores.MainTimeline, {
+	dispatcherIndex: Micro.Dispatcher.register(function (event) {
+		switch (event.name) {
+			case "unloadPage":
+				this.unloadPage(event.pageId);
+			break;
+
+			case "loadPrevPage":
+				this.fetchPrevPage();
+			break;
+
+			case "loadNextPage":
+				this.fetchNextPage();
+			break;
+		}
+	}.bind(Micro.Stores.MainTimeline)),
+
 	getPage: function () {
 		if (this.__cold) {
 			this.__cold = false;
@@ -216,6 +236,6 @@ Micro.Stores.MainTimeline = {
 			}
 		});
 	}
-};
+});
 
 })();

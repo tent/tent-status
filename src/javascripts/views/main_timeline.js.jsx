@@ -1,6 +1,7 @@
 /** @jsx React.DOM */
 //= require ./scroll_pagination
 //= require ./posts
+//= require ../actions/timeline
 
 (function () {
 "use strict";
@@ -8,6 +9,7 @@
 var TimelineStore = Micro.Stores.MainTimeline;
 var ScrollPagination = Micro.Views.ScrollPagination;
 var Posts = Micro.Views.Posts;
+var TimelineActions = Micro.Actions.Timeline;
 
 function getTimelineState() {
 	var res = TimelineStore.getPage();
@@ -35,7 +37,12 @@ Micro.Views.MainTimeline = React.createClass({
 
 	render: function () {
 		return (
-			<ScrollPagination pageIds={this.state.pageIds} loadPrevPage={this.__loadPrevPage} loadNextPage={this.__loadNextPage} unloadPage={this.__unloadPage}>
+			<ScrollPagination
+				pageIds={this.state.pageIds}
+				unloadPage={TimelineActions.unloadPage}
+				loadPrevPage={TimelineActions.loadPrevPage}
+				loadNextPage={TimelineActions.loadNextPage}>
+
 				<Posts posts={this.state.posts} profiles={this.state.profiles} />
 			</ScrollPagination>
 		);
@@ -43,22 +50,6 @@ Micro.Views.MainTimeline = React.createClass({
 
 	__handleChange: function () {
 		this.setState(getTimelineState());
-	},
-
-	__unloadPage: function (pageId) {
-		TimelineStore.unloadPage(pageId);
-	},
-
-	__loadPrevPage: function (opts) {
-		if (this.state.posts && this.state.posts.length) {
-			TimelineStore.fetchPrevPage(opts);
-		}
-	},
-
-	__loadNextPage: function (opts) {
-		if (this.state.posts && this.state.posts.length) {
-			TimelineStore.fetchNextPage(opts);
-		}
 	}
 });
 
