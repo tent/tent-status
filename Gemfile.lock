@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/cupcake/contacts-service.git
-  revision: 55ef7dd5aead5dc1566d30c6c974eccf94a1f60d
+  revision: 183ac652df60355988540efaca035e48e1e25e6f
   branch: master
   specs:
     contacts-service (0.0.1)
@@ -51,7 +51,7 @@ GIT
 
 GIT
   remote: git://github.com/tent/icing.git
-  revision: 6cc1174efae868c5bea74e567931af21a1a2e5a1
+  revision: a836d7e9973bff8b41c11d0a32dbb105b0c033c7
   branch: refactor
   specs:
     icing (0.0.1)
