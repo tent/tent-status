@@ -20,7 +20,9 @@ var MainRouter = Marbles.Router.createClass({
 		});
 
 		Marbles.history.once("handler:before", function () {
-			Micro.Stores.MainTimeline.setCold();
+			Micro.Dispatcher.handleRouterAction({
+				name: "unloadMainTimeline"
+			});
 		});
 	},
 

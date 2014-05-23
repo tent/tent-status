@@ -19,6 +19,10 @@ Marbles.Utils.extend(Micro.Stores.MainTimeline, {
 			case "loadNextPage":
 				this.fetchNextPage();
 			break;
+
+			case "unloadMainTimeline":
+				this.setCold();
+			break;
 		}
 	}.bind(Micro.Stores.MainTimeline)),
 
