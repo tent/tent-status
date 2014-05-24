@@ -1,8 +1,14 @@
+//= require ../auth
+//= require ../dispatcher
+
 (function () {
 "use strict";
 
 var USERNAME_REGEX = /^[a-z0-9]{2,30}$/;
 var PASSPHRASE_REGEX = /^.{6,}$/;
+
+var Auth = Micro.Auth;
+var AppDispatcher = Micro.Dispatcher;
 
 Micro.Models.Login = Marbles.Model.createClass({
 	displayName: "Micro.Models.Login",
@@ -39,39 +45,59 @@ Micro.Models.Login = Marbles.Model.createClass({
 	}, Marbles.Validation],
 
 	didInitialize: function () {
-		Micro.on("login:success", this.__handleLoginSuccess, this);
-		Micro.on("login:failure", this.__handleLoginFailure, this);
+		this.__handleAuthChange = this.__handleAuthChange.bind(this);
+		Auth.addChangeListener(this.__handleAuthChange);
 	},
 
 	willDetach: function () {
-		Micro.off("login:success", this.__handleLoginSuccess, this);
-		Micro.off("login:failure", this.__handleLoginFailure, this);
+		Auth.removeChangeListener(this.__handleAuthChange);
 	},
 
 	performLogin: function () {
-		Micro.performLogin(this.username, this.passphrase);
+		AppDispatcher.handleModelAction({
+			name: "LOGIN",
+			username: this.username,
+			passphrase: this.passphrase
+		});
 	},
 
-	__handleLoginSuccess: function () {
-		this.detach();
-		this.remove("passphrase");
-	},
+	__handleAuthChange: function () {
+		var authState = Auth.state;
+		switch (authState.status) {
+			case "AUTHENTICATION_PENDING":
+				this.__clearValidation();
+			break;
 
-	__handleLoginFailure: function (res, xhr) {
-		if (res.field) {
-			this.transaction(function () {
-				this.set("validation."+ res.field +".valid", false);
-				this.set("validation."+ res.field +".msg", res.message || res.error);
-			});
-		} else if (xhr.status === 401) {
-			this.transaction(function () {
-				this.set("validation.username.valid", null);
-				this.set("validation.username.msg", null);
-				this.set("validation.passphrase.valid", null);
-				this.set("validation.passphrase.msg", null);
-			});
+			case "AUTHENTICATED":
+				this.detach();
+				this.remove("passphrase");
+			break;
+
+			case "AUTHENTICATION_FAILURE":
+				if (authState.field) {
+					this.transaction(function () {
+						this.set("validation."+ authState.field +".valid", false);
+						this.set("validation."+ authState.field +".msg", authState.message);
+					});
+				} else if (authState.xhrStatus === 401) {
+					this.__clearValidation();
+				}
+				this.trigger("login:failure", authState.message || "Something went wrong");
+			break;
+
+			case "UNAUTHENTICATED":
+				this.__clearValidation();
+			break;
 		}
-		this.trigger("login:failure", res.message || res.error || "Something went wrong");
+	},
+
+	__clearValidation: function () {
+		this.transaction(function () {
+			this.set("validation.username.valid", null);
+			this.set("validation.username.msg", null);
+			this.set("validation.passphrase.valid", null);
+			this.set("validation.passphrase.msg", null);
+		});
 	}
 });
 

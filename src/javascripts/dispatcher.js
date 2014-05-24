@@ -12,6 +12,18 @@ Micro.Dispatcher = Marbles.Utils.extend({
 		this.dispatch(Marbles.Utils.extend({
 			source: "ROUTER_ACTION"
 		}, action));
+	},
+
+	handleModelAction: function (action) {
+		this.dispatch(Marbles.Utils.extend({
+			source: "MODEL_ACTION"
+		}, action));
+	},
+
+	handleServerAction: function (action) {
+		this.dispatch(Marbles.Utils.extend({
+			source: "SERVER"
+		}, action));
 	}
 }, Marbles.Dispatcher);
 

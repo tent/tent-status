@@ -4,6 +4,7 @@
 //= require ./static_config
 //= require_tree ./routers
 //= require ./dispatcher
+//= require ./auth
 //= require_tree ./stores
 //= require ./view_helpers
 //= require_tree ./views
@@ -67,56 +68,6 @@ Marbles.Utils.extend(Micro, {
 			redirectParam = Marbles.history.path ? "?redirect="+ encodeURIComponent(Marbles.history.path) : "";
 		}
 		Marbles.history.navigate("login"+ redirectParam);
-	},
-
-	performLogin: function (username, passphrase) {
-		Marbles.HTTP({
-			method: "POST",
-			url: Micro.config.LOGIN_URL,
-			body: {
-				username: username,
-				passphrase: passphrase
-			},
-			middleware: [
-				Marbles.HTTP.Middleware.WithCredentials,
-				Marbles.HTTP.Middleware.FormEncoded,
-				Marbles.HTTP.Middleware.SerializeJSON
-			],
-			headers: {
-				"Content-Type": "application/x-www-form-urlencoded"
-			},
-			callback: function (res, xhr) {
-				if (xhr.status === 200) {
-					Micro.once("config:ready", function () {
-						if (Micro.config.authenticated) {
-							Micro.trigger("login:success");
-						} else {
-							Micro.trigger("login:failure", {}, {});
-						}
-					});
-					Micro.config.fetch();
-				} else {
-					Micro.trigger("login:failure", res, xhr);
-				}
-			}
-		});
-	},
-
-	performLogout: function () {
-		Marbles.HTTP({
-			method: "POST",
-			url: Micro.config.LOGOUT_URL,
-			middleware: [
-				Marbles.HTTP.Middleware.WithCredentials
-			],
-			callback: function () {
-				if (Micro.config.LOGOUT_REDIRECT_URL) {
-					window.location.href = Micro.config.LOGOUT_REDIRECT_URL;
-				} else {
-					Micro.config.fetch();
-				}
-			}
-		});
 	},
 
 	__handleChangeAuthenticated: function () {

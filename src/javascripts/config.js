@@ -1,5 +1,9 @@
+//= require ./dispatcher
+
 (function () {
 "use strict";
+
+var AppDispatcher = Micro.Dispatcher;
 
 Micro.config.fetch = function () {
 	Marbles.HTTP({
@@ -15,7 +19,10 @@ Micro.config.fetch = function () {
 		callback: function (res, xhr) {
 			if (xhr.status !== 200) {
 				Micro.config.set("authenticated", false);
-				Micro.trigger("config:ready");
+				AppDispatcher.handleServerAction({
+					name: "CONFIG_READY",
+					authenticated: false
+				});
 				return;
 			}
 
@@ -36,7 +43,10 @@ Micro.config.fetch = function () {
 				}
 			});
 
-			Micro.trigger("config:ready");
+			AppDispatcher.handleServerAction({
+				name: "CONFIG_READY",
+				authenticated: true
+			});
 		}
 	});
 };

@@ -37,6 +37,11 @@ var MainRouter = Marbles.Router.createClass({
 			return;
 		}
 
+		Micro.Dispatcher.handleRouterAction({
+			name: "LOGIN_REDIRECT_FN",
+			performLoginRedirect: performRedirect
+		});
+
 		var loginModel = Micro.Models.Login.findOrNew();
 		React.renderComponent(
 			Micro.Views.Login({
@@ -44,11 +49,6 @@ var MainRouter = Marbles.Router.createClass({
 			}),
 			Micro.el
 		);
-
-		Micro.on("login:success", performRedirect);
-		Marbles.history.once("handler:before", function () {
-			Micro.off("login:success", performRedirect);
-		});
 	},
 
 	logout: function () {
@@ -58,7 +58,9 @@ var MainRouter = Marbles.Router.createClass({
 			return;
 		}
 
-		Micro.performLogout();
+		Micro.Dispatcher.handleRouterAction({
+			name: "LOGOUT"
+		});
 	},
 
 	notFound: function () {

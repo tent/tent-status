@@ -1,16 +1,26 @@
+//= require ./auth
+
 (function () {
 	"use strict";
 
-	Micro.once("config:ready", Micro.run.bind(Micro));
+	var Auth = Micro.Auth;
 
-	Micro.config.fetch();
+	var handleAuthChange = function () {
+		var authState = Auth.state;
+		if (authState.status === "AUTHENTICATED" || authState.status === "UNAUTHENTICATED") {
+			Auth.removeChangeListener(handleAuthChange);
+			handleConfigReady();
+		}
+	};
 
 	var appNav = React.renderComponent(
 		Micro.Views.AppNav({}),
 		document.getElementById("app-nav")
 	);
 
-	Micro.once("config:ready", function () {
+	var handleConfigReady = function () {
+		Micro.run();
+
 		appNav.setProps({
 			currentPath: Marbles.history.path
 		});
@@ -19,7 +29,11 @@
 				currentPath: Marbles.history.path
 			});
 		});
-	});
+	};
+
+	Auth.addChangeListener(handleAuthChange);
+
+	Micro.config.fetch();
 
 	Micro.config.on("change:authenticated", function (authenticated) {
 		appNav.setProps({
@@ -33,7 +47,7 @@
 			TentContacts.credentials = Micro.config.credentials;
 			TentContacts.run();
 		} else {
-			TentContacts.stop(null);
+			TentContacts.stop(function(){});
 		}
 	});
 })();
