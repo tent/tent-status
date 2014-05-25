@@ -155,16 +155,7 @@ DATABASE_URL=postgres://localhost/status APP_NAME='Status' SESSION_SECRET=abc AP
 
 ## Contributing
 
-Here are some tasks that need to be done:
-
-- Add HTML5 location to posts (opt-in)
-- Dim domain.com when subdomain isn't www
-- Scale avatar to 16x16px and display as favicon on profile pages
-- Add option to insert posts directly into the feed (rather than click 'x New Posts' bar)
-- Add option to show/hide replies from people your not subscribed to
-- IE compatibility
-- Add pagination query string to url and reload that position when reloading the page (load specified page and show 'x Newer Posts' bar above it which should load the previous page.)
-- Write tests/refactor code.
+Head over to the [develop branch](https://github.com/tent/tent-status/tree/develop).
 
 Design by [Tommi Kaikkonen](http://kaikkonendesign.fi) and [Jesse Stuart](https://github.com/jvatic).
 App by [Jesse Stuart](https://github/com/jvatic)
