@@ -19,15 +19,30 @@ ENV                   | Required | Description
 `JSON_CONFIG_URL`     | Required | URL of `config.json`.
 `LOGOUT_URL`          | Required | URL accepting a `POST` request to revoke access to `config.json`.
 `LOGOUT_REDIRECT_URL` | Required | URL for app to redirect to after signing out.
-`LOGIN_URL`           | Required | URL accepting a `POST` request with `username` and `passphrase` to grant access to `config.json`. (User is redirected to `SIGNOUT_REDIRECT_URL` instead of displaying an auth form if not specified.)
+`LOGIN_URL`           | Required | URL accepting a `POST` request with `username` and `passphrase` to grant access to `config.json`. (User is redirected to `LOGOUT_REDIRECT_URL` instead of displaying an auth form if not specified.)
 `SEARCH_API_ROOT`     | Optional | Skate API root.
 `SEARCH_API_KEY`      | Optional | Skate API key.
 `DEFAULT_AVATAR_ROOT` | Optional | Defaults to a static avatar. If set, appending `"/" + encodeURIComponent(entity)` should point to a unique avatar for that entity (see [Sigil](https://github.com/cupcake/sigil) for more information).
 `CONTACTS_URL`        | Required | URL of [contacts service](https://github.com/cupcake/contacts-service) instance.
 
-### Running statically
+#### JSON config
 
-1. Compile
+```
+{
+  "credentials": {
+    "id": "...",
+    "hawk_key": "...",
+    "hawk_algorithm": "sha256"
+  }, // app auth credentials
+  "meta": { ... } // meta post JSON of authenticated entity
+}
+```
+
+(Must be available via `JSON_CONFIG_URL`, don't forget to setup CORS.)
+
+**NOTE:** You don't actually need `LOGIN_URL`, `LOGOUT_URL`, or `LOGOUT_REDIRECT_URL` if `JSON_CONFIG_URL` does not require authentication (e.g. when running locally).
+
+### Running statically
 
 You will need Node.js as a JavaScript runtime for compilation (`brew install node` on OS X).
 
@@ -36,8 +51,6 @@ Ensure any env vars you need are set when running `rake compile`:
 ```
 APP_URL=http://localhost:8000 bundle exec rake compile
 ```
-
-2. Run
 
 ```
 cd public
@@ -54,16 +67,9 @@ APP_URL=http://localhost:3000 bundle exec puma -p 3000
 
 ## Contributing
 
-Here are some tasks that need to be done:
+The new version of the app currently being worked on is using a [Flux](http://facebook.github.io/react/docs/flux-overview.html)-like architecture.
 
-- Add HTML5 location to posts (opt-in)
-- Dim domain.com when subdomain isn't www
-- Scale avatar to 16x16px and display as favicon on profile pages
-- Add option to insert posts directly into the feed (rather than click 'x New Posts' bar)
-- Add option to show/hide replies from people your not subscribed to
-- IE compatibility
-- Add pagination query string to url and reload that position when reloading the page (load specified page and show 'x Newer Posts' bar above it which should load the previous page.)
-- Write tests/refactor code.
+Open an issue before implementing a feature to ensure it's not already being worked on and fits the scope of the application.
 
 Design by [Tommi Kaikkonen](http://kaikkonendesign.fi) and [Jesse Stuart](https://github.com/jvatic).
 App by [Jesse Stuart](https://github/com/jvatic)
