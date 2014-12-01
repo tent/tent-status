@@ -12,7 +12,9 @@
 
 (function(expose) {
 
-  twttr = { txt: { regexen: {} } }
+  "use strict";
+
+  var twttr = { txt: { regexen: {} } };
 
   // Builds a RegExp
   function regexSupplant(regex, flags) {
@@ -60,7 +62,7 @@
 
   twttr.txt.stringSupplant = stringSupplant;
 
-  twttr.txt.stringSupplant = stringSupplant
+  twttr.txt.stringSupplant = stringSupplant;
 
   var UNICODE_SPACES = [
     fromCode(0x0020), // White_Space # Zs       SPACE
@@ -206,31 +208,55 @@
   twttr.txt.regexen.validDomainChars = regexSupplant(/[^#{invalidDomainChars}]/);
   twttr.txt.regexen.validSubdomain = regexSupplant(/(?:(?:#{validDomainChars}(?:[_-]|#{validDomainChars})*)?#{validDomainChars}\.)/);
   twttr.txt.regexen.validDomainName = regexSupplant(/(?:(?:#{validDomainChars}(?:-|#{validDomainChars})*)?#{validDomainChars}\.)/);
-  twttr.txt.regexen.validGTLD = regexSupplant(RegExp(
-    '(?:(?:academy|actor|aero|agency|arpa|asia|bar|bargains|berlin|best|bid|bike|biz|blue|boutique|build|builders|' +
-    'buzz|cab|camera|camp|cards|careers|cat|catering|center|ceo|cheap|christmas|cleaning|clothing|club|codes|' +
-    'coffee|com|community|company|computer|construction|contractors|cool|coop|cruises|dance|dating|democrat|' +
-    'diamonds|directory|domains|edu|education|email|enterprises|equipment|estate|events|expert|exposed|farm|fish|' +
-    'flights|florist|foundation|futbol|gallery|gift|glass|gov|graphics|guitars|guru|holdings|holiday|house|' +
-    'immobilien|industries|info|institute|int|international|jobs|kaufen|kim|kitchen|kiwi|koeln|kred|land|lighting|' +
-    'limo|link|luxury|management|mango|marketing|menu|mil|mobi|moda|monash|museum|nagoya|name|net|neustar|ninja|' +
-    'okinawa|onl|org|partners|parts|photo|photography|photos|pics|pink|plumbing|post|pro|productions|properties|' +
-    'pub|qpon|recipes|red|rentals|repair|report|reviews|rich|ruhr|sexy|shiksha|shoes|singles|social|solar|' +
-    'solutions|supplies|supply|support|systems|tattoo|technology|tel|tienda|tips|today|tokyo|tools|training|' +
-    'travel|uno|vacations|ventures|viajes|villas|vision|vote|voting|voto|voyage|wang|watch|wed|wien|wiki|works|' +
-    'xxx|xyz|zone|дети|онлайн|орг|сайт|بازار|شبكة|みんな|中信|中文网|公司|公益|在线|我爱你|政务|游戏|移动|网络|集团|삼성)' +
-    '(?=[^0-9a-zA-Z@]|$))'));
-  twttr.txt.regexen.validCCTLD = regexSupplant(RegExp(
-    '(?:(?:ac|ad|ae|af|ag|ai|al|am|an|ao|aq|ar|as|at|au|aw|ax|az|ba|bb|bd|be|bf|bg|bh|bi|bj|bl|bm|bn|bo|bq|br|bs|' +
-    'bt|bv|bw|by|bz|ca|cc|cd|cf|cg|ch|ci|ck|cl|cm|cn|co|cr|cu|cv|cw|cx|cy|cz|de|dj|dk|dm|do|dz|ec|ee|eg|eh|er|es|' +
-    'et|eu|fi|fj|fk|fm|fo|fr|ga|gb|gd|ge|gf|gg|gh|gi|gl|gm|gn|gp|gq|gr|gs|gt|gu|gw|gy|hk|hm|hn|hr|ht|hu|id|ie|il|' +
-    'im|in|io|iq|ir|is|it|je|jm|jo|jp|ke|kg|kh|ki|km|kn|kp|kr|kw|ky|kz|la|lb|lc|li|lk|lr|ls|lt|lu|lv|ly|ma|mc|md|' +
-    'me|mf|mg|mh|mk|ml|mm|mn|mo|mp|mq|mr|ms|mt|mu|mv|mw|mx|my|mz|na|nc|ne|nf|ng|ni|nl|no|np|nr|nu|nz|om|pa|pe|pf|' +
-    'pg|ph|pk|pl|pm|pn|pr|ps|pt|pw|py|qa|re|ro|rs|ru|rw|sa|sb|sc|sd|se|sg|sh|si|sj|sk|sl|sm|sn|so|sr|ss|st|su|sv|' +
-    'sx|sy|sz|tc|td|tf|tg|th|tj|tk|tl|tm|tn|to|tp|tr|tt|tv|tw|tz|ua|ug|uk|um|us|uy|uz|va|vc|ve|vg|vi|vn|vu|wf|ws|' +
-    'ye|yt|za|zm|zw|мон|рф|срб|укр|қаз|الاردن|الجزائر|السعودية|المغرب|امارات|ایران|بھارت|تونس|سودان|سورية|عمان|فلسطين|قطر|مصر|مليسيا|پاکستان|' +
-    'भारत|বাংলা|ভারত|ਭਾਰਤ|ભારત|இந்தியா|இலங்கை|சிங்கப்பூர்|భారత్|ලංකා|ไทย|გე|中国|中國|台湾|台灣|新加坡|' +
-    '香港|한국)(?=[^0-9a-zA-Z@]|$))'));
+  twttr.txt.regexen.validGTLD = regexSupplant(new RegExp(
+    '(?:(?:' +
+    'abogado|academy|accountants|active|actor|aero|agency|airforce|allfinanz|alsace|archi|army|arpa|' +
+    'asia|associates|attorney|auction|audio|autos|axa|band|bar|bargains|bayern|beer|berlin|best|bid|' +
+    'bike|bio|biz|black|blackfriday|blue|bmw|bnpparibas|boo|boutique|brussels|budapest|build|' +
+    'builders|business|buzz|bzh|cab|cal|camera|camp|cancerresearch|capetown|capital|caravan|cards|' +
+    'care|career|careers|casa|cash|cat|catering|center|ceo|cern|channel|cheap|christmas|chrome|' +
+    'church|citic|city|claims|cleaning|click|clinic|clothing|club|codes|coffee|college|cologne|com|' +
+    'community|company|computer|condos|construction|consulting|contractors|cooking|cool|coop|country|' +
+    'credit|creditcard|crs|cruises|cuisinella|cymru|dad|dance|dating|day|deals|degree|democrat|' +
+    'dental|dentist|desi|diamonds|diet|digital|direct|directory|discount|dnp|domains|durban|dvag|eat|' +
+    'edu|education|email|emerck|engineer|engineering|enterprises|equipment|esq|estate|eus|events|' +
+    'exchange|expert|exposed|fail|farm|feedback|finance|financial|fish|fishing|fitness|flights|' +
+    'florist|flsmidth|fly|foo|forsale|foundation|frl|frogans|fund|furniture|futbol|gal|gallery|gbiz|' +
+    'gent|gift|gifts|gives|glass|gle|global|globo|gmail|gmo|gmx|google|gop|gov|graphics|gratis|green|' +
+    'gripe|guide|guitars|guru|hamburg|haus|healthcare|help|here|hiphop|hiv|holdings|holiday|homes|' +
+    'horse|host|hosting|house|how|ibm|immo|immobilien|industries|info|ing|ink|institute|insure|int|' +
+    'international|investments|jetzt|jobs|joburg|juegos|kaufen|kim|kitchen|kiwi|koeln|krd|kred|' +
+    'lacaixa|land|lawyer|lease|lgbt|life|lighting|limited|limo|link|loans|london|lotto|ltda|luxe|' +
+    'luxury|maison|management|mango|market|marketing|media|meet|melbourne|meme|menu|miami|mil|mini|' +
+    'mobi|moda|moe|monash|mortgage|moscow|motorcycles|mov|museum|nagoya|name|navy|net|network|' +
+    'neustar|new|nexus|ngo|nhk|ninja|nra|nrw|nyc|okinawa|ong|onl|ooo|org|organic|otsuka|ovh|paris|' +
+    'partners|parts|pharmacy|photo|photography|photos|physio|pics|pictures|pink|pizza|place|plumbing|' +
+    'pohl|poker|post|praxi|press|pro|prod|productions|prof|properties|property|pub|qpon|quebec|' +
+    'realtor|recipes|red|rehab|reise|reisen|ren|rentals|repair|report|republican|rest|restaurant|' +
+    'reviews|rich|rio|rip|rocks|rodeo|rsvp|ruhr|ryukyu|saarland|sarl|sca|scb|schmidt|schule|scot|' +
+    'services|sexy|shiksha|shoes|singles|social|software|sohu|solar|solutions|soy|space|spiegel|' +
+    'supplies|supply|support|surf|surgery|suzuki|systems|taipei|tatar|tattoo|tax|technology|tel|' +
+    'tienda|tips|tirol|today|tokyo|tools|top|town|toys|trade|training|travel|tui|university|uno|uol|' +
+    'vacations|vegas|ventures|vermögensberater|vermögensberatung|versicherung|vet|viajes|villas|' +
+    'vision|vlaanderen|vodka|vote|voting|voto|voyage|wales|wang|watch|webcam|website|wed|wedding|' +
+    'whoswho|wien|wiki|williamhill|wme|work|works|world|wtc|wtf|xxx|xyz|yachts|yandex|yoga|yokohama|' +
+    'youtube|zip|zone|дети|москва|онлайн|орг|рус|сайт|بازار|شبكة|موقع|संगठन|みんな|世界|中信|中文网|企业|佛山|公司|' +
+    '公益|商城|商标|在线|广东|我爱你|手机|政务|机构|游戏|移动|组织机构|网址|网络|集团|삼성' +
+    ')(?=[^0-9a-zA-Z@]|$))'));
+  twttr.txt.regexen.validCCTLD = regexSupplant(new RegExp(
+    '(?:(?:' +
+    'ac|ad|ae|af|ag|ai|al|am|an|ao|aq|ar|as|at|au|aw|ax|az|ba|bb|bd|be|bf|bg|bh|bi|bj|bl|bm|bn|bo|bq|' +
+    'br|bs|bt|bv|bw|by|bz|ca|cc|cd|cf|cg|ch|ci|ck|cl|cm|cn|co|cr|cu|cv|cw|cx|cy|cz|de|dj|dk|dm|do|dz|' +
+    'ec|ee|eg|eh|er|es|et|eu|fi|fj|fk|fm|fo|fr|ga|gb|gd|ge|gf|gg|gh|gi|gl|gm|gn|gp|gq|gr|gs|gt|gu|gw|' +
+    'gy|hk|hm|hn|hr|ht|hu|id|ie|il|im|in|io|iq|ir|is|it|je|jm|jo|jp|ke|kg|kh|ki|km|kn|kp|kr|kw|ky|kz|' +
+    'la|lb|lc|li|lk|lr|ls|lt|lu|lv|ly|ma|mc|md|me|mf|mg|mh|mk|ml|mm|mn|mo|mp|mq|mr|ms|mt|mu|mv|mw|mx|' +
+    'my|mz|na|nc|ne|nf|ng|ni|nl|no|np|nr|nu|nz|om|pa|pe|pf|pg|ph|pk|pl|pm|pn|pr|ps|pt|pw|py|qa|re|ro|' +
+    'rs|ru|rw|sa|sb|sc|sd|se|sg|sh|si|sj|sk|sl|sm|sn|so|sr|ss|st|su|sv|sx|sy|sz|tc|td|tf|tg|th|tj|tk|' +
+    'tl|tm|tn|to|tp|tr|tt|tv|tw|tz|ua|ug|uk|um|us|uy|uz|va|vc|ve|vg|vi|vn|vu|wf|ws|ye|yt|za|zm|zw|' +
+    'бел|мкд|мон|рф|срб|укр|қаз|الاردن|الجزائر|السعودية|المغرب|امارات|ایران|بھارت|تونس|سودان|سورية|' +
+    'عراق|عمان|فلسطين|قطر|مصر|مليسيا|پاکستان|भारत|বাংলা|ভারত|ਭਾਰਤ|ભારત|இந்தியா|இலங்கை|சிங்கப்பூர்|' +
+    'భారత్|ලංකා|ไทย|გე|中国|中國|台湾|台灣|新加坡|香港|한국' +
+    ')(?=[^0-9a-zA-Z@]|$))'));
   twttr.txt.regexen.validPunycode = regexSupplant(/(?:xn--[0-9a-z]+)/);
   twttr.txt.regexen.validDomain = regexSupplant(/(?:#{validSubdomain}*#{validDomainName}(?:#{validGTLD}|#{validCCTLD}|#{validPunycode}))/);
   twttr.txt.regexen.validAsciiDomain = regexSupplant(/(?:(?:[\-a-z0-9#{latinAccentChars}]+)\.)+(?:#{validGTLD}|#{validCCTLD}|#{validPunycode})/gi);
@@ -257,8 +283,7 @@
           '#{validGeneralUrlPathChars}*' +
         ')' +
       ')' +
-    '\\)'
-  , 'i');
+    '\\)', 'i');
   // Valid end-of-path chracters (so /foo. does not gobble the period).
   // 1. Allow =&# for empty URL parameters and other URL-join artifacts
   twttr.txt.regexen.validUrlPathEndingChars = regexSupplant(/[\+\-a-z0-9=_#\/#{latinAccentChars}]|(?:#{validUrlBalancedParens})/i);
@@ -283,12 +308,11 @@
         '(\\/#{validUrlPath}*)?' + // $7 URL Path
         '(\\?#{validUrlQueryChars}*#{validUrlQueryEndingChars})?' + // $8 Query String
       ')' +
-    ')'
-  , 'gi');
+    ')', 'gi');
 
   twttr.txt.regexen.validTcoUrl = /^https?:\/\/t\.co\/[a-z0-9]+/i;
 
-  twttr.extractHashtagsWithIndices = function(text, options) {
+  twttr.extractHashtagsWithIndices = function(text) {
     if (!text || !text.match(twttr.txt.regexen.hashSigns)) {
       return [];
     }
@@ -297,8 +321,9 @@
 
     text.replace(twttr.txt.regexen.validHashtag, function(match, before, hash, hashText, offset, chunk) {
       var after = chunk.slice(offset + match.length);
-      if (after.match(twttr.txt.regexen.endHashtagMatch))
+      if (after.match(twttr.txt.regexen.endHashtagMatch)) {
         return;
+      }
       var startPosition = offset + before.length;
       var endPosition = startPosition + hashText.length + 1;
       tags.push({
@@ -321,6 +346,21 @@
 
     var urls = [];
 
+    var replacerFn = function(asciiDomain) {
+      var asciiStartPosition = domain.indexOf(asciiDomain, asciiEndPosition);
+      asciiEndPosition = asciiStartPosition + asciiDomain.length;
+      lastUrl = {
+        url: asciiDomain,
+        indices: [startPosition + asciiStartPosition, startPosition + asciiEndPosition]
+      };
+      if (!before.match(/^[\^]$/)) {
+        lastUrlInvalidMatch = asciiDomain.match(twttr.txt.regexen.invalidShortDomain);
+      }
+      if (!lastUrlInvalidMatch) {
+        urls.push(lastUrl);
+      }
+    };
+
     while (twttr.txt.regexen.extractUrl.exec(text)) {
       var before = RegExp.$2, url = RegExp.$3, protocol = RegExp.$4, domain = RegExp.$5, path = RegExp.$7;
       var endPosition = twttr.txt.regexen.extractUrl.lastIndex,
@@ -329,30 +369,16 @@
       // if protocol is missing and domain contains non-ASCII characters,
       // extract ASCII-only domains.
       if (!protocol) {
-        if (!options.extractUrlsWithoutProtocol
-            || before.match(twttr.txt.regexen.invalidUrlWithoutProtocolPrecedingChars)) {
+        if (!options.extractUrlsWithoutProtocol || before.match(twttr.txt.regexen.invalidUrlWithoutProtocolPrecedingChars)) {
           continue;
         }
         var lastUrl = null,
             lastUrlInvalidMatch = false,
             asciiEndPosition = 0;
-        domain.replace(twttr.txt.regexen.validAsciiDomain, function(asciiDomain) {
-          var asciiStartPosition = domain.indexOf(asciiDomain, asciiEndPosition);
-          asciiEndPosition = asciiStartPosition + asciiDomain.length;
-          lastUrl = {
-            url: asciiDomain,
-            indices: [startPosition + asciiStartPosition, startPosition + asciiEndPosition]
-          };
-          if (!before.match(/^[\^]$/)) {
-            lastUrlInvalidMatch = asciiDomain.match(twttr.txt.regexen.invalidShortDomain);
-          }
-          if (!lastUrlInvalidMatch) {
-            urls.push(lastUrl);
-          }
-        });
+        domain.replace(twttr.txt.regexen.validAsciiDomain, replacerFn);
 
         // no ASCII-only domain found. Skip the entire URL.
-        if (lastUrl == null) {
+        if (lastUrl === null || lastUrl === undefined) {
           continue;
         }
 
@@ -384,6 +410,7 @@
   expose.extractHashtagsWithIndices = twttr.extractHashtagsWithIndices;
 
 })((function() {
+  "use strict";
   if (typeof exports === "undefined") {
     window.twttr = {};
     return window.twttr;
@@ -1299,7 +1326,7 @@ function merge_text_nodes( jsonml ) {
         // chunks of plain text blocks don't include them
         "]": function () {},
         "}": function () {},
-      
+
         // Taken from Markdown.dialects.Gruber.inline["\\"]
         // Modification: change escape chars (removed { } # + - . ! and added ~)
         "\\": function escaped( text ) {
