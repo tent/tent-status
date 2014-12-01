@@ -15,8 +15,6 @@ gem 'icing', :git => 'git://github.com/tent/icing.git', :branch => 'master'
 gem 'sequel-json', :git => 'git://github.com/tent/sequel-json.git', :branch => 'master'
 gem 'sprockets', :git => 'git://github.com/jvaill/sprockets.git', :branch => 'master'
 
-gem 'marbles-js', :git => 'git://github.com/jvatic/marbles-js.git', :branch => 'master'
-
 group :development do
   gem 'asset_sync', :git => 'git://github.com/titanous/asset_sync.git', :branch => 'fix-mime'
 end
