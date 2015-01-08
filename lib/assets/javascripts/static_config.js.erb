@@ -41,7 +41,7 @@ TentStatus.config = {
   FETCH_INTERVAL: 3000,
   MAX_FETCH_LATENCY: 30000,
   URL_TRIM_LENGTH: 30,
-  MAX_STATUS_LENGTH: 256,
+  MAX_STATUS_LENGTH: 512,
   BASE_TITLE: <%= Yajl::Encoder.encode(TentStatus.settings[:name]) %>,
   DEFAULT_AVATAR_URL: <%= Yajl::Encoder.encode(asset_path("default_avatar.png")) %>,
   PLACEHOLDER_AVATAR_URL: <%= Yajl::Encoder.encode(asset_path("default_avatar.png")) %>,

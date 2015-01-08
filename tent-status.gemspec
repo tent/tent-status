@@ -9,8 +9,8 @@ Gem::Specification.new do |gem|
   gem.version       = TentStatus::VERSION
   gem.authors       = ["Jesse Stuart"]
   gem.email         = ["jesse@jessestuart.ca"]
-  gem.description   = %(Tent app for 256 character posts. See README for details.)
-  gem.summary       = %(Tent app for 256 character posts)
+  gem.description   = %(Tent app for 512 character posts. See README for details.)
+  gem.summary       = %(Tent app for 512 character posts)
   gem.homepage      = ""
 
   gem.files         = `git ls-files`.split($/)
