@@ -1033,6 +1033,63 @@ function merge_text_nodes( jsonml ) {
       block: {
         // member name: fn(block, remaining_blocks) -> json markdown tree or undefined
 
+        // Adapted from Markdown.dialects.Gruber.block.blockquote
+        blockquote: function blockquote( block, next ) {
+          if ( !block.match(/^>\s/m) ) {
+            return undefined;
+          }
+
+          var jsonml = [];
+
+          // separate out the leading abutting block, if any. I.e. in this case:
+          //
+          //  a
+          //  > b
+          //
+          if ( block[ 0 ] !== ">" ) {
+            var lines = block.split( /\n/ ),
+                prev = [],
+                line_no = block.lineNumber;
+
+            // keep shifting lines until you find a crotchet
+            while ( lines.length && lines[ 0 ][ 0 ] !== ">" ) {
+              prev.push( lines.shift() );
+              line_no++;
+            }
+
+            var abutting = mk_block( prev.join( "\n" ), "\n", block.lineNumber );
+            jsonml.push.apply( jsonml, this.processBlock( abutting, [] ) );
+            // reassemble new block of just block quotes!
+            block = mk_block( lines.join( "\n" ), block.trailing, line_no );
+          }
+
+
+          // if the next block is also a blockquote merge it in
+          while ( next.length && next[ 0 ][ 0 ] === ">" ) {
+            var b = next.shift();
+            block = mk_block( block + block.trailing + b, b.trailing, block.lineNumber );
+          }
+
+          // Strip off the leading "> " and re-process as a block.
+          var input = block.replace( /^> ?/gm, "" ),
+              old_tree = this.tree,
+              processedBlock = this.toTree( input, [ "blockquote" ] ),
+              attr = extract_attr( processedBlock );
+
+          // If any link references were found get rid of them
+          if ( attr && attr.references ) {
+            delete attr.references;
+            // And then remove the attribute object if it's empty
+            if ( isEmpty( attr ) ) {
+              processedBlock.splice( 1, 1 );
+            }
+          }
+
+          jsonml.push( processedBlock );
+          return jsonml;
+        },
+
+
         // Match inline urls
         autolink: function autolink( block, next ) {
           var urls = expose.extractUrlsWithIndices(block);
@@ -1469,6 +1526,57 @@ function merge_text_nodes( jsonml ) {
 
     Markdown.buildBlockOrder ( Markdown.dialects.Tent.block );
     Markdown.buildInlinePatterns( Markdown.dialects.Tent.inline );
+
+    var isArray = Array.isArray || function(obj) {
+      return Object.prototype.toString.call(obj) === "[object Array]";
+    };
+
+    function extract_attr( jsonml ) {
+      return isArray(jsonml) && jsonml.length > 1 && typeof jsonml[ 1 ] === "object" && !( isArray(jsonml[ 1 ]) ) ? jsonml[ 1 ] : undefined;
+    }
+
+    // For Spidermonkey based engines
+    function mk_block_toSource() {
+      return "Markdown.mk_block( " +
+              uneval(this.toString()) +
+              ", " +
+              uneval(this.trailing) +
+              ", " +
+              uneval(this.lineNumber) +
+              " )";
+    }
+
+    // node
+    function mk_block_inspect() {
+      var util = require("util");
+      return "Markdown.mk_block( " +
+              util.inspect(this.toString()) +
+              ", " +
+              util.inspect(this.trailing) +
+              ", " +
+              util.inspect(this.lineNumber) +
+              " )";
+
+    }
+
+    var mk_block = Markdown.mk_block = function(block, trail, line) {
+      // Be helpful for default case in tests.
+      if ( arguments.length === 1 )
+        trail = "\n\n";
+
+      // We actually need a String object, not a string primitive
+      /* jshint -W053 */
+      var s = new String(block);
+      s.trailing = trail;
+      // To make it clear its not just a string
+      s.inspect = mk_block_inspect;
+      s.toSource = mk_block_toSource;
+
+      if ( line !== undefined )
+        s.lineNumber = line;
+
+      return s;
+    };
 
   })( expose.Markdown )
 
