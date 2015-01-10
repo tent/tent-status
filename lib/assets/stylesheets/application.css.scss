@@ -1,5 +1,12 @@
 //= require ./permissions
 
+blockquote {
+  font-family: "Helvetica Neue", Helvetica, Arial;
+  font-size: 1.8em;
+  font-weight: 100;
+  line-height: 1.1em;
+}
+
 // disabled app nav items
 @import 'icing/settings';
 .app-nav-list {
