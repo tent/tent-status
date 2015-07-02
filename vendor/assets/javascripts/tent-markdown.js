@@ -210,38 +210,55 @@
   twttr.txt.regexen.validDomainName = regexSupplant(/(?:(?:#{validDomainChars}(?:-|#{validDomainChars})*)?#{validDomainChars}\.)/);
   twttr.txt.regexen.validGTLD = regexSupplant(new RegExp(
     '(?:(?:' +
-    'abogado|academy|accountants|active|actor|aero|agency|airforce|allfinanz|alsace|archi|army|arpa|' +
-    'asia|associates|attorney|auction|audio|autos|axa|band|bar|bargains|bayern|beer|berlin|best|bid|' +
-    'bike|bio|biz|black|blackfriday|blue|bmw|bnpparibas|boo|boutique|brussels|budapest|build|' +
-    'builders|business|buzz|bzh|cab|cal|camera|camp|cancerresearch|capetown|capital|caravan|cards|' +
-    'care|career|careers|casa|cash|cat|catering|center|ceo|cern|channel|cheap|christmas|chrome|' +
-    'church|citic|city|claims|cleaning|click|clinic|clothing|club|codes|coffee|college|cologne|com|' +
-    'community|company|computer|condos|construction|consulting|contractors|cooking|cool|coop|country|' +
-    'credit|creditcard|crs|cruises|cuisinella|cymru|dad|dance|dating|day|deals|degree|democrat|' +
-    'dental|dentist|desi|diamonds|diet|digital|direct|directory|discount|dnp|domains|durban|dvag|eat|' +
-    'edu|education|email|emerck|engineer|engineering|enterprises|equipment|esq|estate|eus|events|' +
-    'exchange|expert|exposed|fail|farm|feedback|finance|financial|fish|fishing|fitness|flights|' +
-    'florist|flsmidth|fly|foo|forsale|foundation|frl|frogans|fund|furniture|futbol|gal|gallery|gbiz|' +
-    'gent|gift|gifts|gives|glass|gle|global|globo|gmail|gmo|gmx|google|gop|gov|graphics|gratis|green|' +
-    'gripe|guide|guitars|guru|hamburg|haus|healthcare|help|here|hiphop|hiv|holdings|holiday|homes|' +
-    'horse|host|hosting|house|how|ibm|immo|immobilien|industries|info|ing|ink|institute|insure|int|' +
-    'international|investments|jetzt|jobs|joburg|juegos|kaufen|kim|kitchen|kiwi|koeln|krd|kred|' +
-    'lacaixa|land|lawyer|lease|lgbt|life|lighting|limited|limo|link|loans|london|lotto|ltda|luxe|' +
-    'luxury|maison|management|mango|market|marketing|media|meet|melbourne|meme|menu|miami|mil|mini|' +
-    'mobi|moda|moe|monash|mortgage|moscow|motorcycles|mov|museum|nagoya|name|navy|net|network|' +
-    'neustar|new|nexus|ngo|nhk|ninja|nra|nrw|nyc|okinawa|ong|onl|ooo|org|organic|otsuka|ovh|paris|' +
-    'partners|parts|pharmacy|photo|photography|photos|physio|pics|pictures|pink|pizza|place|plumbing|' +
-    'pohl|poker|post|praxi|press|pro|prod|productions|prof|properties|property|pub|qpon|quebec|' +
-    'realtor|recipes|red|rehab|reise|reisen|ren|rentals|repair|report|republican|rest|restaurant|' +
-    'reviews|rich|rio|rip|rocks|rodeo|rsvp|ruhr|ryukyu|saarland|sarl|sca|scb|schmidt|schule|scot|' +
-    'services|sexy|shiksha|shoes|singles|social|software|sohu|solar|solutions|soy|space|spiegel|' +
-    'supplies|supply|support|surf|surgery|suzuki|systems|taipei|tatar|tattoo|tax|technology|tel|' +
-    'tienda|tips|tirol|today|tokyo|tools|top|town|toys|trade|training|travel|tui|university|uno|uol|' +
-    'vacations|vegas|ventures|vermögensberater|vermögensberatung|versicherung|vet|viajes|villas|' +
-    'vision|vlaanderen|vodka|vote|voting|voto|voyage|wales|wang|watch|webcam|website|wed|wedding|' +
-    'whoswho|wien|wiki|williamhill|wme|work|works|world|wtc|wtf|xxx|xyz|yachts|yandex|yoga|yokohama|' +
-    'youtube|zip|zone|дети|москва|онлайн|орг|рус|сайт|بازار|شبكة|موقع|संगठन|みんな|世界|中信|中文网|企业|佛山|公司|' +
-    '公益|商城|商标|在线|广东|我爱你|手机|政务|机构|游戏|移动|组织机构|网址|网络|集团|삼성' +
+    'abb|abbott|abogado|academy|accenture|accountant|accountants|active|actor|ads|adult|aeg|aero|afl|' +
+    'agency|aig|airforce|allfinanz|alsace|amsterdam|android|apartments|aquarelle|archi|army|arpa|' +
+    'asia|associates|attorney|auction|audio|auto|autos|axa|azure|band|bank|bar|barclaycard|barclays|' +
+    'bargains|bauhaus|bayern|bbc|bbva|beer|berlin|best|bharti|bible|bid|bike|bing|bingo|bio|biz|' +
+    'black|blackfriday|bloomberg|blue|bmw|bnl|bnpparibas|boats|bond|boo|boutique|bradesco|' +
+    'bridgestone|broker|brother|brussels|budapest|build|builders|business|buzz|bzh|cab|cafe|cal|' +
+    'camera|camp|cancerresearch|canon|capetown|capital|caravan|cards|care|career|careers|cars|' +
+    'cartier|casa|cash|casino|cat|catering|cba|cbn|center|ceo|cern|cfa|cfd|channel|chat|cheap|chloe|' +
+    'christmas|chrome|church|cisco|citic|city|claims|cleaning|click|clinic|clothing|cloud|club|coach|' +
+    'codes|coffee|college|cologne|com|commbank|community|company|computer|condos|construction|' +
+    'consulting|contractors|cooking|cool|coop|corsica|country|coupons|courses|credit|creditcard|' +
+    'cricket|crown|crs|cruises|cuisinella|cymru|cyou|dabur|dad|dance|date|dating|datsun|day|dclk|' +
+    'deals|degree|delivery|democrat|dental|dentist|desi|design|dev|diamonds|diet|digital|direct|' +
+    'directory|discount|dnp|docs|dog|doha|domains|doosan|download|drive|durban|dvag|earth|eat|edu|' +
+    'education|email|emerck|energy|engineer|engineering|enterprises|epson|equipment|erni|esq|estate|' +
+    'eurovision|eus|events|everbank|exchange|expert|exposed|express|fail|faith|fan|fans|farm|fashion|' +
+    'feedback|film|finance|financial|firmdale|fish|fishing|fit|fitness|flights|florist|flowers|' +
+    'flsmidth|fly|foo|football|forex|forsale|forum|foundation|frl|frogans|fund|furniture|futbol|fyi|' +
+    'gal|gallery|garden|gbiz|gdn|gent|genting|ggee|gift|gifts|gives|glass|gle|global|globo|gmail|gmo|' +
+    'gmx|gold|goldpoint|golf|goo|goog|google|gop|gov|graphics|gratis|green|gripe|guge|guide|guitars|' +
+    'guru|hamburg|hangout|haus|healthcare|help|here|hermes|hiphop|hitachi|hiv|hockey|holdings|' +
+    'holiday|homedepot|homes|honda|horse|host|hosting|hoteles|hotmail|house|how|ibm|icbc|icu|ifm|' +
+    'immo|immobilien|industries|infiniti|info|ing|ink|institute|insure|int|international|investments|' +
+    'irish|iwc|java|jcb|jetzt|jewelry|jlc|jll|jobs|joburg|juegos|kaufen|kddi|kim|kitchen|kiwi|koeln|' +
+    'komatsu|krd|kred|kyoto|lacaixa|land|lasalle|lat|latrobe|law|lawyer|lds|lease|leclerc|legal|lgbt|' +
+    'liaison|lidl|life|lighting|limited|limo|link|loan|loans|lol|london|lotte|lotto|love|ltda|lupin|' +
+    'luxe|luxury|madrid|maif|maison|management|mango|market|marketing|markets|marriott|mba|media|' +
+    'meet|melbourne|meme|memorial|men|menu|miami|microsoft|mil|mini|mma|mobi|moda|moe|monash|money|' +
+    'montblanc|mormon|mortgage|moscow|motorcycles|mov|movie|movistar|mtn|mtpc|museum|nadex|nagoya|' +
+    'name|navy|nec|net|netbank|network|neustar|new|news|nexus|ngo|nhk|nico|ninja|nissan|nra|nrw|ntt|' +
+    'nyc|office|okinawa|omega|one|ong|onl|online|ooo|oracle|org|organic|osaka|otsuka|ovh|page|' +
+    'panerai|paris|partners|parts|party|pharmacy|philips|photo|photography|photos|physio|piaget|pics|' +
+    'pictet|pictures|pink|pizza|place|play|plumbing|plus|pohl|poker|porn|post|praxi|press|pro|prod|' +
+    'productions|prof|properties|property|pub|qpon|quebec|racing|realtor|realty|recipes|red|redstone|' +
+    'rehab|reise|reisen|reit|ren|rent|rentals|repair|report|republican|rest|restaurant|review|' +
+    'reviews|rich|ricoh|rio|rip|rocks|rodeo|rsvp|ruhr|run|ryukyu|saarland|sale|samsung|sandvik|' +
+    'sandvikcoromant|sap|sarl|saxo|sca|scb|schmidt|scholarships|school|schule|schwarz|science|scor|' +
+    'scot|seat|sener|services|sew|sex|sexy|shiksha|shoes|show|shriram|singles|site|ski|sky|skype|' +
+    'sncf|soccer|social|software|sohu|solar|solutions|sony|soy|space|spiegel|spreadbetting|starhub|' +
+    'statoil|study|style|sucks|supplies|supply|support|surf|surgery|suzuki|swatch|swiss|sydney|' +
+    'systems|taipei|tatar|tattoo|tax|taxi|team|tech|technology|tel|telefonica|temasek|tennis|thd|' +
+    'theater|tickets|tienda|tips|tires|tirol|today|tokyo|tools|top|toray|toshiba|tours|town|toys|' +
+    'trade|trading|training|travel|trust|tui|university|uno|uol|vacations|vegas|ventures|' +
+    'vermögensberater|vermögensberatung|versicherung|vet|viajes|video|villas|vision|vista|vistaprint|' +
+    'vlaanderen|vodka|vote|voting|voto|voyage|wales|walter|wang|watch|webcam|website|wed|wedding|' +
+    'weir|whoswho|wien|wiki|williamhill|win|windows|wme|work|works|world|wtc|wtf|xbox|xerox|xin|xxx|' +
+    'xyz|yachts|yandex|yodobashi|yoga|yokohama|youtube|zip|zone|zuerich|дети|москва|онлайн|орг|рус|' +
+    'сайт|بازار|شبكة|موقع|संगठन|みんな|グーグル|世界|中信|中文网|企业|佛山|信息|健康|八卦|公司|公益|商城|商店|商标|在线|娱乐|工行|广东|慈善|我爱你|' +
+    '手机|政务|政府|时尚|机构|淡马锡|游戏|移动|组织机构|网址|网店|网络|谷歌|集团|飞利浦|餐厅|삼성|onion' +
     ')(?=[^0-9a-zA-Z@]|$))'));
   twttr.txt.regexen.validCCTLD = regexSupplant(new RegExp(
     '(?:(?:' +
@@ -252,10 +269,10 @@
     'la|lb|lc|li|lk|lr|ls|lt|lu|lv|ly|ma|mc|md|me|mf|mg|mh|mk|ml|mm|mn|mo|mp|mq|mr|ms|mt|mu|mv|mw|mx|' +
     'my|mz|na|nc|ne|nf|ng|ni|nl|no|np|nr|nu|nz|om|pa|pe|pf|pg|ph|pk|pl|pm|pn|pr|ps|pt|pw|py|qa|re|ro|' +
     'rs|ru|rw|sa|sb|sc|sd|se|sg|sh|si|sj|sk|sl|sm|sn|so|sr|ss|st|su|sv|sx|sy|sz|tc|td|tf|tg|th|tj|tk|' +
-    'tl|tm|tn|to|tp|tr|tt|tv|tw|tz|ua|ug|uk|um|us|uy|uz|va|vc|ve|vg|vi|vn|vu|wf|ws|ye|yt|za|zm|zw|' +
-    'бел|мкд|мон|рф|срб|укр|қаз|الاردن|الجزائر|السعودية|المغرب|امارات|ایران|بھارت|تونس|سودان|سورية|' +
-    'عراق|عمان|فلسطين|قطر|مصر|مليسيا|پاکستان|भारत|বাংলা|ভারত|ਭਾਰਤ|ભારત|இந்தியா|இலங்கை|சிங்கப்பூர்|' +
-    'భారత్|ලංකා|ไทย|გე|中国|中國|台湾|台灣|新加坡|香港|한국' +
+    'tl|tm|tn|to|tp|tr|tt|tv|tw|tz|ua|ug|uk|um|us|uy|uz|va|vc|ve|vg|vi|vn|vu|wf|ws|ye|yt|za|zm|zw|ελ|' +
+    'бел|мкд|мон|рф|срб|укр|қаз|հայ|الاردن|الجزائر|السعودية|المغرب|امارات|ایران|بھارت|تونس|سودان|' +
+    'سورية|عراق|عمان|فلسطين|قطر|مصر|مليسيا|پاکستان|भारत|বাংলা|ভারত|ਭਾਰਤ|ભારત|இந்தியா|இலங்கை|' +
+    'சிங்கப்பூர்|భారత్|ලංකා|ไทย|გე|中国|中國|台湾|台灣|新加坡|澳門|香港|한국' +
     ')(?=[^0-9a-zA-Z@]|$))'));
   twttr.txt.regexen.validPunycode = regexSupplant(/(?:xn--[0-9a-z]+)/);
   twttr.txt.regexen.validDomain = regexSupplant(/(?:#{validSubdomain}*#{validDomainName}(?:#{validGTLD}|#{validCCTLD}|#{validPunycode}))/);
